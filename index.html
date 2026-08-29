@@ -3,43 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diario de Padres Conscientes & Relax</title>
+    <title>Diario de Padres Conscientes & Relax - Futurist Warm</title>
     <style>
+        :root {
+            --bg-dark: #120c0a;
+            --card-bg: rgba(28, 20, 16, 0.85);
+            --border-warm: #d35400;
+            --accent-orange: #ff6f00;
+            --accent-amber: #ffab00;
+            --text-light: #fbe9e7;
+            --text-muted: #d7ccc8;
+            --glow-orange: 0 0 15px rgba(255, 111, 0, 0.4);
+        }
+
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
             text-align: center; 
             padding: 20px; 
-            background-color: #e3f2fd; 
-            color: #37474f; 
+            background-color: var(--bg-dark); 
+            background-image: radial-gradient(circle at 50% 10%, #2c140e 0%, var(--bg-dark) 80%);
+            color: var(--text-light); 
+            min-height: 100vh;
         }
-        .container { 
-            max-width: 520px; 
-            margin: 0 auto; 
-            background: #ffffff; 
-            padding: 25px; 
-            border-radius: 16px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-        }
-        h1 { margin-top: 0; color: #0277bd; }
-        h3 { margin-bottom: 5px; color: #0277bd; }
-        p { margin-top: 0; font-size: 0.95em; color: #546e7a; }
         
-        /* REPRODUCTOR DE MÚSICA Y AMBIENTE */
+        .container { 
+            max-width: 560px; 
+            margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255, 111, 0, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), var(--glow-orange); 
+            backdrop-filter: blur(8px);
+        }
+
+        h1 { 
+            margin-top: 0; 
+            color: var(--accent-amber); 
+            font-size: 1.8em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 171, 0, 0.5);
+        }
+        h3 { 
+            margin-bottom: 5px; 
+            color: var(--accent-orange); 
+            letter-spacing: 1px;
+        }
+        p { margin-top: 0; font-size: 0.9em; color: var(--text-muted); }
+        
+        /* REPRODUCTOR DE MÚSICA Y AMBIENTE FUTURISTA */
         .music-player { 
-            background: #e8f5e9; 
+            background: rgba(44, 24, 16, 0.6); 
             padding: 18px; 
             border-radius: 14px; 
-            color: #2e7d32; 
-            border: 1px solid #c8e6c9;
+            border: 1px solid rgba(255, 111, 0, 0.2);
             margin-bottom: 25px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
         .music-player select {
-            padding: 8px 12px;
+            padding: 10px;
             border-radius: 8px;
-            border: 1px solid #a5d6a7;
-            background: #ffffff;
+            border: 1px solid var(--accent-orange);
+            background: #1a0f0b;
             font-size: 0.9em;
-            color: #2e7d32;
+            color: var(--accent-amber);
             font-weight: 600;
             outline: none;
             margin-bottom: 12px;
@@ -52,72 +80,177 @@
             margin-bottom: 15px;
         }
         .music-btn {
-            background-color: #2e7d32;
+            background: linear-gradient(135deg, #e65100, #ff6f00);
             color: white;
             border: none;
-            padding: 10px 18px;
+            padding: 12px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.2s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
             width: 100%;
+            box-shadow: 0 0 10px rgba(230, 81, 0, 0.4);
         }
-        .music-btn:hover { background-color: #1b5e20; }
-        .music-btn.active { background-color: #c62828; }
+        .music-btn:hover { 
+            box-shadow: 0 0 15px rgba(255, 111, 0, 0.8);
+            transform: translateY(-1px);
+        }
+        .music-btn.active { 
+            background: linear-gradient(135deg, #bf360c, #d84315); 
+            box-shadow: 0 0 15px rgba(216, 67, 21, 0.8);
+        }
 
-        /* AMBIENTES Y SONIDOS RELAJANTES */
+        /* AMBIENTES Y CONTROLES DE VOLUMEN */
         .ambient-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 12px;
             margin-top: 10px;
             text-align: left;
         }
         .ambient-item {
-            background: #ffffff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid #c8e6c9;
+            background: rgba(18, 12, 10, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 111, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .ambient-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-size: 0.85em;
             font-weight: 600;
+            color: var(--text-light);
         }
         .ambient-item input[type="checkbox"] {
             cursor: pointer;
-            width: 18px;
-            height: 18px;
+            accent-color: var(--accent-orange);
+            width: 16px;
+            height: 16px;
+        }
+        .volume-slider {
+            width: 100%;
+            accent-color: var(--accent-amber);
+            height: 4px;
+            cursor: pointer;
         }
 
-        /* EMOCIONES Y DIARIO */
-        .buttons { display: flex; flex-wrap: wrap; justify-content: space-around; margin: 15px 0; }
-        .btn { border: none; padding: 15px; border-radius: 50%; cursor: pointer; width: 55px; height: 55px; margin: 6px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn:hover { transform: scale(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-        .btn.selected { outline: 3px solid #0277bd; transform: scale(1.1); }
-        #happy { background-color: #fff9c4; }
-        #sad { background-color: #bbdefb; }
-        #angry { background-color: #ffcdd2; }
-        #calm { background-color: #c8e6c9; }
-        #fear { background-color: #e1bee7; }
-        #surprise { background-color: #ffe0b2; }
-        #anxiety { background-color: #d7ccc8; }
-        #envy { background-color: #f0f4c3; }
-        #boredom { background-color: #cfd8dc; }
-        #shame { background-color: #f8bbd0; }
+        /* EMOCIONES Y ETIQUETAS */
+        .buttons-grid { 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 10px; 
+            margin: 15px 0; 
+        }
+        .emotion-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn { 
+            border: none; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            width: 48px; 
+            height: 48px; 
+            transition: all 0.2s ease; 
+            box-shadow: 0 0 8px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .btn:hover { 
+            transform: scale(1.15); 
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4); 
+        }
+        .btn.selected { 
+            outline: 2px solid var(--accent-amber); 
+            box-shadow: 0 0 15px var(--accent-amber);
+            transform: scale(1.15); 
+        }
         
-        textarea { width: 100%; height: 80px; padding: 12px; box-sizing: border-box; margin-top: 10px; border-radius: 8px; border: 1px solid #cfd8dc; resize: vertical; font-family: inherit; }
-        textarea:focus { outline: none; border-color: #0277bd; }
+        .emotion-label {
+            font-size: 0.7em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* PALETA DE PALETA CÁLIDA Y NEÓN PARA EMOCIONES */
+        #happy { background-color: #ffd54f; box-shadow: 0 0 8px rgba(255, 213, 79, 0.4); }
+        #sad { background-color: #4fc3f7; box-shadow: 0 0 8px rgba(79, 195, 247, 0.4); }
+        #angry { background-color: #ff5252; box-shadow: 0 0 8px rgba(255, 82, 82, 0.4); }
+        #calm { background-color: #81c784; box-shadow: 0 0 8px rgba(129, 199, 132, 0.4); }
+        #fear { background-color: #ba68c8; box-shadow: 0 0 8px rgba(186, 104, 200, 0.4); }
+        #surprise { background-color: #ffb74d; box-shadow: 0 0 8px rgba(255, 183, 77, 0.4); }
+        #anxiety { background-color: #a1887f; box-shadow: 0 0 8px rgba(161, 136, 127, 0.4); }
+        #envy { background-color: #dce775; box-shadow: 0 0 8px rgba(220, 231, 117, 0.4); }
+        #boredom { background-color: #90a4ae; box-shadow: 0 0 8px rgba(144, 164, 174, 0.4); }
+        #shame { background-color: #ff80ab; box-shadow: 0 0 8px rgba(255, 128, 171, 0.4); }
+        
+        textarea { 
+            width: 100%; 
+            height: 80px; 
+            padding: 12px; 
+            box-sizing: border-box; 
+            margin-top: 8px; 
+            border-radius: 8px; 
+            border: 1px solid rgba(255, 111, 0, 0.3); 
+            background: #180e0a;
+            color: var(--text-light);
+            resize: vertical; 
+            font-family: inherit; 
+        }
+        textarea:focus { 
+            outline: none; 
+            border-color: var(--accent-amber); 
+            box-shadow: 0 0 8px rgba(255, 171, 0, 0.3);
+        }
         .form-group { margin-top: 20px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
-        input[type="file"] { width: 100%; padding: 6px; border-radius: 8px; border: 1px solid #cfd8dc; box-sizing: border-box; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; color: var(--accent-amber); }
+        input[type="file"] { 
+            width: 100%; 
+            padding: 8px; 
+            border-radius: 8px; 
+            border: 1px solid rgba(255, 111, 0, 0.3); 
+            background: #180e0a;
+            color: var(--text-muted);
+            box-sizing: border-box; 
+        }
         #audioPlayback { margin-top: 10px; display: block; width: 100%; }
-        button.action-btn { background-color: #0277bd; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 10px; transition: background-color 0.2s; width: 100%; }
-        button.action-btn:hover { background-color: #01579b; }
-        #history, #gratitude-history, #strategies-history, #microexpression-history { margin-top: 20px; text-align: left; background: #f5f7f8; padding: 15px; border-radius: 12px; }
+        button.action-btn { 
+            background: linear-gradient(135deg, #d35400, #e65100); 
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            margin-top: 10px; 
+            transition: all 0.3s; 
+            width: 100%; 
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(211, 84, 0, 0.4);
+        }
+        button.action-btn:hover { 
+            background: linear-gradient(135deg, #e65100, #ff6f00); 
+            box-shadow: 0 0 15px rgba(255, 111, 0, 0.6);
+        }
+        #history, #gratitude-history, #strategies-history, #microexpression-history { 
+            margin-top: 20px; 
+            text-align: left; 
+            background: rgba(18, 12, 10, 0.6); 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid rgba(255, 111, 0, 0.2);
+        }
         ul { padding-left: 20px; margin-bottom: 0; }
-        li { margin-bottom: 12px; word-wrap: break-word; }
-        .entry-img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 8px; display: block; }
+        li { margin-bottom: 12px; word-wrap: break-word; color: var(--text-muted); }
+        li strong { color: var(--accent-amber); }
+        .entry-img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 8px; display: block; border: 1px solid var(--border-warm); }
     </style>
 </head>
 <body>
@@ -125,7 +258,6 @@
     <div class="container">
         <h1>Diario de Padres Conscientes</h1>
         
-        <!-- MÓDULO SINTETIZADOR DE MÚSICA & SONIDOS DE LA NATURALEZA -->
         <div class="music-player">
             <h3>Centro de Relax y Meditación</h3>
             <p>Selecciona una armonía musical:</p>
@@ -143,42 +275,83 @@
                 <button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">Reproducir Música</button>
             </div>
 
-            <p style="margin-top: 12px; font-weight: 600;">Sonidos de Fondo para Dormir / Relajarse:</p>
+            <p style="margin-top: 12px; font-weight: 600; color: var(--accent-amber);">Sonidos Ambientales Regulables:</p>
             <div class="ambient-grid">
                 <div class="ambient-item">
-                    <span>🌧️ Lluvia</span>
-                    <input type="checkbox" id="rainNoise" onchange="toggleAmbientNoise('rain', this.checked)">
+                    <div class="ambient-header">
+                        <span>🌧️ Lluvia</span>
+                        <input type="checkbox" id="rainNoise" onchange="toggleAmbientNoise('rain', this.checked)">
+                    </div>
+                    <input type="range" class="volume-slider" id="rainVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('rain', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <span>🌊 Olas de Mar</span>
-                    <input type="checkbox" id="oceanNoise" onchange="toggleAmbientNoise('ocean', this.checked)">
+                    <div class="ambient-header">
+                        <span>🌊 Olas de Mar</span>
+                        <input type="checkbox" id="oceanNoise" onchange="toggleAmbientNoise('ocean', this.checked)">
+                    </div>
+                    <input type="range" class="volume-slider" id="oceanVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('ocean', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <span>🔥 Fogata / Fuego</span>
-                    <input type="checkbox" id="fireNoise" onchange="toggleAmbientNoise('fire', this.checked)">
+                    <div class="ambient-header">
+                        <span>🔥 Fogata / Fuego</span>
+                        <input type="checkbox" id="fireNoise" onchange="toggleAmbientNoise('fire', this.checked)">
+                    </div>
+                    <input type="range" class="volume-slider" id="fireVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('fire', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <span>🌙 Noche & Grillos</span>
-                    <input type="checkbox" id="nightNoise" onchange="toggleAmbientNoise('night', this.checked)">
+                    <div class="ambient-header">
+                        <span>🌙 Noche & Grillos</span>
+                        <input type="checkbox" id="nightNoise" onchange="toggleAmbientNoise('night', this.checked)">
+                    </div>
+                    <input type="range" class="volume-slider" id="nightVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('night', this.value)">
                 </div>
             </div>
         </div>
 
-        <!-- MÓDULO REGISTRO DE EMOCIONES -->
         <div class="form-group">
             <h3>Registro de Emociones</h3>
-            <p>Selecciona el color y la emoción que mejor describan cómo te sientes hoy.</p>
-            <div class="buttons">
-                <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!', this)" title="Alegre"></button>
-                <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.', this)" title="Triste"></button>
-                <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.', this)" title="Enojado"></button>
-                <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.', this)" title="En Calma"></button>
-                <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.', this)" title="Miedo"></button>
-                <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.', this)" title="Sorprendido"></button>
-                <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.', this)" title="Ansiedad"></button>
-                <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.', this)" title="Envidia"></button>
-                <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.', this)" title="Aburrimiento"></button>
-                <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.', this)" title="Vergüenza"></button>
+            <p>Selecciona la emoción que mejor describa cómo te sientes hoy.</p>
+            <div class="buttons-grid">
+                <div class="emotion-card">
+                    <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!', this)" title="Alegre"></button>
+                    <span class="emotion-label">Alegre</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.', this)" title="Triste"></button>
+                    <span class="emotion-label">Triste</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.', this)" title="Enojado"></button>
+                    <span class="emotion-label">Enojado</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.', this)" title="En Calma"></button>
+                    <span class="emotion-label">En Calma</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.', this)" title="Miedo"></button>
+                    <span class="emotion-label">Miedo</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.', this)" title="Sorprendido"></button>
+                    <span class="emotion-label">Sorprendido</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.', this)" title="Ansiedad"></button>
+                    <span class="emotion-label">Ansiedad</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.', this)" title="Envidia"></button>
+                    <span class="emotion-label">Envidia</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.', this)" title="Aburrimiento"></button>
+                    <span class="emotion-label">Aburrimiento</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.', this)" title="Vergüenza"></button>
+                    <span class="emotion-label">Vergüenza</span>
+                </div>
             </div>
         </div>
 
@@ -227,7 +400,6 @@
             <button class="action-btn" onclick="saveMicroexpression()">Guardar Observación</button>
         </div>
 
-        <!-- HISTORIALES -->
         <div id="history">
             <h3>Registros Guardados:</h3>
             <ul id="entriesList"></ul>
@@ -404,7 +576,7 @@
             }
         }
 
-        /* --- SINTETIZADOR DE RUIDO AMBIENTAL CORREGIDO --- */
+        /* --- AMBIENTE Y CONTROL DE VOLUMEN MULTI-CANAL --- */
         function createWhiteNoiseBuffer() {
             const bufferSize = audioCtx.sampleRate * 2;
             const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -436,30 +608,27 @@
 
             const filter = audioCtx.createBiquadFilter();
             const gain = audioCtx.createGain();
+            const volSlider = document.getElementById(type + 'Vol');
+            const targetGain = parseFloat(volSlider.value) * getBaseGain(type);
 
             if (type === 'rain') {
                 filter.type = 'lowpass';
                 filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.5);
             } else if (type === 'ocean') {
                 filter.type = 'bandpass';
                 filter.frequency.setValueAtTime(400, audioCtx.currentTime);
-                filter.Q.setValueAtTime(1.0, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.5);
+                filter.Q.value = 1.0;
             } else if (type === 'fire') {
                 filter.type = 'bandpass';
                 filter.frequency.setValueAtTime(800, audioCtx.currentTime);
-                filter.Q.setValueAtTime(1.0, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 0.5);
+                filter.Q.value = 1.0;
             } else if (type === 'night') {
                 filter.type = 'highpass';
                 filter.frequency.setValueAtTime(4000, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.005, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.02, audioCtx.currentTime + 0.5);
             }
+
+            gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(targetGain, audioCtx.currentTime + 0.5);
 
             noiseSource.connect(filter);
             filter.connect(gain);
@@ -469,7 +638,24 @@
             ambientNodes[type] = { source: noiseSource, gain: gain };
         }
 
-        /* --- REGISTROS DE EMOCIONES & DIARIO CORREGIDOS --- */
+        function getBaseGain(type) {
+            switch(type) {
+                case 'rain': return 0.15;
+                case 'ocean': return 0.2;
+                case 'fire': return 0.1;
+                case 'night': return 0.05;
+                default: return 0.1;
+            }
+        }
+
+        function updateVolume(type, val) {
+            if (ambientNodes[type] && audioCtx) {
+                const targetGain = parseFloat(val) * getBaseGain(type);
+                ambientNodes[type].gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
+            }
+        }
+
+        /* --- REGISTROS DE EMOCIONES & DIARIO --- */
         let mediaRecorder;
         let audioChunks = [];
         let selectedEmotionValue = '';
@@ -478,7 +664,7 @@
 
         function selectEmotion(emotion, message, element) {
             selectedEmotionValue = emotion;
-            document.querySelectorAll('.buttons .btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
             if(element) element.classList.add('selected');
 
             const utterance = new SpeechSynthesisUtterance(message);
@@ -523,7 +709,6 @@
             }
         }
 
-        // Convertir imagen seleccionada a Base64
         document.getElementById('photoInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -549,11 +734,10 @@
             localStorage.setItem('emotionEntries', JSON.stringify(entries));
             alert('Registro guardado con éxito');
             
-            // Reset de formulario
             noteInput.value = '';
             document.getElementById('photoInput').value = '';
             document.getElementById('audioPlayback').style.display = 'none';
-            document.querySelectorAll('.buttons .btn').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
             selectedEmotionValue = '';
             currentBase64Audio = '';
             currentBase64Photo = '';
