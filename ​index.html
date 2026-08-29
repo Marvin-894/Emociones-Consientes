@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diario de Padres Conscientes</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background-color: #e3f2fd; color: #37474f; }
+        .container { max-width: 500px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        h1 { margin-top: 0; color: #0277bd; }
+        h3 { margin-bottom: 5px; color: #0277bd; }
+        p { margin-top: 0; font-size: 0.95em; color: #546e7a; }
+        .buttons { display: flex; flex-wrap: wrap; justify-content: space-around; margin: 15px 0; }
+        .btn { border: none; padding: 15px; border-radius: 50%; cursor: pointer; width: 55px; height: 55px; margin: 6px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        #happy { background-color: #fff9c4; }
+        #sad { background-color: #bbdefb; }
+        #angry { background-color: #ffcdd2; }
+        #calm { background-color: #c8e6c9; }
+        #fear { background-color: #e1bee7; }
+        #surprise { background-color: #ffe0b2; }
+        #anxiety { background-color: #d7ccc8; }
+        #envy { background-color: #f0f4c3; }
+        #boredom { background-color: #cfd8dc; }
+        #shame { background-color: #f8bbd0; }
+        textarea { width: 100%; height: 80px; padding: 12px; box-sizing: border-box; margin-top: 10px; border-radius: 8px; border: 1px solid #cfd8dc; resize: vertical; font-family: inherit; }
+        textarea:focus { outline: none; border-color: #0277bd; }
+        .form-group { margin-top: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+        input[type="file"] { width: 100%; padding: 6px; border-radius: 8px; border: 1px solid #cfd8dc; box-sizing: border-box; }
+        #audioPlayback { margin-top: 10px; display: block; width: 100%; }
+        button.action-btn { background-color: #0277bd; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 10px; transition: background-color 0.2s; }
+        button.action-btn:hover { background-color: #01579b; }
+        #history, #gratitude-history, #strategies-history, #microexpression-history { margin-top: 20px; text-align: left; background: #f5f7f8; padding: 15px; border-radius: 12px; }
+        .music-player { margin-top: 20px; background: #f0f4c3; padding: 15px; border-radius: 12px; color: #333; }
+        .music-player button { background: #827717; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 6px; font-weight: 600; margin: 2px; }
+        .music-player button:hover { background: #555b22; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Diario de Padres Conscientes</h1>
+        
+        <div class="music-player">
+            <h3>Melodías de Calma</h3>
+            <p>Selecciona una melodía para acompañar este momento de reflexión familiar.</p>
+            <p>Melodía actual: <span id="trackTitle">Cargando...</span></p>
+            <button onclick="previousTrack()">Anterior</button>
+            <button onclick="toggleMusic()">Reproducir/Pausar</button>
+            <button onclick="nextTrack()">Siguiente</button>
+            <audio id="bgMusic" loop></audio>
+        </div>
+
+        <div class="form-group">
+            <h3>Registro de Emociones</h3>
+            <p>Selecciona el color y la emoción que mejor describan cómo te sientes hoy.</p>
+            <div class="buttons">
+                <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!')" title="Alegre"></button>
+                <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.')" title="Triste"></button>
+                <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.')" title="Enojado"></button>
+                <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.')" title="En Calma"></button>
+                <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.')" title="Miedo"></button>
+                <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.')" title="Sorprendido"></button>
+                <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.')" title="Ansiedad"></button>
+                <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.')" title="Envidia"></button>
+                <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.')" title="Aburrimiento"></button>
+                <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.')" title="Vergüenza"></button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <h3>Captura de Momento</h3>
+            <label>Subir una foto:</label>
+            <p>Guarda una imagen para recordar visualmente este día.</p>
+            <input type="file" id="photoInput" accept="image/*">
+        </div>
+
+        <div class="form-group">
+            <h3>Mensaje de Voz</h3>
+            <label>Grabar un audio:</label>
+            <p>Usa tu voz para expresar tus sentimientos y pensamientos más profundos.</p>
+            <button class="action-btn" id="recordBtn" onclick="toggleRecording()">Grabar</button>
+            <audio id="audioPlayback" controls style="display:none;"></audio>
+        </div>
+
+        <div class="form-group">
+            <h3>Reflexión Personal</h3>
+            <label>Escribe una nota:</label>
+            <p>Anota aquí tus reflexiones y pensamientos con tus propias palabras.</p>
+            <textarea id="noteInput" placeholder="Reflexiona aquí sobre tus emociones..."></textarea>
+        </div>
+
+        <button class="action-btn" onclick="saveEntry()">Guardar Registro</button>
+
+        <div class="form-group">
+            <h3>Momento de Gratitud</h3>
+            <p>Practicar la gratitud ayuda a mantener una mentalidad positiva.</p>
+            <textarea id="gratitudeInput" placeholder="¿Por qué estás agradecido hoy?"></textarea>
+            <button class="action-btn" onclick="saveGratitude()">Guardar Gratitud</button>
+        </div>
+
+        <div class="form-group">
+            <h3>Estrategias de Crianza</h3>
+            <p>Anota aquí las técnicas y herramientas de crianza que vas descubriendo y aplicando.</p>
+            <textarea id="strategyInput" placeholder="Anota aquí las estrategias de crianza que descubriste..."></textarea>
+            <button class="action-btn" onclick="saveStrategy()">Guardar Estrategia</button>
+        </div>
+
+        <div class="form-group">
+            <h3>Observación de Microexpresiones</h3>
+            <p>Registra detalles sobre el lenguaje corporal y expresiones que ayuden a comprender mejor las emociones no expresadas.</p>
+            <textarea id="microexpressionInput" placeholder="Registra aquí detalles sobre expresiones o microexpresiones observadas..."></textarea>
+            <button class="action-btn" onclick="saveMicroexpression()">Guardar Observación</button>
+        </div>
+
+        <div id="history">
+            <h3>Registros Guardados:</h3>
+            <ul id="entriesList"></ul>
+        </div>
+
+        <div id="gratitude-history">
+            <h3>Agradecimientos:</h3>
+            <ul id="gratitudeList"></ul>
+        </div>
+
+        <div id="strategies-history">
+            <h3>Estrategias de Crianza:</h3>
+            <ul id="strategyList"></ul>
+        </div>
+
+        <div id="microexpression-history">
+            <h3>Observaciones de Microexpresiones:</h3>
+            <ul id="microexpressionList"></ul>
+        </div>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let selectedEmotionValue = '';
+        let audioUrl = '';
+
+        const tracks = [
+            { title: "Melodía Corta 1", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { title: "Melodía Corta 2", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { title: "Melodía Corta 3", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { title: "Melodía Corta 4", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { title: "Melodía Corta 5", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { title: "Melodía Corta 6", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" }
+        ];
+        let currentTrackIndex = 0;
+        const bgMusic = document.getElementById('bgMusic');
+        const trackTitle = document.getElementById('trackTitle');
+
+        function loadTrack(index) {
+            trackTitle.innerText = tracks[index].title;
+            bgMusic.src = tracks[index].src;
+            bgMusic.load();
+        }
+
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+            } else {
+                bgMusic.pause();
+            }
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            loadTrack(currentTrackIndex);
+            bgMusic.play();
+        }
+
+        function previousTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            loadTrack(currentTrackIndex);
+            bgMusic.play();
+        }
+
+        function selectEmotion(emotion, message) {
+            selectedEmotionValue = emotion;
+            console.log("Emoción seleccionada:", emotion);
+            
+            const utterance = new SpeechSynthesisUtterance(message);
+            utterance.lang = 'es-AR';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        async function toggleRecording() {
+            const recordBtn = document.getElementById('recordBtn');
+            const audioPlayback = document.getElementById('audioPlayback');
+
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                recordBtn.innerText = 'Grabar';
+            } else {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    audioUrl = URL.createObjectURL(audioBlob);
+                    audioPlayback.src = audioUrl;
+                    audioPlayback.style.display = 'block';
+                };
+
+                mediaRecorder.start();
+                recordBtn.innerText = 'Detener';
+            }
+        }
+
+        function saveEntry() {
+            const photoInput = document.getElementById('photoInput');
+            const noteInput = document.getElementById('noteInput');
+            
+            const entry = {
+                emotion: selectedEmotionValue,
+                note: noteInput.value,
+                audio: audioUrl,
+                date: new Date().toLocaleString()
+            };
+
+            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            entries.push(entry);
+            localStorage.setItem('emotionEntries', JSON.stringify(entries));
+
+            alert('Registro guardado con éxito');
+            loadEntries();
+        }
+
+        function saveGratitude() {
+            const gratitudeInput = document.getElementById('gratitudeInput');
+            const entry = {
+                text: gratitudeInput.value,
+                date: new Date().toLocaleString()
+            };
+
+            let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+            gratitudes.push(entry);
+            localStorage.setItem('gratitudeEntries', JSON.stringify(gratitudes));
+
+            alert('Agradecimiento guardado con éxito');
+            loadGratitude();
+        }
+
+        function saveStrategy() {
+            const strategyInput = document.getElementById('strategyInput');
+            const entry = {
+                text: strategyInput.value,
+                date: new Date().toLocaleString()
+            };
+
+            let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+            strategies.push(entry);
+            localStorage.setItem('strategyEntries', JSON.stringify(strategies));
+
+            alert('Estrategia guardada con éxito');
+            loadStrategies();
+        }
+
+        function saveMicroexpression() {
+            const microexpressionInput = document.getElementById('microexpressionInput');
+            const entry = {
+                text: microexpressionInput.value,
+                date: new Date().toLocaleString()
+            };
+
+            let microexpressions = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+            microexpressions.push(entry);
+            localStorage.setItem('microexpressionEntries', JSON.stringify(microexpressions));
+
+            alert('Observación guardada con éxito');
+            loadMicroexpressions();
+        }
+
+        function loadEntries() {
+            const entriesList = document.getElementById('entriesList');
+            entriesList.innerHTML = '';
+            
+            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            entries.forEach(entry => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.emotion}: ${entry.note}`;
+                entriesList.appendChild(li);
+            });
+        }
+
+        function loadGratitude() {
+            const gratitudeList = document.getElementById('gratitudeList');
+            gratitudeList.innerHTML = '';
+            
+            let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+            gratitudes.forEach(entry => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.text}`;
+                gratitudeList.appendChild(li);
+            });
+        }
+
+        function loadStrategies() {
+            const strategyList = document.getElementById('strategyList');
+            strategyList.innerHTML = '';
+            
+            let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+            strategies.forEach(entry => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.text}`;
+                strategyList.appendChild(li);
+            });
+        }
+
+        function loadMicroexpressions() {
+            const microexpressionList = document.getElementById('microexpressionList');
+            microexpressionList.innerHTML = '';
+            
+            let microexpressions = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+            microexpressions.forEach(entry => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.text}`;
+                microexpressionList.appendChild(li);
+            });
+        }
+
+        window.onload = () => {
+            loadEntries();
+            loadGratitude();
+            loadStrategies();
+            loadMicroexpressions();
+            loadTrack(currentTrackIndex);
+        };
+    </script>
+</body>
+</html>
