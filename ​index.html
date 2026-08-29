@@ -3,338 +3,727 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diario de Padres Conscientes</title>
+    <title>ZenSpace - Música Relajante & Ambientes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background-color: #e3f2fd; color: #37474f; }
-        .container { max-width: 500px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        h1 { margin-top: 0; color: #0277bd; }
-        h3 { margin-bottom: 5px; color: #0277bd; }
-        p { margin-top: 0; font-size: 0.95em; color: #546e7a; }
-        .buttons { display: flex; flex-wrap: wrap; justify-content: space-around; margin: 15px 0; }
-        .btn { border: none; padding: 15px; border-radius: 50%; cursor: pointer; width: 55px; height: 55px; margin: 6px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn:hover { transform: scale(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-        #happy { background-color: #fff9c4; }
-        #sad { background-color: #bbdefb; }
-        #angry { background-color: #ffcdd2; }
-        #calm { background-color: #c8e6c9; }
-        #fear { background-color: #e1bee7; }
-        #surprise { background-color: #ffe0b2; }
-        #anxiety { background-color: #d7ccc8; }
-        #envy { background-color: #f0f4c3; }
-        #boredom { background-color: #cfd8dc; }
-        #shame { background-color: #f8bbd0; }
-        textarea { width: 100%; height: 80px; padding: 12px; box-sizing: border-box; margin-top: 10px; border-radius: 8px; border: 1px solid #cfd8dc; resize: vertical; font-family: inherit; }
-        textarea:focus { outline: none; border-color: #0277bd; }
-        .form-group { margin-top: 20px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
-        input[type="file"] { width: 100%; padding: 6px; border-radius: 8px; border: 1px solid #cfd8dc; box-sizing: border-box; }
-        #audioPlayback { margin-top: 10px; display: block; width: 100%; }
-        button.action-btn { background-color: #0277bd; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 10px; transition: background-color 0.2s; }
-        button.action-btn:hover { background-color: #01579b; }
-        #history, #gratitude-history, #strategies-history, #microexpression-history { margin-top: 20px; text-align: left; background: #f5f7f8; padding: 15px; border-radius: 12px; }
-        .music-player { margin-top: 20px; background: #f0f4c3; padding: 15px; border-radius: 12px; color: #333; }
-        .music-player button { background: #827717; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 6px; font-weight: 600; margin: 2px; }
-        .music-player button:hover { background: #555b22; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #1e293b 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-panel-active {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(167, 139, 250, 0.4);
+        }
+
+        .visualizer-bar {
+            transition: height 0.15s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.4);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.7);
+        }
+
+        input[type="range"] {
+            accent-color: #a78bfa;
+        }
     </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen justify-between p-4 md:p-8">
 
-    <div class="container">
-        <h1>Diario de Padres Conscientes</h1>
-        
-        <div class="music-player">
-            <h3>Melodías de Calma</h3>
-            <p>Selecciona una melodía para acompañar este momento de reflexión familiar.</p>
-            <p>Melodía actual: <span id="trackTitle">Cargando...</span></p>
-            <button onclick="previousTrack()">Anterior</button>
-            <button onclick="toggleMusic()">Reproducir/Pausar</button>
-            <button onclick="nextTrack()">Siguiente</button>
-            <audio id="bgMusic" loop></audio>
-        </div>
-
-        <div class="form-group">
-            <h3>Registro de Emociones</h3>
-            <p>Selecciona el color y la emoción que mejor describan cómo te sientes hoy.</p>
-            <div class="buttons">
-                <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!')" title="Alegre"></button>
-                <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.')" title="Triste"></button>
-                <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.')" title="Enojado"></button>
-                <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.')" title="En Calma"></button>
-                <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.')" title="Miedo"></button>
-                <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.')" title="Sorprendido"></button>
-                <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.')" title="Ansiedad"></button>
-                <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.')" title="Envidia"></button>
-                <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.')" title="Aburrimiento"></button>
-                <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.')" title="Vergüenza"></button>
+    <!-- Header -->
+    <header class="max-w-6xl w-full mx-auto flex items-center justify-between py-4 border-b border-white/10 mb-6">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <i class="fa-solid fa-spa text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-xl tracking-wide bg-gradient-to-r from-purple-200 to-indigo-100 bg-clip-text text-transparent">ZenSpace</h1>
+                <p class="text-xs text-purple-300/70">Música Relajante & Sonidos Ambientales</p>
             </div>
         </div>
 
-        <div class="form-group">
-            <h3>Captura de Momento</h3>
-            <label>Subir una foto:</label>
-            <p>Guarda una imagen para recordar visualmente este día.</p>
-            <input type="file" id="photoInput" accept="image/*">
+        <!-- Timer control -->
+        <div class="flex items-center space-x-2 glass-panel px-4 py-2 rounded-full text-sm text-purple-200">
+            <i class="fa-regular fa-clock text-purple-400"></i>
+            <span id="timer-display">Sin temporizador</span>
+            <select id="timer-select" onchange="setSleepTimer(this.value)" class="bg-transparent text-purple-200 focus:outline-none cursor-pointer">
+                <option value="0" class="bg-slate-900 text-white">Desactivado</option>
+                <option value="15" class="bg-slate-900 text-white">15 min</option>
+                <option value="30" class="bg-slate-900 text-white">30 min</option>
+                <option value="45" class="bg-slate-900 text-white">45 min</option>
+                <option value="60" class="bg-slate-900 text-white">60 min</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow">
+
+        <!-- Left Column: Player & Styles (8 Cols) -->
+        <div class="lg:col-span-7 flex flex-col space-y-6">
+
+            <!-- Active Track Display Card -->
+            <div class="glass-panel rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 shadow-2xl relative overflow-hidden">
+                <div id="bg-glow" class="absolute -right-16 -top-16 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Album Art / Theme Visual -->
+                <div class="relative w-40 h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden shadow-xl flex-shrink-0 group">
+                    <img id="current-cover" src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=600&q=80" alt="Cover" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                    <div id="badge-style" class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-full text-xs text-purple-300 font-medium">
+                        Lo-Fi Chill
+                    </div>
+                </div>
+
+                <!-- Info & Primary Controls -->
+                <div class="flex flex-col justify-between w-full h-full text-center md:text-left">
+                    <div>
+                        <h2 id="current-title" class="text-2xl md:text-3xl font-bold text-white tracking-wide">Atardecer Templado</h2>
+                        <p id="current-style" class="text-purple-300/80 text-sm mt-1">Estilo: Lo-Fi / Chillhop</p>
+                        <p id="current-desc" class="text-slate-400 text-xs mt-2 line-clamp-2">Melodías suaves con ritmo lento para reducir el estrés y concentrarte.</p>
+                    </div>
+
+                    <!-- Audio Visualizer Waves -->
+                    <div class="flex items-center justify-center md:justify-start space-x-1.5 h-8 my-4" id="visualizer">
+                        <div class="visualizer-bar w-1.5 bg-purple-400 rounded-full h-2"></div>
+                        <div class="visualizer-bar w-1.5 bg-purple-400 rounded-full h-4"></div>
+                        <div class="visualizer-bar w-1.5 bg-indigo-400 rounded-full h-7"></div>
+                        <div class="visualizer-bar w-1.5 bg-purple-400 rounded-full h-3"></div>
+                        <div class="visualizer-bar w-1.5 bg-indigo-400 rounded-full h-5"></div>
+                        <div class="visualizer-bar w-1.5 bg-purple-400 rounded-full h-2"></div>
+                        <div class="visualizer-bar w-1.5 bg-indigo-400 rounded-full h-6"></div>
+                    </div>
+
+                    <!-- Main Player Buttons -->
+                    <div class="flex items-center justify-center md:justify-start space-x-4">
+                        <button onclick="prevTrack()" class="w-10 h-10 rounded-full glass-panel hover:bg-white/10 flex items-center justify-center text-purple-200 transition">
+                            <i class="fa-solid fa-backward-step text-sm"></i>
+                        </button>
+
+                        <button id="play-btn" onclick="togglePlay()" class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-400 hover:to-indigo-400 text-white flex items-center justify-center text-xl shadow-lg shadow-purple-500/40 transition-transform transform active:scale-95">
+                            <i class="fa-solid fa-play ml-1"></i>
+                        </button>
+
+                        <button onclick="nextTrack()" class="w-10 h-10 rounded-full glass-panel hover:bg-white/10 flex items-center justify-center text-purple-200 transition">
+                            <i class="fa-solid fa-forward-step text-sm"></i>
+                        </button>
+
+                        <!-- Volume -->
+                        <div class="flex items-center space-x-2 ml-4">
+                            <i id="volume-icon" class="fa-solid fa-volume-high text-xs text-purple-300"></i>
+                            <input type="range" id="master-volume" min="0" max="1" step="0.01" value="0.8" oninput="changeMasterVolume(this.value)" class="w-20 h-1.5 rounded-lg appearance-none bg-slate-700 cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Style Selector Categories -->
+            <div>
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base font-semibold text-purple-100 flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-purple-400"></i>
+                        <span>Estilos Relajantes</span>
+                    </h3>
+                    <span class="text-xs text-purple-300/60">Selecciona o cambia cuando quieras</span>
+                </div>
+
+                <!-- Genre Cards Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="styles-grid">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <h3>Mensaje de Voz</h3>
-            <label>Grabar un audio:</label>
-            <p>Usa tu voz para expresar tus sentimientos y pensamientos más profundos.</p>
-            <button class="action-btn" id="recordBtn" onclick="toggleRecording()">Grabar</button>
-            <audio id="audioPlayback" controls style="display:none;"></audio>
+        <!-- Right Column: Nature Sounds & Mixers (5 Cols) -->
+        <div class="lg:col-span-5 flex flex-col space-y-6">
+
+            <!-- Ambient Sound Layers -->
+            <div class="glass-panel rounded-3xl p-6 shadow-xl flex flex-col justify-between flex-grow">
+                <div>
+                    <h3 class="text-lg font-semibold text-purple-100 mb-1 flex items-center space-x-2">
+                        <i class="fa-solid fa-cloud-rain text-indigo-400"></i>
+                        <span>Atmósfera de Fondo (Mezclador)</span>
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-5">Agrega sonidos de la naturaleza para complementar la música.</p>
+
+                    <div class="space-y-4">
+                        <!-- Rain -->
+                        <div class="flex items-center justify-between p-3 rounded-2xl glass-panel">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-300">
+                                    <i class="fa-solid fa-cloud-showers-heavy text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-slate-200">Lluvia Suave</h4>
+                                    <span class="text-xs text-slate-400">Ruido blanco natural</span>
+                                </div>
+                            </div>
+                            <input type="range" min="0" max="1" step="0.05" value="0" oninput="setAmbientVolume('rain', this.value)" class="w-24 h-1.5 rounded-lg appearance-none bg-slate-700 cursor-pointer">
+                        </div>
+
+                        <!-- Ocean -->
+                        <div class="flex items-center justify-between p-3 rounded-2xl glass-panel">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-xl bg-teal-500/20 flex items-center justify-center text-teal-300">
+                                    <i class="fa-solid fa-water text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-slate-200">Olas del Mar</h4>
+                                    <span class="text-xs text-slate-400">Marea relajante</span>
+                                </div>
+                            </div>
+                            <input type="range" min="0" max="1" step="0.05" value="0" oninput="setAmbientVolume('ocean', this.value)" class="w-24 h-1.5 rounded-lg appearance-none bg-slate-700 cursor-pointer">
+                        </div>
+
+                        <!-- Forest Birds -->
+                        <div class="flex items-center justify-between p-3 rounded-2xl glass-panel">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-300">
+                                    <i class="fa-solid fa-dove text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-slate-200">Bosque & Pájaros</h4>
+                                    <span class="text-xs text-slate-400">Aves matutinas</span>
+                                </div>
+                            </div>
+                            <input type="range" min="0" max="1" step="0.05" value="0" oninput="setAmbientVolume('birds', this.value)" class="w-24 h-1.5 rounded-lg appearance-none bg-slate-700 cursor-pointer">
+                        </div>
+
+                        <!-- Night / Chimney -->
+                        <div class="flex items-center justify-between p-3 rounded-2xl glass-panel">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-300">
+                                    <i class="fa-solid fa-fire text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-slate-200">Fuego de Chimenea</h4>
+                                    <span class="text-xs text-slate-400">Chispas cálidas</span>
+                                </div>
+                            </div>
+                            <input type="range" min="0" max="1" step="0.05" value="0" oninput="setAmbientVolume('fire', this.value)" class="w-24 h-1.5 rounded-lg appearance-none bg-slate-700 cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Playlist Quick List -->
+                <div class="mt-6 pt-4 border-t border-white/10">
+                    <h4 class="text-xs font-semibold text-purple-300 uppercase tracking-wider mb-2">Canciones de la Lista</h4>
+                    <div id="playlist-container" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                        <!-- Dynamic rendering -->
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <h3>Reflexión Personal</h3>
-            <label>Escribe una nota:</label>
-            <p>Anota aquí tus reflexiones y pensamientos con tus propias palabras.</p>
-            <textarea id="noteInput" placeholder="Reflexiona aquí sobre tus emociones..."></textarea>
-        </div>
+    </main>
 
-        <button class="action-btn" onclick="saveEntry()">Guardar Registro</button>
+    <!-- Footer -->
+    <footer class="max-w-6xl w-full mx-auto text-center py-4 border-t border-white/10 mt-8">
+        <p class="text-xs text-slate-400">ZenSpace Audio Player — Generador armónico y sintetizador Web Audio en tiempo real.</p>
+    </footer>
 
-        <div class="form-group">
-            <h3>Momento de Gratitud</h3>
-            <p>Practicar la gratitud ayuda a mantener una mentalidad positiva.</p>
-            <textarea id="gratitudeInput" placeholder="¿Por qué estás agradecido hoy?"></textarea>
-            <button class="action-btn" onclick="saveGratitude()">Guardar Gratitud</button>
-        </div>
-
-        <div class="form-group">
-            <h3>Estrategias de Crianza</h3>
-            <p>Anota aquí las técnicas y herramientas de crianza que vas descubriendo y aplicando.</p>
-            <textarea id="strategyInput" placeholder="Anota aquí las estrategias de crianza que descubriste..."></textarea>
-            <button class="action-btn" onclick="saveStrategy()">Guardar Estrategia</button>
-        </div>
-
-        <div class="form-group">
-            <h3>Observación de Microexpresiones</h3>
-            <p>Registra detalles sobre el lenguaje corporal y expresiones que ayuden a comprender mejor las emociones no expresadas.</p>
-            <textarea id="microexpressionInput" placeholder="Registra aquí detalles sobre expresiones o microexpresiones observadas..."></textarea>
-            <button class="action-btn" onclick="saveMicroexpression()">Guardar Observación</button>
-        </div>
-
-        <div id="history">
-            <h3>Registros Guardados:</h3>
-            <ul id="entriesList"></ul>
-        </div>
-
-        <div id="gratitude-history">
-            <h3>Agradecimientos:</h3>
-            <ul id="gratitudeList"></ul>
-        </div>
-
-        <div id="strategies-history">
-            <h3>Estrategias de Crianza:</h3>
-            <ul id="strategyList"></ul>
-        </div>
-
-        <div id="microexpression-history">
-            <h3>Observaciones de Microexpresiones:</h3>
-            <ul id="microexpressionList"></ul>
-        </div>
-    </div>
-
+    <!-- Audio Script Logic with Web Audio Synthesis API + Ambient Mixers -->
     <script>
-        let mediaRecorder;
-        let audioChunks = [];
-        let selectedEmotionValue = '';
-        let audioUrl = '';
-
+        // Track collection spanning multiple relaxed styles
         const tracks = [
-            { title: "Melodía Corta 1", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { title: "Melodía Corta 2", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { title: "Melodía Corta 3", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { title: "Melodía Corta 4", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-            { title: "Melodía Corta 5", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
-            { title: "Melodía Corta 6", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" }
+            {
+                id: 0,
+                title: "Atardecer Lofi",
+                style: "Lo-Fi Beats",
+                desc: "Ritmos lofi pacíficos con acordes de piano Rhodes cálidos.",
+                cover: "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=600&q=80",
+                badgeColor: "from-purple-500 to-indigo-500",
+                synthType: "lofi"
+            },
+            {
+                id: 1,
+                title: "Gotas de Piano",
+                style: "Piano Acústico",
+                desc: "Melodía de piano suave y minimalista para momentos de calma profunda.",
+                cover: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=600&q=80",
+                badgeColor: "from-blue-500 to-cyan-500",
+                synthType: "piano"
+            },
+            {
+                id: 2,
+                title: "Nebulosa Meditativa",
+                style: "Ambient Pad",
+                desc: "Sintetizadores atmosféricos flotantes ideal para meditación y sueño.",
+                cover: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+                badgeColor: "from-indigo-600 to-purple-800",
+                synthType: "ambient"
+            },
+            {
+                id: 3,
+                title: "Café de Medianoche",
+                style: "Smooth Jazz",
+                desc: "Notas de jazz suaves, bajo cálido y escobillas relajantes.",
+                cover: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=600&q=80",
+                badgeColor: "from-amber-600 to-amber-800",
+                synthType: "jazz"
+            },
+            {
+                id: 4,
+                title: "Brisa Acústica",
+                style: "Guitarra Acústica",
+                desc: "Arpegios orgánicos de guitarra de nylon para una sensación pacífica.",
+                cover: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=600&q=80",
+                badgeColor: "from-emerald-500 to-teal-600",
+                synthType: "guitar"
+            },
+            {
+                id: 5,
+                title: "Océano Estelar",
+                style: "New Age / Chill",
+                desc: "Capas de sonido envolvente de frecuencia 432Hz para liberar tensión.",
+                cover: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80",
+                badgeColor: "from-pink-500 to-rose-600",
+                synthType: "newage"
+            }
         ];
-        let currentTrackIndex = 0;
-        const bgMusic = document.getElementById('bgMusic');
-        const trackTitle = document.getElementById('trackTitle');
 
-        function loadTrack(index) {
-            trackTitle.innerText = tracks[index].title;
-            bgMusic.src = tracks[index].src;
-            bgMusic.load();
+        let currentTrackIdx = 0;
+        let isPlaying = false;
+        let masterVolume = 0.8;
+        let timerInterval = null;
+        let secondsLeft = 0;
+
+        // Web Audio API Elements
+        let audioCtx = null;
+        let masterGain = null;
+        let synthInterval = null;
+
+        // Ambient noise nodes
+        const ambientNodes = {
+            rain: { gain: null, source: null },
+            ocean: { gain: null, source: null },
+            birds: { gain: null, timer: null },
+            fire: { gain: null, source: null }
+        };
+
+        // Initialize Web Audio Engine
+        function initAudioEngine() {
+            if (audioCtx) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+
+            masterGain = audioCtx.createGain();
+            masterGain.gain.setValueAtTime(masterVolume, audioCtx.currentTime);
+            masterGain.connect(audioCtx.destination);
+
+            setupAmbientNoises();
         }
 
-        function toggleMusic() {
-            if (bgMusic.paused) {
-                bgMusic.play();
-            } else {
-                bgMusic.pause();
+        // Generate Procedural Ambient Noises (No external audio file dependencies!)
+        function setupAmbientNoises() {
+            // 1. Rain Noise (Pink noise with lowpass filter)
+            const bufferSize = audioCtx.sampleRate * 2;
+            const rainBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const rainData = rainBuffer.getChannelData(0);
+            let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+            for (let i = 0; i < bufferSize; i++) {
+                let white = Math.random() * 2 - 1;
+                b0 = 0.99886 * b0 + white * 0.0555179;
+                b1 = 0.99332 * b1 + white * 0.0750759;
+                b2 = 0.96900 * b2 + white * 0.1538520;
+                b3 = 0.86650 * b3 + white * 0.3104856;
+                b4 = 0.55000 * b4 + white * 0.5329522;
+                b5 = -0.7616 * b5 - white * 0.0168980;
+                rainData[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+                rainData[i] *= 0.04; // scale down volume
+                b6 = white * 0.115926;
             }
+
+            const rainSource = audioCtx.createBufferSource();
+            rainSource.buffer = rainBuffer;
+            rainSource.loop = true;
+
+            const rainFilter = audioCtx.createBiquadFilter();
+            rainFilter.type = 'lowpass';
+            rainFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+
+            ambientNodes.rain.gain = audioCtx.createGain();
+            ambientNodes.rain.gain.gain.setValueAtTime(0, audioCtx.currentTime);
+
+            rainSource.connect(rainFilter);
+            rainFilter.connect(ambientNodes.rain.gain);
+            ambientNodes.rain.gain.connect(masterGain);
+            rainSource.start();
+
+            // 2. Ocean Waves Noise
+            const oceanSource = audioCtx.createBufferSource();
+            oceanSource.buffer = rainBuffer;
+            oceanSource.loop = true;
+
+            const oceanFilter = audioCtx.createBiquadFilter();
+            oceanFilter.type = 'lowpass';
+            oceanFilter.frequency.setValueAtTime(400, audioCtx.currentTime);
+
+            // LFO for wave swelling
+            const lfo = audioCtx.createOscillator();
+            lfo.frequency.setValueAtTime(0.1, audioCtx.currentTime); // slow swell
+            const lfoGain = audioCtx.createGain();
+            lfoGain.gain.setValueAtTime(300, audioCtx.currentTime);
+            lfo.connect(lfoGain);
+            lfoGain.connect(oceanFilter.frequency);
+            lfo.start();
+
+            ambientNodes.ocean.gain = audioCtx.createGain();
+            ambientNodes.ocean.gain.gain.setValueAtTime(0, audioCtx.currentTime);
+
+            oceanSource.connect(oceanFilter);
+            oceanFilter.connect(ambientNodes.ocean.gain);
+            ambientNodes.ocean.gain.connect(masterGain);
+            oceanSource.start();
+
+            // 3. Fire Crackle (Crackle impulses)
+            const fireBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const fireData = fireBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                if (Math.random() < 0.002) {
+                    fireData[i] = (Math.random() * 2 - 1) * 0.5;
+                } else {
+                    fireData[i] = (Math.random() * 2 - 1) * 0.005;
+                }
+            }
+            const fireSource = audioCtx.createBufferSource();
+            fireSource.buffer = fireBuffer;
+            fireSource.loop = true;
+
+            ambientNodes.fire.gain = audioCtx.createGain();
+            ambientNodes.fire.gain.gain.setValueAtTime(0, audioCtx.currentTime);
+
+            fireSource.connect(ambientNodes.fire.gain);
+            ambientNodes.fire.gain.connect(masterGain);
+            fireSource.start();
+
+            // 4. Birds Chirp Gain
+            ambientNodes.birds.gain = audioCtx.createGain();
+            ambientNodes.birds.gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            ambientNodes.birds.gain.connect(masterGain);
+        }
+
+        // Trigger bird chirp periodically if volume > 0
+        function triggerBirdChirp() {
+            if (!audioCtx || ambientNodes.birds.gain.gain.value <= 0.01) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+
+            const startFreq = 2000 + Math.random() * 1000;
+            osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(startFreq + 800, audioCtx.currentTime + 0.1);
+            osc.frequency.exponentialRampToValueAtTime(startFreq - 400, audioCtx.currentTime + 0.2);
+
+            gain.gain.setValueAtTime(0.05 * ambientNodes.birds.gain.gain.value, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+
+            osc.connect(gain);
+            gain.connect(masterGain);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.25);
+        }
+
+        setInterval(() => {
+            if (Math.random() < 0.3) triggerBirdChirp();
+        }, 2500);
+
+        // Music Synthesizer Engine for different genres
+        function playSynthesizedTrack(trackType) {
+            stopSynthesizedTrack();
+            if (!audioCtx) return;
+
+            let chords = [];
+            let tempo = 3000;
+
+            if (trackType === 'lofi') {
+                chords = [
+                    [261.63, 329.63, 392.00, 493.88], // Cmaj7
+                    [220.00, 261.63, 329.63, 392.00], // Am7
+                    [174.61, 220.00, 261.63, 329.63], // Fmaj7
+                    [196.00, 246.94, 293.66, 349.23]  // G7
+                ];
+                tempo = 3200;
+            } else if (trackType === 'piano') {
+                chords = [
+                    [174.61, 261.63, 329.63, 440.00], // Fmaj9
+                    [220.00, 261.63, 329.63, 392.00], // Am7
+                    [130.81, 196.00, 246.94, 329.63], // Cmaj7
+                    [146.83, 220.00, 293.66, 349.23]  // Dm7
+                ];
+                tempo = 2500;
+            } else if (trackType === 'ambient') {
+                chords = [
+                    [110.00, 164.81, 220.00, 277.18, 329.63], // A pad
+                    [146.83, 220.00, 293.66, 370.00, 440.00], // D pad
+                    [130.81, 196.00, 261.63, 329.63, 392.00]  // C pad
+                ];
+                tempo = 5000;
+            } else if (trackType === 'jazz') {
+                chords = [
+                    [146.83, 220.00, 261.63, 311.13, 370.00], // Dm9
+                    [196.00, 246.94, 293.66, 349.23, 440.00], // G13
+                    [130.81, 164.81, 246.94, 329.63, 392.00]  // Cmaj9
+                ];
+                tempo = 2800;
+            } else if (trackType === 'guitar') {
+                chords = [
+                    [164.81, 246.94, 329.63, 392.00], // Em
+                    [130.81, 196.00, 261.63, 329.63], // C
+                    [174.61, 220.00, 261.63, 349.23], // F
+                    [196.00, 246.94, 293.66, 392.00]  // G
+                ];
+                tempo = 2200;
+            } else {
+                // New Age 432Hz Ambient
+                chords = [
+                    [108.00, 162.00, 216.00, 270.00, 324.00],
+                    [144.00, 216.00, 288.00, 360.00],
+                    [129.60, 194.40, 259.20, 324.00]
+                ];
+                tempo = 4500;
+            }
+
+            let chordStep = 0;
+
+            function playChord() {
+                if (!isPlaying || !audioCtx) return;
+                const currentChord = chords[chordStep % chords.length];
+                chordStep++;
+
+                currentChord.forEach((freq, idx) => {
+                    setTimeout(() => {
+                        if (!isPlaying) return;
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        const filter = audioCtx.createBiquadFilter();
+
+                        // Waveform selection per style
+                        if (trackType === 'lofi') osc.type = 'triangle';
+                        else if (trackType === 'piano') osc.type = 'sine';
+                        else if (trackType === 'ambient' || trackType === 'newage') osc.type = 'sine';
+                        else if (trackType === 'jazz') osc.type = 'triangle';
+                        else osc.type = 'sine';
+
+                        filter.type = 'lowpass';
+                        filter.frequency.setValueAtTime(trackType === 'ambient' ? 600 : 1400, audioCtx.currentTime);
+
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+                        const now = audioCtx.currentTime;
+                        const attack = trackType === 'ambient' ? 1.5 : 0.2;
+                        const release = trackType === 'ambient' ? 3.5 : 2.0;
+
+                        gain.gain.setValueAtTime(0.001, now);
+                        gain.gain.linearRampToValueAtTime(0.12, now + attack);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + attack + release);
+
+                        osc.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(masterGain);
+
+                        osc.start(now);
+                        osc.stop(now + attack + release + 0.1);
+                    }, idx * (trackType === 'guitar' ? 120 : 60)); // arpeggiate slightly
+                });
+            }
+
+            playChord();
+            synthInterval = setInterval(playChord, tempo);
+        }
+
+        function stopSynthesizedTrack() {
+            if (synthInterval) {
+                clearInterval(synthInterval);
+                synthInterval = null;
+            }
+        }
+
+        // Render Functions
+        function renderStylesGrid() {
+            const container = document.getElementById('styles-grid');
+            container.innerHTML = tracks.map((t, idx) => `
+                <button onclick="selectTrack(${idx})" class="glass-panel p-3 rounded-2xl flex flex-col justify-between text-left transition-all duration-300 hover:scale-[1.02] ${idx === currentTrackIdx ? 'glass-panel-active shadow-lg shadow-purple-500/10' : 'hover:bg-white/10'}">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="w-7 h-7 rounded-lg bg-gradient-to-tr ${t.badgeColor} flex items-center justify-center text-white text-xs font-bold">
+                            ${idx + 1}
+                        </span>
+                        ${idx === currentTrackIdx && isPlaying ? '<span class="flex h-2 w-2 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span></span>' : ''}
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white truncate">${t.title}</h4>
+                        <p class="text-xs text-purple-300/80">${t.style}</p>
+                    </div>
+                </button>
+            `).join('');
+        }
+
+        function renderPlaylist() {
+            const container = document.getElementById('playlist-container');
+            container.innerHTML = tracks.map((t, idx) => `
+                <div onclick="selectTrack(${idx})" class="flex items-center justify-between p-2 rounded-xl cursor-pointer transition ${idx === currentTrackIdx ? 'bg-purple-500/20 text-white' : 'hover:bg-white/5 text-slate-300'}">
+                    <div class="flex items-center space-x-3 truncate">
+                        <i class="fa-solid ${idx === currentTrackIdx && isPlaying ? 'fa-volume-high text-purple-400' : 'fa-music text-slate-500'} text-xs"></i>
+                        <span class="text-xs font-medium truncate">${t.title}</span>
+                    </div>
+                    <span class="text-[10px] text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded-full">${t.style}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateUI() {
+            const track = tracks[currentTrackIdx];
+            document.getElementById('current-title').innerText = track.title;
+            document.getElementById('current-style').innerText = `Estilo: ${track.style}`;
+            document.getElementById('current-desc').innerText = track.desc;
+            document.getElementById('current-cover').src = track.cover;
+            document.getElementById('badge-style').innerText = track.style;
+
+            // Play button icon
+            const playBtn = document.getElementById('play-btn');
+            playBtn.innerHTML = isPlaying 
+                ? '<i class="fa-solid fa-pause"></i>' 
+                : '<i class="fa-solid fa-play ml-1"></i>';
+
+            // Animated Visualizer bars
+            const bars = document.querySelectorAll('.visualizer-bar');
+            bars.forEach(bar => {
+                if (isPlaying) {
+                    bar.style.height = `${Math.floor(Math.random() * 24) + 6}px`;
+                } else {
+                    bar.style.height = '6px';
+                }
+            });
+
+            renderStylesGrid();
+            renderPlaylist();
+        }
+
+        // Control Actions
+        function togglePlay() {
+            initAudioEngine();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playSynthesizedTrack(tracks[currentTrackIdx].synthType);
+            } else {
+                stopSynthesizedTrack();
+            }
+            updateUI();
+        }
+
+        function selectTrack(idx) {
+            currentTrackIdx = idx;
+            isPlaying = true;
+            initAudioEngine();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            playSynthesizedTrack(tracks[currentTrackIdx].synthType);
+            updateUI();
         }
 
         function nextTrack() {
-            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-            loadTrack(currentTrackIndex);
-            bgMusic.play();
+            selectTrack((currentTrackIdx + 1) % tracks.length);
         }
 
-        function previousTrack() {
-            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-            loadTrack(currentTrackIndex);
-            bgMusic.play();
+        function prevTrack() {
+            selectTrack((currentTrackIdx - 1 + tracks.length) % tracks.length);
         }
 
-        function selectEmotion(emotion, message) {
-            selectedEmotionValue = emotion;
-            console.log("Emoción seleccionada:", emotion);
-            
-            const utterance = new SpeechSynthesisUtterance(message);
-            utterance.lang = 'es-AR';
-            window.speechSynthesis.speak(utterance);
+        function changeMasterVolume(val) {
+            masterVolume = parseFloat(val);
+            if (masterGain && audioCtx) {
+                masterGain.gain.setValueAtTime(masterVolume, audioCtx.currentTime);
+            }
+            const icon = document.getElementById('volume-icon');
+            if (masterVolume === 0) icon.className = 'fa-solid fa-volume-xmark text-xs text-purple-300';
+            else if (masterVolume < 0.4) icon.className = 'fa-solid fa-volume-low text-xs text-purple-300';
+            else icon.className = 'fa-solid fa-volume-high text-xs text-purple-300';
         }
 
-        async function toggleRecording() {
-            const recordBtn = document.getElementById('recordBtn');
-            const audioPlayback = document.getElementById('audioPlayback');
-
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                mediaRecorder.stop();
-                recordBtn.innerText = 'Grabar';
-            } else {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-
-                mediaRecorder.ondataavailable = event => {
-                    audioChunks.push(event.data);
-                };
-
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    audioUrl = URL.createObjectURL(audioBlob);
-                    audioPlayback.src = audioUrl;
-                    audioPlayback.style.display = 'block';
-                };
-
-                mediaRecorder.start();
-                recordBtn.innerText = 'Detener';
+        function setAmbientVolume(type, val) {
+            initAudioEngine();
+            if (ambientNodes[type] && ambientNodes[type].gain) {
+                ambientNodes[type].gain.gain.setValueAtTime(parseFloat(val), audioCtx.currentTime);
             }
         }
 
-        function saveEntry() {
-            const photoInput = document.getElementById('photoInput');
-            const noteInput = document.getElementById('noteInput');
+        // Sleep Timer
+        function setSleepTimer(minutes) {
+            if (timerInterval) clearInterval(timerInterval);
+            const display = document.getElementById('timer-display');
             
-            const entry = {
-                emotion: selectedEmotionValue,
-                note: noteInput.value,
-                audio: audioUrl,
-                date: new Date().toLocaleString()
-            };
+            const mins = parseInt(minutes);
+            if (mins === 0) {
+                display.innerText = 'Sin temporizador';
+                return;
+            }
 
-            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
-            entries.push(entry);
-            localStorage.setItem('emotionEntries', JSON.stringify(entries));
+            secondsLeft = mins * 60;
+            timerInterval = setInterval(() => {
+                secondsLeft--;
+                const m = Math.floor(secondsLeft / 60);
+                const s = secondsLeft % 60;
+                display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
 
-            alert('Registro guardado con éxito');
-            loadEntries();
+                if (secondsLeft <= 0) {
+                    clearInterval(timerInterval);
+                    isPlaying = false;
+                    stopSynthesizedTrack();
+                    display.innerText = 'Finalizado';
+                    updateUI();
+                }
+            }, 1000);
         }
 
-        function saveGratitude() {
-            const gratitudeInput = document.getElementById('gratitudeInput');
-            const entry = {
-                text: gratitudeInput.value,
-                date: new Date().toLocaleString()
-            };
+        // Visualizer interval update
+        setInterval(() => {
+            if (isPlaying) {
+                const bars = document.querySelectorAll('.visualizer-bar');
+                bars.forEach(bar => {
+                    bar.style.height = `${Math.floor(Math.random() * 26) + 4}px`;
+                });
+            }
+        }, 180);
 
-            let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
-            gratitudes.push(entry);
-            localStorage.setItem('gratitudeEntries', JSON.stringify(gratitudes));
-
-            alert('Agradecimiento guardado con éxito');
-            loadGratitude();
-        }
-
-        function saveStrategy() {
-            const strategyInput = document.getElementById('strategyInput');
-            const entry = {
-                text: strategyInput.value,
-                date: new Date().toLocaleString()
-            };
-
-            let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
-            strategies.push(entry);
-            localStorage.setItem('strategyEntries', JSON.stringify(strategies));
-
-            alert('Estrategia guardada con éxito');
-            loadStrategies();
-        }
-
-        function saveMicroexpression() {
-            const microexpressionInput = document.getElementById('microexpressionInput');
-            const entry = {
-                text: microexpressionInput.value,
-                date: new Date().toLocaleString()
-            };
-
-            let microexpressions = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
-            microexpressions.push(entry);
-            localStorage.setItem('microexpressionEntries', JSON.stringify(microexpressions));
-
-            alert('Observación guardada con éxito');
-            loadMicroexpressions();
-        }
-
-        function loadEntries() {
-            const entriesList = document.getElementById('entriesList');
-            entriesList.innerHTML = '';
-            
-            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
-            entries.forEach(entry => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.emotion}: ${entry.note}`;
-                entriesList.appendChild(li);
-            });
-        }
-
-        function loadGratitude() {
-            const gratitudeList = document.getElementById('gratitudeList');
-            gratitudeList.innerHTML = '';
-            
-            let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
-            gratitudes.forEach(entry => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.text}`;
-                gratitudeList.appendChild(li);
-            });
-        }
-
-        function loadStrategies() {
-            const strategyList = document.getElementById('strategyList');
-            strategyList.innerHTML = '';
-            
-            let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
-            strategies.forEach(entry => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.text}`;
-                strategyList.appendChild(li);
-            });
-        }
-
-        function loadMicroexpressions() {
-            const microexpressionList = document.getElementById('microexpressionList');
-            microexpressionList.innerHTML = '';
-            
-            let microexpressions = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
-            microexpressions.forEach(entry => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.text}`;
-                microexpressionList.appendChild(li);
-            });
-        }
-
-        window.onload = () => {
-            loadEntries();
-            loadGratitude();
-            loadStrategies();
-            loadMicroexpressions();
-            loadTrack(currentTrackIndex);
-        };
+        // Initial setup
+        updateUI();
     </script>
 </body>
 </html>
