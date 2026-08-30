@@ -1,580 +1,587 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#6c5ce7">
-<title>Diario Consciente 🌿</title><link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet"><style>
-:root{
---bg-gradient:linear-gradient(135deg,#e0c3fc 0%,#8ec5fc 100%);
---card-bg:rgba(255,255,255,.94);
---primary:#6c5ce7;
---soft:#a29bfe;
---text:#2d3436;
---muted:#636e72;
---radius:22px;
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Diario de Padres Conscientes & Relax</title>
+
+<style>
+:root {
+    --bg-main:#f0f4ff;
+    --card-bg:#ffffff;
+    --primary-blue:#4a90e2;
+    --primary-hover:#357abd;
+    --text-dark:#2c3e50;
+    --text-muted:#6c7a89;
+    --border-soft:#e2e8f0;
+    --radius-large:24px;
+    --radius-medium:16px;
+    --shadow-soft:0 8px 24px rgba(149,157,165,.15);
 }
 
-*{box-sizing:border-box}
-
-html{
-scroll-behavior:smooth;
+* {
+    box-sizing:border-box;
 }
 
-body{
-margin:0;
-padding:14px 10px;
-min-height:100vh;
-font-family:'Quicksand',sans-serif;
-background:var(--bg-gradient);
-background-attachment:fixed;
-color:var(--text);
--webkit-tap-highlight-color:transparent;
+body {
+    font-family:'Segoe UI',Roboto,sans-serif;
+    text-align:center;
+    padding:15px;
+    background-color:var(--bg-main);
+    background-image:radial-gradient(#e1e9ff 2px,transparent 2px);
+    background-size:24px 24px;
+    color:var(--text-dark);
+    min-height:100vh;
+    margin:0;
 }
 
-button,input,textarea,select{
-font-family:inherit;
+.container {
+    max-width:580px;
+    margin:auto;
+    background:var(--card-bg);
+    padding:20px;
+    border-radius:var(--radius-large);
+    border:4px solid white;
+    box-shadow:var(--shadow-soft);
 }
 
-button{
-touch-action:manipulation;
+h1 {
+    margin-top:0;
+    color:#ff6b6b;
+    font-size:1.8em;
 }
 
-.container{
-width:100%;
-max-width:680px;
-margin:auto;
-background:var(--card-bg);
-backdrop-filter:blur(12px);
-padding:22px 16px;
-border-radius:28px;
-box-shadow:0 12px 32px rgba(31,38,135,.14);
+h3 {
+    margin-bottom:6px;
+    color:#48dbfb;
 }
 
-.header-top{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-margin-bottom:18px;
+p {
+    margin-top:0;
+    font-size:.9em;
+    color:var(--text-muted);
 }
 
-h1{
-margin:0;
-color:var(--primary);
-font-size:1.55rem;
-font-weight:700;
-text-align:left;
-}
+/* MÚSICA */
 
-.sos-btn{
-border:0;
-background:#ff7675;
-color:white;
-padding:10px 13px;
-border-radius:20px;
-font-weight:700;
-font-size:.82rem;
-box-shadow:0 5px 14px rgba(255,118,117,.3);
-cursor:pointer;
-}
-
-.card-section,.history-card{
-background:white;
-border-radius:var(--radius);
-padding:18px;
-margin-bottom:18px;
-box-shadow:0 4px 15px rgba(0,0,0,.04);
-border:1px solid #f1f2f6;
-text-align:left;
-}
-
-.card-section h3,.history-card h3{
-margin:0 0 7px;
-color:#4834d4;
-font-size:1.15rem;
-}
-
-p{
-color:var(--muted);
-font-size:.9rem;
-line-height:1.45;
-margin-top:0;
+.music-player {
+    background:#fff9e6;
+    padding:15px;
+    border-radius:var(--radius-medium);
+    border:2px dashed #ffeaa7;
+    margin-bottom:25px;
 }
 
 select,
 textarea,
-input[type="text"],
-input[type="file"]{
-width:100%;
-border:2px solid #e0e0e0;
-border-radius:15px;
-background:#fcfcfc;
-padding:13px;
-font-size:.92rem;
-color:var(--text);
-outline:none;
+input[type="file"] {
+    width:100%;
+    padding:10px;
+    border-radius:12px;
+    border:2px solid #c8d6e5;
+    background:white;
+    color:var(--text-dark);
+    font-size:.9em;
 }
 
-select:focus,
+.music-player select {
+    border-color:#ffeaa7;
+    margin-bottom:10px;
+}
+
+.music-controls {
+    display:flex;
+    gap:10px;
+}
+
+.music-btn {
+    width:100%;
+    border:0;
+    padding:12px;
+    border-radius:12px;
+    background:#10ac84;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 4px 0 #0e8c6c;
+}
+
+.music-btn.active {
+    background:#ee5253;
+    box-shadow:0 4px 0 #c83b3c;
+}
+
+.ambient-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:10px;
+}
+
+.ambient-item {
+    background:white;
+    padding:10px;
+    border-radius:14px;
+    border:2px solid #ffeaa7;
+}
+
+.ambient-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:.85em;
+    font-weight:bold;
+}
+
+.volume-slider {
+    width:100%;
+}
+
+/* EMOCIONES */
+
+.buttons-grid {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:12px;
+    margin:18px 0;
+}
+
+.emotion-card {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:60px;
+}
+
+.btn {
+    border:3px solid white;
+    border-radius:50%;
+    cursor:pointer;
+    width:48px;
+    height:48px;
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+
+.btn.selected {
+    outline:3px solid #ff9ff3;
+    transform:scale(1.12);
+}
+
+.emotion-label {
+    font-size:.75em;
+    font-weight:600;
+}
+
+#happy {background:#feca57}
+#sad {background:#54a0ff}
+#angry {background:#ff6b6b}
+#calm {background:#1dd1a1}
+#fear {background:#5f27cd}
+#surprise {background:#ff9f43}
+#anxiety {background:#c8d6e5}
+#envy {background:#c8d6e5}
+#boredom {background:#8395a7}
+#shame {background:#ff9ff3}
+
+/* FORMULARIOS */
+
+.form-group {
+    margin-top:22px;
+    text-align:left;
+}
+
+.form-group label {
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+    color:#2e86de;
+}
+
+textarea {
+    height:85px;
+    resize:vertical;
+    font-family:inherit;
+}
+
 textarea:focus,
-input[type="text"]:focus{
-border-color:var(--primary);
+select:focus {
+    outline:none;
+    border-color:#54a0ff;
 }
 
-textarea{
-min-height:95px;
-resize:vertical;
+.action-btn {
+    width:100%;
+    background:#54a0ff;
+    color:white;
+    border:0;
+    padding:12px 20px;
+    border-radius:14px;
+    cursor:pointer;
+    font-weight:bold;
+    margin-top:10px;
+    box-shadow:0 4px 0 #2e86de;
 }
 
-.music-controls{
-display:flex;
-gap:9px;
-margin:14px 0;
+.action-btn:active {
+    transform:translateY(4px);
+    box-shadow:none;
 }
 
-.music-btn,
-.action-btn{
-width:100%;
-border:0;
-padding:14px;
-border-radius:16px;
-background:linear-gradient(135deg,#6c5ce7,#a29bfe);
-color:white;
-font-weight:700;
-font-size:.95rem;
-cursor:pointer;
-box-shadow:0 6px 16px rgba(108,92,231,.25);
+#history,
+#gratitude-history,
+#strategies-history,
+#microexpression-history {
+    margin-top:22px;
+    text-align:left;
+    background:#f8f9fa;
+    padding:18px;
+    border-radius:16px;
+    border:2px solid #e9ecef;
 }
 
-.music-btn.active{
-background:linear-gradient(135deg,#ff7675,#fab1a0);
+ul {
+    padding:0;
+    list-style:none;
 }
 
-.btn-secondary{
-background:#f1f2f6!important;
-color:var(--text)!important;
-box-shadow:none!important;
+li {
+    margin-bottom:14px;
+    word-wrap:break-word;
+    background:white;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #e2e8f0;
+    overflow:hidden;
 }
 
-.ambient-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;
+li strong {
+    color:#54a0ff;
 }
 
-.ambient-item{
-background:#f8f9fa;
-border:1px solid #e9ecef;
-border-radius:15px;
-padding:11px;
+.entry-img {
+    max-width:100%;
+    border-radius:12px;
+    margin-top:8px;
 }
 
-.ambient-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-font-size:.84rem;
-font-weight:700;
-margin-bottom:8px;
+.photo-preview {
+    max-width:120px;
+    display:none;
+    margin-top:8px;
+    border-radius:8px;
 }
 
-.volume-slider{
-width:100%;
-accent-color:var(--primary);
+.btn-delete {
+    background:#ff6b6b;
+    color:white;
+    border:0;
+    padding:6px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:.8em;
+    font-weight:bold;
+    margin-top:8px;
+    float:right;
 }
 
-.buttons-grid{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:13px;
-margin:15px 0;
+/* =========================
+   EJERCICIO 4-7-8
+========================= */
+
+#breathingModal {
+    display:none;
+    position:fixed;
+    z-index:99999;
+    inset:0;
+    background:rgba(30,45,70,.88);
+    align-items:center;
+    justify-content:center;
+    padding:20px;
 }
 
-.emotion-card{
-width:58px;
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:5px;
+.breathing-box {
+    width:100%;
+    max-width:420px;
+    background:white;
+    border-radius:28px;
+    padding:25px 20px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.3);
 }
 
-.btn{
-width:52px;
-height:52px;
-border-radius:50%;
-border:3px solid white;
-font-size:1.35rem;
-cursor:pointer;
-box-shadow:0 5px 12px rgba(0,0,0,.08);
-transition:.2s;
+.breathing-box h2 {
+    color:#4a90e2;
+    margin-top:0;
 }
 
-.btn:active{
-transform:scale(.94);
+.breathing-circle {
+    width:170px;
+    height:170px;
+    margin:25px auto;
+    border-radius:50%;
+    background:linear-gradient(135deg,#54a0ff,#1dd1a1);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    box-shadow:0 10px 30px rgba(74,144,226,.35);
+    transition:transform 4s ease-in-out;
 }
 
-.btn.selected{
-outline:4px solid var(--primary);
-transform:scale(1.12);
+.breathing-phase {
+    font-size:1.4em;
+    font-weight:bold;
 }
 
-.emotion-label{
-font-size:.72rem;
-font-weight:700;
-text-align:center;
+.breathing-counter {
+    font-size:2.5em;
+    font-weight:bold;
 }
 
-#happy{background:#ffeaa7}
-#sad{background:#74b9ff}
-#angry{background:#ff7675}
-#calm{background:#55efc4}
-#fear{background:#a29bfe}
-#surprise{background:#ffeaa7}
-#anxiety{background:#dfe6e9}
-#envy{background:#81ecec}
-#boredom{background:#b2bec3}
-#shame{background:#fd79a8}
-
-.photo-preview{
-display:none;
-width:100%;
-max-height:300px;
-object-fit:contain;
-border-radius:14px;
-margin-top:10px;
+.breathing-instruction {
+    color:#6c7a89;
+    min-height:45px;
 }
 
-#audioPlayback{
-display:none;
-width:100%;
-margin-top:12px;
+.breathing-start {
+    background:#10ac84;
+    box-shadow:0 4px 0 #0e8c6c;
 }
 
-.btn-delete{
-float:right;
-border:0;
-background:#ff7675;
-color:white;
-padding:6px 12px;
-border-radius:9px;
-font-size:.75rem;
-font-weight:700;
-cursor:pointer;
+.breathing-exit {
+    background:#ff6b6b;
+    box-shadow:0 4px 0 #c83b3c;
 }
 
-.tabs-header{
-display:flex;
-gap:7px;
-overflow-x:auto;
-padding-bottom:6px;
-margin-bottom:12px;
+.breathing-exit:active {
+    transform:translateY(4px);
+    box-shadow:none;
 }
 
-.tab-btn{
-border:0;
-background:#f1f2f6;
-padding:8px 12px;
-border-radius:11px;
-font-weight:700;
-font-size:.78rem;
-white-space:nowrap;
-cursor:pointer;
+.breathing-progress {
+    width:100%;
+    height:8px;
+    background:#e9ecef;
+    border-radius:10px;
+    overflow:hidden;
+    margin:15px 0;
 }
 
-.tab-btn.active{
-background:var(--primary);
-color:white;
+.breathing-progress-bar {
+    width:0%;
+    height:100%;
+    background:#54a0ff;
+    transition:width .3s linear;
 }
+</style>
+</head>
 
-ul{
-padding:0;
-margin:0;
-list-style:none;
-}
+<body>
 
-li{
-background:#f8f9fa;
-border:1px solid #e9ecef;
-border-radius:15px;
-padding:13px;
-margin-bottom:11px;
-overflow:hidden;
-word-break:break-word;
-}
+<div class="container">
 
-li strong{
-color:var(--primary);
-}
+<h1>Diario de Padres Conscientes</h1>
 
-.tag-member{
-display:inline-block;
-background:#e0c3fc;
-color:#4834d4;
-padding:3px 7px;
-border-radius:7px;
-font-size:.7rem;
-font-weight:700;
-}
+<!-- MÚSICA -->
 
-.entry-img{
-width:100%;
-max-height:320px;
-object-fit:contain;
-border-radius:12px;
-margin-top:8px;
-}
+<div class="music-player">
 
-.chart-container{
-width:100%;
-height:180px;
-display:flex;
-align-items:flex-end;
-justify-content:space-around;
-border-bottom:2px solid #f1f2f6;
-padding-bottom:27px;
-margin-top:12px;
-}
+<h3>Rincón de Relax y Meditación 🎨</h3>
 
-.chart-bar-wrapper{
-height:100%;
-width:11%;
-display:flex;
-flex-direction:column;
-justify-content:flex-end;
-align-items:center;
-position:relative;
-}
+<p>Elegí una música suave para escuchar:</p>
 
-.chart-bar{
-width:100%;
-min-height:4px;
-border-radius:8px 8px 0 0;
-background:var(--soft);
-}
-
-.chart-label{
-position:absolute;
-bottom:-23px;
-font-size:.65rem;
-font-weight:700;
-color:var(--muted);
-white-space:nowrap;
-}
-
-.summary-box{
-background:#f8f7ff;
-border-left:4px solid var(--primary);
-padding:11px;
-border-radius:8px;
-margin-top:18px;
-font-size:.85rem;
-}
-
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.68);
-backdrop-filter:blur(5px);
-z-index:9999;
-align-items:center;
-justify-content:center;
-padding:20px;
-}
-
-.modal-content{
-background:white;
-width:100%;
-max-width:350px;
-border-radius:25px;
-padding:25px 20px;
-text-align:center;
-box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
-
-.breath-circle{
-width:145px;
-height:145px;
-border-radius:50%;
-margin:22px auto;
-display:flex;
-align-items:center;
-justify-content:center;
-background:linear-gradient(135deg,#8ec5fc,#e0c3fc);
-color:white;
-font-weight:700;
-font-size:1.2rem;
-box-shadow:0 0 30px rgba(142,197,252,.5);
-transform:scale(1);
-transition:transform 1s ease-in-out;
-}
-
-.breath-circle.inhale{
-transform:scale(1.35);
-transition:transform 4s linear;
-}
-
-.breath-circle.hold{
-transform:scale(1.35);
-transition:transform 7s linear;
-}
-
-.breath-circle.exhale{
-transform:scale(1);
-transition:transform 8s linear;
-}
-
-#breathTimer{
-font-size:1.6rem;
-font-weight:700;
-color:var(--primary);
-}
-
-.auto-switch-info{
-font-size:.75rem;
-color:var(--muted);
-}
-
-@media(max-width:430px){
-.container{
-padding:18px 12px;
-}
-
-.card-section{
-padding:15px;
-}
-
-h1{
-font-size:1.4rem;
-}
-
-.sos-btn{
-font-size:.75rem;
-padding:9px 10px;
-}
-
-.ambient-grid{
-grid-template-columns:1fr 1fr;
-}
-}
-</style></head><body><div class="container"><div class="header-top">
-<h1>Diario Consciente 🌿</h1>
-<button class="sos-btn" onclick="openSOSModal()">🧘 Calma SOS</button>
-</div><div class="card-section">
-<h3>🎨 Rincón de Relax y Meditación</h3>
-<p>Elige un estilo de música relajante.</p><select id="styleSelect">
+<select id="styleSelect" onchange="changeStyle()">
 <option value="ambient">Ambient Meditativo</option>
 <option value="piano">Piano Suave</option>
-<option value="lofi">Lo-Fi Chill</option>
-<option value="bossa">Bossa Nova Relax</option>
-<option value="jazz">Calm Jazz</option>
-<option value="folk">Acoustic Folk</option>
-<option value="space">Space Ambient</option>
-<option value="reggae">Reggae Lofi</option>
+<option value="lofi">Lo-Fi Chill Relax</option>
+<option value="bossa">Bossa Nova Relax 🏖️</option>
+<option value="jazz">Calm Jazz 🎷</option>
+<option value="folk">Acoustic Folk 🎸</option>
+<option value="space">Space Ambient 🌌</option>
+<option value="reggae">Reggae Lofi 🌴</option>
 <option value="synthwave">Synthwave Nocturno</option>
 <option value="zen">Meditación Zen</option>
-</select><div class="music-controls">
-<button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">Reproducir Música 🎵</button>
-<button class="music-btn btn-secondary" style="width:auto" onclick="skipToNextStyle()">⏭️</button>
-</div><span class="auto-switch-info">🔄 Cambio automático cada 2 minutos mientras la música está activa.</span>
+</select>
 
-<p style="font-weight:700;color:var(--primary);margin-top:17px;">
-Sonidos de la Naturaleza
-</p><div class="ambient-grid"><div class="ambient-item">
+<div class="music-controls">
+<button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">
+Reproducir Música 🎵
+</button>
+</div>
+
+<p style="margin-top:15px;font-weight:bold;color:#ff9f43;">
+Sonidos Relajantes Combinables
+</p>
+
+<div class="ambient-grid">
+
+<div class="ambient-item">
 <div class="ambient-header">
 <span>🌧️ Lluvia</span>
-<input type="checkbox" id="rainNoise">
+<input type="checkbox" onchange="toggleAmbientNoise('rain',this.checked)">
 </div>
-<input type="range" class="volume-slider" id="rainVol" min="0" max="1" step=".01" value=".5">
-</div><div class="ambient-item">
+<input type="range" class="volume-slider" id="rainVol" min="0" max="1" step=".01" value=".5" oninput="updateVolume('rain',this.value)">
+</div>
+
+<div class="ambient-item">
 <div class="ambient-header">
-<span>🌊 Mar</span>
-<input type="checkbox" id="oceanNoise">
+<span>🌊 Olas</span>
+<input type="checkbox" onchange="toggleAmbientNoise('ocean',this.checked)">
 </div>
-<input type="range" class="volume-slider" id="oceanVol" min="0" max="1" step=".01" value=".5">
-</div><div class="ambient-item">
+<input type="range" class="volume-slider" id="oceanVol" min="0" max="1" step=".01" value=".5" oninput="updateVolume('ocean',this.value)">
+</div>
+
+<div class="ambient-item">
 <div class="ambient-header">
-<span>🔥 Fuego</span>
-<input type="checkbox" id="fireNoise">
+<span>🔥 Fogata</span>
+<input type="checkbox" onchange="toggleAmbientNoise('fire',this.checked)">
 </div>
-<input type="range" class="volume-slider" id="fireVol" min="0" max="1" step=".01" value=".5">
-</div><div class="ambient-item">
+<input type="range" class="volume-slider" id="fireVol" min="0" max="1" step=".01" value=".5" oninput="updateVolume('fire',this.value)">
+</div>
+
+<div class="ambient-item">
 <div class="ambient-header">
 <span>🌙 Noche</span>
-<input type="checkbox" id="nightNoise">
+<input type="checkbox" onchange="toggleAmbientNoise('night',this.checked)">
 </div>
-<input type="range" class="volume-slider" id="nightVol" min="0" max="1" step=".01" value=".5">
-</div><div class="ambient-item">
+<input type="range" class="volume-slider" id="nightVol" min="0" max="1" step=".01" value=".5" oninput="updateVolume('night',this.value)">
+</div>
+
+<div class="ambient-item">
 <div class="ambient-header">
 <span>🍃 Viento</span>
-<input type="checkbox" id="windNoise">
+<input type="checkbox" onchange="toggleAmbientNoise('wind',this.checked)">
 </div>
-<input type="range" class="volume-slider" id="windVol" min="0" max="1" step=".01" value=".5">
-</div><div class="ambient-item">
+<input type="range" class="volume-slider" id="windVol" min="0" max="1" step=".01" value=".5" oninput="updateVolume('wind',this.value)">
+</div>
+
+<div class="ambient-item">
 <div class="ambient-header">
 <span>🏞️ Río</span>
-<input type="checkbox" id="riverNoise">
+<input type="checkbox" onchange="toggleAmbientNoise('river',this.checked)">
 </div>
-<input type="range" class="volume-slider" id="riverVol" min="0" max="1" step=".01" value=".5">
-</div><div class="ambient-item">
+<input type="range" class="volume-slider" id="riverVol" min="0" max="1" step=".01" value=".5" oninput="updateVolume('river',this.value)">
+</div>
+
+<div class="ambient-item">
 <div class="ambient-header">
 <span>🐦 Pájaros</span>
-<input type="checkbox" id="birdsNoise">
+<input type="checkbox" onchange="toggleAmbientNoise('birds',this.checked)">
 </div>
-<input type="range" class="volume-slider" id="birdsVol" min="0" max="1" step=".01" value=".5">
-</div><div class="ambient-item">
+<input type="range" class="volume-slider" id="birdsVol" min="0" max="1" step=".01" value=".5" oninput="updateVolume('birds',this.value)">
+</div>
+
+<div class="ambient-item">
 <div class="ambient-header">
 <span>⚡ Tormenta</span>
-<input type="checkbox" id="stormNoise">
+<input type="checkbox" onchange="toggleAmbientNoise('storm',this.checked)">
 </div>
-<input type="range" class="volume-slider" id="stormVol" min="0" max="1" step=".01" value=".5">
-</div></div>
-</div><div class="card-section">
-<h3>🎈 ¿Cómo te sientes hoy?</h3>
-<p>Toca la emoción que mejor represente cómo te sentís.</p><div class="buttons-grid"><div class="emotion-card">
-<button class="btn" id="happy" onclick="selectEmotion('Alegre','Me alegra verte así. Disfruta este momento.',this)">😊</button>
+<input type="range" class="volume-slider" id="stormVol" min="0" max="1" step=".01" value=".5" oninput="updateVolume('storm',this.value)">
+</div>
+
+</div>
+</div>
+
+<!-- EJERCICIO -->
+
+<div class="form-group">
+
+<h3>Ejercicio de Respiración 🧘</h3>
+
+<p>
+Practicá la técnica de respiración 4-7-8 para relajarte.
+</p>
+
+<button class="action-btn breathing-start" onclick="openBreathingExercise()">
+Comenzar Respiración 4-7-8 🫁
+</button>
+
+</div>
+
+<!-- EMOCIONES -->
+
+<div class="form-group">
+
+<h3>¿Cómo te sentís hoy? 🎈</h3>
+
+<p>Tocá la emoción que mejor exprese lo que sentís.</p>
+
+<div class="buttons-grid">
+
+<div class="emotion-card">
+<button class="btn" id="happy" onclick="selectEmotion('Alegre','Me alegra verte así. ¡A disfrutar este momento!',this)"></button>
 <span class="emotion-label">Alegre</span>
-</div><div class="emotion-card">
-<button class="btn" id="sad" onclick="selectEmotion('Triste','Está bien sentirse triste. Respira profundamente.',this)">😢</button>
+</div>
+
+<div class="emotion-card">
+<button class="btn" id="sad" onclick="selectEmotion('Triste','Está bien sentirse triste. Respirá profundo.',this)"></button>
 <span class="emotion-label">Triste</span>
-</div><div class="emotion-card">
-<button class="btn" id="angry" onclick="selectEmotion('Enojado','Respira. Date un momento antes de reaccionar.',this)">😡</button>
+</div>
+
+<div class="emotion-card">
+<button class="btn" id="angry" onclick="selectEmotion('Enojado','Sentí esa energía, pero recordá calmarte antes de actuar.',this)"></button>
 <span class="emotion-label">Enojado</span>
-</div><div class="emotion-card">
-<button class="btn" id="calm" onclick="selectEmotion('En Calma','Disfruta esta sensación de tranquilidad.',this)">😌</button>
-<span class="emotion-label">Calma</span>
-</div><div class="emotion-card">
-<button class="btn" id="fear" onclick="selectEmotion('Miedo','El miedo puede sentirse fuerte. Vamos paso a paso.',this)">😨</button>
+</div>
+
+<div class="emotion-card">
+<button class="btn" id="calm" onclick="selectEmotion('En Calma','Mantené esa paz interior y disfrutala.',this)"></button>
+<span class="emotion-label">En Calma</span>
+</div>
+
+<div class="emotion-card">
+<button class="btn" id="fear" onclick="selectEmotion('Miedo','El miedo nos protege. Podemos avanzar paso a paso.',this)"></button>
 <span class="emotion-label">Miedo</span>
-</div><div class="emotion-card">
-<button class="btn" id="surprise" onclick="selectEmotion('Sorprendido','Observa qué ocurrió y qué estás sintiendo.',this)">😲</button>
-<span class="emotion-label">Sorpresa</span>
-</div><div class="emotion-card">
-<button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad','Inhala lentamente y exhala. Un momento a la vez.',this)">😰</button>
+</div>
+
+<div class="emotion-card">
+<button class="btn" id="surprise" onclick="selectEmotion('Sorprendido','¡Qué sorpresa! Vamos a explorar qué sucedió.',this)"></button>
+<span class="emotion-label">Sorprendido</span>
+</div>
+
+<div class="emotion-card">
+<button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad','Inhalá y exhalá. Un paso a la vez.',this)"></button>
 <span class="emotion-label">Ansiedad</span>
-</div><div class="emotion-card">
-<button class="btn" id="envy" onclick="selectEmotion('Envidia','Recordá que cada persona tiene su propio camino.',this)">😒</button>
+</div>
+
+<div class="emotion-card">
+<button class="btn" id="envy" onclick="selectEmotion('Envidia','Todos somos únicos y especiales.',this)"></button>
 <span class="emotion-label">Envidia</span>
-</div><div class="emotion-card">
-<button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento','Quizás sea un buen momento para hacer algo diferente.',this)">🥱</button>
+</div>
+
+<div class="emotion-card">
+<button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento','Es un buen momento para dejar volar la imaginación.',this)"></button>
 <span class="emotion-label">Aburrimiento</span>
-</div><div class="emotion-card">
-<button class="btn" id="shame" onclick="selectEmotion('Vergüenza','Todos cometemos errores y podemos aprender de ellos.',this)">😳</button>
+</div>
+
+<div class="emotion-card">
+<button class="btn" id="shame" onclick="selectEmotion('Vergüenza','Nadie es perfecto. Todos aprendemos.',this)"></button>
 <span class="emotion-label">Vergüenza</span>
-</div></div><label style="font-size:.82rem;font-weight:700;color:var(--muted)">
-¿A quién corresponde este registro?
-</label><select id="memberSelect" style="margin-top:5px">
-<option value="Personal">Personal (Mío)</option>
-<option value="Hijo/a">Observación de Hijo/a</option>
-<option value="Familia">Momento Compartido / Familia</option>
-</select></div><div class="card-section">
-<h3>📸 Captura de Momento</h3>
-<p>Guarda una foto especial.</p><input type="file" id="photoInput" accept="image/*"><img id="photoPreviewImg" class="photo-preview" alt="Vista previa"><p style="font-weight:700;margin-top:15px">
+</div>
+
+</div>
+</div>
+
+<!-- FOTO -->
+
+<div class="form-group">
+
+<h3>Captura de Momento 📸</h3>
+
+<label>Subir una foto:</label>
+
+<p>Guardá una foto para recordar este día.</p>
+
+<input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
+
+<img id="photoPreviewImg" class="photo-preview">
+
+<label style="margin-top:10px;">
 ¿Qué emoción transmitía esta foto?
-</p><select id="photoEmotionSelect">
+</label>
+
+<select id="photoEmotionSelect">
 <option>Alegre</option>
 <option>Triste</option>
 <option>Enojado</option>
@@ -585,973 +592,199 @@ Sonidos de la Naturaleza
 <option>Envidia</option>
 <option>Aburrimiento</option>
 <option>Vergüenza</option>
-</select><button class="action-btn" style="margin-top:12px" onclick="saveStandalonePhoto()">
+</select>
+
+<button class="action-btn" onclick="saveStandalonePhoto()">
 Guardar Foto 🖼️
-</button>
-</div><div class="card-section">
-<h3>🎤 Mensaje de Voz</h3>
-<p>Usa tu voz para contar cómo fue tu día.</p><button class="action-btn" id="recordBtn" onclick="toggleRecording()">
-Grabar Audio 🎤
-</button><audio id="audioPlayback" controls></audio>
-
-</div><div class="card-section">
-<h3>📝 Reflexión & Análisis</h3>
-<p>Anota la situación y qué la desencadenó.</p><input id="triggerInput" type="text"
-placeholder="⚡ Gatillo / Desencadenante">
-
-<textarea id="noteInput"
-placeholder="¿Qué pasó hoy y cómo reaccionaste?"></textarea></div><button class="action-btn"
-style="background:linear-gradient(135deg,#10ac84,#1dd1a1);margin-bottom:18px"
-onclick="saveEntry()">
-Guardar Registro Completo ✨
-</button>
-
-<div class="card-section">
-<h3>📊 Evolución Emocional</h3>
-<p>Resumen de las emociones registradas.</p><div class="chart-container" id="weeklyChart"></div><div class="summary-box" id="weeklySummary">
-Calculando datos...
-</div><button class="action-btn btn-secondary"
-style="margin-top:13px"
-onclick="closeAndArchiveWeek()">
-Cerrar y Archivar Semana 📦
-</button>
-
-</div><div class="card-section">
-<h3>⭐ Momento de Gratitud</h3>
-<p>Escribe algo por lo que estés agradecido.</p><textarea id="gratitudeInput"
-placeholder="¿Qué cosas lindas te pasaron hoy?"></textarea><button class="action-btn" style="margin-top:10px" onclick="saveGratitude()">
-Guardar Gratitud ⭐
-</button>
-</div><div class="card-section">
-<h3>💡 Estrategias de Crianza</h3>
-<p>Guarda ideas que quieras recordar.</p><textarea id="strategyInput"
-placeholder="Anota aquí tus descubrimientos..."></textarea><button class="action-btn" style="margin-top:10px" onclick="saveStrategy()">
-Guardar Estrategia 💡
-</button>
-</div><div class="card-section">
-<h3>👀 Observación de Microexpresiones</h3><textarea id="microexpressionInput"
-placeholder="Anota las expresiones observadas..."></textarea><button class="action-btn" style="margin-top:10px" onclick="saveMicroexpression()">
-Guardar Observación 👀
-</button>
-</div><div class="history-card"><div class="tabs-header"><button class="tab-btn active" onclick="switchTab(event,'entries')">
-Diario
-</button><button class="tab-btn" onclick="switchTab(event,'gratitude')">
-Gratitud
-</button><button class="tab-btn" onclick="switchTab(event,'strategies')">
-Estrategias
-</button><button class="tab-btn" onclick="switchTab(event,'microexpressions')">
-Gestos
-</button><button class="tab-btn" onclick="switchTab(event,'archives')">
-Archivos
-</button></div><div id="tab-entries">
-<h3>Registros Guardados</h3>
-<ul id="entriesList"></ul>
-</div><div id="tab-gratitude" style="display:none">
-<h3>Agradecimientos</h3>
-<ul id="gratitudeList"></ul>
-</div><div id="tab-strategies" style="display:none">
-<h3>Estrategias</h3>
-<ul id="strategyList"></ul>
-</div><div id="tab-microexpressions" style="display:none">
-<h3>Gestos</h3>
-<ul id="microexpressionList"></ul>
-</div><div id="tab-archives" style="display:none">
-<h3>Semanas Archivadas</h3>
-<ul id="archivesList"></ul>
-</div></div><div class="card-section">
-<h3>⚙️ Copia de Seguridad</h3>
-<p>Guarda o restaura todos tus datos.</p><div style="display:flex;gap:8px">
-<button class="action-btn btn-secondary" onclick="exportDataJSON()">
-Exportar 📥
-</button><button class="action-btn btn-secondary" onclick="document.getElementById('importFileInput').click()">
-Importar 📤
-</button>
-</div><input type="file"
-id="importFileInput"
-accept=".json,application/json"
-style="display:none"
-onchange="importDataJSON(event)">
-
-</div></div><!-- SOS --><div id="sosModal" class="modal"><div class="modal-content"><h3>🧘 Pausa de Calma</h3><p>
-Vamos a hacer juntos la respiración <strong>4-7-8</strong>.
-</p><div class="breath-circle" id="breathCircle">
-Preparado
-</div><div id="breathTimer">
-—
-</div><p id="breathInstruction">
-Cuando estés preparado comenzamos.
-</p><button class="action-btn"
-onclick="startBreathCycle()"
-style="margin-bottom:8px">
-Comenzar 4-7-8
-</button>
-
-<button class="action-btn btn-secondary"
-onclick="closeSOSModal">
-Finalizar / Salir
 </button>
 
 </div>
-</div><script>
 
-'use strict';
+<!-- AUDIO -->
+
+<div class="form-group">
+
+<h3>Mensaje de Voz 🎤</h3>
+
+<label>Grabar un audio:</label>
+
+<p>Usá tu voz para contar cómo te fue hoy.</p>
+
+<button class="action-btn" id="recordBtn" onclick="toggleRecording()">
+Grabar Audio
+</button>
+
+<audio id="audioPlayback" controls style="display:none;width:100%;margin-top:10px;"></audio>
+
+</div>
+
+<!-- REFLEXIÓN -->
+
+<div class="form-group">
+
+<h3>Reflexión Personal 📝</h3>
+
+<label>Escribí una nota:</label>
+
+<textarea id="noteInput" placeholder="¿Qué pasó hoy?..."></textarea>
+
+</div>
+
+<button class="action-btn" style="background:#10ac84;box-shadow:0 4px 0 #0e8c6c;" onclick="saveEntry()">
+Guardar Registro Completo ✨
+</button>
+
+<!-- GRATITUD -->
+
+<div class="form-group">
+
+<h3>Momento de Gratitud ⭐</h3>
+
+<textarea id="gratitudeInput" placeholder="¿Qué cosas lindas te pasaron hoy?"></textarea>
+
+<button class="action-btn" onclick="saveGratitude()">
+Guardar Gratitud
+</button>
+
+</div>
+
+<!-- ESTRATEGIAS -->
+
+<div class="form-group">
+
+<h3>Estrategias de Crianza 💡</h3>
+
+<textarea id="strategyInput" placeholder="Anotá aquí tus descubrimientos..."></textarea>
+
+<button class="action-btn" onclick="saveStrategy()">
+Guardar Estrategia
+</button>
+
+</div>
+
+<!-- MICROEXPRESIONES -->
+
+<div class="form-group">
+
+<h3>Observación de Microexpresiones 👀</h3>
+
+<textarea id="microexpressionInput" placeholder="Anotá las expresiones observadas..."></textarea>
+
+<button class="action-btn" onclick="saveMicroexpression()">
+Guardar Observación
+</button>
+
+</div>
+
+<!-- HISTORIAL -->
+
+<div id="history">
+
+<h3>Registros Guardados:</h3>
+
+<ul id="entriesList"></ul>
+
+</div>
+
+<div id="gratitude-history">
+
+<h3>Agradecimientos:</h3>
+
+<ul id="gratitudeList"></ul>
+
+</div>
+
+<div id="strategies-history">
+
+<h3>Estrategias de Crianza:</h3>
+
+<ul id="strategyList"></ul>
+
+</div>
+
+<div id="microexpression-history">
+
+<h3>Observaciones:</h3>
+
+<ul id="microexpressionList"></ul>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     MODAL RESPIRACIÓN
+========================= -->
+
+<div id="breathingModal">
+
+<div class="breathing-box">
+
+<h2>Respiración 4-7-8 🫁</h2>
+
+<p>
+Seguí las instrucciones y respiré tranquilamente.
+</p>
+
+<div class="breathing-circle" id="breathingCircle">
+
+<div class="breathing-phase" id="breathingPhase">
+Preparado
+</div>
+
+<div class="breathing-counter" id="breathingCounter">
+4
+</div>
+
+</div>
+
+<div class="breathing-progress">
+<div class="breathing-progress-bar" id="breathingProgress"></div>
+</div>
+
+<p class="breathing-instruction" id="breathingInstruction">
+Cuando estés listo, comenzamos.
+</p>
+
+<button class="action-btn breathing-start" id="breathingStartBtn" onclick="startBreathing()">
+Comenzar 🧘
+</button>
+
+<button class="action-btn breathing-exit" type="button" onclick="closeBreathingExercise()">
+Salir ✕
+</button>
+
+</div>
+</div>
+
+
+<script>
 
 /* =========================
-   ALMACENAMIENTO
-========================= */
-
-function getStorage(key){
-try{
-const data=localStorage.getItem(key);
-return data?JSON.parse(data):[];
-}catch(e){
-return [];
-}
-}
-
-function setStorage(key,data){
-try{
-localStorage.setItem(key,JSON.stringify(data));
-return true;
-}catch(e){
-alert('No hay suficiente espacio para guardar este dato.');
-return false;
-}
-}
-
-/* =========================
-   EMOCIONES
-========================= */
-
-let selectedEmotionValue='';
-let currentBase64Photo='';
-let currentBase64Audio='';
-
-function speakText(text){
-
-if(!('speechSynthesis' in window)) return;
-
-try{
-window.speechSynthesis.cancel();
-
-const utterance=new SpeechSynthesisUtterance(text);
-utterance.lang='es-AR';
-utterance.rate=.9;
-utterance.pitch=1;
-
-window.speechSynthesis.speak(utterance);
-
-}catch(e){}
-}
-
-function selectEmotion(emotion,message,element){
-
-selectedEmotionValue=emotion;
-
-document.querySelectorAll('.buttons-grid .btn')
-.forEach(btn=>btn.classList.remove('selected'));
-
-if(element){
-element.classList.add('selected');
-}
-
-speakText(message);
-}
-
-/* =========================
-   FOTO
-========================= */
-
-document.getElementById('photoInput')
-.addEventListener('change',function(event){
-
-const file=event.target.files[0];
-
-if(!file)return;
-
-if(!file.type.startsWith('image/')){
-alert('Selecciona una imagen válida.');
-return;
-}
-
-const reader=new FileReader();
-
-reader.onload=function(e){
-
-currentBase64Photo=e.target.result;
-
-const preview=document.getElementById('photoPreviewImg');
-
-preview.src=currentBase64Photo;
-preview.style.display='block';
-
-};
-
-reader.readAsDataURL(file);
-
-});
-
-function saveStandalonePhoto(){
-
-if(!currentBase64Photo){
-alert('Primero selecciona una foto.');
-return;
-}
-
-const entry={
-id:Date.now(),
-emotion:document.getElementById('photoEmotionSelect').value,
-note:'Foto guardada',
-trigger:'',
-member:'Personal',
-photo:currentBase64Photo,
-audio:'',
-date:new Date().toLocaleString('es-AR')
-};
-
-const entries=getStorage('emotionEntries');
-
-entries.push(entry);
-
-if(setStorage('emotionEntries',entries)){
-
-alert('¡Foto guardada! 🖼️');
-
-clearPhoto();
-
-loadEntries();
-updateWeeklyChart();
-}
-
-}
-
-function clearPhoto(){
-
-document.getElementById('photoInput').value='';
-document.getElementById('photoPreviewImg').style.display='none';
-document.getElementById('photoPreviewImg').removeAttribute('src');
-
-currentBase64Photo='';
-}
-
-/* =========================
-   GRABACIÓN
-========================= */
-
-let mediaRecorder=null;
-let audioStream=null;
-let audioChunks=[];
-
-async function toggleRecording(){
-
-const btn=document.getElementById('recordBtn');
-const playback=document.getElementById('audioPlayback');
-
-if(mediaRecorder && mediaRecorder.state==='recording'){
-
-mediaRecorder.stop();
-
-btn.innerText='Procesando audio...';
-
-return;
-}
-
-if(!navigator.mediaDevices ||
-!navigator.mediaDevices.getUserMedia){
-
-alert('Este navegador no permite acceder al micrófono.');
-return;
-}
-
-try{
-
-audioStream=await navigator.mediaDevices.getUserMedia({
-audio:true
-});
-
-let mimeType='';
-
-if(window.MediaRecorder){
-
-const types=[
-'audio/webm;codecs=opus',
-'audio/webm',
-'audio/mp4',
-'audio/ogg'
-];
-
-for(const type of types){
-
-if(MediaRecorder.isTypeSupported(type)){
-mimeType=type;
-break;
-}
-
-}
-
-}
-
-mediaRecorder=mimeType?
-new MediaRecorder(audioStream,{mimeType}):
-new MediaRecorder(audioStream);
-
-audioChunks=[];
-
-mediaRecorder.ondataavailable=function(event){
-
-if(event.data && event.data.size>0){
-audioChunks.push(event.data);
-}
-
-};
-
-mediaRecorder.onstop=function(){
-
-const blob=new Blob(audioChunks,{
-type:mediaRecorder.mimeType || 'audio/webm'
-});
-
-const reader=new FileReader();
-
-reader.onloadend=function(){
-
-currentBase64Audio=reader.result;
-
-playback.src=currentBase64Audio;
-playback.style.display='block';
-
-btn.innerText='Grabar Audio 🎤';
-
-};
-
-reader.readAsDataURL(blob);
-
-if(audioStream){
-
-audioStream.getTracks().forEach(track=>track.stop());
-audioStream=null;
-
-}
-
-};
-
-mediaRecorder.onerror=function(){
-
-alert('Ocurrió un error durante la grabación.');
-
-btn.innerText='Grabar Audio 🎤';
-
-};
-
-mediaRecorder.start();
-
-btn.innerText='Detener Grabación ⏹️';
-
-}catch(error){
-
-console.error(error);
-
-alert('No se pudo acceder al micrófono. Comprueba los permisos de la aplicación.');
-
-btn.innerText='Grabar Audio 🎤';
-
-}
-
-}
-
-/* =========================
-   REGISTRO
-========================= */
-
-function saveEntry(){
-
-const note=document.getElementById('noteInput').value.trim();
-const trigger=document.getElementById('triggerInput').value.trim();
-const member=document.getElementById('memberSelect').value;
-
-if(!selectedEmotionValue && !note && !trigger && !currentBase64Photo && !currentBase64Audio){
-
-alert('Agrega al menos una emoción, nota, foto o audio.');
-return;
-
-}
-
-const entry={
-id:Date.now(),
-emotion:selectedEmotionValue || 'No especificada',
-note,
-trigger,
-member,
-photo:currentBase64Photo,
-audio:currentBase64Audio,
-date:new Date().toLocaleString('es-AR')
-};
-
-const entries=getStorage('emotionEntries');
-
-entries.push(entry);
-
-if(!setStorage('emotionEntries',entries))return;
-
-alert('¡Registro guardado con éxito! ✨');
-
-document.getElementById('noteInput').value='';
-document.getElementById('triggerInput').value='';
-
-document.getElementById('audioPlayback').pause();
-document.getElementById('audioPlayback').removeAttribute('src');
-document.getElementById('audioPlayback').style.display='none';
-
-document.querySelectorAll('.buttons-grid .btn')
-.forEach(btn=>btn.classList.remove('selected'));
-
-selectedEmotionValue='';
-currentBase64Audio='';
-
-clearPhoto();
-
-loadEntries();
-updateWeeklyChart();
-
-}
-
-/* =========================
-   LISTAS
-========================= */
-
-function deleteItem(storageKey,index){
-
-if(!confirm('¿Eliminar este registro?'))return;
-
-const items=getStorage(storageKey);
-
-items.splice(index,1);
-
-setStorage(storageKey,items);
-
-if(storageKey==='emotionEntries'){
-loadEntries();
-updateWeeklyChart();
-}else if(storageKey==='gratitudeEntries'){
-loadGratitude();
-}else if(storageKey==='strategyEntries'){
-loadStrategies();
-}else if(storageKey==='microexpressionEntries'){
-loadMicroexpressions();
-}else if(storageKey==='archivedWeeks'){
-loadArchives();
-}
-
-}
-
-function renderList(listId,storageKey,createContent){
-
-const list=document.getElementById(listId);
-
-list.innerHTML='';
-
-const items=getStorage(storageKey);
-
-if(items.length===0){
-
-list.innerHTML='<li style="text-align:center;color:#636e72">Todavía no hay registros.</li>';
-return;
-
-}
-
-items.forEach((item,index)=>{
-
-const li=document.createElement('li');
-
-li.innerHTML=createContent(item);
-
-const button=document.createElement('button');
-
-button.className='btn-delete';
-button.innerText='Eliminar';
-
-button.onclick=()=>deleteItem(storageKey,index);
-
-li.appendChild(button);
-
-list.appendChild(li);
-
-});
-
-}
-
-/* =========================
-   ESCAPAR HTML
-========================= */
-
-function escapeHTML(value){
-
-return String(value??'')
-.replace(/&/g,'&amp;')
-.replace(/</g,'&lt;')
-.replace(/>/g,'&gt;')
-.replace(/"/g,'&quot;')
-.replace(/'/g,'&#039;');
-
-}
-
-function loadEntries(){
-
-renderList(
-'entriesList',
-'emotionEntries',
-item=>{
-
-let html=
-`<strong>${escapeHTML(item.date)}</strong>
-<span class="tag-member">${escapeHTML(item.member||'Personal')}</span>
-<br>
-Emoción:
-<strong>${escapeHTML(item.emotion)}</strong>`;
-
-if(item.trigger){
-
-html+=
-`<br><em style="color:#e67e22">
-Gatillo: ${escapeHTML(item.trigger)}
-</em>`;
-
-}
-
-if(item.note){
-
-html+=`<br>${escapeHTML(item.note)}`;
-
-}
-
-if(item.photo){
-
-html+=
-`<br>
-<img src="${item.photo}"
-class="entry-img"
-alt="Foto adjunta">`;
-
-}
-
-if(item.audio){
-
-html+=
-`<br>
-<audio src="${item.audio}"
-controls
-style="width:100%;margin-top:8px"></audio>`;
-
-}
-
-return html;
-
-}
-);
-
-}
-
-function saveTextEntry(inputId,key,message,loader){
-
-const el=document.getElementById(inputId);
-
-if(!el.value.trim()){
-
-alert('Escribe algo antes de guardar.');
-return;
-
-}
-
-const data=getStorage(key);
-
-data.push({
-id:Date.now(),
-text:el.value.trim(),
-date:new Date().toLocaleString('es-AR')
-});
-
-if(setStorage(key,data)){
-
-alert(message);
-el.value='';
-loader();
-
-}
-
-}
-
-function saveGratitude(){
-
-saveTextEntry(
-'gratitudeInput',
-'gratitudeEntries',
-'¡Gratitud guardada! ⭐',
-loadGratitude
-);
-
-}
-
-function saveStrategy(){
-
-saveTextEntry(
-'strategyInput',
-'strategyEntries',
-'¡Estrategia guardada! 💡',
-loadStrategies
-);
-
-}
-
-function saveMicroexpression(){
-
-saveTextEntry(
-'microexpressionInput',
-'microexpressionEntries',
-'¡Observación guardada! 👀',
-loadMicroexpressions
-);
-
-}
-
-function loadGratitude(){
-
-renderList(
-'gratitudeList',
-'gratitudeEntries',
-item=>`<strong>${escapeHTML(item.date)}</strong><br>${escapeHTML(item.text)}`
-);
-
-}
-
-function loadStrategies(){
-
-renderList(
-'strategyList',
-'strategyEntries',
-item=>`<strong>${escapeHTML(item.date)}</strong><br>${escapeHTML(item.text)}`
-);
-
-}
-
-function loadMicroexpressions(){
-
-renderList(
-'microexpressionList',
-'microexpressionEntries',
-item=>`<strong>${escapeHTML(item.date)}</strong><br>${escapeHTML(item.text)}`
-);
-
-}
-
-function loadArchives(){
-
-renderList(
-'archivesList',
-'archivedWeeks',
-item=>
-`<strong>Semana cerrada: ${escapeHTML(item.date)}</strong>
-<br>${escapeHTML(item.summary)}`
-);
-
-}
-
-/* =========================
-   PESTAÑAS
-========================= */
-
-function switchTab(event,name){
-
-document.querySelectorAll('.tab-btn')
-.forEach(btn=>btn.classList.remove('active'));
-
-document.querySelectorAll('[id^="tab-"]')
-.forEach(tab=>tab.style.display='none');
-
-event.currentTarget.classList.add('active');
-
-document.getElementById('tab-'+name)
-.style.display='block';
-
-}
-
-/* =========================
-   GRÁFICO
-========================= */
-
-function updateWeeklyChart(){
-
-const chart=document.getElementById('weeklyChart');
-const summary=document.getElementById('weeklySummary');
-
-chart.innerHTML='';
-
-const entries=getStorage('emotionEntries');
-
-if(entries.length===0){
-
-chart.innerHTML=
-'<p style="margin:auto">No hay registros todavía.</p>';
-
-summary.innerText=
-'Registra tus emociones para generar el balance.';
-
-return;
-
-}
-
-const counts={};
-
-entries.forEach(entry=>{
-
-if(entry.emotion &&
-entry.emotion!=='No especificada'){
-
-counts[entry.emotion]=(counts[entry.emotion]||0)+1;
-
-}
-
-});
-
-const total=Object.values(counts)
-.reduce((a,b)=>a+b,0);
-
-if(!total){
-
-summary.innerText='No hay emociones suficientes para analizar.';
-return;
-
-}
-
-let maxEmotion='';
-let maxCount=0;
-
-Object.entries(counts).forEach(([emotion,count])=>{
-
-if(count>maxCount){
-
-maxCount=count;
-maxEmotion=emotion;
-
-}
-
-const wrapper=document.createElement('div');
-wrapper.className='chart-bar-wrapper';
-
-const bar=document.createElement('div');
-bar.className='chart-bar';
-
-bar.style.height=Math.max(5,(count/total)*100)+'%';
-bar.title=emotion+': '+count;
-
-const label=document.createElement('span');
-label.className='chart-label';
-label.innerText=emotion.substring(0,6);
-
-wrapper.appendChild(bar);
-wrapper.appendChild(label);
-
-chart.appendChild(wrapper);
-
-});
-
-const percent=Math.round((maxCount/total)*100);
-
-summary.innerHTML=
-`Estado dominante: <strong>${escapeHTML(maxEmotion)}</strong>
-(${percent}%).
-Registros totales: ${total}.`;
-
-}
-
-/* =========================
-   ARCHIVAR
-========================= */
-
-function closeAndArchiveWeek(){
-
-const entries=getStorage('emotionEntries');
-
-if(entries.length===0){
-
-alert('No hay registros para archivar.');
-return;
-
-}
-
-if(!confirm(
-'¿Deseas cerrar la semana y archivar los registros emocionales?'
-))return;
-
-const archive={
-id:Date.now(),
-date:new Date().toLocaleDateString('es-AR'),
-summary:document.getElementById('weeklySummary').innerText,
-entriesCount:entries.length,
-entries:entries
-};
-
-const archives=getStorage('archivedWeeks');
-
-archives.push(archive);
-
-setStorage('archivedWeeks',archives);
-
-localStorage.removeItem('emotionEntries');
-
-loadEntries();
-loadArchives();
-updateWeeklyChart();
-
-alert('¡Semana archivada correctamente! 📦');
-
-}
-
-/* =========================
-   EXPORTAR
-========================= */
-
-function exportDataJSON(){
-
-const data={
-version:2,
-exportedAt:new Date().toISOString(),
-emotionEntries:getStorage('emotionEntries'),
-gratitudeEntries:getStorage('gratitudeEntries'),
-strategyEntries:getStorage('strategyEntries'),
-microexpressionEntries:getStorage('microexpressionEntries'),
-archivedWeeks:getStorage('archivedWeeks')
-};
-
-const blob=new Blob(
-[JSON.stringify(data,null,2)],
-{type:'application/json'}
-);
-
-const url=URL.createObjectURL(blob);
-
-const anchor=document.createElement('a');
-
-anchor.href=url;
-anchor.download=
-'respaldo_diario_'+
-new Date().toISOString().slice(0,10)+
-'.json';
-
-document.body.appendChild(anchor);
-
-anchor.click();
-
-setTimeout(()=>{
-
-anchor.remove();
-URL.revokeObjectURL(url);
-
-},500);
-
-}
-
-/* =========================
-   IMPORTAR
-========================= */
-
-function importDataJSON(event){
-
-const file=event.target.files[0];
-
-if(!file)return;
-
-const reader=new FileReader();
-
-reader.onload=function(e){
-
-try{
-
-const data=JSON.parse(e.target.result);
-
-if(!data || typeof data!=='object'){
-throw new Error('Formato inválido');
-}
-
-if(!confirm(
-'Esto reemplazará los datos actuales. ¿Continuar?'
-))return;
-
-const keys=[
-'emotionEntries',
-'gratitudeEntries',
-'strategyEntries',
-'microexpressionEntries',
-'archivedWeeks'
-];
-
-keys.forEach(key=>{
-
-if(Array.isArray(data[key])){
-setStorage(key,data[key]);
-}
-
-});
-
-loadEntries();
-loadGratitude();
-loadStrategies();
-loadMicroexpressions();
-loadArchives();
-updateWeeklyChart();
-
-alert('¡Datos restaurados correctamente! 📤');
-
-}catch(error){
-
-alert('El archivo no es un respaldo válido.');
-
-}
-
-event.target.value='';
-
-};
-
-reader.readAsText(file);
-
-}
-
-/* =========================
-   AUDIO DE RELAX
+   MÚSICA
 ========================= */
 
 let audioCtx=null;
 let isPlaying=false;
-let musicTimer=null;
-let autoSwitchTimer=null;
-let musicStep=0;
-let currentStyle='ambient';
+let timerId=null;
+let step=0;
+let currentStyle="ambient";
 
 const notes={
-C3:130.81,
-D3:146.83,
-E3:164.81,
-F3:174.61,
-G3:196,
-A3:220,
-B3:246.94,
-C4:261.63,
-D4:293.66,
-E4:329.63,
-F4:349.23,
-G4:392,
-A4:440,
-B4:493.88,
-C5:523.25,
-D5:587.33,
-E5:659.25,
-G5:783.99
+C3:130.81,D3:146.83,E3:164.81,F3:174.61,
+G3:196,A3:220,B3:246.94,
+C4:261.63,D4:293.66,E4:329.63,F4:349.23,
+G4:392,A4:440,B4:493.88,
+C5:523.25,D5:587.33,E5:659.25,
+G5:783.99,A5:880,B5:987.77
 };
 
 const styles={
 
 ambient:{
-tempo:500,
-wave:'sine',
+tempo:450,
+wave:"sine",
 chords:[
 [notes.C3,notes.G3,notes.B3,notes.E4],
 [notes.A3,notes.E4,notes.G4,notes.C4],
@@ -1562,8 +795,8 @@ melody:[notes.E5,null,notes.G5,notes.B4,null,notes.C5,notes.D5,null]
 },
 
 piano:{
-tempo:360,
-wave:'triangle',
+tempo:320,
+wave:"triangle",
 chords:[
 [notes.C3,notes.G3,notes.E4],
 [notes.F3,notes.C4,notes.A4],
@@ -1574,8 +807,8 @@ melody:[notes.G4,notes.C5,notes.E5,notes.D5,notes.C5,notes.B4,notes.A4,notes.G4]
 },
 
 lofi:{
-tempo:300,
-wave:'triangle',
+tempo:260,
+wave:"triangle",
 chords:[
 [notes.C3,notes.E3,notes.G3,notes.B3],
 [notes.A3,notes.C4,notes.E4,notes.G4],
@@ -1586,8 +819,8 @@ melody:[notes.G4,notes.E5,null,notes.D5,notes.C5,null,notes.A4,notes.B4]
 },
 
 bossa:{
-tempo:320,
-wave:'triangle',
+tempo:280,
+wave:"triangle",
 chords:[
 [notes.D3,notes.F3,notes.A3,notes.C4],
 [notes.G3,notes.B3,notes.D4,notes.F4],
@@ -1598,8 +831,8 @@ melody:[notes.A4,notes.C5,notes.B4,notes.G4,notes.E5,null,notes.D5,notes.C5]
 },
 
 jazz:{
-tempo:390,
-wave:'sine',
+tempo:350,
+wave:"sine",
 chords:[
 [notes.F3,notes.A3,notes.C4,notes.E4],
 [notes.D3,notes.F3,notes.A3,notes.C4],
@@ -1610,8 +843,8 @@ melody:[notes.E5,notes.D5,notes.C5,notes.A4,notes.G4,notes.A4,notes.C5,null]
 },
 
 folk:{
-tempo:340,
-wave:'triangle',
+tempo:300,
+wave:"triangle",
 chords:[
 [notes.C3,notes.G3,notes.C4],
 [notes.G3,notes.D4,notes.G4],
@@ -1622,8 +855,8 @@ melody:[notes.E4,notes.G4,notes.C5,notes.G4,notes.E5,notes.D5,notes.C5,notes.G4]
 },
 
 space:{
-tempo:700,
-wave:'sine',
+tempo:650,
+wave:"sine",
 chords:[
 [notes.C3,notes.G3,notes.C4,notes.G4],
 [notes.F3,notes.C4,notes.F4,notes.C5],
@@ -1634,8 +867,8 @@ melody:[notes.G5,null,notes.E5,null,notes.C5,null,notes.B4,null]
 },
 
 reggae:{
-tempo:350,
-wave:'sine',
+tempo:330,
+wave:"sine",
 chords:[
 [notes.C3,notes.E3,notes.G3],
 [notes.F3,notes.A3,notes.C4],
@@ -1646,8 +879,8 @@ melody:[null,notes.G4,null,notes.E5,null,notes.D5,notes.C5,null]
 },
 
 synthwave:{
-tempo:230,
-wave:'triangle',
+tempo:200,
+wave:"sawtooth",
 chords:[
 [notes.C3,notes.G3,notes.C4],
 [notes.A3,notes.E4,notes.A4],
@@ -1658,8 +891,8 @@ melody:[notes.C5,notes.E5,notes.G5,notes.E5,notes.D5,notes.B4,notes.C5,notes.G4]
 },
 
 zen:{
-tempo:650,
-wave:'sine',
+tempo:600,
+wave:"sine",
 chords:[
 [notes.C3,notes.G3],
 [notes.F3,notes.C4],
@@ -1674,234 +907,135 @@ melody:[notes.E4,null,notes.G4,null,notes.B4,null,notes.A4,null]
 async function initAudio(){
 
 if(!audioCtx){
-
-const AudioContext=
-window.AudioContext||
-window.webkitAudioContext;
-
-if(!AudioContext){
-
-alert('Este dispositivo no permite reproducir audio generado.');
-return false;
-
+audioCtx=new(window.AudioContext||window.webkitAudioContext)();
 }
 
-audioCtx=new AudioContext();
-
-}
-
-if(audioCtx.state==='suspended'){
+if(audioCtx.state==="suspended"){
 await audioCtx.resume();
 }
 
-return true;
-
 }
 
-function playTone(freq,duration,type='sine',gainValue=.04){
+function playTone(freq,duration,type="sine",gainVal=.05){
 
-if(!freq || !audioCtx)return;
-
-const now=audioCtx.currentTime;
+if(!freq||!audioCtx)return;
 
 const osc=audioCtx.createOscillator();
 const gain=audioCtx.createGain();
-const filter=audioCtx.createBiquadFilter();
 
 osc.type=type;
-osc.frequency.setValueAtTime(freq,now);
+osc.frequency.value=freq;
 
-filter.type='lowpass';
-filter.frequency.setValueAtTime(1600,now);
+gain.gain.setValueAtTime(.001,audioCtx.currentTime);
+gain.gain.linearRampToValueAtTime(gainVal,audioCtx.currentTime+.1);
+gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+duration);
 
-gain.gain.setValueAtTime(.0001,now);
-
-gain.gain.linearRampToValueAtTime(
-gainValue,
-now+.06
-);
-
-gain.gain.exponentialRampToValueAtTime(
-.0001,
-now+duration
-);
-
-osc.connect(filter);
-filter.connect(gain);
+osc.connect(gain);
 gain.connect(audioCtx.destination);
 
-osc.start(now);
-osc.stop(now+duration+.05);
+osc.start();
+osc.stop(audioCtx.currentTime+duration);
 
 }
 
-function playMusicStep(){
-
-if(!isPlaying)return;
+function playStep(){
 
 const style=styles[currentStyle];
 
-const chord=
-style.chords[
-Math.floor(musicStep/4)%style.chords.length
-];
+const chordIndex=Math.floor(step/4)%style.chords.length;
 
-if(musicStep%4===0){
+if(step%4===0){
 
-chord.forEach(note=>{
-playTone(
-note,
-Math.min(style.tempo/1000*3,3),
-style.wave,
-.025
-);
+style.chords[chordIndex].forEach(note=>{
+playTone(note,2.8,style.wave,.035);
 });
 
 }
 
-const melody=
-style.melody[
-musicStep%style.melody.length
-];
+const melodyNote=style.melody[step%style.melody.length];
 
-if(melody){
-
-playTone(
-melody,
-.7,
-'sine',
-.035
-);
-
+if(melodyNote){
+playTone(melodyNote,.9,"sine",.045);
 }
 
-musicStep++;
+step++;
 
 }
 
 async function toggleAudio(){
 
-const ready=await initAudio();
+await initAudio();
 
-if(!ready)return;
-
-const button=document.getElementById('playAudioBtn');
+const btn=document.getElementById("playAudioBtn");
 
 if(isPlaying){
 
+clearInterval(timerId);
 isPlaying=false;
 
-clearInterval(musicTimer);
-clearInterval(autoSwitchTimer);
+btn.innerText="Reproducir Música 🎵";
+btn.classList.remove("active");
 
-musicTimer=null;
-autoSwitchTimer=null;
-
-button.innerText='Reproducir Música 🎵';
-button.classList.remove('active');
-
-return;
-
-}
+}else{
 
 isPlaying=true;
-musicStep=0;
+step=0;
 
-button.innerText='Pausar Música ⏸️';
-button.classList.add('active');
+btn.innerText="Pausar Música ⏸️";
+btn.classList.add("active");
 
-playMusicStep();
+playStep();
 
-musicTimer=setInterval(
-playMusicStep,
-styles[currentStyle].tempo
-);
-
-autoSwitchTimer=setInterval(
-()=>{
-
-if(isPlaying){
-skipToNextStyle();
-}
-
-},
-120000
-);
+timerId=setInterval(playStep,styles[currentStyle].tempo);
 
 }
 
-function skipToNextStyle(){
+}
 
-const keys=Object.keys(styles);
+function changeStyle(){
 
-const index=keys.indexOf(currentStyle);
-
-currentStyle=
-keys[(index+1)%keys.length];
-
-document.getElementById('styleSelect')
-.value=currentStyle;
+currentStyle=document.getElementById("styleSelect").value;
 
 if(isPlaying){
 
-clearInterval(musicTimer);
+clearInterval(timerId);
+step=0;
 
-musicStep=0;
-
-musicTimer=setInterval(
-playMusicStep,
-styles[currentStyle].tempo
-);
+timerId=setInterval(playStep,styles[currentStyle].tempo);
 
 }
 
 }
-
-document.getElementById('styleSelect')
-.addEventListener('change',function(){
-
-currentStyle=this.value;
-
-if(isPlaying){
-
-clearInterval(musicTimer);
-
-musicStep=0;
-
-musicTimer=setInterval(
-playMusicStep,
-styles[currentStyle].tempo
-);
-
-}
-
-});
 
 /* =========================
    SONIDOS AMBIENTALES
 ========================= */
 
-const ambientNodes={};
+let ambientNodes={
+rain:null,
+ocean:null,
+fire:null,
+night:null,
+wind:null,
+river:null,
+birds:null,
+storm:null
+};
 
-function createNoiseBuffer(){
+function createWhiteNoiseBuffer(){
 
-if(!audioCtx)return null;
+const bufferSize=audioCtx.sampleRate*2;
 
-const length=audioCtx.sampleRate*2;
-
-const buffer=
-audioCtx.createBuffer(
+const buffer=audioCtx.createBuffer(
 1,
-length,
+bufferSize,
 audioCtx.sampleRate
 );
 
-const data=buffer.getChannelData(0);
+const output=buffer.getChannelData(0);
 
-for(let i=0;i<length;i++){
-
-data[i]=Math.random()*2-1;
-
+for(let i=0;i<bufferSize;i++){
+output[i]=Math.random()*2-1;
 }
 
 return buffer;
@@ -1910,38 +1044,34 @@ return buffer;
 
 function getBaseGain(type){
 
-return{
-rain:.12,
-ocean:.15,
-fire:.09,
-night:.04,
-wind:.18,
-river:.15,
-birds:.15,
-storm:.2
-}[type]||.1;
+const gains={
+rain:.15,
+ocean:.2,
+fire:.1,
+night:.05,
+wind:.25,
+river:.18,
+birds:.8,
+storm:.3
+};
+
+return gains[type]||.1;
 
 }
 
-async function toggleAmbient(type,active){
+async function toggleAmbientNoise(type,active){
 
-const ready=await initAudio();
-
-if(!ready)return;
+await initAudio();
 
 if(!active){
 
-const node=ambientNodes[type];
-
-if(node){
+if(ambientNodes[type]){
 
 try{
 
-node.gain.gain.cancelScheduledValues(audioCtx.currentTime);
-
-node.gain.gain.exponentialRampToValueAtTime(
+ambientNodes[type].gain.gain.exponentialRampToValueAtTime(
 .0001,
-audioCtx.currentTime+.3
+audioCtx.currentTime+.5
 );
 
 }catch(e){}
@@ -1950,17 +1080,17 @@ setTimeout(()=>{
 
 try{
 
-if(node.source)node.source.stop();
+if(ambientNodes[type].source)
+ambientNodes[type].source.stop();
+
+if(ambientNodes[type].interval)
+clearInterval(ambientNodes[type].interval);
 
 }catch(e){}
 
-if(node.interval){
-clearInterval(node.interval);
-}
+ambientNodes[type]=null;
 
-delete ambientNodes[type];
-
-},400);
+},500);
 
 }
 
@@ -1968,79 +1098,67 @@ return;
 
 }
 
-if(ambientNodes[type]){
-return;
-}
+const slider=document.getElementById(type+"Vol");
 
-const volume=parseFloat(
-document.getElementById(type+'Vol').value
-);
+const targetGain=parseFloat(slider.value)*getBaseGain(type);
+
+if(type==="birds"){
 
 const gain=audioCtx.createGain();
 
-gain.gain.value=
-Math.max(.0001,volume*getBaseGain(type));
+gain.gain.value=targetGain;
 
 gain.connect(audioCtx.destination);
 
-if(type==='birds'){
-
 const interval=setInterval(()=>{
 
-if(!audioCtx)return;
-
-if(Math.random()<.65){
+if(Math.random()>.4){
 
 const osc=audioCtx.createOscillator();
 const birdGain=audioCtx.createGain();
 
-const now=audioCtx.currentTime;
-const start=1800+Math.random()*1800;
+osc.type="sine";
 
-osc.type='sine';
+const startFreq=2000+Math.random()*1500;
 
-osc.frequency.setValueAtTime(start,now);
+osc.frequency.value=startFreq;
 
 osc.frequency.exponentialRampToValueAtTime(
-start+700,
-now+.16
+startFreq+800,
+audioCtx.currentTime+.1
 );
 
-birdGain.gain.setValueAtTime(.0001,now);
-
-birdGain.gain.linearRampToValueAtTime(
-volume*.08,
-now+.03
+birdGain.gain.setValueAtTime(
+.01,
+audioCtx.currentTime
 );
 
 birdGain.gain.exponentialRampToValueAtTime(
-.0001,
-now+.18
+.001,
+audioCtx.currentTime+.15
 );
 
 osc.connect(birdGain);
 birdGain.connect(gain);
 
-osc.start(now);
-osc.stop(now+.2);
+osc.start();
+osc.stop(audioCtx.currentTime+.15);
 
 }
 
-},900);
+},800);
 
 ambientNodes[type]={
 source:null,
-gain,
-interval
+gain:gain,
+interval:interval
 };
 
 return;
 
 }
 
-const buffer=createNoiseBuffer();
-
-if(!buffer)return;
+const buffer=createWhiteNoiseBuffer();
 
 const source=audioCtx.createBufferSource();
 
@@ -2048,242 +1166,248 @@ source.buffer=buffer;
 source.loop=true;
 
 const filter=audioCtx.createBiquadFilter();
+const gain=audioCtx.createGain();
 
-switch(type){
+const settings={
+rain:["lowpass",1000],
+ocean:["bandpass",400],
+fire:["bandpass",800],
+night:["highpass",4000],
+wind:["bandpass",250],
+river:["lowpass",600],
+storm:["lowpass",180]
+};
 
-case'rain':
-filter.type='lowpass';
-filter.frequency.value=1100;
-break;
+filter.type=settings[type][0];
+filter.frequency.value=settings[type][1];
 
-case'ocean':
-filter.type='bandpass';
-filter.frequency.value=420;
-filter.Q.value=1;
-break;
+gain.gain.setValueAtTime(.001,audioCtx.currentTime);
 
-case'fire':
-filter.type='bandpass';
-filter.frequency.value=750;
-filter.Q.value=1;
-break;
-
-case'night':
-filter.type='highpass';
-filter.frequency.value=3500;
-break;
-
-case'wind':
-filter.type='bandpass';
-filter.frequency.value=250;
-filter.Q.value=2;
-break;
-
-case'river':
-filter.type='lowpass';
-filter.frequency.value=700;
-break;
-
-case'storm':
-filter.type='lowpass';
-filter.frequency.value=180;
-break;
-
-}
+gain.gain.linearRampToValueAtTime(
+targetGain,
+audioCtx.currentTime+.5
+);
 
 source.connect(filter);
 filter.connect(gain);
+gain.connect(audioCtx.destination);
+
 source.start();
 
 ambientNodes[type]={
-source,
-gain
+source:source,
+gain:gain
 };
 
 }
 
-const ambientTypes=[
-'rain',
-'ocean',
-'fire',
-'night',
-'wind',
-'river',
-'birds',
-'storm'
-];
+function updateVolume(type,val){
 
-ambientTypes.forEach(type=>{
+if(ambientNodes[type]&&audioCtx){
 
-document.getElementById(type+'Noise')
-.addEventListener('change',function(){
+const gain=parseFloat(val)*getBaseGain(type);
 
-toggleAmbient(type,this.checked);
-
-});
-
-document.getElementById(type+'Vol')
-.addEventListener('input',function(){
-
-const node=ambientNodes[type];
-
-if(node && node.gain && audioCtx){
-
-const value=
-parseFloat(this.value)*getBaseGain(type);
-
-node.gain.gain.setTargetAtTime(
-Math.max(.0001,value),
-audioCtx.currentTime,
-.03
+ambientNodes[type].gain.gain.setValueAtTime(
+gain,
+audioCtx.currentTime
 );
 
 }
 
-});
-
-});
+}
 
 /* =========================
-   SOS 4-7-8
+   RESPIRACIÓN 4-7-8
 ========================= */
 
-let breathTimeout=null;
-let breathInterval=null;
-let breathRunning=false;
+let breathingTimer=null;
+let breathingRunning=false;
+let breathingCycle=0;
 
-const breathPhases=[
+const breathingSteps=[
 {
-name:'Inhala',
+name:"INHALÁ",
 seconds:4,
-className:'inhale',
-voice:'Inhala lentamente. Toma aire por cuatro segundos.'
+text:"Inhalá lentamente por la nariz durante 4 segundos."
 },
 {
-name:'Mantén',
+name:"MANTENÉ",
 seconds:7,
-className:'hold',
-voice:'Mantén el aire. Quédate tranquilo durante siete segundos.'
+text:"Mantené el aire suavemente durante 7 segundos."
 },
 {
-name:'Exhala',
+name:"EXHALÁ",
 seconds:8,
-className:'exhale',
-voice:'Ahora exhala lentamente durante ocho segundos.'
+text:"Exhalá lentamente por la boca durante 8 segundos."
 }
 ];
 
-function openSOSModal(){
+function speakBreathing(text){
 
-const modal=document.getElementById('sosModal');
+if(!("speechSynthesis" in window))return;
 
-modal.style.display='flex';
+window.speechSynthesis.cancel();
+
+const voice=new SpeechSynthesisUtterance(text);
+
+voice.lang="es-AR";
+voice.rate=.85;
+voice.pitch=1;
+
+window.speechSynthesis.speak(voice);
+
+}
+
+function openBreathingExercise(){
+
+const modal=document.getElementById("breathingModal");
+
+modal.style.display="flex";
+
+document.body.style.overflow="hidden";
 
 resetBreathing();
-
-setTimeout(()=>{
-
-speakText(
-'Vamos a hacer una respiración cuatro, siete, ocho. Cuando estés preparado, pulsa comenzar.'
-);
-
-},200);
 
 }
 
 function resetBreathing(){
 
-if(breathInterval){
-clearInterval(breathInterval);
-breathInterval=null;
-}
+if(breathingTimer){
 
-if(breathTimeout){
-clearTimeout(breathTimeout);
-breathTimeout=null;
-}
-
-breathRunning=false;
-
-const circle=document.getElementById('breathCircle');
-
-circle.className='breath-circle';
-circle.innerText='Preparado';
-
-document.getElementById('breathTimer')
-.innerText='—';
-
-document.getElementById('breathInstruction')
-.innerText=
-'Cuando estés preparado comenzamos.';
+clearInterval(breathingTimer);
+breathingTimer=null;
 
 }
 
-function startBreathCycle(){
+breathingRunning=false;
+breathingCycle=0;
 
-if(breathRunning)return;
+document.getElementById("breathingPhase").innerText="Preparado";
+document.getElementById("breathingCounter").innerText="4";
 
-breathRunning=true;
+document.getElementById("breathingInstruction").innerText=
+"Cuando estés listo, comenzamos.";
 
-runBreathPhase(0);
+document.getElementById("breathingProgress").style.width="0%";
+
+document.getElementById("breathingStartBtn").disabled=false;
+
+document.getElementById("breathingStartBtn").innerText=
+"Comenzar 🧘";
+
+const circle=document.getElementById("breathingCircle");
+
+circle.style.transform="scale(1)";
 
 }
 
-function runBreathPhase(index){
+function startBreathing(){
 
-if(!breathRunning)return;
+if(breathingRunning)return;
 
-const phase=breathPhases[index];
+breathingRunning=true;
 
-const circle=document.getElementById('breathCircle');
-const timer=document.getElementById('breathTimer');
-const instruction=document.getElementById('breathInstruction');
+document.getElementById("breathingStartBtn").disabled=true;
 
-circle.className='breath-circle '+phase.className;
-circle.innerText=phase.name;
+document.getElementById("breathingStartBtn").innerText=
+"Respirando... 🫁";
 
-instruction.innerText=phase.voice;
+runBreathingStep(0);
 
-speakText(phase.voice);
+}
 
-let remaining=phase.seconds;
+function runBreathingStep(stepIndex){
 
-timer.innerText=remaining;
+if(!breathingRunning)return;
 
-breathInterval=setInterval(()=>{
+const step=breathingSteps[stepIndex];
 
-remaining--;
+let remaining=step.seconds;
 
-timer.innerText=remaining;
+const phase=document.getElementById("breathingPhase");
+const counter=document.getElementById("breathingCounter");
+const instruction=document.getElementById("breathingInstruction");
+const circle=document.getElementById("breathingCircle");
+const progress=document.getElementById("breathingProgress");
 
-if(remaining<=0){
+phase.innerText=step.name;
+counter.innerText=remaining;
+instruction.innerText=step.text;
 
-clearInterval(breathInterval);
-breathInterval=null;
+speakBreathing(step.text);
 
-const next=(index+1)%breathPhases.length;
+if(stepIndex===0){
 
-if(index===breathPhases.length-1){
+circle.style.transform="scale(1.25)";
 
-instruction.innerText=
-'Excelente. Respira normalmente y nota cómo te sientes.';
+}else if(stepIndex===1){
 
-circle.className='breath-circle';
-circle.innerText='Bien';
+circle.style.transform="scale(1.25)";
 
-speakText(
-'Excelente. Has terminado. Respira normalmente y tómate un momento.'
-);
+}else{
 
-breathRunning=false;
+circle.style.transform="scale(1)";
 
+}
+
+let elapsed=0;
+
+if(breathingTimer){
+clearInterval(breathingTimer);
+}
+
+breathingTimer=setInterval(()=>{
+
+if(!breathingRunning){
+
+clearInterval(breathingTimer);
 return;
 
 }
 
-breathTimeout=setTimeout(()=>{
-runBreathPhase(next);
-},250);
+remaining--;
+elapsed++;
+
+counter.innerText=Math.max(remaining,0);
+
+const totalSeconds=19;
+const completedSeconds=breathingCycle*19+
+(19-(step.seconds-remaining));
+
+const percent=Math.min(
+(completedSeconds/(19*3))*100,
+100
+);
+
+progress.style.width=percent+"%";
+
+if(remaining<=0){
+
+clearInterval(breathingTimer);
+
+if(stepIndex<2){
+
+setTimeout(()=>{
+runBreathingStep(stepIndex+1);
+},300);
+
+}else{
+
+breathingCycle++;
+
+if(breathingCycle>=3){
+
+finishBreathing();
+
+}else{
+
+setTimeout(()=>{
+runBreathingStep(0);
+},500);
+
+}
+
+}
 
 }
 
@@ -2291,31 +1415,592 @@ runBreathPhase(next);
 
 }
 
-function closeSOSModal(){
+function finishBreathing(){
 
-breathRunning=false;
+breathingRunning=false;
 
-if(breathInterval){
-clearInterval(breathInterval);
-breathInterval=null;
+if(breathingTimer){
+clearInterval(breathingTimer);
+breathingTimer=null;
 }
 
-if(breathTimeout){
-clearTimeout(breathTimeout);
-breathTimeout=null;
+if("speechSynthesis" in window){
+window.speechSynthesis.cancel();
 }
 
-if('speechSynthesis' in window){
+document.getElementById("breathingPhase").innerText=
+"¡Listo! 🌿";
+
+document.getElementById("breathingCounter").innerText="✓";
+
+document.getElementById("breathingInstruction").innerText=
+"Terminaste el ejercicio. Tomate unos segundos para notar cómo te sentís.";
+
+document.getElementById("breathingProgress").style.width="100%";
+
+document.getElementById("breathingStartBtn").disabled=false;
+
+document.getElementById("breathingStartBtn").innerText=
+"Repetir 🧘";
+
+document.getElementById("breathingCircle").style.transform="scale(1)";
+
+}
+
+function closeBreathingExercise(){
+
+/* DETENER TEMPORIZADOR */
+
+if(breathingTimer){
+
+clearInterval(breathingTimer);
+breathingTimer=null;
+
+}
+
+/* DETENER EJERCICIO */
+
+breathingRunning=false;
+
+/* DETENER VOZ */
+
+if("speechSynthesis" in window){
+window.speechSynthesis.cancel();
+}
+
+/* REINICIAR ESTADO */
+
+breathingCycle=0;
+
+/* CERRAR MODAL */
+
+const modal=document.getElementById("breathingModal");
+
+modal.style.display="none";
+
+/* DEVOLVER SCROLL */
+
+document.body.style.overflow="auto";
+
+/* RESETEAR */
+
+document.getElementById("breathingPhase").innerText="Preparado";
+
+document.getElementById("breathingCounter").innerText="4";
+
+document.getElementById("breathingInstruction").innerText=
+"Cuando estés listo, comenzamos.";
+
+document.getElementById("breathingProgress").style.width="0%";
+
+document.getElementById("breathingStartBtn").disabled=false;
+
+document.getElementById("breathingStartBtn").innerText=
+"Comenzar 🧘";
+
+document.getElementById("breathingCircle").style.transform="scale(1)";
+
+}
+
+/* =========================
+   EMOCIONES
+========================= */
+
+let selectedEmotionValue="";
+let currentBase64Photo="";
+let currentBase64Audio="";
+
+function selectEmotion(emotion,message,element){
+
+selectedEmotionValue=emotion;
+
+document.querySelectorAll(".buttons-grid .btn")
+.forEach(btn=>btn.classList.remove("selected"));
+
+element.classList.add("selected");
+
+if("speechSynthesis" in window){
 
 window.speechSynthesis.cancel();
 
+const utterance=new SpeechSynthesisUtterance(message);
+
+utterance.lang="es-AR";
+utterance.rate=.9;
+
+window.speechSynthesis.speak(utterance);
+
 }
 
-const modal=document.getElementById('sosModal');
+}
 
-modal.style.display='none';
+/* =========================
+   FOTO
+========================= */
 
-resetBreathing();
+function previewPhoto(event){
+
+const file=event.target.files[0];
+
+if(!file)return;
+
+const reader=new FileReader();
+
+reader.onload=function(){
+
+currentBase64Photo=reader.result;
+
+const img=document.getElementById("photoPreviewImg");
+
+img.src=currentBase64Photo;
+img.style.display="block";
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+function saveStandalonePhoto(){
+
+if(!currentBase64Photo){
+
+alert("Primero seleccioná una foto para guardar.");
+
+return;
+
+}
+
+const entry={
+
+emotion:document.getElementById("photoEmotionSelect").value,
+
+note:"Foto guardada",
+
+photo:currentBase64Photo,
+
+audio:"",
+
+date:new Date().toLocaleString("es-AR")
+
+};
+
+let entries=
+JSON.parse(localStorage.getItem("emotionEntries"))||[];
+
+entries.push(entry);
+
+localStorage.setItem(
+"emotionEntries",
+JSON.stringify(entries)
+);
+
+alert("¡Foto guardada con éxito! 🖼️");
+
+document.getElementById("photoInput").value="";
+document.getElementById("photoPreviewImg").style.display="none";
+
+currentBase64Photo="";
+
+loadEntries();
+
+}
+
+/* =========================
+   GRABACIÓN
+========================= */
+
+let mediaRecorder=null;
+let audioChunks=[];
+
+async function toggleRecording(){
+
+const btn=document.getElementById("recordBtn");
+const audio=document.getElementById("audioPlayback");
+
+if(mediaRecorder&&mediaRecorder.state==="recording"){
+
+mediaRecorder.stop();
+
+btn.innerText="Grabar Audio";
+
+return;
+
+}
+
+try{
+
+const stream=
+await navigator.mediaDevices.getUserMedia({
+audio:true
+});
+
+mediaRecorder=new MediaRecorder(stream);
+
+audioChunks=[];
+
+mediaRecorder.ondataavailable=e=>{
+audioChunks.push(e.data);
+};
+
+mediaRecorder.onstop=()=>{
+
+stream.getTracks().forEach(track=>track.stop());
+
+const blob=new Blob(audioChunks,{
+type:mediaRecorder.mimeType||"audio/webm"
+});
+
+const reader=new FileReader();
+
+reader.onloadend=()=>{
+
+currentBase64Audio=reader.result;
+
+audio.src=currentBase64Audio;
+audio.style.display="block";
+
+};
+
+reader.readAsDataURL(blob);
+
+};
+
+mediaRecorder.start();
+
+btn.innerText="Detener Grabación ⏹️";
+
+}catch(error){
+
+alert("No se pudo acceder al micrófono.");
+
+btn.innerText="Grabar Audio";
+
+}
+
+}
+
+/* =========================
+   REGISTRO
+========================= */
+
+function saveEntry(){
+
+const note=document.getElementById("noteInput");
+
+const entry={
+
+emotion:selectedEmotionValue||"No especificada",
+
+note:note.value,
+
+photo:currentBase64Photo,
+
+audio:currentBase64Audio,
+
+date:new Date().toLocaleString("es-AR")
+
+};
+
+let entries=
+JSON.parse(localStorage.getItem("emotionEntries"))||[];
+
+entries.push(entry);
+
+localStorage.setItem(
+"emotionEntries",
+JSON.stringify(entries)
+);
+
+alert("¡Registro guardado con éxito! 🎉");
+
+note.value="";
+
+document.getElementById("photoInput").value="";
+document.getElementById("photoPreviewImg").style.display="none";
+
+document.getElementById("audioPlayback").style.display="none";
+
+document.querySelectorAll(".buttons-grid .btn")
+.forEach(btn=>btn.classList.remove("selected"));
+
+selectedEmotionValue="";
+currentBase64Audio="";
+currentBase64Photo="";
+
+loadEntries();
+
+}
+
+/* =========================
+   GRATITUD
+========================= */
+
+function saveGratitude(){
+
+const input=document.getElementById("gratitudeInput");
+
+if(!input.value.trim())return;
+
+const entry={
+text:input.value,
+date:new Date().toLocaleString("es-AR")
+};
+
+let items=
+JSON.parse(localStorage.getItem("gratitudeEntries"))||[];
+
+items.push(entry);
+
+localStorage.setItem(
+"gratitudeEntries",
+JSON.stringify(items)
+);
+
+alert("¡Gratitud guardada! ⭐");
+
+input.value="";
+
+loadGratitude();
+
+}
+
+/* =========================
+   ESTRATEGIAS
+========================= */
+
+function saveStrategy(){
+
+const input=document.getElementById("strategyInput");
+
+if(!input.value.trim())return;
+
+const entry={
+text:input.value,
+date:new Date().toLocaleString("es-AR")
+};
+
+let items=
+JSON.parse(localStorage.getItem("strategyEntries"))||[];
+
+items.push(entry);
+
+localStorage.setItem(
+"strategyEntries",
+JSON.stringify(items)
+);
+
+alert("¡Estrategia guardada! 💡");
+
+input.value="";
+
+loadStrategies();
+
+}
+
+/* =========================
+   MICROEXPRESIONES
+========================= */
+
+function saveMicroexpression(){
+
+const input=
+document.getElementById("microexpressionInput");
+
+if(!input.value.trim())return;
+
+const entry={
+text:input.value,
+date:new Date().toLocaleString("es-AR")
+};
+
+let items=
+JSON.parse(localStorage.getItem("microexpressionEntries"))||[];
+
+items.push(entry);
+
+localStorage.setItem(
+"microexpressionEntries",
+JSON.stringify(items)
+);
+
+alert("¡Observación guardada! 👀");
+
+input.value="";
+
+loadMicroexpressions();
+
+}
+
+/* =========================
+   ELIMINAR
+========================= */
+
+function deleteItem(key,index){
+
+let items=
+JSON.parse(localStorage.getItem(key))||[];
+
+items.splice(index,1);
+
+localStorage.setItem(
+key,
+JSON.stringify(items)
+);
+
+if(key==="emotionEntries")loadEntries();
+if(key==="gratitudeEntries")loadGratitude();
+if(key==="strategyEntries")loadStrategies();
+if(key==="microexpressionEntries")loadMicroexpressions();
+
+}
+
+/* =========================
+   CARGAR REGISTROS
+========================= */
+
+function loadEntries(){
+
+const list=document.getElementById("entriesList");
+
+list.innerHTML="";
+
+const entries=
+JSON.parse(localStorage.getItem("emotionEntries"))||[];
+
+entries.forEach((item,index)=>{
+
+const li=document.createElement("li");
+
+let content=
+"<strong>"+item.date+
+"</strong> - Emoción: "+
+item.emotion+
+"<br>"+
+escapeHTML(item.note||"");
+
+if(item.photo){
+
+content+=
+'<br><img src="'+
+item.photo+
+'" class="entry-img">';
+
+}
+
+if(item.audio){
+
+content+=
+'<br><audio src="'+
+item.audio+
+'" controls style="width:100%;margin-top:8px;"></audio>';
+
+}
+
+content+=
+'<button class="btn-delete" onclick="deleteItem(\'emotionEntries\','+
+index+
+')">Eliminar</button>';
+
+li.innerHTML=content;
+
+list.appendChild(li);
+
+});
+
+}
+
+function loadGratitude(){
+
+const list=document.getElementById("gratitudeList");
+
+list.innerHTML="";
+
+const items=
+JSON.parse(localStorage.getItem("gratitudeEntries"))||[];
+
+items.forEach((item,index)=>{
+
+const li=document.createElement("li");
+
+li.innerHTML=
+"<strong>"+item.date+
+"</strong>: "+
+escapeHTML(item.text)+
+'<button class="btn-delete" onclick="deleteItem(\'gratitudeEntries\','+
+index+
+')">Eliminar</button>';
+
+list.appendChild(li);
+
+});
+
+}
+
+function loadStrategies(){
+
+const list=document.getElementById("strategyList");
+
+list.innerHTML="";
+
+const items=
+JSON.parse(localStorage.getItem("strategyEntries"))||[];
+
+items.forEach((item,index)=>{
+
+const li=document.createElement("li");
+
+li.innerHTML=
+"<strong>"+item.date+
+"</strong>: "+
+escapeHTML(item.text)+
+'<button class="btn-delete" onclick="deleteItem(\'strategyEntries\','+
+index+
+')">Eliminar</button>';
+
+list.appendChild(li);
+
+});
+
+}
+
+function loadMicroexpressions(){
+
+const list=
+document.getElementById("microexpressionList");
+
+list.innerHTML="";
+
+const items=
+JSON.parse(localStorage.getItem("microexpressionEntries"))||[];
+
+items.forEach((item,index)=>{
+
+const li=document.createElement("li");
+
+li.innerHTML=
+"<strong>"+item.date+
+"</strong>: "+
+escapeHTML(item.text)+
+'<button class="btn-delete" onclick="deleteItem(\'microexpressionEntries\','+
+index+
+')">Eliminar</button>';
+
+list.appendChild(li);
+
+});
+
+}
+
+/* Evita problemas al mostrar texto escrito por el usuario */
+
+function escapeHTML(text){
+
+const div=document.createElement("div");
+
+div.textContent=text;
+
+return div.innerHTML;
 
 }
 
@@ -2323,36 +2008,36 @@ resetBreathing();
    INICIO
 ========================= */
 
-window.addEventListener('load',function(){
+window.addEventListener("load",()=>{
 
 loadEntries();
 loadGratitude();
 loadStrategies();
 loadMicroexpressions();
-loadArchives();
-updateWeeklyChart();
 
 });
 
-window.addEventListener('beforeunload',function(){
+/* =========================
+   BOTÓN SALIR EXTRA SEGURO
+========================= */
 
-if(mediaRecorder &&
-mediaRecorder.state==='recording'){
+document.addEventListener("keydown",event=>{
 
-try{
-mediaRecorder.stop();
-}catch(e){}
+if(event.key==="Escape"){
+
+const modal=document.getElementById("breathingModal");
+
+if(modal&&modal.style.display==="flex"){
+
+closeBreathingExercise();
 
 }
-
-if(audioStream){
-
-audioStream.getTracks()
-.forEach(track=>track.stop());
 
 }
 
 });
 
-</script></body>
-                                                            </html>
+</script>
+
+</body>
+   </html>
