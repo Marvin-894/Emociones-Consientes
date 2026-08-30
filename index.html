@@ -318,6 +318,17 @@
                     <option value="reggae">Reggae Lofi Chill 🌴</option>
                     <option value="synthwave">Synthwave Nocturno</option>
                     <option value="zen">Meditación Zen (Tonos Profundos)</option>
+                    <!-- 10 CANCIONES / ESTILOS NUEVOS -->
+                    <option value="valle">Valle Místico (Flautas Soft) 🏔️</option>
+                    <option value="sleep">Sueño Profundo (Delta Sine) 🌙</option>
+                    <option value="harp">Arpa Celestial 🎻</option>
+                    <option value="chillstep">Chillstep Atmosférico 🎧</option>
+                    <option value="bambu">Bosque de Bambú 🎋</option>
+                    <option value="marino">Océano Armónico 🐬</option>
+                    <option value="sunset">Atardecer Acústico 🌅</option>
+                    <option value="cosmic">Viaje Cósmico 🚀</option>
+                    <option value="celtica">Melodía Céltica 🍃</option>
+                    <option value="sitar">Sitar Meditativo 🪕</option>
                 </select>
             </div>
             
@@ -358,6 +369,47 @@
                 <div class="ambient-item">
                     <div class="ambient-header"><span>⚡ Tormenta</span><input type="checkbox" id="stormNoise" onchange="toggleAmbientNoise('storm', this.checked)"></div>
                     <input type="range" class="volume-slider" id="stormVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('storm', this.value)">
+                </div>
+                <!-- 10 SONIDOS NUEVOS -->
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🛸 Ruido Blanco</span><input type="checkbox" id="whiteNoise" onchange="toggleAmbientNoise('white', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="whiteVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('white', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>📻 Ruido Rosa</span><input type="checkbox" id="pinkNoise" onchange="toggleAmbientNoise('pink', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="pinkVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('pink', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🪨 Cascadas</span><input type="checkbox" id="waterfallNoise" onchange="toggleAmbientNoise('waterfall', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="waterfallVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('waterfall', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🦗 Grillos</span><input type="checkbox" id="cricketsNoise" onchange="toggleAmbientNoise('crickets', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="cricketsVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('crickets', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🈳 Cuencos</span><input type="checkbox" id="bowlsNoise" onchange="toggleAmbientNoise('bowls', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="bowlsVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('bowls', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🔔 Campanas</span><input type="checkbox" id="chimesNoise" onchange="toggleAmbientNoise('chimes', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="chimesVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('chimes', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🦉 Búhos</span><input type="checkbox" id="owlsNoise" onchange="toggleAmbientNoise('owls', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="owlsVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('owls', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>☕ Cafetería</span><input type="checkbox" id="cafeNoise" onchange="toggleAmbientNoise('cafe', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="cafeVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('cafe', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🚂 Tren Suave</span><input type="checkbox" id="trainNoise" onchange="toggleAmbientNoise('train', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="trainVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('train', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🫧 Burbujas</span><input type="checkbox" id="bubblesNoise" onchange="toggleAmbientNoise('bubbles', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="bubblesVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('bubbles', this.value)">
                 </div>
             </div>
         </div>
@@ -498,7 +550,10 @@
 
         let ambientNodes = { 
             rain: null, ocean: null, fire: null, night: null,
-            wind: null, river: null, birds: null, storm: null
+            wind: null, river: null, birds: null, storm: null,
+            white: null, pink: null, waterfall: null, crickets: null,
+            bowls: null, chimes: null, owls: null, cafe: null,
+            train: null, bubbles: null
         };
 
         const notes = {
@@ -517,7 +572,18 @@
             space: { tempo: 650, wave: 'sine', chords: [[notes.C3, notes.G3, notes.C4, notes.G4], [notes.F3, notes.C4, notes.F4, notes.C5], [notes.A3, notes.E4, notes.A4, notes.E5], [notes.G3, notes.D4, notes.G4, notes.D5]], melody: [notes.G5, null, notes.E5, null, notes.C5, null, notes.B4, null] },
             reggae: { tempo: 330, wave: 'sine', chords: [[notes.C3, notes.E3, notes.G3], [notes.F3, notes.A3, notes.C4], [notes.G3, notes.B3, notes.D4], [notes.C3, notes.E3, notes.G3]], melody: [null, notes.G4, null, notes.E5, null, notes.D5, notes.C5, null] },
             synthwave: { tempo: 200, wave: 'sawtooth', chords: [[notes.C3, notes.G3, notes.C4], [notes.A3, notes.E4, notes.A4], [notes.F3, notes.C4, notes.F4], [notes.G3, notes.D4, notes.G4]], melody: [notes.C5, notes.E5, notes.G5, notes.E5, notes.D5, notes.B4, notes.C5, notes.G4] },
-            zen: { tempo: 600, wave: 'sine', chords: [[notes.C3, notes.G3], [notes.F3, notes.C4], [notes.A3, notes.E4], [notes.G3, notes.D4]], melody: [notes.E4, null, notes.G4, null, notes.B4, null, notes.A4, null] }
+            zen: { tempo: 600, wave: 'sine', chords: [[notes.C3, notes.G3], [notes.F3, notes.C4], [notes.A3, notes.E4], [notes.G3, notes.D4]], melody: [notes.E4, null, notes.G4, null, notes.B4, null, notes.A4, null] },
+            // 10 NUEVAS ESTILOS/CANCIONES
+            valle: { tempo: 500, wave: 'sine', chords: [[notes.E3, notes.B3, notes.E4], [notes.A3, notes.E4, notes.A4], [notes.C3, notes.G3, notes.C4], [notes.D3, notes.A3, notes.D4]], melody: [notes.B4, notes.E5, null, notes.G5, notes.E5, null, notes.D5, notes.B4] },
+            sleep: { tempo: 700, wave: 'sine', chords: [[notes.C3, notes.G3], [notes.A3, notes.E4], [notes.F3, notes.C4], [notes.G3, notes.D4]], melody: [notes.C4, null, null, notes.E4, null, null, notes.G4, null] },
+            harp: { tempo: 240, wave: 'triangle', chords: [[notes.C3, notes.E3, notes.G3, notes.C4], [notes.F3, notes.A3, notes.C4, notes.F4], [notes.A3, notes.C4, notes.E4, notes.A4], [notes.G3, notes.B3, notes.D4, notes.G4]], melody: [notes.E5, notes.G5, notes.C5, notes.E5, notes.D5, notes.B4, notes.G4, notes.D5] },
+            chillstep: { tempo: 220, wave: 'sawtooth', chords: [[notes.A3, notes.C4, notes.E4], [notes.F3, notes.A3, notes.C4], [notes.C3, notes.E3, notes.G3], [notes.G3, notes.B3, notes.D4]], melody: [notes.E5, null, notes.A5, notes.G5, notes.E5, null, notes.C5, notes.D5] },
+            bambu: { tempo: 420, wave: 'sine', chords: [[notes.D3, notes.A3, notes.D4], [notes.G3, notes.D4, notes.G4], [notes.A3, notes.E4, notes.A4], [notes.D3, notes.A3, notes.D4]], melody: [notes.A4, notes.D5, notes.F4, null, notes.A5, null, notes.F5, notes.D5] },
+            marino: { tempo: 550, wave: 'sine', chords: [[notes.F3, notes.C4, notes.E4, notes.G4], [notes.C3, notes.G3, notes.B3, notes.D4], [notes.A3, notes.E4, notes.G4, notes.C5], [notes.G3, notes.D4, notes.F4, notes.A4]], melody: [notes.G5, notes.E5, null, notes.C5, null, notes.D5, notes.E5, null] },
+            sunset: { tempo: 310, wave: 'triangle', chords: [[notes.G3, notes.B3, notes.D4], [notes.C3, notes.E3, notes.G3], [notes.E3, notes.G3, notes.B3], [notes.D3, notes.F3, notes.A3]], melody: [notes.D5, notes.B4, notes.G4, notes.A4, notes.B4, notes.D5, notes.E5, notes.D5] },
+            cosmic: { tempo: 480, wave: 'sine', chords: [[notes.C3, notes.B3, notes.E4], [notes.F3, notes.E4, notes.A4], [notes.A3, notes.G4, notes.C5], [notes.G3, notes.F4, notes.B4]], melody: [notes.C5, null, notes.G5, null, notes.B5, null, notes.E5, null] },
+            celtica: { tempo: 290, wave: 'triangle', chords: [[notes.A3, notes.E4, notes.A4], [notes.G3, notes.D4, notes.G4], [notes.F3, notes.C4, notes.F4], [notes.E3, notes.B3, notes.E4]], melody: [notes.A4, notes.C5, notes.E5, notes.D5, notes.C5, notes.B4, notes.A4, notes.B4] },
+            sitar: { tempo: 380, wave: 'sawtooth', chords: [[notes.C3, notes.G3, notes.C4], [notes.C3, notes.F3, notes.C4], [notes.C3, notes.G3, notes.C4], [notes.C3, notes.A3, notes.C4]], melody: [notes.C4, notes.D4, notes.E4, notes.G4, notes.A4, notes.C5, notes.A4, notes.G4] }
         };
 
         async function initAudio() {
@@ -613,30 +679,67 @@
             const volSlider = document.getElementById(type + 'Vol');
             const targetGain = parseFloat(volSlider.value) * getBaseGain(type);
 
-            if (type === 'birds') {
+            if (type === 'birds' || type === 'crickets' || type === 'owls' || type === 'chimes' || type === 'bowls' || type === 'bubbles') {
                 const gain = audioCtx.createGain();
                 gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
                 gain.connect(audioCtx.destination);
 
-                const birdInterval = setInterval(() => {
+                const procInterval = setInterval(() => {
                     if (Math.random() > 0.4 && audioCtx) {
                         const osc = audioCtx.createOscillator();
-                        const birdGain = audioCtx.createGain();
-                        osc.type = 'sine';
-                        const startFreq = 2000 + Math.random() * 1500;
-                        osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
-                        osc.frequency.exponentialRampToValueAtTime(startFreq + 800, audioCtx.currentTime + 0.1);
-                        birdGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-                        birdGain.gain.linearRampToValueAtTime(0.05 * targetGain, audioCtx.currentTime + 0.05);
-                        birdGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-                        osc.connect(birdGain);
-                        birdGain.connect(gain);
-                        osc.start();
-                        osc.stop(audioCtx.currentTime + 0.15);
+                        const soundGain = audioCtx.createGain();
+                        
+                        if (type === 'birds') {
+                            osc.type = 'sine';
+                            const startFreq = 2000 + Math.random() * 1500;
+                            osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
+                            osc.frequency.exponentialRampToValueAtTime(startFreq + 800, audioCtx.currentTime + 0.1);
+                            soundGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                            soundGain.gain.linearRampToValueAtTime(0.05 * targetGain, audioCtx.currentTime + 0.05);
+                            soundGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                            osc.connect(soundGain); soundGain.connect(gain);
+                            osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+                        } else if (type === 'crickets') {
+                            osc.type = 'triangle';
+                            osc.frequency.setValueAtTime(4500 + Math.random() * 500, audioCtx.currentTime);
+                            soundGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                            soundGain.gain.linearRampToValueAtTime(0.03 * targetGain, audioCtx.currentTime + 0.02);
+                            soundGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+                            osc.connect(soundGain); soundGain.connect(gain);
+                            osc.start(); osc.stop(audioCtx.currentTime + 0.06);
+                        } else if (type === 'owls') {
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+                            osc.frequency.exponentialRampToValueAtTime(280, audioCtx.currentTime + 0.4);
+                            soundGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                            soundGain.gain.linearRampToValueAtTime(0.08 * targetGain, audioCtx.currentTime + 0.1);
+                            soundGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+                            osc.connect(soundGain); soundGain.connect(gain);
+                            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+                        } else if (type === 'chimes' || type === 'bowls') {
+                            osc.type = 'sine';
+                            const freq = type === 'bowls' ? (200 + Math.random() * 150) : (1200 + Math.random() * 1000);
+                            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                            soundGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                            soundGain.gain.linearRampToValueAtTime(0.1 * targetGain, audioCtx.currentTime + 0.05);
+                            soundGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + (type === 'bowls' ? 2.5 : 1.2));
+                            osc.connect(soundGain); soundGain.connect(gain);
+                            osc.start(); osc.stop(audioCtx.currentTime + (type === 'bowls' ? 2.5 : 1.2));
+                        } else if (type === 'bubbles') {
+                            osc.type = 'sine';
+                            const startF = 400 + Math.random() * 600;
+                            osc.frequency.setValueAtTime(startF, audioCtx.currentTime);
+                            osc.frequency.linearRampToValueAtTime(startF + 300, audioCtx.currentTime + 0.08);
+                            soundGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                            soundGain.gain.linearRampToValueAtTime(0.05 * targetGain, audioCtx.currentTime + 0.03);
+                            soundGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                            osc.connect(soundGain); soundGain.connect(gain);
+                            osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+                        }
                     }
-                }, 800);
+                }, type === 'crickets' ? 250 : type === 'bubbles' ? 300 : type === 'owls' ? 3500 : 1200);
 
-                ambientNodes[type] = { source: null, gain: gain, interval: birdInterval };
+                ambientNodes[type] = { source: null, gain: gain, interval: procInterval };
                 return;
             }
 
@@ -654,6 +757,12 @@
             else if (type === 'wind') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(250, audioCtx.currentTime); filter.Q.value = 3.0; }
             else if (type === 'river') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(600, audioCtx.currentTime); }
             else if (type === 'storm') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(180, audioCtx.currentTime); }
+            // FILTROS PARA NUEVOS SONIDOS CONTINUOS
+            else if (type === 'white') { filter.type = 'allpass'; }
+            else if (type === 'pink') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(1200, audioCtx.currentTime); }
+            else if (type === 'waterfall') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(850, audioCtx.currentTime); }
+            else if (type === 'cafe') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(650, audioCtx.currentTime); filter.Q.value = 0.8; }
+            else if (type === 'train') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(300, audioCtx.currentTime); }
 
             gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
             gain.gain.linearRampToValueAtTime(targetGain, audioCtx.currentTime + 0.5);
@@ -674,6 +783,17 @@
                 case 'river': return 0.18;
                 case 'birds': return 0.8;
                 case 'storm': return 0.3;
+                // GANANCIAS DE LOS NUEVOS SONIDOS
+                case 'white': return 0.04;
+                case 'pink': return 0.08;
+                case 'waterfall': return 0.22;
+                case 'crickets': return 0.6;
+                case 'bowls': return 0.7;
+                case 'chimes': return 0.5;
+                case 'owls': return 0.8;
+                case 'cafe': return 0.12;
+                case 'train': return 0.15;
+                case 'bubbles': return 0.6;
                 default: return 0.1;
             }
         }
