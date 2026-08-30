@@ -1,16 +1,1384 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Nombre de tu Negocio",
-    "image": "https://tu-sitio.com/imagen.jpg",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Sunchales",
-      "addressRegion": "Santa Fe",
-      "addressCountry": "AR"
-    }
-  }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diario de Padres Conscientes & Relax</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --primary-accent: #6c5ce7;
+            --primary-soft: #a29bfe;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --border-soft: rgba(255, 255, 255, 0.6);
+            --radius-large: 28px;
+            --radius-card: 20px;
+            --shadow-float: 0 12px 32px rgba(31, 38, 135, 0.12);
+            --shadow-btn: 0 6px 16px rgba(108, 92, 231, 0.25);
+        }
+
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            text-align: center; 
+            padding: 20px 12px; 
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main); 
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        .container { 
+            max-width: 640px; 
+            margin: 0 auto; 
+            background: var(--card-bg); 
+            backdrop-filter: blur(10px);
+            padding: 28px 20px; 
+            border-radius: var(--radius-large); 
+            border: 2px solid var(--border-soft);
+            box-shadow: var(--shadow-float);
+            box-sizing: border-box;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        h1 { 
+            margin: 0; 
+            color: #6c5ce7; 
+            font-size: 1.9em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-align: left;
+        }
+
+        .sos-btn {
+            background: #ff7675;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 118, 117, 0.3);
+            transition: transform 0.2s;
+            font-size: 0.85em;
+        }
+        .sos-btn:hover { transform: scale(1.05); }
+        
+        .card-section {
+            background: #ffffff;
+            border-radius: var(--radius-card);
+            padding: 20px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #f1f2f6;
+            text-align: left;
+        }
+
+        .card-section h3 {
+            margin-top: 0;
+            margin-bottom: 6px;
+            color: #4834d4;
+            font-size: 1.25em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        p { margin-top: 0; font-size: 0.92em; color: var(--text-muted); line-height: 1.4; }
+        
+        /* SELECTS E INPUTS */
+        .music-player select, select.emotion-select, select.custom-select {
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 2px solid #e0e0e0;
+            background: #fcfcfc;
+            font-family: inherit;
+            font-size: 0.95em;
+            color: var(--text-main);
+            font-weight: 600;
+            outline: none;
+            width: 100%;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .music-player select:focus, select.emotion-select:focus, select.custom-select:focus {
+            border-color: var(--primary-accent);
+        }
+
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            margin: 14px 0 18px 0;
+        }
+        
+        /* BOTONES PRINCIPALES */
+        .music-btn, button.action-btn {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            border: none;
+            padding: 14px 22px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1em;
+            transition: all 0.25s ease;
+            width: 100%;
+            box-shadow: var(--shadow-btn);
+        }
+        .music-btn:hover, button.action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.35);
+        }
+        .music-btn:active, button.action-btn:active {
+            transform: translateY(1px);
+        }
+        .music-btn.active { 
+            background: linear-gradient(135deg, #ff7675 0%, #fab1a0 100%);
+            box-shadow: 0 6px 16px rgba(255, 118, 117, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f1f2f6 !important;
+            color: var(--text-main) !important;
+            box-shadow: none !important;
+        }
+        .btn-secondary:hover {
+            background: #dfe4ea !important;
+        }
+
+        /* AMBIENT NOISE GRID */
+        .ambient-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .ambient-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .ambient-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.88em;
+            font-weight: 700;
+        }
+        .ambient-item input[type="checkbox"] {
+            cursor: pointer;
+            accent-color: var(--primary-accent);
+            width: 18px;
+            height: 18px;
+        }
+        .volume-slider {
+            width: 100%;
+            accent-color: var(--primary-accent);
+            height: 6px;
+            cursor: pointer;
+        }
+
+        /* EMOCIONES Y BOTONES CON EMOJIS */
+        .buttons-grid { 
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px; 
+            margin: 16px 0 6px 0; 
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .emotion-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 68px;
+        }
+        .btn { 
+            border: 3px solid #ffffff; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            width: 54px; 
+            height: 54px; 
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+        }
+        .btn:hover { 
+            transform: scale(1.15) rotate(4deg); 
+        }
+        .btn.selected { 
+            outline: 4px solid var(--primary-accent); 
+            transform: scale(1.18); 
+            box-shadow: 0 8px 18px rgba(108, 92, 231, 0.3);
+        }
+        
+        .emotion-label {
+            font-size: 0.78em;
+            color: var(--text-main);
+            font-weight: 700;
+            text-align: center;
+        }
+
+        #happy { background-color: #ffeaa7; }
+        #sad { background-color: #74b9ff; }
+        #angry { background-color: #ff7675; }
+        #calm { background-color: #55efc4; }
+        #fear { background-color: #a29bfe; }
+        #surprise { background-color: #ffeaa7; }
+        #anxiety { background-color: #dfe6e9; }
+        #envy { background-color: #81ecec; }
+        #boredom { background-color: #b2bec3; }
+        #shame { background-color: #fd79a8; }
+        
+        textarea, input[type="text"] { 
+            width: 100%; 
+            padding: 14px; 
+            box-sizing: border-box; 
+            margin-top: 8px; 
+            border-radius: 16px; 
+            border: 2px solid #e0e0e0; 
+            background: #fcfcfc;
+            color: var(--text-main);
+            font-family: inherit; 
+            font-size: 0.95em;
+            transition: border-color 0.2s;
+        }
+        textarea { height: 90px; resize: vertical; }
+        textarea:focus, input[type="text"]:focus { 
+            outline: none; 
+            border-color: var(--primary-accent); 
+            background: #ffffff;
+        }
+
+        input[type="file"] { 
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 14px; 
+            border: 2px dashed var(--primary-soft); 
+            background: #f8f7ff;
+            color: var(--text-muted);
+            box-sizing: border-box; 
+            cursor: pointer;
+            font-family: inherit;
+        }
+        #audioPlayback { margin-top: 12px; display: block; width: 100%; border-radius: 10px; }
+        
+        .btn-delete {
+            background: #ff7675;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 700;
+            margin-top: 10px;
+            float: right;
+            transition: background 0.2s;
+        }
+        .btn-delete:hover { background: #d63031; }
+
+        /* TABS DE HISTORIAL */
+        .tabs-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .tab-btn {
+            background: #f1f2f6;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.85em;
+            color: var(--text-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--primary-accent);
+            color: white;
+        }
+
+        .history-card { 
+            margin-top: 20px; 
+            text-align: left; 
+            background: #ffffff; 
+            padding: 20px; 
+            border-radius: var(--radius-card); 
+            border: 1px solid #f1f2f6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .history-card h3 { color: var(--primary-accent); margin-top: 0; }
+        ul { padding-left: 0; list-style-type: none; margin-bottom: 0; }
+        li { 
+            margin-bottom: 14px; 
+            word-wrap: break-word; 
+            color: var(--text-main); 
+            background: #f8f9fa; 
+            padding: 14px; 
+            border-radius: 16px; 
+            border: 1px solid #e9ecef; 
+            overflow: hidden; 
+        }
+        li strong { color: var(--primary-accent); }
+        .tag-member {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            font-weight: 700;
+            background: #e0c3fc;
+            color: #4834d4;
+            margin-left: 6px;
+        }
+        .entry-img { max-width: 100%; height: auto; border-radius: 14px; margin-top: 10px; display: block; }
+        .photo-preview { max-width: 140px; height: auto; border-radius: 12px; margin-top: 10px; display: none; }
+
+        /* MODAL SOS RESPIRACION */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 28px;
+            border-radius: 24px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .breath-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: transform 4s ease-in-out;
+            box-shadow: 0 0 20px rgba(142, 197, 252, 0.5);
+        }
+
+        /* GRAFICA Y RESUMEN */
+        .chart-container {
+            width: 100%;
+            height: 180px;
+            margin-top: 15px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #f1f2f6;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .chart-bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+            width: 12%;
+            position: relative;
+        }
+        .chart-bar {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            background: var(--primary-soft);
+            transition: height 0.5s ease;
+            min-height: 4px;
+        }
+        .chart-label {
+            font-size: 0.7em;
+            font-weight: 700;
+            margin-top: 6px;
+            color: var(--text-muted);
+            position: absolute;
+            bottom: -22px;
+            white-space: nowrap;
+        }
+        .summary-box {
+            background: #f8f7ff;
+            border-left: 4px solid var(--primary-accent);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
+<body>
+
+    <div class="container">
+        <div class="header-top">
+            <h1>Diario Consciente 🌿</h1>
+            <button class="sos-btn" onclick="openSOSModal()">🧘‍♂️ Calma SOS</button>
+        </div>
+        
+        <div class="card-section music-player">
+            <h3>🎨 Rincón de Relax y Meditación</h3>
+            <p>Elige una melodía tranquila para acompañar tu momento:</p>
+            <div>
+                <select id="styleSelect" onchange="changeStyle()">
+                    <option value="ambient">Ambient Meditativo (Pads Armónicos)</option>
+                    <option value="piano">Piano Suave & Melódico</option>
+                    <option value="lofi">Lo-Fi Chill Relax</option>
+                    <option value="bossa">Bossa Nova Relax 🏖️</option>
+                    <option value="jazz">Calm Jazz Ballad 🎷</option>
+                    <option value="folk">Acoustic Folk Chill 🎸</option>
+                    <option value="space">Space Ambient & Cuencos 🌌</option>
+                    <option value="reggae">Reggae Lofi Chill 🌴</option>
+                    <option value="synthwave">Synthwave Nocturno</option>
+                    <option value="zen">Meditación Zen (Tonos Profundos)</option>
+                </select>
+            </div>
+            
+            <div class="music-controls">
+                <button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">Reproducir Música 🎵</button>
+            </div>
+
+            <p style="font-weight: 700; color: var(--primary-accent); margin-bottom: 8px;">Sonidos de la Naturaleza:</p>
+            <div class="ambient-grid">
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🌧️ Lluvia</span><input type="checkbox" id="rainNoise" onchange="toggleAmbientNoise('rain', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="rainVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('rain', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🌊 Mar</span><input type="checkbox" id="oceanNoise" onchange="toggleAmbientNoise('ocean', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="oceanVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('ocean', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🔥 Fuego</span><input type="checkbox" id="fireNoise" onchange="toggleAmbientNoise('fire', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="fireVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('fire', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🌙 Noche</span><input type="checkbox" id="nightNoise" onchange="toggleAmbientNoise('night', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="nightVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('night', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🍃 Viento</span><input type="checkbox" id="windNoise" onchange="toggleAmbientNoise('wind', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="windVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('wind', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🏞️ Río</span><input type="checkbox" id="riverNoise" onchange="toggleAmbientNoise('river', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="riverVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('river', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>🐦 Pájaros</span><input type="checkbox" id="birdsNoise" onchange="toggleAmbientNoise('birds', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="birdsVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('birds', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header"><span>⚡ Tormenta</span><input type="checkbox" id="stormNoise" onchange="toggleAmbientNoise('storm', this.checked)"></div>
+                    <input type="range" class="volume-slider" id="stormVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('storm', this.value)">
+                </div>
+            </div>
+        </div>
+
+        <!-- REGISTRO EMOCIONAL PRINCIPAL -->
+        <div class="card-section">
+            <h3>🎈 ¿Cómo te sientes hoy?</h3>
+            <p>Toca el botón que mejor exprese tu emoción actual.</p>
+            <div class="buttons-grid">
+                <div class="emotion-card">
+                    <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!', this)" title="Alegre">😊</button>
+                    <span class="emotion-label">Alegre</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.', this)" title="Triste">😢</button>
+                    <span class="emotion-label">Triste</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.', this)" title="Enojado">😡</button>
+                    <span class="emotion-label">Enojado</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.', this)" title="En Calma">😌</button>
+                    <span class="emotion-label">En Calma</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.', this)" title="Miedo">😨</button>
+                    <span class="emotion-label">Miedo</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.', this)" title="Sorprendido">😲</button>
+                    <span class="emotion-label">Sorprendido</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.', this)" title="Ansiedad">😰</button>
+                    <span class="emotion-label">Ansiedad</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.', this)" title="Envidia">😒</button>
+                    <span class="emotion-label">Envidia</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.', this)" title="Aburrimiento">🥱</button>
+                    <span class="emotion-label">Aburrimiento</span>
+                </div>
+                <div class="emotion-card">
+                    <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.', this)" title="Vergüenza">😳</button>
+                    <span class="emotion-label">Vergüenza</span>
+                </div>
+            </div>
+
+            <!-- ETIQUETADO DE INTEGRANTE -->
+            <div style="margin-top: 14px;">
+                <label style="font-size:0.85em; font-weight:700; color:var(--text-muted);">¿A quién corresponde este registro?</label>
+                <select id="memberSelect" class="custom-select" style="margin-top: 4px;">
+                    <option value="Personal">Personal (Mío)</option>
+                    <option value="Hijo/a">Observación de Hijo/a</option>
+                    <option value="Familia">Momento Compartido / Familia</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="card-section">
+            <h3>📸 Captura de Momento</h3>
+            <p>Guarda una foto especial para recordar este día.</p>
+            <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
+            <img id="photoPreviewImg" class="photo-preview" alt="Vista previa">
+            
+            <p style="margin-top: 14px; font-weight: 700; color: var(--text-main);">¿Qué emoción transmitía esta foto?</p>
+            <select id="photoEmotionSelect" class="emotion-select">
+                <option value="Alegre">Alegre 😊</option>
+                <option value="Triste">Triste 😢</option>
+                <option value="Enojado">Enojado 😡</option>
+                <option value="En Calma">En Calma 😌</option>
+                <option value="Miedo">Miedo 😨</option>
+                <option value="Sorprendido">Sorprendido 😲</option>
+                <option value="Ansiedad">Ansiedad 😰</option>
+                <option value="Envidia">Envidia 😒</option>
+                <option value="Aburrimiento">Aburrimiento 🥱</option>
+                <option value="Vergüenza">Vergüenza 😳</option>
+            </select>
+            
+            <button class="action-btn" style="margin-top: 14px; background: linear-gradient(135deg, #ff9ff3 0%, #feca57 100%);" onclick="saveStandalonePhoto()">Guardar Foto 🖼️</button>
+        </div>
+
+        <div class="card-section">
+            <h3>🎤 Mensaje de Voz</h3>
+            <p>Usa tu voz para contar cómo te fue hoy.</p>
+            <button class="action-btn" id="recordBtn" onclick="toggleRecording()">Grabar Audio</button>
+            <audio id="audioPlayback" controls style="display:none;"></audio>
+        </div>
+
+        <div class="card-section">
+            <h3>📝 Reflexión & Análisis de Gatillos</h3>
+            <p>Anota la situación y qué la desencadenó (Crianza Consciente).</p>
+            <input type="text" id="triggerInput" placeholder="⚡ Gatillo/Desencadenante (Ej: Berrinche al apagar la TV, cansancio...)">
+            <textarea id="noteInput" placeholder="¿Qué pasó hoy y cómo reaccionaste?..."></textarea>
+        </div>
+
+        <button class="action-btn" style="background: linear-gradient(135deg, #10ac84 0%, #1dd1a1 100%); font-size: 1.05em; margin-bottom: 22px;" onclick="saveEntry()">Guardar Registro Completo ✨</button>
+
+        <!-- SECCIÓN DE EVOLUCIÓN EMOCIONAL SEMANAL -->
+        <div class="card-section">
+            <h3>📊 Evolución Emocional Semanal</h3>
+            <p>Frecuencia de emociones en los últimos 7 días activos.</p>
+            <div class="chart-container" id="weeklyChart">
+                <!-- Se genera dinámicamente con JS -->
+            </div>
+            <div id="weeklySummary" class="summary-box">
+                Calculando datos de la semana...
+            </div>
+            <button class="action-btn btn-secondary" style="margin-top: 14px;" onclick="closeAndArchiveWeek()">Cerrar y Archivar Semana 📦</button>
+        </div>
+
+        <div class="card-section">
+            <h3>⭐ Momento de Gratitud</h3>
+            <p>Agradecer fortalece la empatía y la paz mental.</p>
+            <textarea id="gratitudeInput" placeholder="¿Qué cosas lindas te pasaron hoy?"></textarea>
+            <button class="action-btn" style="margin-top: 12px;" onclick="saveGratitude()">Guardar Gratitud</button>
+        </div>
+
+        <div class="card-section">
+            <h3>💡 Estrategias de Crianza</h3>
+            <p>Ideas y herramientas para compartir en familia.</p>
+            <textarea id="strategyInput" placeholder="Anota aquí tus descubrimientos..."></textarea>
+            <button class="action-btn" style="margin-top: 12px;" onclick="saveStrategy()">Guardar Estrategia</button>
+        </div>
+
+        <div class="card-section">
+            <h3>👀 Observación de Microexpresiones</h3>
+            <p>Registra gestos observados durante el día.</p>
+            <textarea id="microexpressionInput" placeholder="Anota las expresiones observadas..."></textarea>
+            <button class="action-btn" style="margin-top: 12px;" onclick="saveMicroexpression()">Guardar Observación</button>
+        </div>
+
+        <!-- SECCIÓN NAVEGABLE POR TABS DE HISTORIAL -->
+        <div class="history-card">
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab(event, 'entries')">Diario</button>
+                <button class="tab-btn" onclick="switchTab(event, 'gratitude')">Gratitud</button>
+                <button class="tab-btn" onclick="switchTab(event, 'strategies')">Estrategias</button>
+                <button class="tab-btn" onclick="switchTab(event, 'microexpressions')">Gestos</button>
+                <button class="tab-btn" onclick="switchTab(event, 'archives')">Archivos</button>
+            </div>
+
+            <div id="tab-entries">
+                <h3>Registros Guardados</h3>
+                <ul id="entriesList"></ul>
+            </div>
+
+            <div id="tab-gratitude" style="display: none;">
+                <h3>Agradecimientos</h3>
+                <ul id="gratitudeList"></ul>
+            </div>
+
+            <div id="tab-strategies" style="display: none;">
+                <h3>Estrategias de Crianza</h3>
+                <ul id="strategyList"></ul>
+            </div>
+
+            <div id="tab-microexpressions" style="display: none;">
+                <h3>Observaciones de Microexpresiones</h3>
+                <ul id="microexpressionList"></ul>
+            </div>
+
+            <div id="tab-archives" style="display: none;">
+                <h3>Semanas Archivadas</h3>
+                <ul id="archivesList"></ul>
+            </div>
+        </div>
+
+        <!-- OPCIONES DE RESPALDO JSON -->
+        <div class="card-section" style="margin-top: 22px;">
+            <h3>⚙️ Copia de Seguridad y Datos</h3>
+            <p>Guarda una copia de tus datos o restáurala en otro dispositivo.</p>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button class="action-btn btn-secondary" onclick="exportDataJSON()">Exportar JSON 📥</button>
+                <button class="action-btn btn-secondary" onclick="document.getElementById('importFileInput').click()">Importar JSON 📤</button>
+                <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="importDataJSON(event)">
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SOS CALMA -->
+    <div id="sosModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color: var(--primary-accent); margin-top: 0;">Pausa de Calma (4-7-8)</h3>
+            <p>Respira para autorregularte antes de reaccionar.</p>
+            <div class="breath-circle" id="breathCircle">Inhala</div>
+            <p id="breathTimer" style="font-weight: 700; font-size: 1.2em;">4</p>
+            <button class="action-btn" onclick="closeSOSModal()">Finalizar / Salir</button>
+        </div>
+    </div>
+
+    <script>
+        let audioCtx = null;
+        let isPlaying = false;
+        let timerId = null;
+        let step = 0;
+        let currentStyle = 'ambient';
+
+        let ambientNodes = { 
+            rain: null, ocean: null, fire: null, night: null,
+            wind: null, river: null, birds: null, storm: null
+        };
+
+        const notes = {
+            C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.00, A3: 220.00, B3: 246.94,
+            C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
+            C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99, A5: 880.00, B5: 987.77
+        };
+
+        const styles = {
+            ambient: { tempo: 450, wave: 'sine', chords: [[notes.C3, notes.G3, notes.B3, notes.E4], [notes.A3, notes.E4, notes.G4, notes.C4], [notes.F3, notes.C4, notes.E4, notes.A4], [notes.G3, notes.D4, notes.F4, notes.B4]], melody: [notes.E5, null, notes.G5, notes.B4, null, notes.C5, notes.D5, null] },
+            piano: { tempo: 320, wave: 'triangle', chords: [[notes.C3, notes.G3, notes.E4], [notes.F3, notes.C4, notes.A4], [notes.A3, notes.E4, notes.C5], [notes.G3, notes.D4, notes.B4]], melody: [notes.G4, notes.C5, notes.E5, notes.D5, notes.C5, notes.B4, notes.A4, notes.G4] },
+            lofi: { tempo: 260, wave: 'triangle', chords: [[notes.C3, notes.E3, notes.G3, notes.B3], [notes.A3, notes.C4, notes.E4, notes.G4], [notes.D3, notes.F3, notes.A3, notes.C4], [notes.G3, notes.B3, notes.D4, notes.F4]], melody: [notes.G4, notes.E5, null, notes.D5, notes.C5, null, notes.A4, notes.B4] },
+            bossa: { tempo: 280, wave: 'triangle', chords: [[notes.D3, notes.F3, notes.A3, notes.C4], [notes.G3, notes.B3, notes.D4, notes.F4], [notes.C3, notes.E3, notes.G3, notes.B3], [notes.A3, notes.C4, notes.E4, notes.G4]], melody: [notes.A4, notes.C5, notes.B4, notes.G4, notes.E5, null, notes.D5, notes.C5] },
+            jazz: { tempo: 350, wave: 'sine', chords: [[notes.F3, notes.A3, notes.C4, notes.E4], [notes.D3, notes.F3, notes.A3, notes.C4], [notes.G3, notes.B3, notes.D4, notes.F4], [notes.C3, notes.E3, notes.G3, notes.B3]], melody: [notes.E5, notes.D5, notes.C5, notes.A4, notes.G4, notes.A4, notes.C5, null] },
+            folk: { tempo: 300, wave: 'triangle', chords: [[notes.C3, notes.G3, notes.C4], [notes.G3, notes.D4, notes.G4], [notes.A3, notes.E4, notes.A4], [notes.F3, notes.C4, notes.F4]], melody: [notes.E4, notes.G4, notes.C5, notes.G4, notes.E5, notes.D5, notes.C5, notes.G4] },
+            space: { tempo: 650, wave: 'sine', chords: [[notes.C3, notes.G3, notes.C4, notes.G4], [notes.F3, notes.C4, notes.F4, notes.C5], [notes.A3, notes.E4, notes.A4, notes.E5], [notes.G3, notes.D4, notes.G4, notes.D5]], melody: [notes.G5, null, notes.E5, null, notes.C5, null, notes.B4, null] },
+            reggae: { tempo: 330, wave: 'sine', chords: [[notes.C3, notes.E3, notes.G3], [notes.F3, notes.A3, notes.C4], [notes.G3, notes.B3, notes.D4], [notes.C3, notes.E3, notes.G3]], melody: [null, notes.G4, null, notes.E5, null, notes.D5, notes.C5, null] },
+            synthwave: { tempo: 200, wave: 'sawtooth', chords: [[notes.C3, notes.G3, notes.C4], [notes.A3, notes.E4, notes.A4], [notes.F3, notes.C4, notes.F4], [notes.G3, notes.D4, notes.G4]], melody: [notes.C5, notes.E5, notes.G5, notes.E5, notes.D5, notes.B4, notes.C5, notes.G4] },
+            zen: { tempo: 600, wave: 'sine', chords: [[notes.C3, notes.G3], [notes.F3, notes.C4], [notes.A3, notes.E4], [notes.G3, notes.D4]], melody: [notes.E4, null, notes.G4, null, notes.B4, null, notes.A4, null] }
+        };
+
+        async function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                await audioCtx.resume();
+            }
+        }
+
+        function playTone(freq, duration, type = 'sine', gainVal = 0.05) {
+            if (!freq || !audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(type === 'sawtooth' ? 700 : 1600, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(gainVal, audioCtx.currentTime + 0.1);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+            osc.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function playStep() {
+            const style = styles[currentStyle];
+            const chordIndex = Math.floor(step / 4) % style.chords.length;
+            if (step % 4 === 0) style.chords[chordIndex].forEach(note => playTone(note, 2.8, style.wave, 0.04));
+            const melodyNote = style.melody[step % style.melody.length];
+            if (melodyNote) playTone(melodyNote, 0.9, 'sine', 0.05);
+            step++;
+        }
+
+        async function toggleAudio() {
+            await initAudio();
+            const btn = document.getElementById('playAudioBtn');
+            if (isPlaying) {
+                clearInterval(timerId);
+                isPlaying = false;
+                btn.innerText = 'Reproducir Música 🎵';
+                btn.classList.remove('active');
+            } else {
+                isPlaying = true;
+                step = 0;
+                btn.innerText = 'Pausar Música ⏸️';
+                btn.classList.add('active');
+                playStep();
+                timerId = setInterval(playStep, styles[currentStyle].tempo);
+            }
+        }
+
+        function changeStyle() {
+            currentStyle = document.getElementById('styleSelect').value;
+            if (isPlaying) {
+                clearInterval(timerId);
+                step = 0;
+                timerId = setInterval(playStep, styles[currentStyle].tempo);
+            }
+        }
+
+        function createWhiteNoiseBuffer() {
+            const bufferSize = audioCtx.sampleRate * 2;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
+            return buffer;
+        }
+
+        async function toggleAmbientNoise(type, active) {
+            await initAudio();
+            if (!active) {
+                if (ambientNodes[type]) {
+                    if (ambientNodes[type].gain) {
+                        ambientNodes[type].gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+                    }
+                    setTimeout(() => {
+                        try { 
+                            if (ambientNodes[type] && ambientNodes[type].source) ambientNodes[type].source.stop();
+                            if (ambientNodes[type] && ambientNodes[type].interval) clearInterval(ambientNodes[type].interval);
+                        } catch(e){}
+                        ambientNodes[type] = null;
+                    }, 500);
+                }
+                return;
+            }
+
+            const volSlider = document.getElementById(type + 'Vol');
+            const targetGain = parseFloat(volSlider.value) * getBaseGain(type);
+
+            if (type === 'birds') {
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
+                gain.connect(audioCtx.destination);
+
+                const birdInterval = setInterval(() => {
+                    if (Math.random() > 0.4 && audioCtx) {
+                        const osc = audioCtx.createOscillator();
+                        const birdGain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        const startFreq = 2000 + Math.random() * 1500;
+                        osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(startFreq + 800, audioCtx.currentTime + 0.1);
+                        birdGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                        birdGain.gain.linearRampToValueAtTime(0.05 * targetGain, audioCtx.currentTime + 0.05);
+                        birdGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                        osc.connect(birdGain);
+                        birdGain.connect(gain);
+                        osc.start();
+                        osc.stop(audioCtx.currentTime + 0.15);
+                    }
+                }, 800);
+
+                ambientNodes[type] = { source: null, gain: gain, interval: birdInterval };
+                return;
+            }
+
+            const buffer = createWhiteNoiseBuffer();
+            const noiseSource = audioCtx.createBufferSource();
+            noiseSource.buffer = buffer;
+            noiseSource.loop = true;
+            const filter = audioCtx.createBiquadFilter();
+            const gain = audioCtx.createGain();
+
+            if (type === 'rain') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(1000, audioCtx.currentTime); }
+            else if (type === 'ocean') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(400, audioCtx.currentTime); filter.Q.value = 1.0; }
+            else if (type === 'fire') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(800, audioCtx.currentTime); filter.Q.value = 1.0; }
+            else if (type === 'night') { filter.type = 'highpass'; filter.frequency.setValueAtTime(4000, audioCtx.currentTime); }
+            else if (type === 'wind') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(250, audioCtx.currentTime); filter.Q.value = 3.0; }
+            else if (type === 'river') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(600, audioCtx.currentTime); }
+            else if (type === 'storm') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(180, audioCtx.currentTime); }
+
+            gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(targetGain, audioCtx.currentTime + 0.5);
+            noiseSource.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noiseSource.start();
+            ambientNodes[type] = { source: noiseSource, gain: gain };
+        }
+
+        function getBaseGain(type) {
+            switch(type) {
+                case 'rain': return 0.15;
+                case 'ocean': return 0.2;
+                case 'fire': return 0.1;
+                case 'night': return 0.05;
+                case 'wind': return 0.25;
+                case 'river': return 0.18;
+                case 'birds': return 0.8;
+                case 'storm': return 0.3;
+                default: return 0.1;
+            }
+        }
+
+        function updateVolume(type, val) {
+            if (ambientNodes[type] && ambientNodes[type].gain && audioCtx) {
+                const targetGain = parseFloat(val) * getBaseGain(type);
+                ambientNodes[type].gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
+            }
+        }
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let audioStream = null;
+        let selectedEmotionValue = '';
+        let currentBase64Audio = '';
+        let currentBase64Photo = '';
+
+        function selectEmotion(emotion, message, element) {
+            selectedEmotionValue = emotion;
+            document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
+            if(element) element.classList.add('selected');
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(message);
+                utterance.lang = 'es-AR';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    currentBase64Photo = reader.result;
+                    const imgPreview = document.getElementById('photoPreviewImg');
+                    imgPreview.src = currentBase64Photo;
+                    imgPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveStandalonePhoto() {
+            if (!currentBase64Photo) {
+                alert('Primero selecciona una foto para guardar.');
+                return;
+            }
+            const photoEmotion = document.getElementById('photoEmotionSelect').value;
+            const entry = {
+                emotion: photoEmotion,
+                note: 'Foto guardada',
+                trigger: '',
+                member: 'Personal',
+                photo: currentBase64Photo,
+                audio: '',
+                date: new Date().toLocaleString()
+            };
+            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            entries.push(entry);
+            localStorage.setItem('emotionEntries', JSON.stringify(entries));
+            alert('¡Foto guardada con éxito! 🖼️');
+            
+            document.getElementById('photoInput').value = '';
+            document.getElementById('photoPreviewImg').style.display = 'none';
+            currentBase64Photo = '';
+            loadEntries();
+            updateWeeklyChart();
+        }
+
+        async function toggleRecording() {
+            const recordBtn = document.getElementById('recordBtn');
+            const audioPlayback = document.getElementById('audioPlayback');
+
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                if (audioStream) {
+                    audioStream.getTracks().forEach(track => track.stop());
+                }
+                recordBtn.innerText = 'Grabar Audio';
+            } else {
+                try {
+                    audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(audioStream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const reader = new FileReader();
+                        reader.readAsDataURL(audioBlob);
+                        reader.onloadend = () => {
+                            currentBase64Audio = reader.result;
+                            audioPlayback.src = currentBase64Audio;
+                            audioPlayback.style.display = 'block';
+                        };
+                    };
+
+                    mediaRecorder.start();
+                    recordBtn.innerText = 'Detener Grabación ⏹️';
+                } catch (err) {
+                    alert('No se pudo acceder al micrófono.');
+                    recordBtn.innerText = 'Grabar Audio';
+                }
+            }
+        }
+
+        function saveEntry() {
+            const noteInput = document.getElementById('noteInput');
+            const triggerInput = document.getElementById('triggerInput');
+            const memberSelect = document.getElementById('memberSelect');
+
+            const entry = {
+                emotion: selectedEmotionValue || 'No especificada',
+                note: noteInput.value,
+                trigger: triggerInput.value,
+                member: memberSelect.value,
+                photo: currentBase64Photo,
+                audio: currentBase64Audio,
+                date: new Date().toLocaleString()
+            };
+
+            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            entries.push(entry);
+            localStorage.setItem('emotionEntries', JSON.stringify(entries));
+            alert('¡Registro guardado con éxito! 🎉');
+            
+            noteInput.value = '';
+            triggerInput.value = '';
+            document.getElementById('photoInput').value = '';
+            document.getElementById('photoPreviewImg').style.display = 'none';
+            document.getElementById('audioPlayback').style.display = 'none';
+            document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
+            selectedEmotionValue = '';
+            currentBase64Audio = '';
+            currentBase64Photo = '';
+            
+            loadEntries();
+            updateWeeklyChart();
+        }
+
+        function saveGratitude() {
+            const gratitudeInput = document.getElementById('gratitudeInput');
+            if (!gratitudeInput.value.trim()) return;
+            const entry = { text: gratitudeInput.value, date: new Date().toLocaleString() };
+            let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+            gratitudes.push(entry);
+            localStorage.setItem('gratitudeEntries', JSON.stringify(gratitudes));
+            alert('¡Gratitud guardada con éxito! ⭐');
+            gratitudeInput.value = '';
+            loadGratitude();
+        }
+
+        function saveStrategy() {
+            const strategyInput = document.getElementById('strategyInput');
+            if (!strategyInput.value.trim()) return;
+            const entry = { text: strategyInput.value, date: new Date().toLocaleString() };
+            let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+            strategies.push(entry);
+            localStorage.setItem('strategyEntries', JSON.stringify(strategies));
+            alert('¡Estrategia guardada con éxito! 💡');
+            strategyInput.value = '';
+            loadStrategies();
+        }
+
+        function saveMicroexpression() {
+            const microexpressionInput = document.getElementById('microexpressionInput');
+            if (!microexpressionInput.value.trim()) return;
+            const entry = { text: microexpressionInput.value, date: new Date().toLocaleString() };
+            let observations = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+            observations.push(entry);
+            localStorage.setItem('microexpressionEntries', JSON.stringify(observations));
+            alert('¡Observación guardada con éxito! 👀');
+            microexpressionInput.value = '';
+            loadMicroexpressions();
+        }
+
+        function deleteItem(storageKey, index) {
+            let items = JSON.parse(localStorage.getItem(storageKey)) || [];
+            items.splice(index, 1);
+            localStorage.setItem(storageKey, JSON.stringify(items));
+            
+            if (storageKey === 'emotionEntries') {
+                loadEntries();
+                updateWeeklyChart();
+            }
+            if (storageKey === 'gratitudeEntries') loadGratitude();
+            if (storageKey === 'strategyEntries') loadStrategies();
+            if (storageKey === 'microexpressionEntries') loadMicroexpressions();
+            if (storageKey === 'archivedWeeks') loadArchives();
+        }
+
+        /* NAVEGACIÓN POR TABS */
+        function switchTab(evt, tabName) {
+            document.querySelectorAll('.tabs-header .tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
+            
+            evt.target.classList.add('active');
+            document.getElementById(`tab-${tabName}`).style.display = 'block';
+        }
+
+        function loadEntries() {
+            const list = document.getElementById('entriesList');
+            list.innerHTML = '';
+            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            entries.forEach((item, index) => {
+                const li = document.createElement('li');
+                let content = `<strong>${item.date}</strong> <span class="tag-member">${item.member || 'Personal'}</span> - Emoción: <strong>${item.emotion}</strong><br>`;
+                if (item.trigger) content += `<em style="color:#e67e22; font-size:0.9em;">Gatillo: ${item.trigger}</em><br>`;
+                if (item.note) content += `${item.note}`;
+                if (item.photo) content += `<br><img src="${item.photo}" class="entry-img">`;
+                if (item.audio) content += `<br><audio src="${item.audio}" controls style="margin-top:8px; width:100%;"></audio>`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerText = 'Eliminar';
+                deleteBtn.onclick = () => deleteItem('emotionEntries', index);
+                
+                li.innerHTML = content;
+                li.appendChild(deleteBtn);
+                list.appendChild(li);
+            });
+        }
+
+        function loadGratitude() {
+            const list = document.getElementById('gratitudeList');
+            list.innerHTML = '';
+            let items = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerText = 'Eliminar';
+                deleteBtn.onclick = () => deleteItem('gratitudeEntries', index);
+                
+                li.appendChild(deleteBtn);
+                list.appendChild(li);
+            });
+        }
+
+        function loadStrategies() {
+            const list = document.getElementById('strategyList');
+            list.innerHTML = '';
+            let items = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerText = 'Eliminar';
+                deleteBtn.onclick = () => deleteItem('strategyEntries', index);
+                
+                li.appendChild(deleteBtn);
+                list.appendChild(li);
+            });
+        }
+
+        function loadMicroexpressions() {
+            const list = document.getElementById('microexpressionList');
+            list.innerHTML = '';
+            let items = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerText = 'Eliminar';
+                deleteBtn.onclick = () => deleteItem('microexpressionEntries', index);
+                
+                li.appendChild(deleteBtn);
+                list.appendChild(li);
+            });
+        }
+
+        function loadArchives() {
+            const list = document.getElementById('archivesList');
+            list.innerHTML = '';
+            let items = JSON.parse(localStorage.getItem('archivedWeeks')) || [];
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>Semana cerrada el ${item.date}</strong><br>${item.summary}`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerText = 'Eliminar';
+                deleteBtn.onclick = () => deleteItem('archivedWeeks', index);
+                
+                li.appendChild(deleteBtn);
+                list.appendChild(li);
+            });
+        }
+
+        /* GRAFICA Y RESUMEN SEMANAL */
+        function updateWeeklyChart() {
+            const chartContainer = document.getElementById('weeklyChart');
+            const summaryBox = document.getElementById('weeklySummary');
+            chartContainer.innerHTML = '';
+
+            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            if (entries.length === 0) {
+                chartContainer.innerHTML = '<p style="margin:auto;">No hay registros emocionales aún.</p>';
+                summaryBox.innerText = 'Registra tus días para generar el balance emocional.';
+                return;
+            }
+
+            let emotionCounts = {};
+            entries.forEach(e => {
+                if (e.emotion && e.emotion !== 'No especificada') {
+                    emotionCounts[e.emotion] = (emotionCounts[e.emotion] || 0) + 1;
+                }
+            });
+
+            let total = Object.values(emotionCounts).reduce((a, b) => a + b, 0);
+            if (total === 0) {
+                summaryBox.innerText = 'Sin suficientes emociones catalogadas.';
+                return;
+            }
+
+            let maxEmotion = '';
+            let maxCount = 0;
+
+            for (let emotion in emotionCounts) {
+                let count = emotionCounts[emotion];
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxEmotion = emotion;
+                }
+                let heightPct = (count / total) * 100;
+
+                let barWrapper = document.createElement('div');
+                barWrapper.className = 'chart-bar-wrapper';
+
+                let bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = `${heightPct}%`;
+                bar.title = `${emotion}: ${count}`;
+
+                let label = document.createElement('span');
+                label.className = 'chart-label';
+                label.innerText = emotion.substring(0, 4);
+
+                barWrapper.appendChild(bar);
+                barWrapper.appendChild(label);
+                chartContainer.appendChild(barWrapper);
+            }
+
+            let dominantPct = Math.round((maxCount / total) * 100);
+            summaryBox.innerHTML = `Estado dominante: <strong>${maxEmotion}</strong> (${dominantPct}% del tiempo). Registros totales: ${total}.`;
+        }
+
+        function closeAndArchiveWeek() {
+            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            if (entries.length === 0) {
+                alert('No hay registros suficientes para archivar la semana.');
+                return;
+            }
+
+            if (confirm('¿Deseas cerrar la semana activa y mover tus registros emocionales al archivo?')) {
+                const summaryText = document.getElementById('weeklySummary').innerText;
+                const archiveItem = {
+                    date: new Date().toLocaleDateString(),
+                    summary: summaryText,
+                    entriesCount: entries.length
+                };
+
+                let archives = JSON.parse(localStorage.getItem('archivedWeeks')) || [];
+                archives.push(archiveItem);
+                localStorage.setItem('archivedWeeks', JSON.stringify(archives));
+
+                localStorage.removeItem('emotionEntries');
+                loadEntries();
+                loadArchives();
+                updateWeeklyChart();
+                alert('¡Semana archivada con éxito! 📦');
+            }
+        }
+
+        /* EXPORTAR E IMPORTAR JSON */
+        function exportDataJSON() {
+            const data = {
+                emotionEntries: JSON.parse(localStorage.getItem('emotionEntries')) || [],
+                gratitudeEntries: JSON.parse(localStorage.getItem('gratitudeEntries')) || [],
+                strategyEntries: JSON.parse(localStorage.getItem('strategyEntries')) || [],
+                microexpressionEntries: JSON.parse(localStorage.getItem('microexpressionEntries')) || [],
+                archivedWeeks: JSON.parse(localStorage.getItem('archivedWeeks')) || []
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `respaldo_diario_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importDataJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (confirm('¿Deseas sobrescribir o restaurar los datos existentes con esta copia?')) {
+                        if (imported.emotionEntries) localStorage.setItem('emotionEntries', JSON.stringify(imported.emotionEntries));
+                        if (imported.gratitudeEntries) localStorage.setItem('gratitudeEntries', JSON.stringify(imported.gratitudeEntries));
+                        if (imported.strategyEntries) localStorage.setItem('strategyEntries', JSON.stringify(imported.strategyEntries));
+                        if (imported.microexpressionEntries) localStorage.setItem('microexpressionEntries', JSON.stringify(imported.microexpressionEntries));
+                        if (imported.archivedWeeks) localStorage.setItem('archivedWeeks', JSON.stringify(imported.archivedWeeks));
+
+                        loadEntries();
+                        loadGratitude();
+                        loadStrategies();
+                        loadMicroexpressions();
+                        loadArchives();
+                        updateWeeklyChart();
+                        alert('¡Datos importados con éxito! 📤');
+                    }
+                } catch (err) {
+                    alert('Error al leer el archivo JSON.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        /* MODAL RESPIRACION 4-7-8 */
+        let breathInterval = null;
+        function openSOSModal() {
+            document.getElementById('sosModal').style.display = 'flex';
+            startBreathCycle();
+        }
+
+        function closeSOSModal() {
+            document.getElementById('sosModal').style.display = 'none';
+            if (breathInterval) clearInterval(breathInterval);
+        }
+
+        function startBreathCycle() {
+            const circle = document.getElementById('breathCircle');
+            const timer = document.getElementById('breathTimer');
+            let phase = 0; // 0: inhala (4s), 1: mantén (7s), 2: exhala (8s)
+            let count = 4;
+
+            circle.innerText = "Inhala";
+            circle.style.transform = "scale(1.3)";
+
+            breathInterval = setInterval(() => {
+                count--;
+                timer.innerText = count;
+
+                if (count <= 0) {
+                    phase = (phase + 1) % 3;
+                    if (phase === 0) {
+                        circle.innerText = "Inhala";
+                        circle.style.transform = "scale(1.3)";
+                        count = 4;
+                    } else if (phase === 1) {
+                        circle.innerText = "Mantén";
+                        circle.style.transform = "scale(1.3)";
+                        count = 7;
+                    } else if (phase === 2) {
+                        circle.innerText = "Exhala";
+                        circle.style.transform = "scale(1)";
+                        count = 8;
+                    }
+                    timer.innerText = count;
+                }
+            }, 1000);
+        }
+
+        window.onload = () => {
+            loadEntries();
+            loadGratitude();
+            loadStrategies();
+            loadMicroexpressions();
+            loadArchives();
+            updateWeeklyChart();
+        };
+    </script>
+</body>
+</html>
