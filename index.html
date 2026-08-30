@@ -671,9 +671,11 @@
             document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
             if(element) element.classList.add('selected');
 
-            const utterance = new SpeechSynthesisUtterance(message);
-            utterance.lang = 'es-AR';
-            window.speechSynthesis.speak(utterance);
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(message);
+                utterance.lang = 'es-AR';
+                window.speechSynthesis.speak(utterance);
+            }
         }
 
         function previewPhoto(event) {
