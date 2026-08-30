@@ -54,7 +54,6 @@
         }
         p { margin-top: 0; font-size: 0.95em; color: var(--text-muted); }
         
-        /* REPRODUCTOR DE MÚSICA Y AMBIENTE DIVERTIDO */
         .music-player { 
             background: #fff9e6; 
             padding: 20px; 
@@ -103,7 +102,6 @@
             box-shadow: 0 4px 0px #c83b3c;
         }
 
-        /* AMBIENTES Y CONTROLES DE VOLUMEN */
         .ambient-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -141,7 +139,6 @@
             cursor: pointer;
         }
 
-        /* EMOCIONES Y ETIQUETAS INFANTILES */
         .buttons-grid { 
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
@@ -178,7 +175,6 @@
             font-weight: 600;
         }
 
-        /* COLORES PASTEL AMIGABLES */
         #happy { background-color: #feca57; }
         #sad { background-color: #54a0ff; }
         #angry { background-color: #ff6b6b; }
@@ -471,7 +467,6 @@
     </div>
 
     <script>
-        /* --- SINTETIZADOR MUSICAL Y DE SONIDOS DE NATURALEZA --- */
         let audioCtx = null;
         let isPlaying = false;
         let timerId = null;
@@ -502,9 +497,13 @@
             zen: { tempo: 600, wave: 'sine', chords: [[notes.C3, notes.G3], [notes.F3, notes.C4], [notes.A3, notes.E4], [notes.G3, notes.D4]], melody: [notes.E4, null, notes.G4, null, notes.B4, null, notes.A4, null] }
         };
 
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+        async function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                await audioCtx.resume();
+            }
         }
 
         function playTone(freq, duration, type = 'sine', gainVal = 0.05) {
@@ -535,8 +534,8 @@
             step++;
         }
 
-        function toggleAudio() {
-            initAudio();
+        async function toggleAudio() {
+            await initAudio();
             const btn = document.getElementById('playAudioBtn');
             if (isPlaying) {
                 clearInterval(timerId);
@@ -570,8 +569,8 @@
             return buffer;
         }
 
-        function toggleAmbientNoise(type, active) {
-            initAudio();
+        async function toggleAmbientNoise(type, active) {
+            await initAudio();
             if (!active) {
                 if (ambientNodes[type]) {
                     ambientNodes[type].gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
@@ -661,7 +660,6 @@
             }
         }
 
-        /* --- MANEJO DE IMÁGENES & GRABACIONES --- */
         let mediaRecorder;
         let audioChunks = [];
         let selectedEmotionValue = '';
@@ -778,6 +776,42 @@
             loadEntries();
         }
 
+        function saveGratitude() {
+            const gratitudeInput = document.getElementById('gratitudeInput');
+            if (!gratitudeInput.value.trim()) return;
+            const entry = { text: gratitudeInput.value, date: new Date().toLocaleString() };
+            let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+            gratitudes.push(entry);
+            localStorage.setItem('gratitudeEntries', JSON.stringify(gratitudes));
+            alert('¡Gratitud guardada con éxito! ⭐');
+            gratitudeInput.value = '';
+            loadGratitude();
+        }
+
+        function saveStrategy() {
+            const strategyInput = document.getElementById('strategyInput');
+            if (!strategyInput.value.trim()) return;
+            const entry = { text: strategyInput.value, date: new Date().toLocaleString() };
+            let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+            strategies.push(entry);
+            localStorage.setItem('strategyEntries', JSON.stringify(strategies));
+            alert('¡Estrategia guardada con éxito! 💡');
+            strategyInput.value = '';
+            loadStrategies();
+        }
+
+        function saveMicroexpression() {
+            const microexpressionInput = document.getElementById('microexpressionInput');
+            if (!microexpressionInput.value.trim()) return;
+            const entry = { text: microexpressionInput.value, date: new Date().toLocaleString() };
+            let observations = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+            observations.push(entry);
+            localStorage.setItem('microexpressionEntries', JSON.stringify(observations));
+            alert('¡Observación guardada con éxito! 👀');
+            microexpressionInput.value = '';
+            loadMicroexpressions();
+        }
+
         function deleteItem(storageKey, index) {
             let items = JSON.parse(localStorage.getItem(storageKey)) || [];
             items.splice(index, 1);
@@ -789,11 +823,60 @@
             if (storageKey === 'microexpressionEntries') loadMicroexpressions();
         }
 
-        function saveGratitude() {
-            const gratitudeInput = document.getElementById('gratitudeInput');
-            if(!gratitudeInput.value.trim()) return;
-            const entry = { text: gratitudeInput.value, date: new Date().toLocaleString() };
-            let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
-            gratitudes.push(entry);
-            localStorage.setItem('gratitudeEntries', JSON.stringify(gratitudes));
-            alert('¡
+        function loadEntries() {
+            const list = document.getElementById('entriesList');
+            list.innerHTML = '';
+            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            entries.forEach((item, index) => {
+                const li = document.createElement('li');
+                let content = `<strong>${item.date}</strong> - Emoción: ${item.emotion}<br>${item.note}`;
+                if (item.photo) content += `<br><img src="${item.photo}" class="entry-img">`;
+                if (item.audio) content += `<br><audio src="${item.audio}" controls style="margin-top:8px; width:100%;"></audio>`;
+                content += `<button class="btn-delete" onclick="deleteItem('emotionEntries', ${index})">Eliminar</button>`;
+                li.innerHTML = content;
+                list.appendChild(li);
+            });
+        }
+
+        function loadGratitude() {
+            const list = document.getElementById('gratitudeList');
+            list.innerHTML = '';
+            let items = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}<button class="btn-delete" onclick="deleteItem('gratitudeEntries', ${index})">Eliminar</button>`;
+                list.appendChild(li);
+            });
+        }
+
+        function loadStrategies() {
+            const list = document.getElementById('strategyList');
+            list.innerHTML = '';
+            let items = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}<button class="btn-delete" onclick="deleteItem('strategyEntries', ${index})">Eliminar</button>`;
+                list.appendChild(li);
+            });
+        }
+
+        function loadMicroexpressions() {
+            const list = document.getElementById('microexpressionList');
+            list.innerHTML = '';
+            let items = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}<button class="btn-delete" onclick="deleteItem('microexpressionEntries', ${index})">Eliminar</button>`;
+                list.appendChild(li);
+            });
+        }
+
+        window.onload = () => {
+            loadEntries();
+            loadGratitude();
+            loadStrategies();
+            loadMicroexpressions();
+        };
+    </script>
+</body>
+</html>
