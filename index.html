@@ -3,75 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diario de Padres Conscientes & Relax - Futurist Warm</title>
+    <title>Diario de Padres Conscientes & Relax</title>
     <style>
         :root {
-            --bg-dark: #120c0a;
-            --card-bg: rgba(28, 20, 16, 0.85);
-            --border-warm: #d35400;
-            --accent-orange: #ff6f00;
-            --accent-amber: #ffab00;
-            --text-light: #fbe9e7;
-            --text-muted: #d7ccc8;
-            --glow-orange: 0 0 15px rgba(255, 111, 0, 0.4);
+            --bg-main: #f0f4ff;
+            --card-bg: #ffffff;
+            --primary-blue: #4a90e2;
+            --primary-hover: #357abd;
+            --text-dark: #2c3e50;
+            --text-muted: #6c7a89;
+            --border-soft: #e2e8f0;
+            --radius-large: 24px;
+            --radius-medium: 16px;
+            --shadow-soft: 0 8px 24px rgba(149, 157, 165, 0.15);
         }
 
         body { 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
+            font-family: 'Fredoka', 'Quicksand', 'Segoe UI', Roboto, sans-serif; 
             text-align: center; 
             padding: 20px; 
-            background-color: var(--bg-dark); 
-            background-image: radial-gradient(circle at 50% 10%, #2c140e 0%, var(--bg-dark) 80%);
-            color: var(--text-light); 
+            background-color: var(--bg-main); 
+            background-image: radial-gradient(#e1e9ff 2px, transparent 2px);
+            background-size: 24px 24px;
+            color: var(--text-dark); 
             min-height: 100vh;
         }
         
         .container { 
-            max-width: 560px; 
+            max-width: 580px; 
             margin: 0 auto; 
             background: var(--card-bg); 
-            padding: 25px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(255, 111, 0, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), var(--glow-orange); 
-            backdrop-filter: blur(8px);
+            padding: 30px; 
+            border-radius: var(--radius-large); 
+            border: 4px solid #ffffff;
+            box-shadow: var(--shadow-soft);
         }
 
         h1 { 
             margin-top: 0; 
-            color: var(--accent-amber); 
-            font-size: 1.8em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255, 171, 0, 0.5);
+            color: #ff6b6b; 
+            font-size: 2em;
+            letter-spacing: 0.5px;
+            text-shadow: 2px 2px 0px #ffe3e3;
         }
         h3 { 
-            margin-bottom: 5px; 
-            color: var(--accent-orange); 
-            letter-spacing: 1px;
+            margin-bottom: 6px; 
+            color: #48dbfb; 
+            font-size: 1.25em;
+            text-shadow: 1px 1px 0px #e0f8ff;
         }
-        p { margin-top: 0; font-size: 0.9em; color: var(--text-muted); }
+        p { margin-top: 0; font-size: 0.95em; color: var(--text-muted); }
         
-        /* REPRODUCTOR DE MÚSICA Y AMBIENTE FUTURISTA */
+        /* REPRODUCTOR DE MÚSICA Y AMBIENTE DIVERTIDO */
         .music-player { 
-            background: rgba(44, 24, 16, 0.6); 
-            padding: 18px; 
-            border-radius: 14px; 
-            border: 1px solid rgba(255, 111, 0, 0.2);
+            background: #fff9e6; 
+            padding: 20px; 
+            border-radius: var(--radius-medium); 
+            border: 2px dashed #ffeaa7;
             margin-bottom: 25px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
         .music-player select {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--accent-orange);
-            background: #1a0f0b;
-            font-size: 0.9em;
-            color: var(--accent-amber);
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid #ffeaa7;
+            background: #ffffff;
+            font-size: 0.95em;
+            color: var(--text-dark);
             font-weight: 600;
             outline: none;
             margin-bottom: 12px;
             width: 100%;
+            cursor: pointer;
         }
         .music-controls {
             display: flex;
@@ -80,26 +82,25 @@
             margin-bottom: 15px;
         }
         .music-btn {
-            background: linear-gradient(135deg, #e65100, #ff6f00);
+            background: #10ac84;
             color: white;
             border: none;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
+            font-size: 0.95em;
+            transition: transform 0.2s, background-color 0.2s;
             width: 100%;
-            box-shadow: 0 0 10px rgba(230, 81, 0, 0.4);
+            box-shadow: 0 4px 0px #0e8c6c;
         }
-        .music-btn:hover { 
-            box-shadow: 0 0 15px rgba(255, 111, 0, 0.8);
-            transform: translateY(-1px);
+        .music-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
         }
         .music-btn.active { 
-            background: linear-gradient(135deg, #bf360c, #d84315); 
-            box-shadow: 0 0 15px rgba(216, 67, 21, 0.8);
+            background: #ee5253; 
+            box-shadow: 0 4px 0px #c83b3c;
         }
 
         /* AMBIENTES Y CONTROLES DE VOLUMEN */
@@ -111,10 +112,10 @@
             text-align: left;
         }
         .ambient-item {
-            background: rgba(18, 12, 10, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 111, 0, 0.2);
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 14px;
+            border: 2px solid #ffeaa7;
             display: flex;
             flex-direction: column;
             gap: 6px;
@@ -123,134 +124,147 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.85em;
+            font-size: 0.9em;
             font-weight: 600;
-            color: var(--text-light);
+            color: var(--text-dark);
         }
         .ambient-item input[type="checkbox"] {
             cursor: pointer;
-            accent-color: var(--accent-orange);
-            width: 16px;
-            height: 16px;
+            accent-color: #10ac84;
+            width: 18px;
+            height: 18px;
         }
         .volume-slider {
             width: 100%;
-            accent-color: var(--accent-amber);
-            height: 4px;
+            accent-color: #ff9ff3;
+            height: 6px;
             cursor: pointer;
         }
 
-        /* EMOCIONES Y ETIQUETAS */
+        /* EMOCIONES Y ETIQUETAS INFANTILES */
         .buttons-grid { 
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
-            gap: 10px; 
-            margin: 15px 0; 
+            gap: 12px; 
+            margin: 18px 0; 
         }
         .emotion-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
         .btn { 
-            border: none; 
+            border: 3px solid #ffffff; 
             border-radius: 50%; 
             cursor: pointer; 
-            width: 48px; 
-            height: 48px; 
-            transition: all 0.2s ease; 
-            box-shadow: 0 0 8px rgba(0,0,0,0.5);
-            position: relative;
+            width: 52px; 
+            height: 52px; 
+            transition: transform 0.2s ease, box-shadow 0.2s ease; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         }
         .btn:hover { 
-            transform: scale(1.15); 
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4); 
+            transform: scale(1.2) rotate(5deg); 
         }
         .btn.selected { 
-            outline: 2px solid var(--accent-amber); 
-            box-shadow: 0 0 15px var(--accent-amber);
-            transform: scale(1.15); 
+            outline: 3px solid #ff9ff3; 
+            transform: scale(1.18); 
+            box-shadow: 0 6px 14px rgba(0,0,0,0.15);
         }
         
         .emotion-label {
-            font-size: 0.7em;
-            color: var(--text-muted);
-            font-weight: 500;
+            font-size: 0.8em;
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
-        /* PALETA DE PALETA CÁLIDA Y NEÓN PARA EMOCIONES */
-        #happy { background-color: #ffd54f; box-shadow: 0 0 8px rgba(255, 213, 79, 0.4); }
-        #sad { background-color: #4fc3f7; box-shadow: 0 0 8px rgba(79, 195, 247, 0.4); }
-        #angry { background-color: #ff5252; box-shadow: 0 0 8px rgba(255, 82, 82, 0.4); }
-        #calm { background-color: #81c784; box-shadow: 0 0 8px rgba(129, 199, 132, 0.4); }
-        #fear { background-color: #ba68c8; box-shadow: 0 0 8px rgba(186, 104, 200, 0.4); }
-        #surprise { background-color: #ffb74d; box-shadow: 0 0 8px rgba(255, 183, 77, 0.4); }
-        #anxiety { background-color: #a1887f; box-shadow: 0 0 8px rgba(161, 136, 127, 0.4); }
-        #envy { background-color: #dce775; box-shadow: 0 0 8px rgba(220, 231, 117, 0.4); }
-        #boredom { background-color: #90a4ae; box-shadow: 0 0 8px rgba(144, 164, 174, 0.4); }
-        #shame { background-color: #ff80ab; box-shadow: 0 0 8px rgba(255, 128, 171, 0.4); }
+        /* COLORES PASTEL AMIGABLES */
+        #happy { background-color: #feca57; }
+        #sad { background-color: #54a0ff; }
+        #angry { background-color: #ff6b6b; }
+        #calm { background-color: #1dd1a1; }
+        #fear { background-color: #5f27cd; }
+        #surprise { background-color: #ff9f43; }
+        #anxiety { background-color: #c8d6e5; }
+        #envy { background-color: #c8d6e5; }
+        #boredom { background-color: #8395a7; }
+        #shame { background-color: #ff9ff3; }
         
         textarea { 
             width: 100%; 
-            height: 80px; 
+            height: 85px; 
             padding: 12px; 
             box-sizing: border-box; 
             margin-top: 8px; 
-            border-radius: 8px; 
-            border: 1px solid rgba(255, 111, 0, 0.3); 
-            background: #180e0a;
-            color: var(--text-light);
+            border-radius: 14px; 
+            border: 2px solid #c8d6e5; 
+            background: #fafbfc;
+            color: var(--text-dark);
             resize: vertical; 
             font-family: inherit; 
+            font-size: 0.95em;
         }
         textarea:focus { 
             outline: none; 
-            border-color: var(--accent-amber); 
-            box-shadow: 0 0 8px rgba(255, 171, 0, 0.3);
+            border-color: #54a0ff; 
+            background: #ffffff;
         }
-        .form-group { margin-top: 20px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; color: var(--accent-amber); }
+        .form-group { margin-top: 22px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 700; color: #2e86de; }
         input[type="file"] { 
             width: 100%; 
-            padding: 8px; 
-            border-radius: 8px; 
-            border: 1px solid rgba(255, 111, 0, 0.3); 
-            background: #180e0a;
+            padding: 10px; 
+            border-radius: 12px; 
+            border: 2px dashed #54a0ff; 
+            background: #f0f8ff;
             color: var(--text-muted);
             box-sizing: border-box; 
+            cursor: pointer;
         }
         #audioPlayback { margin-top: 10px; display: block; width: 100%; }
         button.action-btn { 
-            background: linear-gradient(135deg, #d35400, #e65100); 
+            background: #54a0ff; 
             color: white; 
             border: none; 
             padding: 12px 20px; 
-            border-radius: 8px; 
+            border-radius: 14px; 
             cursor: pointer; 
-            font-weight: 600; 
+            font-weight: 700; 
+            font-size: 0.95em;
             margin-top: 10px; 
-            transition: all 0.3s; 
+            transition: transform 0.2s; 
             width: 100%; 
-            letter-spacing: 1px;
-            box-shadow: 0 0 10px rgba(211, 84, 0, 0.4);
+            box-shadow: 0 4px 0px #2e86de;
         }
-        button.action-btn:hover { 
-            background: linear-gradient(135deg, #e65100, #ff6f00); 
-            box-shadow: 0 0 15px rgba(255, 111, 0, 0.6);
+        button.action-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        .btn-delete {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-top: 8px;
+            float: right;
         }
         #history, #gratitude-history, #strategies-history, #microexpression-history { 
-            margin-top: 20px; 
+            margin-top: 22px; 
             text-align: left; 
-            background: rgba(18, 12, 10, 0.6); 
-            padding: 15px; 
-            border-radius: 12px; 
-            border: 1px solid rgba(255, 111, 0, 0.2);
+            background: #f8f9fa; 
+            padding: 18px; 
+            border-radius: 16px; 
+            border: 2px solid #e9ecef;
         }
-        ul { padding-left: 20px; margin-bottom: 0; }
-        li { margin-bottom: 12px; word-wrap: break-word; color: var(--text-muted); }
-        li strong { color: var(--accent-amber); }
-        .entry-img { max-width: 100%; height: auto; border-radius: 8px; margin-top: 8px; display: block; border: 1px solid var(--border-warm); }
+        ul { padding-left: 0; list-style-type: none; margin-bottom: 0; }
+        li { margin-bottom: 14px; word-wrap: break-word; color: var(--text-dark); background: #ffffff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+        li strong { color: #54a0ff; }
+        .entry-img { max-width: 100%; height: auto; border-radius: 12px; margin-top: 8px; display: block; border: 2px solid #c8d6e5; }
+        .photo-preview { max-width: 100px; height: auto; border-radius: 8px; margin-top: 8px; display: none; }
     </style>
 </head>
 <body>
@@ -259,23 +273,28 @@
         <h1>Diario de Padres Conscientes</h1>
         
         <div class="music-player">
-            <h3>Centro de Relax y Meditación</h3>
-            <p>Selecciona una armonía musical:</p>
+            <h3>Rincón de Relax y Meditación 🎨</h3>
+            <p>Elegí una música suave para escuchar:</p>
             <div>
                 <select id="styleSelect" onchange="changeStyle()">
                     <option value="ambient">Ambient Meditativo (Pads Armónicos)</option>
                     <option value="piano">Piano Suave & Melódico</option>
                     <option value="lofi">Lo-Fi Chill Relax</option>
+                    <option value="bossa">Bossa Nova Relax 🏖️</option>
+                    <option value="jazz">Calm Jazz Ballad 🎷</option>
+                    <option value="folk">Acoustic Folk Chill 🎸</option>
+                    <option value="space">Space Ambient & Cuencos 🌌</option>
+                    <option value="reggae">Reggae Lofi Chill 🌴</option>
                     <option value="synthwave">Synthwave Nocturno</option>
                     <option value="zen">Meditación Zen (Tonos Profundos)</option>
                 </select>
             </div>
             
             <div class="music-controls">
-                <button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">Reproducir Música</button>
+                <button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">Reproducir Música 🎵</button>
             </div>
 
-            <p style="margin-top: 12px; font-weight: 600; color: var(--accent-amber);">Sonidos Ambientales Regulables:</p>
+            <p style="margin-top: 12px; font-weight: 700; color: #ff9f43;">Sonidos Relajantes Combinables:</p>
             <div class="ambient-grid">
                 <div class="ambient-item">
                     <div class="ambient-header">
@@ -286,14 +305,14 @@
                 </div>
                 <div class="ambient-item">
                     <div class="ambient-header">
-                        <span>🌊 Olas de Mar</span>
+                        <span>🌊 Olas del Mar</span>
                         <input type="checkbox" id="oceanNoise" onchange="toggleAmbientNoise('ocean', this.checked)">
                     </div>
                     <input type="range" class="volume-slider" id="oceanVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('ocean', this.value)">
                 </div>
                 <div class="ambient-item">
                     <div class="ambient-header">
-                        <span>🔥 Fogata / Fuego</span>
+                        <span>🔥 Fogata</span>
                         <input type="checkbox" id="fireNoise" onchange="toggleAmbientNoise('fire', this.checked)">
                     </div>
                     <input type="range" class="volume-slider" id="fireVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('fire', this.value)">
@@ -305,12 +324,40 @@
                     </div>
                     <input type="range" class="volume-slider" id="nightVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('night', this.value)">
                 </div>
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span>🍃 Viento Suave</span>
+                        <input type="checkbox" id="windNoise" onchange="toggleAmbientNoise('wind', this.checked)">
+                    </div>
+                    <input type="range" class="volume-slider" id="windVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('wind', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span>🏞️ Río / Arroyo</span>
+                        <input type="checkbox" id="riverNoise" onchange="toggleAmbientNoise('river', this.checked)">
+                    </div>
+                    <input type="range" class="volume-slider" id="riverVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('river', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span>🐦 Pájaros Bosque</span>
+                        <input type="checkbox" id="birdsNoise" onchange="toggleAmbientNoise('birds', this.checked)">
+                    </div>
+                    <input type="range" class="volume-slider" id="birdsVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('birds', this.value)">
+                </div>
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span>⚡ Tormenta</span>
+                        <input type="checkbox" id="stormNoise" onchange="toggleAmbientNoise('storm', this.checked)">
+                    </div>
+                    <input type="range" class="volume-slider" id="stormVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('storm', this.value)">
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            <h3>Registro de Emociones</h3>
-            <p>Selecciona la emoción que mejor describa cómo te sientes hoy.</p>
+            <h3>¿Cómo te sientes hoy? 🎈</h3>
+            <p>Tocá la emoción que mejor exprese lo que sentís.</p>
             <div class="buttons-grid">
                 <div class="emotion-card">
                     <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!', this)" title="Alegre"></button>
@@ -356,47 +403,49 @@
         </div>
 
         <div class="form-group">
-            <h3>Captura de Momento</h3>
+            <h3>Captura de Momento 📸</h3>
             <label>Subir una foto:</label>
-            <p>Guarda una imagen para recordar visualmente este día.</p>
-            <input type="file" id="photoInput" accept="image/*">
+            <p>Guardá una foto genial para recordar este día.</p>
+            <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
+            <img id="photoPreviewImg" class="photo-preview" alt="Vista previa">
+            <button class="action-btn" style="background: #ff9f43; box-shadow: 0 4px 0px #e67e22;" onclick="saveStandalonePhoto()">Guardar Foto 🖼️</button>
         </div>
 
         <div class="form-group">
-            <h3>Mensaje de Voz</h3>
+            <h3>Mensaje de Voz 🎤</h3>
             <label>Grabar un audio:</label>
-            <p>Usa tu voz para expresar tus sentimientos y pensamientos más profundos.</p>
+            <p>Usá tu voz para contar cómo te fue hoy.</p>
             <button class="action-btn" id="recordBtn" onclick="toggleRecording()">Grabar Audio</button>
             <audio id="audioPlayback" controls style="display:none;"></audio>
         </div>
 
         <div class="form-group">
-            <h3>Reflexión Personal</h3>
-            <label>Escribe una nota:</label>
-            <p>Anota aquí tus reflexiones y pensamientos con tus propias palabras.</p>
-            <textarea id="noteInput" placeholder="Reflexiona aquí sobre tus emociones..."></textarea>
+            <h3>Reflexión Personal 📝</h3>
+            <label>Escribí una nota:</label>
+            <p>Anotá aquí tus ideas y sentimientos.</p>
+            <textarea id="noteInput" placeholder="¿Qué pasó hoy?..."></textarea>
         </div>
 
-        <button class="action-btn" onclick="saveEntry()">Guardar Registro</button>
+        <button class="action-btn" style="background: #10ac84; box-shadow: 0 4px 0px #0e8c6c;" onclick="saveEntry()">Guardar Registro Completo ✨</button>
 
         <div class="form-group">
-            <h3>Momento de Gratitud</h3>
-            <p>Practicar la gratitud ayuda a mantener una mentalidad positiva.</p>
-            <textarea id="gratitudeInput" placeholder="¿Por qué estás agradecido hoy?"></textarea>
+            <h3>Momento de Gratitud ⭐</h3>
+            <p>Agradecer nos hace sentir muy bien por dentro.</p>
+            <textarea id="gratitudeInput" placeholder="¿Qué cosas lindas te pasaron hoy?"></textarea>
             <button class="action-btn" onclick="saveGratitude()">Guardar Gratitud</button>
         </div>
 
         <div class="form-group">
-            <h3>Estrategias de Crianza</h3>
-            <p>Anota aquí las técnicas y herramientas de crianza que vas descubriendo y aplicando.</p>
-            <textarea id="strategyInput" placeholder="Anota aquí las estrategias de crianza que descubriste..."></textarea>
+            <h3>Estrategias de Crianza 💡</h3>
+            <p>Ideas y herramientas para compartir en familia.</p>
+            <textarea id="strategyInput" placeholder="Anotá aquí tus descubrimientos..."></textarea>
             <button class="action-btn" onclick="saveStrategy()">Guardar Estrategia</button>
         </div>
 
         <div class="form-group">
-            <h3>Observación de Microexpresiones</h3>
-            <p>Registra detalles sobre el lenguaje corporal y expresiones que ayuden a comprender mejor las emociones no expresadas.</p>
-            <textarea id="microexpressionInput" placeholder="Registra aquí detalles sobre expresiones o microexpresiones observadas..."></textarea>
+            <h3>Observación de Microexpresiones 👀</h3>
+            <p>Registrá gestos o expresiones del lenguaje corporal.</p>
+            <textarea id="microexpressionInput" placeholder="Anotá las expresiones observadas..."></textarea>
             <button class="action-btn" onclick="saveMicroexpression()">Guardar Observación</button>
         </div>
 
@@ -429,11 +478,9 @@
         let step = 0;
         let currentStyle = 'ambient';
 
-        let ambientNodes = {
-            rain: null,
-            ocean: null,
-            fire: null,
-            night: null
+        let ambientNodes = { 
+            rain: null, ocean: null, fire: null, night: null,
+            wind: null, river: null, birds: null, storm: null
         };
 
         const notes = {
@@ -443,88 +490,38 @@
         };
 
         const styles = {
-            ambient: {
-                tempo: 450, wave: 'sine',
-                chords: [
-                    [notes.C3, notes.G3, notes.B3, notes.E4],
-                    [notes.A3, notes.E4, notes.G4, notes.C4],
-                    [notes.F3, notes.C4, notes.E4, notes.A4],
-                    [notes.G3, notes.D4, notes.F4, notes.B4]
-                ],
-                melody: [notes.E5, null, notes.G5, notes.B4, null, notes.C5, notes.D5, null]
-            },
-            piano: {
-                tempo: 320, wave: 'triangle',
-                chords: [
-                    [notes.C3, notes.G3, notes.E4],
-                    [notes.F3, notes.C4, notes.A4],
-                    [notes.A3, notes.E4, notes.C5],
-                    [notes.G3, notes.D4, notes.B4]
-                ],
-                melody: [notes.G4, notes.C5, notes.E5, notes.D5, notes.C5, notes.B4, notes.A4, notes.G4]
-            },
-            lofi: {
-                tempo: 260, wave: 'triangle',
-                chords: [
-                    [notes.C3, notes.E3, notes.G3, notes.B3],
-                    [notes.A3, notes.C4, notes.E4, notes.G4],
-                    [notes.D3, notes.F3, notes.A3, notes.C4],
-                    [notes.G3, notes.B3, notes.D4, notes.F4]
-                ],
-                melody: [notes.G4, notes.E5, null, notes.D5, notes.C5, null, notes.A4, notes.B4]
-            },
-            synthwave: {
-                tempo: 200, wave: 'sawtooth',
-                chords: [
-                    [notes.C3, notes.G3, notes.C4],
-                    [notes.A3, notes.E4, notes.A4],
-                    [notes.F3, notes.C4, notes.F4],
-                    [notes.G3, notes.D4, notes.G4]
-                ],
-                melody: [notes.C5, notes.E5, notes.G5, notes.E5, notes.D5, notes.B4, notes.C5, notes.G4]
-            },
-            zen: {
-                tempo: 600, wave: 'sine',
-                chords: [
-                    [notes.C3, notes.G3],
-                    [notes.F3, notes.C4],
-                    [notes.A3, notes.E4],
-                    [notes.G3, notes.D4]
-                ],
-                melody: [notes.E4, null, notes.G4, null, notes.B4, null, notes.A4, null]
-            }
+            ambient: { tempo: 450, wave: 'sine', chords: [[notes.C3, notes.G3, notes.B3, notes.E4], [notes.A3, notes.E4, notes.G4, notes.C4], [notes.F3, notes.C4, notes.E4, notes.A4], [notes.G3, notes.D4, notes.F4, notes.B4]], melody: [notes.E5, null, notes.G5, notes.B4, null, notes.C5, notes.D5, null] },
+            piano: { tempo: 320, wave: 'triangle', chords: [[notes.C3, notes.G3, notes.E4], [notes.F3, notes.C4, notes.A4], [notes.A3, notes.E4, notes.C5], [notes.G3, notes.D4, notes.B4]], melody: [notes.G4, notes.C5, notes.E5, notes.D5, notes.C5, notes.B4, notes.A4, notes.G4] },
+            lofi: { tempo: 260, wave: 'triangle', chords: [[notes.C3, notes.E3, notes.G3, notes.B3], [notes.A3, notes.C4, notes.E4, notes.G4], [notes.D3, notes.F3, notes.A3, notes.C4], [notes.G3, notes.B3, notes.D4, notes.F4]], melody: [notes.G4, notes.E5, null, notes.D5, notes.C5, null, notes.A4, notes.B4] },
+            bossa: { tempo: 280, wave: 'triangle', chords: [[notes.D3, notes.F3, notes.A3, notes.C4], [notes.G3, notes.B3, notes.D4, notes.F4], [notes.C3, notes.E3, notes.G3, notes.B3], [notes.A3, notes.C4, notes.E4, notes.G4]], melody: [notes.A4, notes.C5, notes.B4, notes.G4, notes.E5, null, notes.D5, notes.C5] },
+            jazz: { tempo: 350, wave: 'sine', chords: [[notes.F3, notes.A3, notes.C4, notes.E4], [notes.D3, notes.F3, notes.A3, notes.C4], [notes.G3, notes.B3, notes.D4, notes.F4], [notes.C3, notes.E3, notes.G3, notes.B3]], melody: [notes.E5, notes.D5, notes.C5, notes.A4, notes.G4, notes.A4, notes.C5, null] },
+            folk: { tempo: 300, wave: 'triangle', chords: [[notes.C3, notes.G3, notes.C4], [notes.G3, notes.D4, notes.G4], [notes.A3, notes.E4, notes.A4], [notes.F3, notes.C4, notes.F4]], melody: [notes.E4, notes.G4, notes.C5, notes.G4, notes.E5, notes.D5, notes.C5, notes.G4] },
+            space: { tempo: 650, wave: 'sine', chords: [[notes.C3, notes.G3, notes.C4, notes.G4], [notes.F3, notes.C4, notes.F4, notes.C5], [notes.A3, notes.E4, notes.A4, notes.E5], [notes.G3, notes.D4, notes.G4, notes.D5]], melody: [notes.G5, null, notes.E5, null, notes.C5, null, notes.B4, null] },
+            reggae: { tempo: 330, wave: 'sine', chords: [[notes.C3, notes.E3, notes.G3], [notes.F3, notes.A3, notes.C4], [notes.G3, notes.B3, notes.D4], [notes.C3, notes.E3, notes.G3]], melody: [null, notes.G4, null, notes.E5, null, notes.D5, notes.C5, null] },
+            synthwave: { tempo: 200, wave: 'sawtooth', chords: [[notes.C3, notes.G3, notes.C4], [notes.A3, notes.E4, notes.A4], [notes.F3, notes.C4, notes.F4], [notes.G3, notes.D4, notes.G4]], melody: [notes.C5, notes.E5, notes.G5, notes.E5, notes.D5, notes.B4, notes.C5, notes.G4] },
+            zen: { tempo: 600, wave: 'sine', chords: [[notes.C3, notes.G3], [notes.F3, notes.C4], [notes.A3, notes.E4], [notes.G3, notes.D4]], melody: [notes.E4, null, notes.G4, null, notes.B4, null, notes.A4, null] }
         };
 
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
         function playTone(freq, duration, type = 'sine', gainVal = 0.05) {
             if (!freq || !audioCtx) return;
-
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             const filter = audioCtx.createBiquadFilter();
-
             osc.type = type;
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
             filter.type = 'lowpass';
             filter.frequency.setValueAtTime(type === 'sawtooth' ? 700 : 1600, audioCtx.currentTime);
-
             gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
             gainNode.gain.linearRampToValueAtTime(gainVal, audioCtx.currentTime + 0.1);
             gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-
             osc.connect(filter);
             filter.connect(gainNode);
             gainNode.connect(audioCtx.destination);
-
             osc.start();
             osc.stop(audioCtx.currentTime + duration);
         }
@@ -532,35 +529,24 @@
         function playStep() {
             const style = styles[currentStyle];
             const chordIndex = Math.floor(step / 4) % style.chords.length;
-            const currentChord = style.chords[chordIndex];
-
-            if (step % 4 === 0) {
-                currentChord.forEach(note => {
-                    playTone(note, 2.8, style.wave, 0.04);
-                });
-            }
-
+            if (step % 4 === 0) style.chords[chordIndex].forEach(note => playTone(note, 2.8, style.wave, 0.04));
             const melodyNote = style.melody[step % style.melody.length];
-            if (melodyNote) {
-                playTone(melodyNote, 0.9, 'sine', 0.05);
-            }
-
+            if (melodyNote) playTone(melodyNote, 0.9, 'sine', 0.05);
             step++;
         }
 
         function toggleAudio() {
             initAudio();
             const btn = document.getElementById('playAudioBtn');
-
             if (isPlaying) {
                 clearInterval(timerId);
                 isPlaying = false;
-                btn.innerText = 'Reproducir Música';
+                btn.innerText = 'Reproducir Música 🎵';
                 btn.classList.remove('active');
             } else {
                 isPlaying = true;
                 step = 0;
-                btn.innerText = 'Pausar Música';
+                btn.innerText = 'Pausar Música ⏸️';
                 btn.classList.add('active');
                 playStep();
                 timerId = setInterval(playStep, styles[currentStyle].tempo);
@@ -576,28 +562,57 @@
             }
         }
 
-        /* --- AMBIENTE Y CONTROL DE VOLUMEN MULTI-CANAL --- */
         function createWhiteNoiseBuffer() {
             const bufferSize = audioCtx.sampleRate * 2;
             const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
             const output = buffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) {
-                output[i] = Math.random() * 2 - 1;
-            }
+            for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
             return buffer;
         }
 
         function toggleAmbientNoise(type, active) {
             initAudio();
-
             if (!active) {
                 if (ambientNodes[type]) {
                     ambientNodes[type].gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
                     setTimeout(() => {
-                        try { ambientNodes[type].source.stop(); } catch(e){}
+                        try { 
+                            if (ambientNodes[type].source) ambientNodes[type].source.stop();
+                            if (ambientNodes[type].interval) clearInterval(ambientNodes[type].interval);
+                        } catch(e){}
                         ambientNodes[type] = null;
                     }, 500);
                 }
+                return;
+            }
+
+            const volSlider = document.getElementById(type + 'Vol');
+            const targetGain = parseFloat(volSlider.value) * getBaseGain(type);
+
+            if (type === 'birds') {
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
+                gain.connect(audioCtx.destination);
+
+                const birdInterval = setInterval(() => {
+                    if (Math.random() > 0.4) {
+                        const osc = audioCtx.createOscillator();
+                        const birdGain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        const startFreq = 2000 + Math.random() * 1500;
+                        osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(startFreq + 800, audioCtx.currentTime + 0.1);
+                        birdGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                        birdGain.gain.linearRampToValueAtTime(0.05 * targetGain, audioCtx.currentTime + 0.05);
+                        birdGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                        osc.connect(birdGain);
+                        birdGain.connect(gain);
+                        osc.start();
+                        osc.stop(audioCtx.currentTime + 0.15);
+                    }
+                }, 800);
+
+                ambientNodes[type] = { source: null, gain: gain, interval: birdInterval };
                 return;
             }
 
@@ -605,35 +620,22 @@
             const noiseSource = audioCtx.createBufferSource();
             noiseSource.buffer = buffer;
             noiseSource.loop = true;
-
             const filter = audioCtx.createBiquadFilter();
             const gain = audioCtx.createGain();
-            const volSlider = document.getElementById(type + 'Vol');
-            const targetGain = parseFloat(volSlider.value) * getBaseGain(type);
 
-            if (type === 'rain') {
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
-            } else if (type === 'ocean') {
-                filter.type = 'bandpass';
-                filter.frequency.setValueAtTime(400, audioCtx.currentTime);
-                filter.Q.value = 1.0;
-            } else if (type === 'fire') {
-                filter.type = 'bandpass';
-                filter.frequency.setValueAtTime(800, audioCtx.currentTime);
-                filter.Q.value = 1.0;
-            } else if (type === 'night') {
-                filter.type = 'highpass';
-                filter.frequency.setValueAtTime(4000, audioCtx.currentTime);
-            }
+            if (type === 'rain') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(1000, audioCtx.currentTime); }
+            else if (type === 'ocean') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(400, audioCtx.currentTime); filter.Q.value = 1.0; }
+            else if (type === 'fire') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(800, audioCtx.currentTime); filter.Q.value = 1.0; }
+            else if (type === 'night') { filter.type = 'highpass'; filter.frequency.setValueAtTime(4000, audioCtx.currentTime); }
+            else if (type === 'wind') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(250, audioCtx.currentTime); filter.Q.value = 3.0; }
+            else if (type === 'river') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(600, audioCtx.currentTime); }
+            else if (type === 'storm') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(180, audioCtx.currentTime); }
 
             gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
             gain.gain.linearRampToValueAtTime(targetGain, audioCtx.currentTime + 0.5);
-
             noiseSource.connect(filter);
             filter.connect(gain);
             gain.connect(audioCtx.destination);
-
             noiseSource.start();
             ambientNodes[type] = { source: noiseSource, gain: gain };
         }
@@ -644,6 +646,10 @@
                 case 'ocean': return 0.2;
                 case 'fire': return 0.1;
                 case 'night': return 0.05;
+                case 'wind': return 0.25;
+                case 'river': return 0.18;
+                case 'birds': return 0.8;
+                case 'storm': return 0.3;
                 default: return 0.1;
             }
         }
@@ -655,7 +661,7 @@
             }
         }
 
-        /* --- REGISTROS DE EMOCIONES & DIARIO --- */
+        /* --- MANEJO DE IMÁGENES & GRABACIONES --- */
         let mediaRecorder;
         let audioChunks = [];
         let selectedEmotionValue = '';
@@ -670,6 +676,43 @@
             const utterance = new SpeechSynthesisUtterance(message);
             utterance.lang = 'es-AR';
             window.speechSynthesis.speak(utterance);
+        }
+
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    currentBase64Photo = reader.result;
+                    const imgPreview = document.getElementById('photoPreviewImg');
+                    imgPreview.src = currentBase64Photo;
+                    imgPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveStandalonePhoto() {
+            if (!currentBase64Photo) {
+                alert('Primero selecciona una foto para guardar.');
+                return;
+            }
+            const entry = {
+                emotion: 'Foto',
+                note: 'Foto guardada',
+                photo: currentBase64Photo,
+                audio: '',
+                date: new Date().toLocaleString()
+            };
+            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            entries.push(entry);
+            localStorage.setItem('emotionEntries', JSON.stringify(entries));
+            alert('¡Foto guardada con éxito! 🖼️');
+            
+            document.getElementById('photoInput').value = '';
+            document.getElementById('photoPreviewImg').style.display = 'none';
+            currentBase64Photo = '';
+            loadEntries();
         }
 
         async function toggleRecording() {
@@ -701,24 +744,13 @@
                     };
 
                     mediaRecorder.start();
-                    recordBtn.innerText = 'Detener Grabación';
+                    recordBtn.innerText = 'Detener Grabación ⏹️';
                 } catch (err) {
                     alert('No se pudo acceder al micrófono.');
                     recordBtn.innerText = 'Grabar Audio';
                 }
             }
         }
-
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    currentBase64Photo = reader.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
 
         function saveEntry() {
             const noteInput = document.getElementById('noteInput');
@@ -732,10 +764,11 @@
             let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
             entries.push(entry);
             localStorage.setItem('emotionEntries', JSON.stringify(entries));
-            alert('Registro guardado con éxito');
+            alert('¡Registro guardado con éxito! 🎉');
             
             noteInput.value = '';
             document.getElementById('photoInput').value = '';
+            document.getElementById('photoPreviewImg').style.display = 'none';
             document.getElementById('audioPlayback').style.display = 'none';
             document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
             selectedEmotionValue = '';
@@ -745,6 +778,17 @@
             loadEntries();
         }
 
+        function deleteItem(storageKey, index) {
+            let items = JSON.parse(localStorage.getItem(storageKey)) || [];
+            items.splice(index, 1);
+            localStorage.setItem(storageKey, JSON.stringify(items));
+            
+            if (storageKey === 'emotionEntries') loadEntries();
+            if (storageKey === 'gratitudeEntries') loadGratitude();
+            if (storageKey === 'strategyEntries') loadStrategies();
+            if (storageKey === 'microexpressionEntries') loadMicroexpressions();
+        }
+
         function saveGratitude() {
             const gratitudeInput = document.getElementById('gratitudeInput');
             if(!gratitudeInput.value.trim()) return;
@@ -752,92 +796,4 @@
             let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
             gratitudes.push(entry);
             localStorage.setItem('gratitudeEntries', JSON.stringify(gratitudes));
-            alert('Agradecimiento guardado con éxito');
-            gratitudeInput.value = '';
-            loadGratitude();
-        }
-
-        function saveStrategy() {
-            const strategyInput = document.getElementById('strategyInput');
-            if(!strategyInput.value.trim()) return;
-            const entry = { text: strategyInput.value, date: new Date().toLocaleString() };
-            let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
-            strategies.push(entry);
-            localStorage.setItem('strategyEntries', JSON.stringify(strategies));
-            alert('Estrategia guardada con éxito');
-            strategyInput.value = '';
-            loadStrategies();
-        }
-
-        function saveMicroexpression() {
-            const microexpressionInput = document.getElementById('microexpressionInput');
-            if(!microexpressionInput.value.trim()) return;
-            const entry = { text: microexpressionInput.value, date: new Date().toLocaleString() };
-            let microexpressions = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
-            microexpressions.push(entry);
-            localStorage.setItem('microexpressionEntries', JSON.stringify(microexpressions));
-            alert('Observación guardada con éxito');
-            microexpressionInput.value = '';
-            loadMicroexpressions();
-        }
-
-        function loadEntries() {
-            const entriesList = document.getElementById('entriesList');
-            entriesList.innerHTML = '';
-            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
-            entries.forEach(entry => {
-                const li = document.createElement('li');
-                let content = `<strong>${entry.date}</strong> - Emoción: <i>${entry.emotion}</i><br>${entry.note}`;
-                if (entry.photo) {
-                    content += `<br><img src="${entry.photo}" class="entry-img" alt="Foto adjunta">`;
-                }
-                if (entry.audio) {
-                    content += `<br><audio controls src="${entry.audio}" style="margin-top:5px; width:100%;"></audio>`;
-                }
-                li.innerHTML = content;
-                entriesList.appendChild(li);
-            });
-        }
-
-        function loadGratitude() {
-            const gratitudeList = document.getElementById('gratitudeList');
-            gratitudeList.innerHTML = '';
-            let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
-            gratitudes.forEach(entry => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.text}`;
-                gratitudeList.appendChild(li);
-            });
-        }
-
-        function loadStrategies() {
-            const strategyList = document.getElementById('strategyList');
-            strategyList.innerHTML = '';
-            let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
-            strategies.forEach(entry => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.text}`;
-                strategyList.appendChild(li);
-            });
-        }
-
-        function loadMicroexpressions() {
-            const microexpressionList = document.getElementById('microexpressionList');
-            microexpressionList.innerHTML = '';
-            let microexpressions = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
-            microexpressions.forEach(entry => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${entry.date}</strong> - ${entry.text}`;
-                microexpressionList.appendChild(li);
-            });
-        }
-
-        window.onload = () => {
-            loadEntries();
-            loadGratitude();
-            loadStrategies();
-            loadMicroexpressions();
-        };
-    </script>
-</body>
-</html>
+            alert('¡
