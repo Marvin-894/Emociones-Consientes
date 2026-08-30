@@ -4,156 +4,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diario de Padres Conscientes & Relax</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #f0f4ff;
-            --card-bg: #ffffff;
-            --primary-blue: #4a90e2;
-            --primary-hover: #357abd;
-            --text-dark: #2c3e50;
-            --text-muted: #6c7a89;
-            --border-soft: #e2e8f0;
-            --radius-large: 24px;
-            --radius-medium: 16px;
-            --shadow-soft: 0 8px 24px rgba(149, 157, 165, 0.15);
+            --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --primary-accent: #6c5ce7;
+            --primary-soft: #a29bfe;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --border-soft: rgba(255, 255, 255, 0.6);
+            --radius-large: 28px;
+            --radius-card: 20px;
+            --shadow-float: 0 12px 32px rgba(31, 38, 135, 0.12);
+            --shadow-btn: 0 6px 16px rgba(108, 92, 231, 0.25);
         }
 
         body { 
-            font-family: 'Fredoka', 'Quicksand', 'Segoe UI', Roboto, sans-serif; 
+            font-family: 'Quicksand', sans-serif; 
             text-align: center; 
-            padding: 15px; 
-            background-color: var(--bg-main); 
-            background-image: radial-gradient(#e1e9ff 2px, transparent 2px);
-            background-size: 24px 24px;
-            color: var(--text-dark); 
+            padding: 20px 12px; 
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main); 
             min-height: 100vh;
             margin: 0;
             box-sizing: border-box;
         }
         
         .container { 
-            max-width: 580px; 
+            max-width: 620px; 
             margin: 0 auto; 
             background: var(--card-bg); 
-            padding: 20px; 
+            backdrop-filter: blur(10px);
+            padding: 28px 20px; 
             border-radius: var(--radius-large); 
-            border: 4px solid #ffffff;
-            box-shadow: var(--shadow-soft);
+            border: 2px solid var(--border-soft);
+            box-shadow: var(--shadow-float);
             box-sizing: border-box;
         }
 
         h1 { 
             margin-top: 0; 
-            color: #ff6b6b; 
-            font-size: 1.8em;
-            letter-spacing: 0.5px;
-            text-shadow: 2px 2px 0px #ffe3e3;
+            color: #6c5ce7; 
+            font-size: 2.1em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
-        h3 { 
-            margin-bottom: 6px; 
-            color: #48dbfb; 
-            font-size: 1.2em;
-            text-shadow: 1px 1px 0px #e0f8ff;
-        }
-        p { margin-top: 0; font-size: 0.9em; color: var(--text-muted); }
         
-        .music-player { 
-            background: #fff9e6; 
-            padding: 15px; 
-            border-radius: var(--radius-medium); 
-            border: 2px dashed #ffeaa7;
-            margin-bottom: 25px;
-        }
-        .music-player select, select.emotion-select {
-            padding: 10px;
-            border-radius: 12px;
-            border: 2px solid #ffeaa7;
+        .card-section {
             background: #ffffff;
-            font-size: 0.9em;
-            color: var(--text-dark);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #f1f2f6;
+            text-align: left;
+        }
+
+        .card-section h3 {
+            margin-top: 0;
+            margin-bottom: 6px;
+            color: #4834d4;
+            font-size: 1.25em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        p { margin-top: 0; font-size: 0.92em; color: var(--text-muted); line-height: 1.4; }
+        
+        /* PLAYER & SELECTS */
+        .music-player select, select.emotion-select {
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 2px solid #e0e0e0;
+            background: #fcfcfc;
+            font-family: inherit;
+            font-size: 0.95em;
+            color: var(--text-main);
             font-weight: 600;
             outline: none;
-            margin-bottom: 10px;
             width: 100%;
             cursor: pointer;
             box-sizing: border-box;
+            transition: border-color 0.2s;
         }
-        select.emotion-select {
-            border-color: #54a0ff;
-            margin-top: 8px;
+        .music-player select:focus, select.emotion-select:focus {
+            border-color: var(--primary-accent);
         }
+
         .music-controls {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            margin: 14px 0 18px 0;
         }
-        .music-btn {
-            background: #10ac84;
+        
+        /* BOTONES PRINCIPALES */
+        .music-btn, button.action-btn {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 14px 22px;
+            border-radius: 16px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 0.95em;
-            transition: transform 0.2s, background-color 0.2s;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1em;
+            transition: all 0.25s ease;
             width: 100%;
-            box-shadow: 0 4px 0px #0e8c6c;
+            box-shadow: var(--shadow-btn);
         }
-        .music-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
+        .music-btn:hover, button.action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.35);
+        }
+        .music-btn:active, button.action-btn:active {
+            transform: translateY(1px);
         }
         .music-btn.active { 
-            background: #ee5253; 
-            box-shadow: 0 4px 0px #c83b3c;
+            background: linear-gradient(135deg, #ff7675 0%, #fab1a0 100%);
+            box-shadow: 0 6px 16px rgba(255, 118, 117, 0.3);
         }
 
+        /* AMBIENT NOISE GRID */
         .ambient-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-            text-align: left;
+            gap: 12px;
+            margin-top: 12px;
         }
         .ambient-item {
-            background: #ffffff;
-            padding: 10px;
-            border-radius: 14px;
-            border: 2px solid #ffeaa7;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid #e9ecef;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
         .ambient-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.85em;
-            font-weight: 600;
-            color: var(--text-dark);
+            font-size: 0.88em;
+            font-weight: 700;
         }
         .ambient-item input[type="checkbox"] {
             cursor: pointer;
-            accent-color: #10ac84;
+            accent-color: var(--primary-accent);
             width: 18px;
             height: 18px;
         }
         .volume-slider {
             width: 100%;
-            accent-color: #ff9ff3;
+            accent-color: var(--primary-accent);
             height: 6px;
             cursor: pointer;
         }
 
-        /* GRID CORREGIDO PARA EMOCIONES */
+        /* EMOCIONES Y BOTONES CON EMOJIS */
         .buttons-grid { 
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 12px; 
-            margin: 18px 0; 
+            gap: 14px; 
+            margin: 16px 0 6px 0; 
             width: 100%;
             box-sizing: border-box;
         }
@@ -161,132 +179,133 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            width: 60px;
+            gap: 6px;
+            width: 68px;
         }
         .btn { 
             border: 3px solid #ffffff; 
             border-radius: 50%; 
             cursor: pointer; 
-            width: 48px; 
-            height: 48px; 
-            transition: transform 0.2s ease, box-shadow 0.2s ease; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            width: 54px; 
+            height: 54px; 
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
             box-sizing: border-box;
         }
         .btn:hover { 
-            transform: scale(1.15) rotate(5deg); 
+            transform: scale(1.15) rotate(4deg); 
         }
         .btn.selected { 
-            outline: 3px solid #ff9ff3; 
-            transform: scale(1.12); 
-            box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+            outline: 4px solid var(--primary-accent); 
+            transform: scale(1.18); 
+            box-shadow: 0 8px 18px rgba(108, 92, 231, 0.3);
         }
         
         .emotion-label {
-            font-size: 0.75em;
-            color: var(--text-dark);
-            font-weight: 600;
+            font-size: 0.78em;
+            color: var(--text-main);
+            font-weight: 700;
             text-align: center;
-            word-break: break-word;
         }
 
-        #happy { background-color: #feca57; }
-        #sad { background-color: #54a0ff; }
-        #angry { background-color: #ff6b6b; }
-        #calm { background-color: #1dd1a1; }
-        #fear { background-color: #5f27cd; }
-        #surprise { background-color: #ff9f43; }
-        #anxiety { background-color: #c8d6e5; }
-        #envy { background-color: #c8d6e5; }
-        #boredom { background-color: #8395a7; }
-        #shame { background-color: #ff9ff3; }
+        #happy { background-color: #ffeaa7; }
+        #sad { background-color: #74b9ff; }
+        #angry { background-color: #ff7675; }
+        #calm { background-color: #55efc4; }
+        #fear { background-color: #a29bfe; }
+        #surprise { background-color: #ffeaa7; }
+        #anxiety { background-color: #dfe6e9; }
+        #envy { background-color: #81ecec; }
+        #boredom { background-color: #b2bec3; }
+        #shame { background-color: #fd79a8; }
         
         textarea { 
             width: 100%; 
-            height: 85px; 
-            padding: 12px; 
+            height: 90px; 
+            padding: 14px; 
             box-sizing: border-box; 
             margin-top: 8px; 
-            border-radius: 14px; 
-            border: 2px solid #c8d6e5; 
-            background: #fafbfc;
-            color: var(--text-dark);
+            border-radius: 16px; 
+            border: 2px solid #e0e0e0; 
+            background: #fcfcfc;
+            color: var(--text-main);
             resize: vertical; 
             font-family: inherit; 
             font-size: 0.95em;
+            transition: border-color 0.2s;
         }
         textarea:focus { 
             outline: none; 
-            border-color: #54a0ff; 
+            border-color: var(--primary-accent); 
             background: #ffffff;
         }
-        .form-group { margin-top: 22px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 700; color: #2e86de; }
+
         input[type="file"] { 
             width: 100%; 
-            padding: 10px; 
-            border-radius: 12px; 
-            border: 2px dashed #54a0ff; 
-            background: #f0f8ff;
+            padding: 12px; 
+            border-radius: 14px; 
+            border: 2px dashed var(--primary-soft); 
+            background: #f8f7ff;
             color: var(--text-muted);
             box-sizing: border-box; 
             cursor: pointer;
+            font-family: inherit;
         }
-        #audioPlayback { margin-top: 10px; display: block; width: 100%; }
-        button.action-btn { 
-            background: #54a0ff; 
-            color: white; 
-            border: none; 
-            padding: 12px 20px; 
-            border-radius: 14px; 
-            cursor: pointer; 
-            font-weight: 700; 
-            font-size: 0.95em;
-            margin-top: 10px; 
-            transition: transform 0.2s; 
-            width: 100%; 
-            box-shadow: 0 4px 0px #2e86de;
-        }
-        button.action-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
+        #audioPlayback { margin-top: 12px; display: block; width: 100%; border-radius: 10px; }
+        
         .btn-delete {
-            background: #ff6b6b;
+            background: #ff7675;
             color: white;
             border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 6px 14px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 0.8em;
-            font-weight: bold;
-            margin-top: 8px;
+            font-weight: 700;
+            margin-top: 10px;
             float: right;
+            transition: background 0.2s;
         }
-        #history, #gratitude-history, #strategies-history, #microexpression-history { 
-            margin-top: 22px; 
+        .btn-delete:hover { background: #d63031; }
+
+        .history-card { 
+            margin-top: 20px; 
             text-align: left; 
-            background: #f8f9fa; 
-            padding: 18px; 
-            border-radius: 16px; 
-            border: 2px solid #e9ecef;
+            background: #ffffff; 
+            padding: 20px; 
+            border-radius: var(--radius-card); 
+            border: 1px solid #f1f2f6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
+        .history-card h3 { color: var(--primary-accent); margin-top: 0; }
         ul { padding-left: 0; list-style-type: none; margin-bottom: 0; }
-        li { margin-bottom: 14px; word-wrap: break-word; color: var(--text-dark); background: #ffffff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
-        li strong { color: #54a0ff; }
-        .entry-img { max-width: 100%; height: auto; border-radius: 12px; margin-top: 8px; display: block; border: 2px solid #c8d6e5; }
-        .photo-preview { max-width: 120px; height: auto; border-radius: 8px; margin-top: 8px; display: none; }
+        li { 
+            margin-bottom: 14px; 
+            word-wrap: break-word; 
+            color: var(--text-main); 
+            background: #f8f9fa; 
+            padding: 14px; 
+            border-radius: 16px; 
+            border: 1px solid #e9ecef; 
+            overflow: hidden; 
+        }
+        li strong { color: var(--primary-accent); }
+        .entry-img { max-width: 100%; height: auto; border-radius: 14px; margin-top: 10px; display: block; }
+        .photo-preview { max-width: 140px; height: auto; border-radius: 12px; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Diario de Padres Conscientes</h1>
+        <h1>Diario Consciente 🌿</h1>
         
-        <div class="music-player">
-            <h3>Rincón de Relax y Meditación 🎨</h3>
-            <p>Elegí una música suave para escuchar:</p>
+        <div class="card-section music-player">
+            <h3>🎨 Rincón de Relax y Meditación</h3>
+            <p>Elige una melodía tranquila para acompañar tu momento:</p>
             <div>
                 <select id="styleSelect" onchange="changeStyle()">
                     <option value="ambient">Ambient Meditativo (Pads Armónicos)</option>
@@ -306,122 +325,97 @@
                 <button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">Reproducir Música 🎵</button>
             </div>
 
-            <p style="margin-top: 12px; font-weight: 700; color: #ff9f43;">Sonidos Relajantes Combinables:</p>
+            <p style="font-weight: 700; color: var(--primary-accent); margin-bottom: 8px;">Sonidos de la Naturaleza:</p>
             <div class="ambient-grid">
                 <div class="ambient-item">
-                    <div class="ambient-header">
-                        <span>🌧️ Lluvia</span>
-                        <input type="checkbox" id="rainNoise" onchange="toggleAmbientNoise('rain', this.checked)">
-                    </div>
+                    <div class="ambient-header"><span>🌧️ Lluvia</span><input type="checkbox" id="rainNoise" onchange="toggleAmbientNoise('rain', this.checked)"></div>
                     <input type="range" class="volume-slider" id="rainVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('rain', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <div class="ambient-header">
-                        <span>🌊 Olas del Mar</span>
-                        <input type="checkbox" id="oceanNoise" onchange="toggleAmbientNoise('ocean', this.checked)">
-                    </div>
+                    <div class="ambient-header"><span>🌊 Mar</span><input type="checkbox" id="oceanNoise" onchange="toggleAmbientNoise('ocean', this.checked)"></div>
                     <input type="range" class="volume-slider" id="oceanVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('ocean', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <div class="ambient-header">
-                        <span>🔥 Fogata</span>
-                        <input type="checkbox" id="fireNoise" onchange="toggleAmbientNoise('fire', this.checked)">
-                    </div>
+                    <div class="ambient-header"><span>🔥 Fuego</span><input type="checkbox" id="fireNoise" onchange="toggleAmbientNoise('fire', this.checked)"></div>
                     <input type="range" class="volume-slider" id="fireVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('fire', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <div class="ambient-header">
-                        <span>🌙 Noche</span>
-                        <input type="checkbox" id="nightNoise" onchange="toggleAmbientNoise('night', this.checked)">
-                    </div>
+                    <div class="ambient-header"><span>🌙 Noche</span><input type="checkbox" id="nightNoise" onchange="toggleAmbientNoise('night', this.checked)"></div>
                     <input type="range" class="volume-slider" id="nightVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('night', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <div class="ambient-header">
-                        <span>🍃 Viento</span>
-                        <input type="checkbox" id="windNoise" onchange="toggleAmbientNoise('wind', this.checked)">
-                    </div>
+                    <div class="ambient-header"><span>🍃 Viento</span><input type="checkbox" id="windNoise" onchange="toggleAmbientNoise('wind', this.checked)"></div>
                     <input type="range" class="volume-slider" id="windVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('wind', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <div class="ambient-header">
-                        <span>🏞️ Río</span>
-                        <input type="checkbox" id="riverNoise" onchange="toggleAmbientNoise('river', this.checked)">
-                    </div>
+                    <div class="ambient-header"><span>🏞️ Río</span><input type="checkbox" id="riverNoise" onchange="toggleAmbientNoise('river', this.checked)"></div>
                     <input type="range" class="volume-slider" id="riverVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('river', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <div class="ambient-header">
-                        <span>🐦 Pájaros</span>
-                        <input type="checkbox" id="birdsNoise" onchange="toggleAmbientNoise('birds', this.checked)">
-                    </div>
+                    <div class="ambient-header"><span>🐦 Pájaros</span><input type="checkbox" id="birdsNoise" onchange="toggleAmbientNoise('birds', this.checked)"></div>
                     <input type="range" class="volume-slider" id="birdsVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('birds', this.value)">
                 </div>
                 <div class="ambient-item">
-                    <div class="ambient-header">
-                        <span>⚡ Tormenta</span>
-                        <input type="checkbox" id="stormNoise" onchange="toggleAmbientNoise('storm', this.checked)">
-                    </div>
+                    <div class="ambient-header"><span>⚡ Tormenta</span><input type="checkbox" id="stormNoise" onchange="toggleAmbientNoise('storm', this.checked)"></div>
                     <input type="range" class="volume-slider" id="stormVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('storm', this.value)">
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <h3>¿Cómo te sientes hoy? 🎈</h3>
-            <p>Tocá la emoción que mejor exprese lo que sentís.</p>
+        <div class="card-section">
+            <h3>🎈 ¿Cómo te sientes hoy?</h3>
+            <p>Toca el botón que mejor exprese tu emoción actual.</p>
             <div class="buttons-grid">
                 <div class="emotion-card">
-                    <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!', this)" title="Alegre"></button>
+                    <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!', this)" title="Alegre">😊</button>
                     <span class="emotion-label">Alegre</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.', this)" title="Triste"></button>
+                    <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.', this)" title="Triste">😢</button>
                     <span class="emotion-label">Triste</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.', this)" title="Enojado"></button>
+                    <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.', this)" title="Enojado">😡</button>
                     <span class="emotion-label">Enojado</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.', this)" title="En Calma"></button>
+                    <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.', this)" title="En Calma">😌</button>
                     <span class="emotion-label">En Calma</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.', this)" title="Miedo"></button>
+                    <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.', this)" title="Miedo">😨</button>
                     <span class="emotion-label">Miedo</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.', this)" title="Sorprendido"></button>
+                    <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.', this)" title="Sorprendido">😲</button>
                     <span class="emotion-label">Sorprendido</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.', this)" title="Ansiedad"></button>
+                    <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.', this)" title="Ansiedad">😰</button>
                     <span class="emotion-label">Ansiedad</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.', this)" title="Envidia"></button>
+                    <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.', this)" title="Envidia">😒</button>
                     <span class="emotion-label">Envidia</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.', this)" title="Aburrimiento"></button>
+                    <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.', this)" title="Aburrimiento">🥱</button>
                     <span class="emotion-label">Aburrimiento</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.', this)" title="Vergüenza"></button>
+                    <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.', this)" title="Vergüenza">😳</button>
                     <span class="emotion-label">Vergüenza</span>
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <h3>Captura de Momento 📸</h3>
-            <label>Subir una foto:</label>
-            <p>Guardá una foto genial para recordar este día.</p>
+        <div class="card-section">
+            <h3>📸 Captura de Momento</h3>
+            <p>Guarda una foto especial para recordar este día.</p>
             <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
             <img id="photoPreviewImg" class="photo-preview" alt="Vista previa">
             
-            <label style="margin-top: 10px; font-size: 0.9em;">¿Qué emoción transmitía esta foto?</label>
+            <p style="margin-top: 14px; font-weight: 700; color: var(--text-main);">¿Qué emoción transmitía esta foto?</p>
             <select id="photoEmotionSelect" class="emotion-select">
                 <option value="Alegre">Alegre 😊</option>
                 <option value="Triste">Triste 😢</option>
@@ -435,64 +429,62 @@
                 <option value="Vergüenza">Vergüenza 😳</option>
             </select>
             
-            <button class="action-btn" style="background: #ff9f43; box-shadow: 0 4px 0px #e67e22;" onclick="saveStandalonePhoto()">Guardar Foto 🖼️</button>
+            <button class="action-btn" style="margin-top: 14px; background: linear-gradient(135deg, #ff9ff3 0%, #feca57 100%);" onclick="saveStandalonePhoto()">Guardar Foto 🖼️</button>
         </div>
 
-        <div class="form-group">
-            <h3>Mensaje de Voz 🎤</h3>
-            <label>Grabar un audio:</label>
-            <p>Usá tu voz para contar cómo te fue hoy.</p>
+        <div class="card-section">
+            <h3>🎤 Mensaje de Voz</h3>
+            <p>Usa tu voz para contar cómo te fue hoy.</p>
             <button class="action-btn" id="recordBtn" onclick="toggleRecording()">Grabar Audio</button>
             <audio id="audioPlayback" controls style="display:none;"></audio>
         </div>
 
-        <div class="form-group">
-            <h3>Reflexión Personal 📝</h3>
-            <label>Escribí una nota:</label>
-            <p>Anotá aquí tus ideas y sentimientos.</p>
+        <div class="card-section">
+            <h3>📝 Reflexión Personal</h3>
+            <p>Anota aquí tus observaciones o pensamiento del día.</p>
             <textarea id="noteInput" placeholder="¿Qué pasó hoy?..."></textarea>
         </div>
 
-        <button class="action-btn" style="background: #10ac84; box-shadow: 0 4px 0px #0e8c6c;" onclick="saveEntry()">Guardar Registro Completo ✨</button>
+        <button class="action-btn" style="background: linear-gradient(135deg, #10ac84 0%, #1dd1a1 100%); font-size: 1.05em; margin-bottom: 22px;" onclick="saveEntry()">Guardar Registro Completo ✨</button>
 
-        <div class="form-group">
-            <h3>Momento de Gratitud ⭐</h3>
-            <p>Agradecer nos hace sentir muy bien por dentro.</p>
+        <div class="card-section">
+            <h3>⭐ Momento de Gratitud</h3>
+            <p>Agradecer fortalece la empatía y la paz mental.</p>
             <textarea id="gratitudeInput" placeholder="¿Qué cosas lindas te pasaron hoy?"></textarea>
-            <button class="action-btn" onclick="saveGratitude()">Guardar Gratitud</button>
+            <button class="action-btn" style="margin-top: 12px;" onclick="saveGratitude()">Guardar Gratitud</button>
         </div>
 
-        <div class="form-group">
-            <h3>Estrategias de Crianza 💡</h3>
+        <div class="card-section">
+            <h3>💡 Estrategias de Crianza</h3>
             <p>Ideas y herramientas para compartir en familia.</p>
-            <textarea id="strategyInput" placeholder="Anotá aquí tus descubrimientos..."></textarea>
-            <button class="action-btn" onclick="saveStrategy()">Guardar Estrategia</button>
+            <textarea id="strategyInput" placeholder="Anota aquí tus descubrimientos..."></textarea>
+            <button class="action-btn" style="margin-top: 12px;" onclick="saveStrategy()">Guardar Estrategia</button>
         </div>
 
-        <div class="form-group">
-            <h3>Observación de Microexpresiones 👀</h3>
-            <p>Registrá gestos o expresiones del lenguaje corporal.</p>
-            <textarea id="microexpressionInput" placeholder="Anotá las expresiones observadas..."></textarea>
-            <button class="action-btn" onclick="saveMicroexpression()">Guardar Observación</button>
+        <div class="card-section">
+            <h3>👀 Observación de Microexpresiones</h3>
+            <p>Registra gestos observados durante el día.</p>
+            <textarea id="microexpressionInput" placeholder="Anota las expresiones observadas..."></textarea>
+            <button class="action-btn" style="margin-top: 12px;" onclick="saveMicroexpression()">Guardar Observación</button>
         </div>
 
-        <div id="history">
-            <h3>Registros Guardados:</h3>
+        <div class="history-card" id="history">
+            <h3>Registros Guardados</h3>
             <ul id="entriesList"></ul>
         </div>
 
-        <div id="gratitude-history">
-            <h3>Agradecimientos:</h3>
+        <div class="history-card" id="gratitude-history">
+            <h3>Agradecimientos</h3>
             <ul id="gratitudeList"></ul>
         </div>
 
-        <div id="strategies-history">
-            <h3>Estrategias de Crianza:</h3>
+        <div class="history-card" id="strategies-history">
+            <h3>Estrategias de Crianza</h3>
             <ul id="strategyList"></ul>
         </div>
 
-        <div id="microexpression-history">
-            <h3>Observaciones de Microexpresiones:</h3>
+        <div class="history-card" id="microexpression-history">
+            <h3>Observaciones de Microexpresiones</h3>
             <ul id="microexpressionList"></ul>
         </div>
     </div>
@@ -604,11 +596,13 @@
             await initAudio();
             if (!active) {
                 if (ambientNodes[type]) {
-                    ambientNodes[type].gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+                    if (ambientNodes[type].gain) {
+                        ambientNodes[type].gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+                    }
                     setTimeout(() => {
                         try { 
-                            if (ambientNodes[type].source) ambientNodes[type].source.stop();
-                            if (ambientNodes[type].interval) clearInterval(ambientNodes[type].interval);
+                            if (ambientNodes[type] && ambientNodes[type].source) ambientNodes[type].source.stop();
+                            if (ambientNodes[type] && ambientNodes[type].interval) clearInterval(ambientNodes[type].interval);
                         } catch(e){}
                         ambientNodes[type] = null;
                     }, 500);
@@ -625,7 +619,7 @@
                 gain.connect(audioCtx.destination);
 
                 const birdInterval = setInterval(() => {
-                    if (Math.random() > 0.4) {
+                    if (Math.random() > 0.4 && audioCtx) {
                         const osc = audioCtx.createOscillator();
                         const birdGain = audioCtx.createGain();
                         osc.type = 'sine';
@@ -685,7 +679,7 @@
         }
 
         function updateVolume(type, val) {
-            if (ambientNodes[type] && audioCtx) {
+            if (ambientNodes[type] && ambientNodes[type].gain && audioCtx) {
                 const targetGain = parseFloat(val) * getBaseGain(type);
                 ambientNodes[type].gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
             }
@@ -703,6 +697,7 @@
             if(element) element.classList.add('selected');
 
             if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(message);
                 utterance.lang = 'es-AR';
                 window.speechSynthesis.speak(utterance);
@@ -866,8 +861,14 @@
                 let content = `<strong>${item.date}</strong> - Emoción: ${item.emotion}<br>${item.note}`;
                 if (item.photo) content += `<br><img src="${item.photo}" class="entry-img">`;
                 if (item.audio) content += `<br><audio src="${item.audio}" controls style="margin-top:8px; width:100%;"></audio>`;
-                content += `<button class="btn-delete" onclick="deleteItem('emotionEntries', ${index})">Eliminar</button>`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerText = 'Eliminar';
+                deleteBtn.onclick = () => deleteItem('emotionEntries', index);
+                
                 li.innerHTML = content;
+                li.appendChild(deleteBtn);
                 list.appendChild(li);
             });
         }
@@ -878,7 +879,14 @@
             let items = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
             items.forEach((item, index) => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}<button class="btn-delete" onclick="deleteItem('gratitudeEntries', ${index})">Eliminar</button>`;
+                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerText = 'Eliminar';
+                deleteBtn.onclick = () => deleteItem('gratitudeEntries', index);
+                
+                li.appendChild(deleteBtn);
                 list.appendChild(li);
             });
         }
@@ -889,7 +897,14 @@
             let items = JSON.parse(localStorage.getItem('strategyEntries')) || [];
             items.forEach((item, index) => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}<button class="btn-delete" onclick="deleteItem('strategyEntries', ${index})">Eliminar</button>`;
+                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerText = 'Eliminar';
+                deleteBtn.onclick = () => deleteItem('strategyEntries', index);
+                
+                li.appendChild(deleteBtn);
                 list.appendChild(li);
             });
         }
@@ -900,7 +915,14 @@
             let items = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
             items.forEach((item, index) => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}<button class="btn-delete" onclick="deleteItem('microexpressionEntries', ${index})">Eliminar</button>`;
+                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete';
+                deleteBtn.innerText = 'Eliminar';
+                deleteBtn.onclick = () => deleteItem('microexpressionEntries', index);
+                
+                li.appendChild(deleteBtn);
                 list.appendChild(li);
             });
         }
