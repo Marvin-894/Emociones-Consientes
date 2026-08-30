@@ -1,1080 +1,568 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diario de Padres Conscientes & Relax</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-            --card-bg: rgba(255, 255, 255, 0.92);
-            --primary-accent: #6c5ce7;
-            --primary-soft: #a29bfe;
-            --text-main: #2d3436;
-            --text-muted: #636e72;
-            --border-soft: rgba(255, 255, 255, 0.6);
-            --radius-large: 28px;
-            --radius-card: 20px;
-            --shadow-float: 0 12px 32px rgba(31, 38, 135, 0.12);
-            --shadow-btn: 0 6px 16px rgba(108, 92, 231, 0.25);
-        }
+<script>
+    let audioCtx = null;
+    let isPlaying = false;
+    let timerId = null;
+    let step = 0;
+    let currentStyle = 'ambient';
 
-        body { 
-            font-family: 'Quicksand', sans-serif; 
-            text-align: center; 
-            padding: 20px 12px; 
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main); 
-            min-height: 100vh;
-            margin: 0;
-            box-sizing: border-box;
+    let ambientNodes = { 
+        rain: null, ocean: null, fire: null, night: null,
+        wind: null, river: null, birds: null, storm: null
+    };
+
+    // Frecuencias extendidas con alteradas (Sostenidos/Bemoles) para acordes de 7ma y 9na
+    const notes = {
+        C2: 65.41, Db2: 69.30, D2: 73.42, Eb2: 77.78, E2: 82.41, F2: 87.31, Gb2: 92.50, G2: 98.00, Ab2: 103.83, A2: 110.00, Bb2: 116.54, B2: 123.47,
+        C3: 130.81, Db3: 138.59, D3: 146.83, Eb3: 155.56, E3: 164.81, F3: 174.61, Gb3: 185.00, G3: 196.00, Ab3: 207.65, A3: 220.00, Bb3: 233.08, B3: 246.94,
+        C4: 261.63, Db4: 277.18, D4: 293.66, Eb4: 311.13, E4: 329.63, F4: 349.23, Gb4: 369.99, G4: 392.00, Ab4: 415.30, A4: 440.00, Bb4: 466.16, B4: 493.88,
+        C5: 523.25, D5: 587.33, Eb5: 622.25, E5: 659.25, F5: 698.46, G5: 783.99, Ab5: 830.61, A5: 880.00, Bb5: 932.33, B5: 987.77
+    };
+
+    // Progresiones avanzadas: Tétradas (7mas y 9nas)
+    const styles = {
+        ambient: { 
+            tempo: 380, wave: 'sine', 
+            chords: [
+                [notes.C3, notes.G3, notes.B3, notes.E4, notes.D5],  // CMaj9
+                [notes.A2, notes.E3, notes.G3, notes.C4, notes.E4],  // Am7
+                [notes.F2, notes.C3, notes.E3, notes.A3, notes.C4],  // FMaj7
+                [notes.G2, notes.D3, notes.F3, notes.B3, notes.D4]   // G7
+            ], 
+            melody: [notes.E5, null, notes.G5, notes.B4, notes.D5, notes.C5, notes.G4, null] 
+        },
+        piano: { 
+            tempo: 280, wave: 'triangle', 
+            chords: [
+                [notes.C3, notes.E3, notes.G3, notes.B3],  // CMaj7
+                [notes.F2, notes.A3, notes.C4, notes.E4],  // FMaj7
+                [notes.A2, notes.C3, notes.E3, notes.G3],  // Am7
+                [notes.G2, notes.B3, notes.D4, notes.F4]   // G7
+            ], 
+            melody: [notes.G4, notes.C5, notes.E5, notes.D5, notes.C5, notes.B4, notes.A4, notes.G4] 
+        },
+        lofi: { 
+            tempo: 240, wave: 'triangle', 
+            chords: [
+                [notes.C3, notes.E3, notes.G3, notes.B3, notes.D4],  // CMaj9
+                [notes.A2, notes.C3, notes.E3, notes.G3, notes.B3],  // Am9
+                [notes.D3, notes.F3, notes.A3, notes.C4, notes.E4],  // Dm9
+                [notes.G2, notes.B3, notes.D4, notes.F4, notes.A4]   // G9
+            ], 
+            melody: [notes.G4, notes.E5, null, notes.D5, notes.C5, null, notes.A4, notes.B4] 
+        },
+        bossa: { 
+            tempo: 260, wave: 'triangle', 
+            chords: [
+                [notes.D3, notes.F3, notes.A3, notes.C4, notes.E4],  // Dm9
+                [notes.G2, notes.B3, notes.D4, notes.F4, notes.A4],  // G9
+                [notes.C3, notes.E3, notes.G3, notes.B3, notes.D4],  // CMaj9
+                [notes.A2, notes.C3, notes.E3, notes.G3, notes.B3]   // Am9
+            ], 
+            melody: [notes.A4, notes.C5, notes.B4, notes.G4, notes.E5, null, notes.D5, notes.C5] 
+        },
+        jazz: { 
+            tempo: 320, wave: 'sine', 
+            chords: [
+                [notes.F2, notes.A3, notes.C4, notes.E4, notes.G4],  // FMaj9
+                [notes.D3, notes.F3, notes.A3, notes.C4, notes.E4],  // Dm9
+                [notes.G2, notes.B3, notes.D4, notes.F4, notes.A4],  // G9
+                [notes.C3, notes.E3, notes.G3, notes.B3, notes.D4]   // CMaj9
+            ], 
+            melody: [notes.E5, notes.D5, notes.C5, notes.A4, notes.G4, notes.A4, notes.C5, null] 
+        },
+        folk: { 
+            tempo: 290, wave: 'triangle', 
+            chords: [
+                [notes.C3, notes.G3, notes.C4, notes.E4],
+                [notes.G2, notes.D3, notes.G3, notes.B3],
+                [notes.A2, notes.E3, notes.A3, notes.C4],
+                [notes.F2, notes.C3, notes.F3, notes.A3]
+            ], 
+            melody: [notes.E4, notes.G4, notes.C5, notes.G4, notes.E5, notes.D5, notes.C5, notes.G4] 
+        },
+        space: { 
+            tempo: 550, wave: 'sine', 
+            chords: [
+                [notes.C2, notes.G2, notes.B3, notes.D4, notes.G4],
+                [notes.F2, notes.C3, notes.E3, notes.G3, notes.C4],
+                [notes.A2, notes.E3, notes.G3, notes.B3, notes.E4],
+                [notes.G2, notes.D3, notes.F3, notes.A3, notes.D4]
+            ], 
+            melody: [notes.G5, null, notes.E5, null, notes.C5, null, notes.B4, null] 
+        },
+        reggae: { 
+            tempo: 300, wave: 'sine', 
+            chords: [
+                [notes.C3, notes.E3, notes.G3, notes.B3],
+                [notes.F2, notes.A3, notes.C4, notes.E4],
+                [notes.G2, notes.B3, notes.D4, notes.F4],
+                [notes.C3, notes.E3, notes.G3, notes.B3]
+            ], 
+            melody: [null, notes.G4, null, notes.E5, null, notes.D5, notes.C5, null] 
+        },
+        synthwave: { 
+            tempo: 190, wave: 'sawtooth', 
+            chords: [
+                [notes.C2, notes.G3, notes.B3, notes.E4],
+                [notes.A2, notes.E3, notes.G3, notes.C4],
+                [notes.F2, notes.C3, notes.E3, notes.A3],
+                [notes.G2, notes.D3, notes.F3, notes.B3]
+            ], 
+            melody: [notes.C5, notes.E5, notes.G5, notes.E5, notes.D5, notes.B4, notes.C5, notes.G4] 
+        },
+        zen: { 
+            tempo: 580, wave: 'sine', 
+            chords: [
+                [notes.C2, notes.G2, notes.D3, notes.G3],
+                [notes.F2, notes.C3, notes.G3, notes.C4],
+                [notes.A2, notes.E3, notes.B3, notes.E4],
+                [notes.G2, notes.D3, notes.A3, notes.D4]
+            ], 
+            melody: [notes.E4, null, notes.G4, null, notes.B4, null, notes.A4, null] 
         }
+    };
+
+    async function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            await audioCtx.resume();
+        }
+    }
+
+    // Sintetizador con envolventes suaves para polifonía de acordes
+    function playChordTone(freq, duration, type = 'sine', gainVal = 0.03, delay = 0) {
+        if (!freq || !audioCtx) return;
         
-        .container { 
-            max-width: 620px; 
-            margin: 0 auto; 
-            background: var(--card-bg); 
-            backdrop-filter: blur(10px);
-            padding: 28px 20px; 
-            border-radius: var(--radius-large); 
-            border: 2px solid var(--border-soft);
-            box-shadow: var(--shadow-float);
-            box-sizing: border-box;
-        }
-
-        h1 { 
-            margin-top: 0; 
-            color: #6c5ce7; 
-            font-size: 2.1em;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        
-        .card-section {
-            background: #ffffff;
-            border-radius: var(--radius-card);
-            padding: 20px;
-            margin-bottom: 22px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            border: 1px solid #f1f2f6;
-            text-align: left;
-        }
-
-        .card-section h3 {
-            margin-top: 0;
-            margin-bottom: 6px;
-            color: #4834d4;
-            font-size: 1.25em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        p { margin-top: 0; font-size: 0.92em; color: var(--text-muted); line-height: 1.4; }
-        
-        /* PLAYER & SELECTS */
-        .music-player select, select.emotion-select {
-            padding: 12px 16px;
-            border-radius: 14px;
-            border: 2px solid #e0e0e0;
-            background: #fcfcfc;
-            font-family: inherit;
-            font-size: 0.95em;
-            color: var(--text-main);
-            font-weight: 600;
-            outline: none;
-            width: 100%;
-            cursor: pointer;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
-        }
-        .music-player select:focus, select.emotion-select:focus {
-            border-color: var(--primary-accent);
-        }
-
-        .music-controls {
-            display: flex;
-            justify-content: center;
-            margin: 14px 0 18px 0;
-        }
-        
-        /* BOTONES PRINCIPALES */
-        .music-btn, button.action-btn {
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
-            color: white;
-            border: none;
-            padding: 14px 22px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: 700;
-            font-size: 1em;
-            transition: all 0.25s ease;
-            width: 100%;
-            box-shadow: var(--shadow-btn);
-        }
-        .music-btn:hover, button.action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.35);
-        }
-        .music-btn:active, button.action-btn:active {
-            transform: translateY(1px);
-        }
-        .music-btn.active { 
-            background: linear-gradient(135deg, #ff7675 0%, #fab1a0 100%);
-            box-shadow: 0 6px 16px rgba(255, 118, 117, 0.3);
-        }
-
-        /* AMBIENT NOISE GRID */
-        .ambient-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
-        }
-        .ambient-item {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 16px;
-            border: 1px solid #e9ecef;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .ambient-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.88em;
-            font-weight: 700;
-        }
-        .ambient-item input[type="checkbox"] {
-            cursor: pointer;
-            accent-color: var(--primary-accent);
-            width: 18px;
-            height: 18px;
-        }
-        .volume-slider {
-            width: 100%;
-            accent-color: var(--primary-accent);
-            height: 6px;
-            cursor: pointer;
-        }
-
-        /* EMOCIONES Y BOTONES CON EMOJIS */
-        .buttons-grid { 
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 14px; 
-            margin: 16px 0 6px 0; 
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .emotion-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            width: 68px;
-        }
-        .btn { 
-            border: 3px solid #ffffff; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            width: 54px; 
-            height: 54px; 
-            font-size: 1.5em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-            box-sizing: border-box;
-        }
-        .btn:hover { 
-            transform: scale(1.15) rotate(4deg); 
-        }
-        .btn.selected { 
-            outline: 4px solid var(--primary-accent); 
-            transform: scale(1.18); 
-            box-shadow: 0 8px 18px rgba(108, 92, 231, 0.3);
-        }
-        
-        .emotion-label {
-            font-size: 0.78em;
-            color: var(--text-main);
-            font-weight: 700;
-            text-align: center;
-        }
-
-        #happy { background-color: #ffeaa7; }
-        #sad { background-color: #74b9ff; }
-        #angry { background-color: #ff7675; }
-        #calm { background-color: #55efc4; }
-        #fear { background-color: #a29bfe; }
-        #surprise { background-color: #ffeaa7; }
-        #anxiety { background-color: #dfe6e9; }
-        #envy { background-color: #81ecec; }
-        #boredom { background-color: #b2bec3; }
-        #shame { background-color: #fd79a8; }
-        
-        textarea { 
-            width: 100%; 
-            height: 90px; 
-            padding: 14px; 
-            box-sizing: border-box; 
-            margin-top: 8px; 
-            border-radius: 16px; 
-            border: 2px solid #e0e0e0; 
-            background: #fcfcfc;
-            color: var(--text-main);
-            resize: vertical; 
-            font-family: inherit; 
-            font-size: 0.95em;
-            transition: border-color 0.2s;
-        }
-        textarea:focus { 
-            outline: none; 
-            border-color: var(--primary-accent); 
-            background: #ffffff;
-        }
-
-        input[type="file"] { 
-            width: 100%; 
-            padding: 12px; 
-            border-radius: 14px; 
-            border: 2px dashed var(--primary-soft); 
-            background: #f8f7ff;
-            color: var(--text-muted);
-            box-sizing: border-box; 
-            cursor: pointer;
-            font-family: inherit;
-        }
-        #audioPlayback { margin-top: 12px; display: block; width: 100%; border-radius: 10px; }
-        
-        .btn-delete {
-            background: #ff7675;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 0.8em;
-            font-weight: 700;
-            margin-top: 10px;
-            float: right;
-            transition: background 0.2s;
-        }
-        .btn-delete:hover { background: #d63031; }
-
-        .history-card { 
-            margin-top: 20px; 
-            text-align: left; 
-            background: #ffffff; 
-            padding: 20px; 
-            border-radius: var(--radius-card); 
-            border: 1px solid #f1f2f6;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
-        .history-card h3 { color: var(--primary-accent); margin-top: 0; }
-        ul { padding-left: 0; list-style-type: none; margin-bottom: 0; }
-        li { 
-            margin-bottom: 14px; 
-            word-wrap: break-word; 
-            color: var(--text-main); 
-            background: #f8f9fa; 
-            padding: 14px; 
-            border-radius: 16px; 
-            border: 1px solid #e9ecef; 
-            overflow: hidden; 
-        }
-        li strong { color: var(--primary-accent); }
-        .entry-img { max-width: 100%; height: auto; border-radius: 14px; margin-top: 10px; display: block; }
-        .photo-preview { max-width: 140px; height: auto; border-radius: 12px; margin-top: 10px; display: none; }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <h1>Diario Consciente 🌿</h1>
-        
-        <div class="card-section music-player">
-            <h3>🎨 Rincón de Relax y Meditación</h3>
-            <p>Elige una melodía tranquila para acompañar tu momento:</p>
-            <div>
-                <select id="styleSelect" onchange="changeStyle()">
-                    <option value="ambient">Ambient Meditativo (Pads Armónicos)</option>
-                    <option value="piano">Piano Suave & Melódico</option>
-                    <option value="lofi">Lo-Fi Chill Relax</option>
-                    <option value="bossa">Bossa Nova Relax 🏖️</option>
-                    <option value="jazz">Calm Jazz Ballad 🎷</option>
-                    <option value="folk">Acoustic Folk Chill 🎸</option>
-                    <option value="space">Space Ambient & Cuencos 🌌</option>
-                    <option value="reggae">Reggae Lofi Chill 🌴</option>
-                    <option value="synthwave">Synthwave Nocturno</option>
-                    <option value="zen">Meditación Zen (Tonos Profundos)</option>
-                </select>
-            </div>
-            
-            <div class="music-controls">
-                <button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">Reproducir Música 🎵</button>
-            </div>
-
-            <p style="font-weight: 700; color: var(--primary-accent); margin-bottom: 8px;">Sonidos de la Naturaleza:</p>
-            <div class="ambient-grid">
-                <div class="ambient-item">
-                    <div class="ambient-header"><span>🌧️ Lluvia</span><input type="checkbox" id="rainNoise" onchange="toggleAmbientNoise('rain', this.checked)"></div>
-                    <input type="range" class="volume-slider" id="rainVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('rain', this.value)">
-                </div>
-                <div class="ambient-item">
-                    <div class="ambient-header"><span>🌊 Mar</span><input type="checkbox" id="oceanNoise" onchange="toggleAmbientNoise('ocean', this.checked)"></div>
-                    <input type="range" class="volume-slider" id="oceanVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('ocean', this.value)">
-                </div>
-                <div class="ambient-item">
-                    <div class="ambient-header"><span>🔥 Fuego</span><input type="checkbox" id="fireNoise" onchange="toggleAmbientNoise('fire', this.checked)"></div>
-                    <input type="range" class="volume-slider" id="fireVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('fire', this.value)">
-                </div>
-                <div class="ambient-item">
-                    <div class="ambient-header"><span>🌙 Noche</span><input type="checkbox" id="nightNoise" onchange="toggleAmbientNoise('night', this.checked)"></div>
-                    <input type="range" class="volume-slider" id="nightVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('night', this.value)">
-                </div>
-                <div class="ambient-item">
-                    <div class="ambient-header"><span>🍃 Viento</span><input type="checkbox" id="windNoise" onchange="toggleAmbientNoise('wind', this.checked)"></div>
-                    <input type="range" class="volume-slider" id="windVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('wind', this.value)">
-                </div>
-                <div class="ambient-item">
-                    <div class="ambient-header"><span>🏞️ Río</span><input type="checkbox" id="riverNoise" onchange="toggleAmbientNoise('river', this.checked)"></div>
-                    <input type="range" class="volume-slider" id="riverVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('river', this.value)">
-                </div>
-                <div class="ambient-item">
-                    <div class="ambient-header"><span>🐦 Pájaros</span><input type="checkbox" id="birdsNoise" onchange="toggleAmbientNoise('birds', this.checked)"></div>
-                    <input type="range" class="volume-slider" id="birdsVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('birds', this.value)">
-                </div>
-                <div class="ambient-item">
-                    <div class="ambient-header"><span>⚡ Tormenta</span><input type="checkbox" id="stormNoise" onchange="toggleAmbientNoise('storm', this.checked)"></div>
-                    <input type="range" class="volume-slider" id="stormVol" min="0" max="1" step="0.01" value="0.5" oninput="updateVolume('storm', this.value)">
-                </div>
-            </div>
-        </div>
-
-        <div class="card-section">
-            <h3>🎈 ¿Cómo te sientes hoy?</h3>
-            <p>Toca el botón que mejor exprese tu emoción actual.</p>
-            <div class="buttons-grid">
-                <div class="emotion-card">
-                    <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!', this)" title="Alegre">😊</button>
-                    <span class="emotion-label">Alegre</span>
-                </div>
-                <div class="emotion-card">
-                    <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.', this)" title="Triste">😢</button>
-                    <span class="emotion-label">Triste</span>
-                </div>
-                <div class="emotion-card">
-                    <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.', this)" title="Enojado">😡</button>
-                    <span class="emotion-label">Enojado</span>
-                </div>
-                <div class="emotion-card">
-                    <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.', this)" title="En Calma">😌</button>
-                    <span class="emotion-label">En Calma</span>
-                </div>
-                <div class="emotion-card">
-                    <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.', this)" title="Miedo">😨</button>
-                    <span class="emotion-label">Miedo</span>
-                </div>
-                <div class="emotion-card">
-                    <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.', this)" title="Sorprendido">😲</button>
-                    <span class="emotion-label">Sorprendido</span>
-                </div>
-                <div class="emotion-card">
-                    <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.', this)" title="Ansiedad">😰</button>
-                    <span class="emotion-label">Ansiedad</span>
-                </div>
-                <div class="emotion-card">
-                    <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.', this)" title="Envidia">😒</button>
-                    <span class="emotion-label">Envidia</span>
-                </div>
-                <div class="emotion-card">
-                    <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.', this)" title="Aburrimiento">🥱</button>
-                    <span class="emotion-label">Aburrimiento</span>
-                </div>
-                <div class="emotion-card">
-                    <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.', this)" title="Vergüenza">😳</button>
-                    <span class="emotion-label">Vergüenza</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-section">
-            <h3>📸 Captura de Momento</h3>
-            <p>Guarda una foto especial para recordar este día.</p>
-            <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
-            <img id="photoPreviewImg" class="photo-preview" alt="Vista previa">
-            
-            <p style="margin-top: 14px; font-weight: 700; color: var(--text-main);">¿Qué emoción transmitía esta foto?</p>
-            <select id="photoEmotionSelect" class="emotion-select">
-                <option value="Alegre">Alegre 😊</option>
-                <option value="Triste">Triste 😢</option>
-                <option value="Enojado">Enojado 😡</option>
-                <option value="En Calma">En Calma 😌</option>
-                <option value="Miedo">Miedo 😨</option>
-                <option value="Sorprendido">Sorprendido 😲</option>
-                <option value="Ansiedad">Ansiedad 😰</option>
-                <option value="Envidia">Envidia 😒</option>
-                <option value="Aburrimiento">Aburrimiento 🥱</option>
-                <option value="Vergüenza">Vergüenza 😳</option>
-            </select>
-            
-            <button class="action-btn" style="margin-top: 14px; background: linear-gradient(135deg, #ff9ff3 0%, #feca57 100%);" onclick="saveStandalonePhoto()">Guardar Foto 🖼️</button>
-        </div>
-
-        <div class="card-section">
-            <h3>🎤 Mensaje de Voz</h3>
-            <p>Usa tu voz para contar cómo te fue hoy.</p>
-            <button class="action-btn" id="recordBtn" onclick="toggleRecording()">Grabar Audio</button>
-            <audio id="audioPlayback" controls style="display:none;"></audio>
-        </div>
-
-        <div class="card-section">
-            <h3>📝 Reflexión Personal</h3>
-            <p>Anota aquí tus observaciones o pensamiento del día.</p>
-            <textarea id="noteInput" placeholder="¿Qué pasó hoy?..."></textarea>
-        </div>
-
-        <button class="action-btn" style="background: linear-gradient(135deg, #10ac84 0%, #1dd1a1 100%); font-size: 1.05em; margin-bottom: 22px;" onclick="saveEntry()">Guardar Registro Completo ✨</button>
-
-        <div class="card-section">
-            <h3>⭐ Momento de Gratitud</h3>
-            <p>Agradecer fortalece la empatía y la paz mental.</p>
-            <textarea id="gratitudeInput" placeholder="¿Qué cosas lindas te pasaron hoy?"></textarea>
-            <button class="action-btn" style="margin-top: 12px;" onclick="saveGratitude()">Guardar Gratitud</button>
-        </div>
-
-        <div class="card-section">
-            <h3>💡 Estrategias de Crianza</h3>
-            <p>Ideas y herramientas para compartir en familia.</p>
-            <textarea id="strategyInput" placeholder="Anota aquí tus descubrimientos..."></textarea>
-            <button class="action-btn" style="margin-top: 12px;" onclick="saveStrategy()">Guardar Estrategia</button>
-        </div>
-
-        <div class="card-section">
-            <h3>👀 Observación de Microexpresiones</h3>
-            <p>Registra gestos observados durante el día.</p>
-            <textarea id="microexpressionInput" placeholder="Anota las expresiones observadas..."></textarea>
-            <button class="action-btn" style="margin-top: 12px;" onclick="saveMicroexpression()">Guardar Observación</button>
-        </div>
-
-        <div class="history-card" id="history">
-            <h3>Registros Guardados</h3>
-            <ul id="entriesList"></ul>
-        </div>
-
-        <div class="history-card" id="gratitude-history">
-            <h3>Agradecimientos</h3>
-            <ul id="gratitudeList"></ul>
-        </div>
-
-        <div class="history-card" id="strategies-history">
-            <h3>Estrategias de Crianza</h3>
-            <ul id="strategyList"></ul>
-        </div>
-
-        <div class="history-card" id="microexpression-history">
-            <h3>Observaciones de Microexpresiones</h3>
-            <ul id="microexpressionList"></ul>
-        </div>
-    </div>
-
-    <script>
-        let audioCtx = null;
-        let isPlaying = false;
-        let timerId = null;
-        let step = 0;
-        let currentStyle = 'ambient';
-
-        let ambientNodes = { 
-            rain: null, ocean: null, fire: null, night: null,
-            wind: null, river: null, birds: null, storm: null
-        };
-
-        const notes = {
-            C2: 65.41, G2: 98.00, A2: 110.00, F2: 87.31,
-            C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.00, A3: 220.00, B3: 246.94,
-            C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
-            C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00, B5: 987.77
-        };
-
-        // Estilos rediseñados para sonoridades relajantes, afinadas y envolventes
-        const styles = {
-            ambient: { 
-                tempo: 600, wave: 'sine', attack: 0.8, decay: 3.5, filterCut: 800,
-                chords: [
-                    [notes.C3, notes.G3, notes.B3, notes.E4], 
-                    [notes.A3, notes.E4, notes.G4, notes.C5], 
-                    [notes.F3, notes.C4, notes.E4, notes.A4], 
-                    [notes.G3, notes.D4, notes.F4, notes.B4]
-                ], 
-                melody: [notes.E5, null, notes.G5, notes.B4, null, notes.C5, notes.D5, null] 
-            },
-            piano: { 
-                tempo: 450, wave: 'triangle', attack: 0.05, decay: 2.2, filterCut: 1400,
-                chords: [
-                    [notes.C3, notes.G3, notes.B3, notes.E4], 
-                    [notes.A3, notes.E4, notes.C4, notes.G4], 
-                    [notes.F3, notes.C4, notes.E4, notes.A4], 
-                    [notes.G3, notes.D4, notes.B4, notes.F4]
-                ], 
-                melody: [notes.G4, notes.C5, notes.E5, notes.D5, notes.C5, notes.B4, notes.A4, notes.G4] 
-            },
-            lofi: { 
-                tempo: 400, wave: 'sine', attack: 0.1, decay: 1.8, filterCut: 900,
-                chords: [
-                    [notes.C3, notes.E3, notes.G3, notes.B3], 
-                    [notes.A3, notes.C4, notes.E4, notes.G4], 
-                    [notes.D3, notes.F3, notes.A3, notes.C4], 
-                    [notes.G3, notes.B3, notes.D4, notes.F4]
-                ], 
-                melody: [notes.G4, notes.E5, null, notes.D5, notes.C5, null, notes.A4, notes.B4] 
-            },
-            bossa: { 
-                tempo: 380, wave: 'sine', attack: 0.08, decay: 1.6, filterCut: 1200,
-                chords: [
-                    [notes.D3, notes.F3, notes.A3, notes.C4], 
-                    [notes.G3, notes.B3, notes.D4, notes.F4], 
-                    [notes.C3, notes.E3, notes.G3, notes.B3], 
-                    [notes.A3, notes.C4, notes.E4, notes.G4]
-                ], 
-                melody: [notes.A4, notes.C5, notes.B4, notes.G4, notes.E5, null, notes.D5, notes.C5] 
-            },
-            jazz: { 
-                tempo: 500, wave: 'triangle', attack: 0.12, decay: 2.5, filterCut: 1000,
-                chords: [
-                    [notes.F3, notes.A3, notes.C4, notes.E4], 
-                    [notes.D3, notes.F3, notes.A3, notes.C4], 
-                    [notes.G3, notes.B3, notes.D4, notes.F4], 
-                    [notes.C3, notes.E3, notes.G3, notes.B3]
-                ], 
-                melody: [notes.E5, notes.D5, notes.C5, notes.A4, notes.G4, notes.A4, notes.C5, null] 
-            },
-            folk: { 
-                tempo: 420, wave: 'triangle', attack: 0.04, decay: 2.0, filterCut: 1600,
-                chords: [
-                    [notes.C3, notes.G3, notes.C4, notes.E4], 
-                    [notes.G3, notes.D4, notes.G4, notes.B4], 
-                    [notes.A3, notes.E4, notes.A4, notes.C5], 
-                    [notes.F3, notes.C4, notes.F4, notes.A4]
-                ], 
-                melody: [notes.E4, notes.G4, notes.C5, notes.G4, notes.E5, notes.D5, notes.C5, notes.G4] 
-            },
-            space: { 
-                tempo: 750, wave: 'sine', attack: 1.2, decay: 4.5, filterCut: 600,
-                chords: [
-                    [notes.C3, notes.G3, notes.C4, notes.G4], 
-                    [notes.F3, notes.C4, notes.F4, notes.C5], 
-                    [notes.A3, notes.E4, notes.A4, notes.E5], 
-                    [notes.G3, notes.D4, notes.G4, notes.D5]
-                ], 
-                melody: [notes.G5, null, notes.E5, null, notes.C5, null, notes.B4, null] 
-            },
-            reggae: { 
-                tempo: 450, wave: 'sine', attack: 0.05, decay: 1.4, filterCut: 1100,
-                chords: [
-                    [notes.C3, notes.E3, notes.G3, notes.B3], 
-                    [notes.F3, notes.A3, notes.C4, notes.E4], 
-                    [notes.G3, notes.B3, notes.D4, notes.F4], 
-                    [notes.C3, notes.E3, notes.G3, notes.B3]
-                ], 
-                melody: [null, notes.G4, null, notes.E5, null, notes.D5, notes.C5, null] 
-            },
-            synthwave: { 
-                tempo: 380, wave: 'sine', attack: 0.2, decay: 2.2, filterCut: 950,
-                chords: [
-                    [notes.C3, notes.G3, notes.C4, notes.E4], 
-                    [notes.A3, notes.E4, notes.A4, notes.C5], 
-                    [notes.F3, notes.C4, notes.F4, notes.A4], 
-                    [notes.G3, notes.D4, notes.G4, notes.B4]
-                ], 
-                melody: [notes.C5, notes.E5, notes.G5, notes.E5, notes.D5, notes.B4, notes.C5, notes.G4] 
-            },
-            zen: { 
-                tempo: 800, wave: 'sine', attack: 1.0, decay: 5.0, filterCut: 500,
-                chords: [
-                    [notes.C2, notes.G3, notes.C4], 
-                    [notes.F2, notes.C4, notes.F4], 
-                    [notes.A2, notes.E4, notes.A4], 
-                    [notes.G2, notes.D4, notes.G4]
-                ], 
-                melody: [notes.E4, null, notes.G4, null, notes.B4, null, notes.A4, null] 
-            }
-        };
-
-        async function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                await audioCtx.resume();
-            }
-        }
-
-        // Reproductor de tonos envolventes con rampas de suavizado
-        function playTone(freq, duration, type = 'sine', gainVal = 0.04, attack = 0.3, filterFreq = 1200) {
-            if (!freq || !audioCtx) return;
+        setTimeout(() => {
+            if (!audioCtx || audioCtx.state === 'closed') return;
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             const filter = audioCtx.createBiquadFilter();
-            
+
             osc.type = type;
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(filterFreq, audioCtx.currentTime);
 
-            const now = audioCtx.currentTime;
-            gainNode.gain.setValueAtTime(0.0001, now);
-            gainNode.gain.linearRampToValueAtTime(gainVal, now + attack);
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(type === 'sawtooth' ? 600 : 1200, audioCtx.currentTime);
+
+            // Envolvente suave de ataque y caída (ADSR simplificado)
+            gainNode.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(gainVal, audioCtx.currentTime + 0.2); 
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
 
             osc.connect(filter);
             filter.connect(gainNode);
             gainNode.connect(audioCtx.destination);
 
-            osc.start(now);
-            osc.stop(now + duration);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }, delay * 1000);
+    }
+
+    function playStep() {
+        const style = styles[currentStyle];
+        const chordIndex = Math.floor(step / 4) % style.chords.length;
+        const currentChord = style.chords[chordIndex];
+
+        // 1. Disparar el acorde completo con micro-arpegio (Staggered strumming)
+        if (step % 4 === 0) {
+            currentChord.forEach((note, idx) => {
+                // Pequeño retardo entre notas para simular rasgueado/pulsación natural
+                const staggerDelay = idx * 0.04; 
+                playChordTone(note, 3.2, style.wave, 0.035, staggerDelay);
+            });
+        } 
+        // 2. Arpegiado sutil en pasos intermedios usando notas del mismo acorde
+        else if (step % 2 === 0) {
+            const arpeggioNote = currentChord[step % currentChord.length];
+            playChordTone(arpeggioNote * 2, 1.2, 'sine', 0.02, 0);
         }
 
-        // Efecto de sonido interactivo suave para interacciones (SFX)
-        function playInteractionSFX() {
-            if (!audioCtx) return;
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
+        // 3. Melodía principal
+        const melodyNote = style.melody[step % style.melody.length];
+        if (melodyNote) {
+            playChordTone(melodyNote, 1.0, 'sine', 0.045, 0);
+        }
+
+        step++;
+    }
+
+    async function toggleAudio() {
+        await initAudio();
+        const btn = document.getElementById('playAudioBtn');
+        if (isPlaying) {
+            clearInterval(timerId);
+            isPlaying = false;
+            btn.innerText = 'Reproducir Música 🎵';
+            btn.classList.remove('active');
+        } else {
+            isPlaying = true;
+            step = 0;
+            btn.innerText = 'Pausar Música ⏸️';
+            btn.classList.add('active');
+            playStep();
+            timerId = setInterval(playStep, styles[currentStyle].tempo);
+        }
+    }
+
+    function changeStyle() {
+        currentStyle = document.getElementById('styleSelect').value;
+        if (isPlaying) {
+            clearInterval(timerId);
+            step = 0;
+            timerId = setInterval(playStep, styles[currentStyle].tempo);
+        }
+    }
+
+    function createWhiteNoiseBuffer() {
+        const bufferSize = audioCtx.sampleRate * 2;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
+        return buffer;
+    }
+
+    async function toggleAmbientNoise(type, active) {
+        await initAudio();
+        if (!active) {
+            if (ambientNodes[type]) {
+                if (ambientNodes[type].gain) {
+                    ambientNodes[type].gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+                }
+                setTimeout(() => {
+                    try { 
+                        if (ambientNodes[type] && ambientNodes[type].source) ambientNodes[type].source.stop();
+                        if (ambientNodes[type] && ambientNodes[type].interval) clearInterval(ambientNodes[type].interval);
+                    } catch(e){}
+                    ambientNodes[type] = null;
+                }, 500);
+            }
+            return;
+        }
+
+        const volSlider = document.getElementById(type + 'Vol');
+        const targetGain = parseFloat(volSlider.value) * getBaseGain(type);
+
+        if (type === 'birds') {
             const gain = audioCtx.createGain();
-            
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(523.25, now); // C5
-            osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.12); // E5
-
-            gain.gain.setValueAtTime(0.001, now);
-            gain.gain.linearRampToValueAtTime(0.03, now + 0.03);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
-
-            osc.connect(gain);
+            gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
             gain.connect(audioCtx.destination);
 
-            osc.start(now);
-            osc.stop(now + 0.15);
-        }
-
-        function playStep() {
-            const style = styles[currentStyle];
-            const chordIndex = Math.floor(step / 4) % style.chords.length;
-            
-            if (step % 4 === 0) {
-                style.chords[chordIndex].forEach(note => {
-                    playTone(note, style.decay, style.wave, 0.03, style.attack, style.filterCut);
-                });
-            }
-            
-            const melodyNote = style.melody[step % style.melody.length];
-            if (melodyNote) {
-                playTone(melodyNote, 1.2, 'sine', 0.04, 0.15, style.filterCut + 400);
-            }
-            
-            step++;
-        }
-
-        async function toggleAudio() {
-            await initAudio();
-            playInteractionSFX();
-            const btn = document.getElementById('playAudioBtn');
-            if (isPlaying) {
-                clearInterval(timerId);
-                isPlaying = false;
-                btn.innerText = 'Reproducir Música 🎵';
-                btn.classList.remove('active');
-            } else {
-                isPlaying = true;
-                step = 0;
-                btn.innerText = 'Pausar Música ⏸️';
-                btn.classList.add('active');
-                playStep();
-                timerId = setInterval(playStep, styles[currentStyle].tempo);
-            }
-        }
-
-        function changeStyle() {
-            playInteractionSFX();
-            currentStyle = document.getElementById('styleSelect').value;
-            if (isPlaying) {
-                clearInterval(timerId);
-                step = 0;
-                timerId = setInterval(playStep, styles[currentStyle].tempo);
-            }
-        }
-
-        function createWhiteNoiseBuffer() {
-            const bufferSize = audioCtx.sampleRate * 2;
-            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            const output = buffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
-            return buffer;
-        }
-
-        async function toggleAmbientNoise(type, active) {
-            await initAudio();
-            playInteractionSFX();
-            if (!active) {
-                if (ambientNodes[type]) {
-                    if (ambientNodes[type].gain) {
-                        ambientNodes[type].gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
-                    }
-                    setTimeout(() => {
-                        try { 
-                            if (ambientNodes[type] && ambientNodes[type].source) ambientNodes[type].source.stop();
-                            if (ambientNodes[type] && ambientNodes[type].interval) clearInterval(ambientNodes[type].interval);
-                        } catch(e){}
-                        ambientNodes[type] = null;
-                    }, 500);
+            const birdInterval = setInterval(() => {
+                if (Math.random() > 0.4 && audioCtx) {
+                    const osc = audioCtx.createOscillator();
+                    const birdGain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    const startFreq = 2000 + Math.random() * 1500;
+                    osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(startFreq + 800, audioCtx.currentTime + 0.1);
+                    birdGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                    birdGain.gain.linearRampToValueAtTime(0.05 * targetGain, audioCtx.currentTime + 0.05);
+                    birdGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    osc.connect(birdGain);
+                    birdGain.connect(gain);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
                 }
-                return;
-            }
+            }, 800);
 
-            const volSlider = document.getElementById(type + 'Vol');
-            const targetGain = parseFloat(volSlider.value) * getBaseGain(type);
-
-            if (type === 'birds') {
-                const gain = audioCtx.createGain();
-                gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
-                gain.connect(audioCtx.destination);
-
-                const birdInterval = setInterval(() => {
-                    if (Math.random() > 0.4 && audioCtx) {
-                        const osc = audioCtx.createOscillator();
-                        const birdGain = audioCtx.createGain();
-                        osc.type = 'sine';
-                        const startFreq = 2000 + Math.random() * 1500;
-                        osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
-                        osc.frequency.exponentialRampToValueAtTime(startFreq + 800, audioCtx.currentTime + 0.1);
-                        birdGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-                        birdGain.gain.linearRampToValueAtTime(0.04 * targetGain, audioCtx.currentTime + 0.05);
-                        birdGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-                        osc.connect(birdGain);
-                        birdGain.connect(gain);
-                        osc.start();
-                        osc.stop(audioCtx.currentTime + 0.15);
-                    }
-                }, 800);
-
-                ambientNodes[type] = { source: null, gain: gain, interval: birdInterval };
-                return;
-            }
-
-            const buffer = createWhiteNoiseBuffer();
-            const noiseSource = audioCtx.createBufferSource();
-            noiseSource.buffer = buffer;
-            noiseSource.loop = true;
-            const filter = audioCtx.createBiquadFilter();
-            const gain = audioCtx.createGain();
-
-            if (type === 'rain') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(900, audioCtx.currentTime); }
-            else if (type === 'ocean') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(350, audioCtx.currentTime); filter.Q.value = 1.0; }
-            else if (type === 'fire') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(750, audioCtx.currentTime); filter.Q.value = 1.2; }
-            else if (type === 'night') { filter.type = 'highpass'; filter.frequency.setValueAtTime(3800, audioCtx.currentTime); }
-            else if (type === 'wind') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(220, audioCtx.currentTime); filter.Q.value = 2.8; }
-            else if (type === 'river') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(550, audioCtx.currentTime); }
-            else if (type === 'storm') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(160, audioCtx.currentTime); }
-
-            gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(targetGain, audioCtx.currentTime + 0.5);
-            noiseSource.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
-            noiseSource.start();
-            ambientNodes[type] = { source: noiseSource, gain: gain };
+            ambientNodes[type] = { source: null, gain: gain, interval: birdInterval };
+            return;
         }
 
-        function getBaseGain(type) {
-            switch(type) {
-                case 'rain': return 0.12;
-                case 'ocean': return 0.18;
-                case 'fire': return 0.08;
-                case 'night': return 0.04;
-                case 'wind': return 0.20;
-                case 'river': return 0.15;
-                case 'birds': return 0.70;
-                case 'storm': return 0.25;
-                default: return 0.1;
-            }
+        const buffer = createWhiteNoiseBuffer();
+        const noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = buffer;
+        noiseSource.loop = true;
+        const filter = audioCtx.createBiquadFilter();
+        const gain = audioCtx.createGain();
+
+        if (type === 'rain') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(1000, audioCtx.currentTime); }
+        else if (type === 'ocean') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(400, audioCtx.currentTime); filter.Q.value = 1.0; }
+        else if (type === 'fire') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(800, audioCtx.currentTime); filter.Q.value = 1.0; }
+        else if (type === 'night') { filter.type = 'highpass'; filter.frequency.setValueAtTime(4000, audioCtx.currentTime); }
+        else if (type === 'wind') { filter.type = 'bandpass'; filter.frequency.setValueAtTime(250, audioCtx.currentTime); filter.Q.value = 3.0; }
+        else if (type === 'river') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(600, audioCtx.currentTime); }
+        else if (type === 'storm') { filter.type = 'lowpass'; filter.frequency.setValueAtTime(180, audioCtx.currentTime); }
+
+        gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(targetGain, audioCtx.currentTime + 0.5);
+        noiseSource.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+        noiseSource.start();
+        ambientNodes[type] = { source: noiseSource, gain: gain };
+    }
+
+    function getBaseGain(type) {
+        switch(type) {
+            case 'rain': return 0.15;
+            case 'ocean': return 0.2;
+            case 'fire': return 0.1;
+            case 'night': return 0.05;
+            case 'wind': return 0.25;
+            case 'river': return 0.18;
+            case 'birds': return 0.8;
+            case 'storm': return 0.3;
+            default: return 0.1;
         }
+    }
 
-        function updateVolume(type, val) {
-            if (ambientNodes[type] && ambientNodes[type].gain && audioCtx) {
-                const targetGain = parseFloat(val) * getBaseGain(type);
-                ambientNodes[type].gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
-            }
+    function updateVolume(type, val) {
+        if (ambientNodes[type] && ambientNodes[type].gain && audioCtx) {
+            const targetGain = parseFloat(val) * getBaseGain(type);
+            ambientNodes[type].gain.gain.setValueAtTime(targetGain, audioCtx.currentTime);
         }
+    }
 
-        let mediaRecorder;
-        let audioChunks = [];
-        let selectedEmotionValue = '';
-        let currentBase64Audio = '';
-        let currentBase64Photo = '';
+    let mediaRecorder;
+    let audioChunks = [];
+    let selectedEmotionValue = '';
+    let currentBase64Audio = '';
+    let currentBase64Photo = '';
 
-        function selectEmotion(emotion, message, element) {
-            playInteractionSFX();
-            selectedEmotionValue = emotion;
-            document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
-            if(element) element.classList.add('selected');
+    function selectEmotion(emotion, message, element) {
+        selectedEmotionValue = emotion;
+        document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
+        if(element) element.classList.add('selected');
 
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(message);
-                utterance.lang = 'es-AR';
-                window.speechSynthesis.speak(utterance);
-            }
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(message);
+            utterance.lang = 'es-AR';
+            window.speechSynthesis.speak(utterance);
         }
+    }
 
-        function previewPhoto(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    currentBase64Photo = reader.result;
-                    const imgPreview = document.getElementById('photoPreviewImg');
-                    imgPreview.src = currentBase64Photo;
-                    imgPreview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function saveStandalonePhoto() {
-            playInteractionSFX();
-            if (!currentBase64Photo) {
-                alert('Primero selecciona una foto para guardar.');
-                return;
-            }
-            const photoEmotion = document.getElementById('photoEmotionSelect').value;
-            const entry = {
-                emotion: photoEmotion,
-                note: 'Foto guardada',
-                photo: currentBase64Photo,
-                audio: '',
-                date: new Date().toLocaleString()
+    function previewPhoto(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                currentBase64Photo = reader.result;
+                const imgPreview = document.getElementById('photoPreviewImg');
+                imgPreview.src = currentBase64Photo;
+                imgPreview.style.display = 'block';
             };
-            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
-            entries.push(entry);
-            localStorage.setItem('emotionEntries', JSON.stringify(entries));
-            alert('¡Foto guardada con éxito! 🖼️');
-            
-            document.getElementById('photoInput').value = '';
-            document.getElementById('photoPreviewImg').style.display = 'none';
-            currentBase64Photo = '';
-            loadEntries();
+            reader.readAsDataURL(file);
         }
+    }
 
-        async function toggleRecording() {
-            await initAudio();
-            playInteractionSFX();
-            const recordBtn = document.getElementById('recordBtn');
-            const audioPlayback = document.getElementById('audioPlayback');
-
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                mediaRecorder.stop();
-                recordBtn.innerText = 'Grabar Audio';
-            } else {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    mediaRecorder = new MediaRecorder(stream);
-                    audioChunks = [];
-
-                    mediaRecorder.ondataavailable = event => {
-                        audioChunks.push(event.data);
-                    };
-
-                    mediaRecorder.onstop = () => {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                        const reader = new FileReader();
-                        reader.readAsDataURL(audioBlob);
-                        reader.onloadend = () => {
-                            currentBase64Audio = reader.result;
-                            audioPlayback.src = currentBase64Audio;
-                            audioPlayback.style.display = 'block';
-                        };
-                    };
-
-                    mediaRecorder.start();
-                    recordBtn.innerText = 'Detener Grabación ⏹️';
-                } catch (err) {
-                    alert('No se pudo acceder al micrófono.');
-                    recordBtn.innerText = 'Grabar Audio';
-                }
-            }
+    function saveStandalonePhoto() {
+        if (!currentBase64Photo) {
+            alert('Primero selecciona una foto para guardar.');
+            return;
         }
-
-        function saveEntry() {
-            playInteractionSFX();
-            const noteInput = document.getElementById('noteInput');
-            const entry = {
-                emotion: selectedEmotionValue || 'No especificada',
-                note: noteInput.value,
-                photo: currentBase64Photo,
-                audio: currentBase64Audio,
-                date: new Date().toLocaleString()
-            };
-            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
-            entries.push(entry);
-            localStorage.setItem('emotionEntries', JSON.stringify(entries));
-            alert('¡Registro guardado con éxito! 🎉');
-            
-            noteInput.value = '';
-            document.getElementById('photoInput').value = '';
-            document.getElementById('photoPreviewImg').style.display = 'none';
-            document.getElementById('audioPlayback').style.display = 'none';
-            document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
-            selectedEmotionValue = '';
-            currentBase64Audio = '';
-            currentBase64Photo = '';
-            
-            loadEntries();
-        }
-
-        function saveGratitude() {
-            playInteractionSFX();
-            const gratitudeInput = document.getElementById('gratitudeInput');
-            if (!gratitudeInput.value.trim()) return;
-            const entry = { text: gratitudeInput.value, date: new Date().toLocaleString() };
-            let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
-            gratitudes.push(entry);
-            localStorage.setItem('gratitudeEntries', JSON.stringify(gratitudes));
-            alert('¡Gratitud guardada con éxito! ⭐');
-            gratitudeInput.value = '';
-            loadGratitude();
-        }
-
-        function saveStrategy() {
-            playInteractionSFX();
-            const strategyInput = document.getElementById('strategyInput');
-            if (!strategyInput.value.trim()) return;
-            const entry = { text: strategyInput.value, date: new Date().toLocaleString() };
-            let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
-            strategies.push(entry);
-            localStorage.setItem('strategyEntries', JSON.stringify(strategies));
-            alert('¡Estrategia guardada con éxito! 💡');
-            strategyInput.value = '';
-            loadStrategies();
-        }
-
-        function saveMicroexpression() {
-            playInteractionSFX();
-            const microexpressionInput = document.getElementById('microexpressionInput');
-            if (!microexpressionInput.value.trim()) return;
-            const entry = { text: microexpressionInput.value, date: new Date().toLocaleString() };
-            let observations = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
-            observations.push(entry);
-            localStorage.setItem('microexpressionEntries', JSON.stringify(observations));
-            alert('¡Observación guardada con éxito! 👀');
-            microexpressionInput.value = '';
-            loadMicroexpressions();
-        }
-
-        function deleteItem(storageKey, index) {
-            playInteractionSFX();
-            let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-            items.splice(index, 1);
-            localStorage.setItem(storageKey, JSON.stringify(items));
-            
-            if (storageKey === 'emotionEntries') loadEntries();
-            if (storageKey === 'gratitudeEntries') loadGratitude();
-            if (storageKey === 'strategyEntries') loadStrategies();
-            if (storageKey === 'microexpressionEntries') loadMicroexpressions();
-        }
-
-        function loadEntries() {
-            const list = document.getElementById('entriesList');
-            list.innerHTML = '';
-            let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
-            entries.forEach((item, index) => {
-                const li = document.createElement('li');
-                let content = `<strong>${item.date}</strong> - Emoción: ${item.emotion}<br>${item.note}`;
-                if (item.photo) content += `<br><img src="${item.photo}" class="entry-img">`;
-                if (item.audio) content += `<br><audio src="${item.audio}" controls style="margin-top:8px; width:100%;"></audio>`;
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'btn-delete';
-                deleteBtn.innerText = 'Eliminar';
-                deleteBtn.onclick = () => deleteItem('emotionEntries', index);
-                
-                li.innerHTML = content;
-                li.appendChild(deleteBtn);
-                list.appendChild(li);
-            });
-        }
-
-        function loadGratitude() {
-            const list = document.getElementById('gratitudeList');
-            list.innerHTML = '';
-            let items = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
-            items.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'btn-delete';
-                deleteBtn.innerText = 'Eliminar';
-                deleteBtn.onclick = () => deleteItem('gratitudeEntries', index);
-                
-                li.appendChild(deleteBtn);
-                list.appendChild(li);
-            });
-        }
-
-        function loadStrategies() {
-            const list = document.getElementById('strategyList');
-            list.innerHTML = '';
-            let items = JSON.parse(localStorage.getItem('strategyEntries')) || [];
-            items.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'btn-delete';
-                deleteBtn.innerText = 'Eliminar';
-                deleteBtn.onclick = () => deleteItem('strategyEntries', index);
-                
-                li.appendChild(deleteBtn);
-                list.appendChild(li);
-            });
-        }
-
-        function loadMicroexpressions() {
-            const list = document.getElementById('microexpressionList');
-            list.innerHTML = '';
-            let items = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
-            items.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'btn-delete';
-                deleteBtn.innerText = 'Eliminar';
-                deleteBtn.onclick = () => deleteItem('microexpressionEntries', index);
-                
-                li.appendChild(deleteBtn);
-                list.appendChild(li);
-            });
-        }
-
-        window.onload = () => {
-            loadEntries();
-            loadGratitude();
-            loadStrategies();
-            loadMicroexpressions();
+        const photoEmotion = document.getElementById('photoEmotionSelect').value;
+        const entry = {
+            emotion: photoEmotion,
+            note: 'Foto guardada',
+            photo: currentBase64Photo,
+            audio: '',
+            date: new Date().toLocaleString()
         };
-    </script>
-</body>
-</html>
+        let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+        entries.push(entry);
+        localStorage.setItem('emotionEntries', JSON.stringify(entries));
+        alert('¡Foto guardada con éxito! 🖼️');
+        
+        document.getElementById('photoInput').value = '';
+        document.getElementById('photoPreviewImg').style.display = 'none';
+        currentBase64Photo = '';
+        loadEntries();
+    }
+
+    async function toggleRecording() {
+        const recordBtn = document.getElementById('recordBtn');
+        const audioPlayback = document.getElementById('audioPlayback');
+
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+            recordBtn.innerText = 'Grabar Audio';
+        } else {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(audioBlob);
+                    reader.onloadend = () => {
+                        currentBase64Audio = reader.result;
+                        audioPlayback.src = currentBase64Audio;
+                        audioPlayback.style.display = 'block';
+                    };
+                };
+
+                mediaRecorder.start();
+                recordBtn.innerText = 'Detener Grabación ⏹️';
+            } catch (err) {
+                alert('No se pudo acceder al micrófono.');
+                recordBtn.innerText = 'Grabar Audio';
+            }
+        }
+    }
+
+    function saveEntry() {
+        const noteInput = document.getElementById('noteInput');
+        const entry = {
+            emotion: selectedEmotionValue || 'No especificada',
+            note: noteInput.value,
+            photo: currentBase64Photo,
+            audio: currentBase64Audio,
+            date: new Date().toLocaleString()
+        };
+        let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+        entries.push(entry);
+        localStorage.setItem('emotionEntries', JSON.stringify(entries));
+        alert('¡Registro guardado con éxito! 🎉');
+        
+        noteInput.value = '';
+        document.getElementById('photoInput').value = '';
+        document.getElementById('photoPreviewImg').style.display = 'none';
+        document.getElementById('audioPlayback').style.display = 'none';
+        document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
+        selectedEmotionValue = '';
+        currentBase64Audio = '';
+        currentBase64Photo = '';
+        
+        loadEntries();
+    }
+
+    function saveGratitude() {
+        const gratitudeInput = document.getElementById('gratitudeInput');
+        if (!gratitudeInput.value.trim()) return;
+        const entry = { text: gratitudeInput.value, date: new Date().toLocaleString() };
+        let gratitudes = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+        gratitudes.push(entry);
+        localStorage.setItem('gratitudeEntries', JSON.stringify(gratitudes));
+        alert('¡Gratitud guardada con éxito! ⭐');
+        gratitudeInput.value = '';
+        loadGratitude();
+    }
+
+    function saveStrategy() {
+        const strategyInput = document.getElementById('strategyInput');
+        if (!strategyInput.value.trim()) return;
+        const entry = { text: strategyInput.value, date: new Date().toLocaleString() };
+        let strategies = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+        strategies.push(entry);
+        localStorage.setItem('strategyEntries', JSON.stringify(strategies));
+        alert('¡Estrategia guardada con éxito! 💡');
+        strategyInput.value = '';
+        loadStrategies();
+    }
+
+    function saveMicroexpression() {
+        const microexpressionInput = document.getElementById('microexpressionInput');
+        if (!microexpressionInput.value.trim()) return;
+        const entry = { text: microexpressionInput.value, date: new Date().toLocaleString() };
+        let observations = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+        observations.push(entry);
+        localStorage.setItem('microexpressionEntries', JSON.stringify(observations));
+        alert('¡Observación guardada con éxito! 👀');
+        microexpressionInput.value = '';
+        loadMicroexpressions();
+    }
+
+    function deleteItem(storageKey, index) {
+        let items = JSON.parse(localStorage.getItem(storageKey)) || [];
+        items.splice(index, 1);
+        localStorage.setItem(storageKey, JSON.stringify(items));
+        
+        if (storageKey === 'emotionEntries') loadEntries();
+        if (storageKey === 'gratitudeEntries') loadGratitude();
+        if (storageKey === 'strategyEntries') loadStrategies();
+        if (storageKey === 'microexpressionEntries') loadMicroexpressions();
+    }
+
+    function loadEntries() {
+        const list = document.getElementById('entriesList');
+        list.innerHTML = '';
+        let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+        entries.forEach((item, index) => {
+            const li = document.createElement('li');
+            let content = `<strong>${item.date}</strong> - Emoción: ${item.emotion}<br>${item.note}`;
+            if (item.photo) content += `<br><img src="${item.photo}" class="entry-img">`;
+            if (item.audio) content += `<br><audio src="${item.audio}" controls style="margin-top:8px; width:100%;"></audio>`;
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn-delete';
+            deleteBtn.innerText = 'Eliminar';
+            deleteBtn.onclick = () => deleteItem('emotionEntries', index);
+            
+            li.innerHTML = content;
+            li.appendChild(deleteBtn);
+            list.appendChild(li);
+        });
+    }
+
+    function loadGratitude() {
+        const list = document.getElementById('gratitudeList');
+        list.innerHTML = '';
+        let items = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+        items.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn-delete';
+            deleteBtn.innerText = 'Eliminar';
+            deleteBtn.onclick = () => deleteItem('gratitudeEntries', index);
+            
+            li.appendChild(deleteBtn);
+            list.appendChild(li);
+        });
+    }
+
+    function loadStrategies() {
+        const list = document.getElementById('strategyList');
+        list.innerHTML = '';
+        let items = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+        items.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn-delete';
+            deleteBtn.innerText = 'Eliminar';
+            deleteBtn.onclick = () => deleteItem('strategyEntries', index);
+            
+            li.appendChild(deleteBtn);
+            list.appendChild(li);
+        });
+    }
+
+    function loadMicroexpressions() {
+        const list = document.getElementById('microexpressionList');
+        list.innerHTML = '';
+        let items = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+        items.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${item.date}</strong>: ${item.text}`;
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn-delete';
+            deleteBtn.innerText = 'Eliminar';
+            deleteBtn.onclick = () => deleteItem('microexpressionEntries', index);
+            
+            li.appendChild(deleteBtn);
+            list.appendChild(li);
+        });
+    }
+
+    window.onload = () => {
+        loadEntries();
+        loadGratitude();
+        loadStrategies();
+        loadMicroexpressions();
+    };
+</script>
