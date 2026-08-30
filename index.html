@@ -1,4236 +1,2358 @@
-<script>
+<!DOCTYPE html><html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#6c5ce7">
+<title>Diario Consciente 🌿</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet"><style>
+:root{
+--bg-gradient:linear-gradient(135deg,#e0c3fc 0%,#8ec5fc 100%);
+--card-bg:rgba(255,255,255,.94);
+--primary:#6c5ce7;
+--soft:#a29bfe;
+--text:#2d3436;
+--muted:#636e72;
+--radius:22px;
+}
+
+*{box-sizing:border-box}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+margin:0;
+padding:14px 10px;
+min-height:100vh;
+font-family:'Quicksand',sans-serif;
+background:var(--bg-gradient);
+background-attachment:fixed;
+color:var(--text);
+-webkit-tap-highlight-color:transparent;
+}
+
+button,input,textarea,select{
+font-family:inherit;
+}
+
+button{
+touch-action:manipulation;
+}
+
+.container{
+width:100%;
+max-width:680px;
+margin:auto;
+background:var(--card-bg);
+backdrop-filter:blur(12px);
+padding:22px 16px;
+border-radius:28px;
+box-shadow:0 12px 32px rgba(31,38,135,.14);
+}
+
+.header-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:18px;
+}
+
+h1{
+margin:0;
+color:var(--primary);
+font-size:1.55rem;
+font-weight:700;
+text-align:left;
+}
+
+.sos-btn{
+border:0;
+background:#ff7675;
+color:white;
+padding:10px 13px;
+border-radius:20px;
+font-weight:700;
+font-size:.82rem;
+box-shadow:0 5px 14px rgba(255,118,117,.3);
+cursor:pointer;
+}
+
+.card-section,.history-card{
+background:white;
+border-radius:var(--radius);
+padding:18px;
+margin-bottom:18px;
+box-shadow:0 4px 15px rgba(0,0,0,.04);
+border:1px solid #f1f2f6;
+text-align:left;
+}
+
+.card-section h3,.history-card h3{
+margin:0 0 7px;
+color:#4834d4;
+font-size:1.15rem;
+}
+
+p{
+color:var(--muted);
+font-size:.9rem;
+line-height:1.45;
+margin-top:0;
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="file"]{
+width:100%;
+border:2px solid #e0e0e0;
+border-radius:15px;
+background:#fcfcfc;
+padding:13px;
+font-size:.92rem;
+color:var(--text);
+outline:none;
+}
+
+select:focus,
+textarea:focus,
+input[type="text"]:focus{
+border-color:var(--primary);
+}
+
+textarea{
+min-height:95px;
+resize:vertical;
+}
+
+.music-controls{
+display:flex;
+gap:9px;
+margin:14px 0;
+}
+
+.music-btn,
+.action-btn{
+width:100%;
+border:0;
+padding:14px;
+border-radius:16px;
+background:linear-gradient(135deg,#6c5ce7,#a29bfe);
+color:white;
+font-weight:700;
+font-size:.95rem;
+cursor:pointer;
+box-shadow:0 6px 16px rgba(108,92,231,.25);
+}
+
+.music-btn.active{
+background:linear-gradient(135deg,#ff7675,#fab1a0);
+}
+
+.btn-secondary{
+background:#f1f2f6!important;
+color:var(--text)!important;
+box-shadow:none!important;
+}
+
+.ambient-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+}
+
+.ambient-item{
+background:#f8f9fa;
+border:1px solid #e9ecef;
+border-radius:15px;
+padding:11px;
+}
+
+.ambient-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:.84rem;
+font-weight:700;
+margin-bottom:8px;
+}
+
+.volume-slider{
+width:100%;
+accent-color:var(--primary);
+}
+
+.buttons-grid{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:13px;
+margin:15px 0;
+}
+
+.emotion-card{
+width:58px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:5px;
+}
+
+.btn{
+width:52px;
+height:52px;
+border-radius:50%;
+border:3px solid white;
+font-size:1.35rem;
+cursor:pointer;
+box-shadow:0 5px 12px rgba(0,0,0,.08);
+transition:.2s;
+}
+
+.btn:active{
+transform:scale(.94);
+}
+
+.btn.selected{
+outline:4px solid var(--primary);
+transform:scale(1.12);
+}
+
+.emotion-label{
+font-size:.72rem;
+font-weight:700;
+text-align:center;
+}
+
+#happy{background:#ffeaa7}
+#sad{background:#74b9ff}
+#angry{background:#ff7675}
+#calm{background:#55efc4}
+#fear{background:#a29bfe}
+#surprise{background:#ffeaa7}
+#anxiety{background:#dfe6e9}
+#envy{background:#81ecec}
+#boredom{background:#b2bec3}
+#shame{background:#fd79a8}
+
+.photo-preview{
+display:none;
+width:100%;
+max-height:300px;
+object-fit:contain;
+border-radius:14px;
+margin-top:10px;
+}
+
+#audioPlayback{
+display:none;
+width:100%;
+margin-top:12px;
+}
+
+.btn-delete{
+float:right;
+border:0;
+background:#ff7675;
+color:white;
+padding:6px 12px;
+border-radius:9px;
+font-size:.75rem;
+font-weight:700;
+cursor:pointer;
+}
+
+.tabs-header{
+display:flex;
+gap:7px;
+overflow-x:auto;
+padding-bottom:6px;
+margin-bottom:12px;
+}
+
+.tab-btn{
+border:0;
+background:#f1f2f6;
+padding:8px 12px;
+border-radius:11px;
+font-weight:700;
+font-size:.78rem;
+white-space:nowrap;
+cursor:pointer;
+}
+
+.tab-btn.active{
+background:var(--primary);
+color:white;
+}
+
+ul{
+padding:0;
+margin:0;
+list-style:none;
+}
+
+li{
+background:#f8f9fa;
+border:1px solid #e9ecef;
+border-radius:15px;
+padding:13px;
+margin-bottom:11px;
+overflow:hidden;
+word-break:break-word;
+}
+
+li strong{
+color:var(--primary);
+}
+
+.tag-member{
+display:inline-block;
+background:#e0c3fc;
+color:#4834d4;
+padding:3px 7px;
+border-radius:7px;
+font-size:.7rem;
+font-weight:700;
+}
+
+.entry-img{
+width:100%;
+max-height:320px;
+object-fit:contain;
+border-radius:12px;
+margin-top:8px;
+}
+
+.chart-container{
+width:100%;
+height:180px;
+display:flex;
+align-items:flex-end;
+justify-content:space-around;
+border-bottom:2px solid #f1f2f6;
+padding-bottom:27px;
+margin-top:12px;
+}
+
+.chart-bar-wrapper{
+height:100%;
+width:11%;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+align-items:center;
+position:relative;
+}
+
+.chart-bar{
+width:100%;
+min-height:4px;
+border-radius:8px 8px 0 0;
+background:var(--soft);
+}
+
+.chart-label{
+position:absolute;
+bottom:-23px;
+font-size:.65rem;
+font-weight:700;
+color:var(--muted);
+white-space:nowrap;
+}
+
+.summary-box{
+background:#f8f7ff;
+border-left:4px solid var(--primary);
+padding:11px;
+border-radius:8px;
+margin-top:18px;
+font-size:.85rem;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.68);
+backdrop-filter:blur(5px);
+z-index:9999;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.modal-content{
+background:white;
+width:100%;
+max-width:350px;
+border-radius:25px;
+padding:25px 20px;
+text-align:center;
+box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.breath-circle{
+width:145px;
+height:145px;
+border-radius:50%;
+margin:22px auto;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#8ec5fc,#e0c3fc);
+color:white;
+font-weight:700;
+font-size:1.2rem;
+box-shadow:0 0 30px rgba(142,197,252,.5);
+transform:scale(1);
+transition:transform 1s ease-in-out;
+}
+
+.breath-circle.inhale{
+transform:scale(1.35);
+transition:transform 4s linear;
+}
+
+.breath-circle.hold{
+transform:scale(1.35);
+transition:transform 7s linear;
+}
+
+.breath-circle.exhale{
+transform:scale(1);
+transition:transform 8s linear;
+}
+
+#breathTimer{
+font-size:1.6rem;
+font-weight:700;
+color:var(--primary);
+}
+
+.auto-switch-info{
+font-size:.75rem;
+color:var(--muted);
+}
+
+@media(max-width:430px){
+.container{
+padding:18px 12px;
+}
+
+.card-section{
+padding:15px;
+}
+
+h1{
+font-size:1.4rem;
+}
+
+.sos-btn{
+font-size:.75rem;
+padding:9px 10px;
+}
+
+.ambient-grid{
+grid-template-columns:1fr 1fr;
+}
+}
+</style></head><body><div class="container"><div class="header-top">
+<h1>Diario Consciente 🌿</h1>
+<button class="sos-btn" onclick="openSOSModal()">🧘 Calma SOS</button>
+</div><div class="card-section">
+<h3>🎨 Rincón de Relax y Meditación</h3>
+<p>Elige un estilo de música relajante.</p><select id="styleSelect">
+<option value="ambient">Ambient Meditativo</option>
+<option value="piano">Piano Suave</option>
+<option value="lofi">Lo-Fi Chill</option>
+<option value="bossa">Bossa Nova Relax</option>
+<option value="jazz">Calm Jazz</option>
+<option value="folk">Acoustic Folk</option>
+<option value="space">Space Ambient</option>
+<option value="reggae">Reggae Lofi</option>
+<option value="synthwave">Synthwave Nocturno</option>
+<option value="zen">Meditación Zen</option>
+</select><div class="music-controls">
+<button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">Reproducir Música 🎵</button>
+<button class="music-btn btn-secondary" style="width:auto" onclick="skipToNextStyle()">⏭️</button>
+</div><span class="auto-switch-info">🔄 Cambio automático cada 2 minutos mientras la música está activa.</span>
+
+<p style="font-weight:700;color:var(--primary);margin-top:17px;">
+Sonidos de la Naturaleza
+</p><div class="ambient-grid"><div class="ambient-item">
+<div class="ambient-header">
+<span>🌧️ Lluvia</span>
+<input type="checkbox" id="rainNoise">
+</div>
+<input type="range" class="volume-slider" id="rainVol" min="0" max="1" step=".01" value=".5">
+</div><div class="ambient-item">
+<div class="ambient-header">
+<span>🌊 Mar</span>
+<input type="checkbox" id="oceanNoise">
+</div>
+<input type="range" class="volume-slider" id="oceanVol" min="0" max="1" step=".01" value=".5">
+</div><div class="ambient-item">
+<div class="ambient-header">
+<span>🔥 Fuego</span>
+<input type="checkbox" id="fireNoise">
+</div>
+<input type="range" class="volume-slider" id="fireVol" min="0" max="1" step=".01" value=".5">
+</div><div class="ambient-item">
+<div class="ambient-header">
+<span>🌙 Noche</span>
+<input type="checkbox" id="nightNoise">
+</div>
+<input type="range" class="volume-slider" id="nightVol" min="0" max="1" step=".01" value=".5">
+</div><div class="ambient-item">
+<div class="ambient-header">
+<span>🍃 Viento</span>
+<input type="checkbox" id="windNoise">
+</div>
+<input type="range" class="volume-slider" id="windVol" min="0" max="1" step=".01" value=".5">
+</div><div class="ambient-item">
+<div class="ambient-header">
+<span>🏞️ Río</span>
+<input type="checkbox" id="riverNoise">
+</div>
+<input type="range" class="volume-slider" id="riverVol" min="0" max="1" step=".01" value=".5">
+</div><div class="ambient-item">
+<div class="ambient-header">
+<span>🐦 Pájaros</span>
+<input type="checkbox" id="birdsNoise">
+</div>
+<input type="range" class="volume-slider" id="birdsVol" min="0" max="1" step=".01" value=".5">
+</div><div class="ambient-item">
+<div class="ambient-header">
+<span>⚡ Tormenta</span>
+<input type="checkbox" id="stormNoise">
+</div>
+<input type="range" class="volume-slider" id="stormVol" min="0" max="1" step=".01" value=".5">
+</div></div>
+</div><div class="card-section">
+<h3>🎈 ¿Cómo te sientes hoy?</h3>
+<p>Toca la emoción que mejor represente cómo te sentís.</p><div class="buttons-grid"><div class="emotion-card">
+<button class="btn" id="happy" onclick="selectEmotion('Alegre','Me alegra verte así. Disfruta este momento.',this)">😊</button>
+<span class="emotion-label">Alegre</span>
+</div><div class="emotion-card">
+<button class="btn" id="sad" onclick="selectEmotion('Triste','Está bien sentirse triste. Respira profundamente.',this)">😢</button>
+<span class="emotion-label">Triste</span>
+</div><div class="emotion-card">
+<button class="btn" id="angry" onclick="selectEmotion('Enojado','Respira. Date un momento antes de reaccionar.',this)">😡</button>
+<span class="emotion-label">Enojado</span>
+</div><div class="emotion-card">
+<button class="btn" id="calm" onclick="selectEmotion('En Calma','Disfruta esta sensación de tranquilidad.',this)">😌</button>
+<span class="emotion-label">Calma</span>
+</div><div class="emotion-card">
+<button class="btn" id="fear" onclick="selectEmotion('Miedo','El miedo puede sentirse fuerte. Vamos paso a paso.',this)">😨</button>
+<span class="emotion-label">Miedo</span>
+</div><div class="emotion-card">
+<button class="btn" id="surprise" onclick="selectEmotion('Sorprendido','Observa qué ocurrió y qué estás sintiendo.',this)">😲</button>
+<span class="emotion-label">Sorpresa</span>
+</div><div class="emotion-card">
+<button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad','Inhala lentamente y exhala. Un momento a la vez.',this)">😰</button>
+<span class="emotion-label">Ansiedad</span>
+</div><div class="emotion-card">
+<button class="btn" id="envy" onclick="selectEmotion('Envidia','Recordá que cada persona tiene su propio camino.',this)">😒</button>
+<span class="emotion-label">Envidia</span>
+</div><div class="emotion-card">
+<button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento','Quizás sea un buen momento para hacer algo diferente.',this)">🥱</button>
+<span class="emotion-label">Aburrimiento</span>
+</div><div class="emotion-card">
+<button class="btn" id="shame" onclick="selectEmotion('Vergüenza','Todos cometemos errores y podemos aprender de ellos.',this)">😳</button>
+<span class="emotion-label">Vergüenza</span>
+</div></div><label style="font-size:.82rem;font-weight:700;color:var(--muted)">
+¿A quién corresponde este registro?
+</label><select id="memberSelect" style="margin-top:5px">
+<option value="Personal">Personal (Mío)</option>
+<option value="Hijo/a">Observación de Hijo/a</option>
+<option value="Familia">Momento Compartido / Familia</option>
+</select></div><div class="card-section">
+<h3>📸 Captura de Momento</h3>
+<p>Guarda una foto especial.</p><input type="file" id="photoInput" accept="image/*"><img id="photoPreviewImg" class="photo-preview" alt="Vista previa"><p style="font-weight:700;margin-top:15px">
+¿Qué emoción transmitía esta foto?
+</p><select id="photoEmotionSelect">
+<option>Alegre</option>
+<option>Triste</option>
+<option>Enojado</option>
+<option>En Calma</option>
+<option>Miedo</option>
+<option>Sorprendido</option>
+<option>Ansiedad</option>
+<option>Envidia</option>
+<option>Aburrimiento</option>
+<option>Vergüenza</option>
+</select><button class="action-btn" style="margin-top:12px" onclick="saveStandalonePhoto()">
+Guardar Foto 🖼️
+</button>
+</div><div class="card-section">
+<h3>🎤 Mensaje de Voz</h3>
+<p>Usa tu voz para contar cómo fue tu día.</p><button class="action-btn" id="recordBtn" onclick="toggleRecording()">
+Grabar Audio 🎤
+</button><audio id="audioPlayback" controls></audio>
+
+</div><div class="card-section">
+<h3>📝 Reflexión & Análisis</h3>
+<p>Anota la situación y qué la desencadenó.</p><input id="triggerInput" type="text"
+placeholder="⚡ Gatillo / Desencadenante">
+
+<textarea id="noteInput"
+placeholder="¿Qué pasó hoy y cómo reaccionaste?"></textarea></div><button class="action-btn"
+style="background:linear-gradient(135deg,#10ac84,#1dd1a1);margin-bottom:18px"
+onclick="saveEntry()">
+Guardar Registro Completo ✨
+</button>
+
+<div class="card-section">
+<h3>📊 Evolución Emocional</h3>
+<p>Resumen de las emociones registradas.</p><div class="chart-container" id="weeklyChart"></div><div class="summary-box" id="weeklySummary">
+Calculando datos...
+</div><button class="action-btn btn-secondary"
+style="margin-top:13px"
+onclick="closeAndArchiveWeek()">
+Cerrar y Archivar Semana 📦
+</button>
+
+</div><div class="card-section">
+<h3>⭐ Momento de Gratitud</h3>
+<p>Escribe algo por lo que estés agradecido.</p><textarea id="gratitudeInput"
+placeholder="¿Qué cosas lindas te pasaron hoy?"></textarea><button class="action-btn" style="margin-top:10px" onclick="saveGratitude()">
+Guardar Gratitud ⭐
+</button>
+</div><div class="card-section">
+<h3>💡 Estrategias de Crianza</h3>
+<p>Guarda ideas que quieras recordar.</p><textarea id="strategyInput"
+placeholder="Anota aquí tus descubrimientos..."></textarea><button class="action-btn" style="margin-top:10px" onclick="saveStrategy()">
+Guardar Estrategia 💡
+</button>
+</div><div class="card-section">
+<h3>👀 Observación de Microexpresiones</h3><textarea id="microexpressionInput"
+placeholder="Anota las expresiones observadas..."></textarea><button class="action-btn" style="margin-top:10px" onclick="saveMicroexpression()">
+Guardar Observación 👀
+</button>
+</div><div class="history-card"><div class="tabs-header"><button class="tab-btn active" onclick="switchTab(event,'entries')">
+Diario
+</button><button class="tab-btn" onclick="switchTab(event,'gratitude')">
+Gratitud
+</button><button class="tab-btn" onclick="switchTab(event,'strategies')">
+Estrategias
+</button><button class="tab-btn" onclick="switchTab(event,'microexpressions')">
+Gestos
+</button><button class="tab-btn" onclick="switchTab(event,'archives')">
+Archivos
+</button></div><div id="tab-entries">
+<h3>Registros Guardados</h3>
+<ul id="entriesList"></ul>
+</div><div id="tab-gratitude" style="display:none">
+<h3>Agradecimientos</h3>
+<ul id="gratitudeList"></ul>
+</div><div id="tab-strategies" style="display:none">
+<h3>Estrategias</h3>
+<ul id="strategyList"></ul>
+</div><div id="tab-microexpressions" style="display:none">
+<h3>Gestos</h3>
+<ul id="microexpressionList"></ul>
+</div><div id="tab-archives" style="display:none">
+<h3>Semanas Archivadas</h3>
+<ul id="archivesList"></ul>
+</div></div><div class="card-section">
+<h3>⚙️ Copia de Seguridad</h3>
+<p>Guarda o restaura todos tus datos.</p><div style="display:flex;gap:8px">
+<button class="action-btn btn-secondary" onclick="exportDataJSON()">
+Exportar 📥
+</button><button class="action-btn btn-secondary" onclick="document.getElementById('importFileInput').click()">
+Importar 📤
+</button>
+</div><input type="file"
+id="importFileInput"
+accept=".json,application/json"
+style="display:none"
+onchange="importDataJSON(event)">
+
+</div></div><!-- SOS --><div id="sosModal" class="modal"><div class="modal-content"><h3>🧘 Pausa de Calma</h3><p>
+Vamos a hacer juntos la respiración <strong>4-7-8</strong>.
+</p><div class="breath-circle" id="breathCircle">
+Preparado
+</div><div id="breathTimer">
+—
+</div><p id="breathInstruction">
+Cuando estés preparado comenzamos.
+</p><button class="action-btn"
+onclick="startBreathCycle()"
+style="margin-bottom:8px">
+Comenzar 4-7-8
+</button>
+
+<button class="action-btn btn-secondary"
+onclick="closeSOSModal">
+Finalizar / Salir
+</button>
+
+</div>
+</div><script>
+
 'use strict';
 
-/* =========================================================
-   DIARIO CONSCIENTE
-   JAVASCRIPT CORREGIDO Y OPTIMIZADO
-   ========================================================= */
-
-/* =========================================================
-   VARIABLES GLOBALES
-   ========================================================= */
-
-let audioCtx = null;
-let isPlaying = false;
-let timerId = null;
-let autoSwitchInterval = null;
-let step = 0;
-let currentStyle = 'ambient';
-
-let selectedEmotionValue = '';
-let currentBase64Photo = '';
-
-let mediaRecorder = null;
-let audioChunks = [];
-let audioStream = null;
-let currentBase64Audio = '';
-
-/* SOS */
-let breathTimerId = null;
-let breathStartTimeout = null;
-let breathingActive = false;
-
-
-/* =========================================================
-   AUDIO / MÚSICA
-   ========================================================= */
-
-const ambientNodes = {
-    rain: null,
-    ocean: null,
-    fire: null,
-    night: null,
-    wind: null,
-    river: null,
-    birds: null,
-    storm: null
-};
-
-
-const notes = {
-
-    C3: 130.81,
-    D3: 146.83,
-    E3: 164.81,
-    F3: 174.61,
-    G3: 196.00,
-    A3: 220.00,
-    B3: 246.94,
-
-    C4: 261.63,
-    D4: 293.66,
-    E4: 329.63,
-    F4: 349.23,
-    G4: 392.00,
-    A4: 440.00,
-    B4: 493.88,
-
-    C5: 523.25,
-    D5: 587.33,
-    E5: 659.25,
-    F5: 698.46,
-    G5: 783.99,
-    A5: 880.00,
-    B5: 987.77
-
-};
-
-
-const styles = {
-
-    ambient: {
-        tempo: 450,
-        wave: 'sine',
-
-        chords: [
-            [notes.C3, notes.G3, notes.B3, notes.E4],
-            [notes.A3, notes.E4, notes.G4, notes.C4],
-            [notes.F3, notes.C4, notes.E4, notes.A4],
-            [notes.G3, notes.D4, notes.F4, notes.B4]
-        ],
-
-        melody: [
-            notes.E5,
-            null,
-            notes.G5,
-            notes.B4,
-            null,
-            notes.C5,
-            notes.D5,
-            null
-        ]
-    },
-
-
-    piano: {
-        tempo: 320,
-        wave: 'triangle',
-
-        chords: [
-            [notes.C3, notes.G3, notes.E4],
-            [notes.F3, notes.C4, notes.A4],
-            [notes.A3, notes.E4, notes.C5],
-            [notes.G3, notes.D4, notes.B4]
-        ],
-
-        melody: [
-            notes.G4,
-            notes.C5,
-            notes.E5,
-            notes.D5,
-            notes.C5,
-            notes.B4,
-            notes.A4,
-            notes.G4
-        ]
-    },
-
-
-    lofi: {
-        tempo: 260,
-        wave: 'triangle',
-
-        chords: [
-            [notes.C3, notes.E3, notes.G3, notes.B3],
-            [notes.A3, notes.C4, notes.E4, notes.G4],
-            [notes.D3, notes.F3, notes.A3, notes.C4],
-            [notes.G3, notes.B3, notes.D4, notes.F4]
-        ],
-
-        melody: [
-            notes.G4,
-            notes.E5,
-            null,
-            notes.D5,
-            notes.C5,
-            null,
-            notes.A4,
-            notes.B4
-        ]
-    },
-
-
-    bossa: {
-        tempo: 280,
-        wave: 'triangle',
-
-        chords: [
-            [notes.D3, notes.F3, notes.A3, notes.C4],
-            [notes.G3, notes.B3, notes.D4, notes.F4],
-            [notes.C3, notes.E3, notes.G3, notes.B3],
-            [notes.A3, notes.C4, notes.E4, notes.G4]
-        ],
-
-        melody: [
-            notes.A4,
-            notes.C5,
-            notes.B4,
-            notes.G4,
-            notes.E5,
-            null,
-            notes.D5,
-            notes.C5
-        ]
-    },
-
-
-    jazz: {
-        tempo: 350,
-        wave: 'sine',
-
-        chords: [
-            [notes.F3, notes.A3, notes.C4, notes.E4],
-            [notes.D3, notes.F3, notes.A3, notes.C4],
-            [notes.G3, notes.B3, notes.D4, notes.F4],
-            [notes.C3, notes.E3, notes.G3, notes.B3]
-        ],
-
-        melody: [
-            notes.E5,
-            notes.D5,
-            notes.C5,
-            notes.A4,
-            notes.G4,
-            notes.A4,
-            notes.C5,
-            null
-        ]
-    },
-
-
-    folk: {
-        tempo: 300,
-        wave: 'triangle',
-
-        chords: [
-            [notes.C3, notes.G3, notes.C4],
-            [notes.G3, notes.D4, notes.G4],
-            [notes.A3, notes.E4, notes.A4],
-            [notes.F3, notes.C4, notes.F4]
-        ],
-
-        melody: [
-            notes.E4,
-            notes.G4,
-            notes.C5,
-            notes.G4,
-            notes.E5,
-            notes.D5,
-            notes.C5,
-            notes.G4
-        ]
-    },
-
-
-    space: {
-        tempo: 650,
-        wave: 'sine',
-
-        chords: [
-            [notes.C3, notes.G3, notes.C4, notes.G4],
-            [notes.F3, notes.C4, notes.F4, notes.C5],
-            [notes.A3, notes.E4, notes.A4, notes.E5],
-            [notes.G3, notes.D4, notes.G4, notes.D5]
-        ],
-
-        melody: [
-            notes.G5,
-            null,
-            notes.E5,
-            null,
-            notes.C5,
-            null,
-            notes.B4,
-            null
-        ]
-    },
-
-
-    reggae: {
-        tempo: 330,
-        wave: 'sine',
-
-        chords: [
-            [notes.C3, notes.E3, notes.G3],
-            [notes.F3, notes.A3, notes.C4],
-            [notes.G3, notes.B3, notes.D4],
-            [notes.C3, notes.E3, notes.G3]
-        ],
-
-        melody: [
-            null,
-            notes.G4,
-            null,
-            notes.E5,
-            null,
-            notes.D5,
-            notes.C5,
-            null
-        ]
-    },
-
-
-    synthwave: {
-        tempo: 200,
-        wave: 'triangle',
-
-        chords: [
-            [notes.C3, notes.G3, notes.C4],
-            [notes.A3, notes.E4, notes.A4],
-            [notes.F3, notes.C4, notes.F4],
-            [notes.G3, notes.D4, notes.G4]
-        ],
-
-        melody: [
-            notes.C5,
-            notes.E5,
-            notes.G5,
-            notes.E5,
-            notes.D5,
-            notes.B4,
-            notes.C5,
-            notes.G4
-        ]
-    },
-
-
-    zen: {
-        tempo: 600,
-        wave: 'sine',
-
-        chords: [
-            [notes.C3, notes.G3],
-            [notes.F3, notes.C4],
-            [notes.A3, notes.E4],
-            [notes.G3, notes.D4]
-        ],
-
-        melody: [
-            notes.E4,
-            null,
-            notes.G4,
-            null,
-            notes.B4,
-            null,
-            notes.A4,
-            null
-        ]
-    }
-
-};
-
-
-/* =========================================================
-   STORAGE
-   ========================================================= */
-
-function getStorage(key) {
-
-    try {
-
-        const value =
-            localStorage.getItem(key);
-
-        if (!value) {
-            return [];
-        }
-
-        const parsed =
-            JSON.parse(value);
-
-        return Array.isArray(parsed)
-            ? parsed
-            : [];
-
-    } catch (error) {
-
-        console.error(
-            'Error leyendo almacenamiento:',
-            error
-        );
-
-        return [];
-    }
+/* =========================
+   ALMACENAMIENTO
+========================= */
+
+function getStorage(key){
+try{
+const data=localStorage.getItem(key);
+return data?JSON.parse(data):[];
+}catch(e){
+return [];
+}
 }
 
-
-function setStorage(key, data) {
-
-    try {
-
-        localStorage.setItem(
-            key,
-            JSON.stringify(data)
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            'Error guardando datos:',
-            error
-        );
-
-        alert(
-            'No se pudieron guardar los datos. ' +
-            'Es posible que el almacenamiento de la aplicación esté lleno.'
-        );
-
-        return false;
-    }
+function setStorage(key,data){
+try{
+localStorage.setItem(key,JSON.stringify(data));
+return true;
+}catch(e){
+alert('No hay suficiente espacio para guardar este dato.');
+return false;
+}
 }
 
-
-/* =========================================================
-   FECHAS
-   ========================================================= */
-
-function getEntryDate(entry) {
-
-    if (!entry) {
-        return null;
-    }
-
-    if (entry.timestamp) {
-
-        const date =
-            new Date(entry.timestamp);
-
-        if (!isNaN(date.getTime())) {
-            return date;
-        }
-    }
-
-    if (entry.date) {
-
-        const date =
-            new Date(entry.date);
-
-        if (!isNaN(date.getTime())) {
-            return date;
-        }
-    }
-
-    return null;
-}
-
-
-function isWithinLast7Days(entry) {
-
-    const date =
-        getEntryDate(entry);
-
-    if (!date) {
-        return false;
-    }
-
-    const now =
-        new Date();
-
-    const start =
-        new Date();
-
-    start.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
-    start.setDate(
-        start.getDate() - 6
-    );
-
-    return (
-        date >= start &&
-        date <= now
-    );
-}
-
-
-function formatDate(
-    date = new Date()
-) {
-
-    return date.toLocaleString(
-        'es-AR',
-        {
-            dateStyle: 'short',
-            timeStyle: 'short'
-        }
-    );
-}
-
-
-/* =========================================================
-   AUDIO
-   ========================================================= */
-
-async function initAudio() {
-
-    try {
-
-        if (!audioCtx) {
-
-            const AudioContext =
-                window.AudioContext ||
-                window.webkitAudioContext;
-
-            if (!AudioContext) {
-
-                alert(
-                    'Este dispositivo no permite reproducir audio.'
-                );
-
-                return false;
-            }
-
-            audioCtx =
-                new AudioContext();
-        }
-
-        if (
-            audioCtx.state ===
-            'suspended'
-        ) {
-
-            await audioCtx.resume();
-        }
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            'Error inicializando audio:',
-            error
-        );
-
-        alert(
-            'No se pudo iniciar el sistema de audio.'
-        );
-
-        return false;
-    }
-}
-
-
-function playTone(
-    freq,
-    duration,
-    type = 'sine',
-    gainVal = 0.05
-) {
-
-    if (
-        !freq ||
-        !audioCtx
-    ) {
-        return;
-    }
-
-    try {
-
-        const osc =
-            audioCtx.createOscillator();
-
-        const gainNode =
-            audioCtx.createGain();
-
-        const filter =
-            audioCtx.createBiquadFilter();
-
-        const now =
-            audioCtx.currentTime;
-
-        osc.type =
-            type;
-
-        osc.frequency.setValueAtTime(
-            freq,
-            now
-        );
-
-        filter.type =
-            'lowpass';
-
-        filter.frequency.setValueAtTime(
-            1600,
-            now
-        );
-
-        gainNode.gain.setValueAtTime(
-            0.001,
-            now
-        );
-
-        gainNode.gain.linearRampToValueAtTime(
-            gainVal,
-            now + 0.05
-        );
-
-        gainNode.gain.exponentialRampToValueAtTime(
-            0.0001,
-            now + duration
-        );
-
-        osc.connect(filter);
-        filter.connect(gainNode);
-        gainNode.connect(
-            audioCtx.destination
-        );
-
-        osc.start();
-
-        osc.stop(
-            now + duration
-        );
-
-    } catch (error) {
-
-        console.error(
-            'Error reproduciendo tono:',
-            error
-        );
-    }
-}
-
-
-function playStep() {
-
-    if (!isPlaying) {
-        return;
-    }
-
-    const style =
-        styles[currentStyle];
-
-    if (!style) {
-        return;
-    }
-
-    const chordIndex =
-        Math.floor(step / 4) %
-        style.chords.length;
-
-    if (
-        step % 4 === 0 &&
-        style.chords[chordIndex]
-    ) {
-
-        style.chords[chordIndex]
-            .forEach(note => {
-
-                playTone(
-                    note,
-                    2.5,
-                    style.wave,
-                    0.025
-                );
-
-            });
-    }
-
-    const melodyNote =
-        style.melody[
-            step %
-            style.melody.length
-        ];
-
-    if (melodyNote) {
-
-        playTone(
-            melodyNote,
-            0.8,
-            'sine',
-            0.035
-        );
-    }
-
-    step++;
-}
-
-
-function stopMusicTimer() {
-
-    if (timerId) {
-
-        clearInterval(
-            timerId
-        );
-
-        timerId = null;
-    }
-}
-
-
-function startMusicTimer() {
-
-    stopMusicTimer();
-
-    const style =
-        styles[currentStyle];
-
-    if (!style) {
-        return;
-    }
-
-    timerId =
-        setInterval(
-            playStep,
-            style.tempo
-        );
-}
-
-
-function startAutoSwitchTimer() {
-
-    stopAutoSwitchTimer();
-
-    autoSwitchInterval =
-        setInterval(
-            () => {
-
-                if (isPlaying) {
-                    skipToNextStyle();
-                }
-
-            },
-            120000
-        );
-}
-
-
-function stopAutoSwitchTimer() {
-
-    if (autoSwitchInterval) {
-
-        clearInterval(
-            autoSwitchInterval
-        );
-
-        autoSwitchInterval =
-            null;
-    }
-}
-
-
-async function toggleAudio() {
-
-    const initialized =
-        await initAudio();
-
-    if (!initialized) {
-        return;
-    }
-
-    const btn =
-        document.getElementById(
-            'playAudioBtn'
-        );
-
-    if (isPlaying) {
-
-        isPlaying = false;
-
-        stopMusicTimer();
-        stopAutoSwitchTimer();
-
-        if (btn) {
-
-            btn.innerText =
-                'Reproducir Música 🎵';
-
-            btn.classList.remove(
-                'active'
-            );
-        }
-
-    } else {
-
-        isPlaying = true;
-
-        step = 0;
-
-        if (btn) {
-
-            btn.innerText =
-                'Pausar Música ⏸️';
-
-            btn.classList.add(
-                'active'
-            );
-        }
-
-        playStep();
-
-        startMusicTimer();
-        startAutoSwitchTimer();
-    }
-}
-
-
-function skipToNextStyle() {
-
-    const select =
-        document.getElementById(
-            'styleSelect'
-        );
-
-    const keys =
-        Object.keys(styles);
-
-    const currentIndex =
-        keys.indexOf(
-            currentStyle
-        );
-
-    const nextIndex =
-        (
-            currentIndex + 1
-        ) %
-        keys.length;
-
-    currentStyle =
-        keys[nextIndex];
-
-    if (select) {
-        select.value =
-            currentStyle;
-    }
-
-    step = 0;
-
-    if (isPlaying) {
-
-        startMusicTimer();
-        playStep();
-    }
-}
-
-
-function changeStyleManual() {
-
-    const select =
-        document.getElementById(
-            'styleSelect'
-        );
-
-    if (!select) {
-        return;
-    }
-
-    if (!styles[select.value]) {
-        return;
-    }
-
-    currentStyle =
-        select.value;
-
-    step = 0;
-
-    if (isPlaying) {
-
-        startMusicTimer();
-        playStep();
-    }
-}
-
-
-/* =========================================================
-   SONIDOS AMBIENTALES
-   ========================================================= */
-
-function createWhiteNoiseBuffer() {
-
-    if (!audioCtx) {
-        return null;
-    }
-
-    const bufferSize =
-        Math.floor(
-            audioCtx.sampleRate * 2
-        );
-
-    const buffer =
-        audioCtx.createBuffer(
-            1,
-            bufferSize,
-            audioCtx.sampleRate
-        );
-
-    const output =
-        buffer.getChannelData(0);
-
-    for (
-        let i = 0;
-        i < bufferSize;
-        i++
-    ) {
-
-        output[i] =
-            Math.random() * 2 - 1;
-    }
-
-    return buffer;
-}
-
-
-function getBaseGain(type) {
-
-    const gains = {
-
-        rain: 0.15,
-        ocean: 0.20,
-        fire: 0.10,
-        night: 0.05,
-        wind: 0.25,
-        river: 0.18,
-        birds: 0.80,
-        storm: 0.30
-
-    };
-
-    return gains[type] || 0.1;
-}
-
-
-async function toggleAmbientNoise(
-    type,
-    active
-) {
-
-    if (
-        !Object.prototype.hasOwnProperty.call(
-            ambientNodes,
-            type
-        )
-    ) {
-        return;
-    }
-
-    const initialized =
-        await initAudio();
-
-    if (!initialized) {
-        return;
-    }
-
-
-    /* DESACTIVAR */
-
-    if (!active) {
-
-        const node =
-            ambientNodes[type];
-
-        if (!node) {
-            return;
-        }
-
-        if (node.interval) {
-
-            clearInterval(
-                node.interval
-            );
-
-            node.interval = null;
-        }
-
-        if (node.gain) {
-
-            try {
-
-                node.gain.gain.cancelScheduledValues(
-                    audioCtx.currentTime
-                );
-
-                node.gain.gain.setTargetAtTime(
-                    0.0001,
-                    audioCtx.currentTime,
-                    0.15
-                );
-
-            } catch (error) {}
-        }
-
-        setTimeout(
-            () => {
-
-                try {
-
-                    if (node.source) {
-                        node.source.stop();
-                        node.source.disconnect();
-                    }
-
-                    if (node.gain) {
-                        node.gain.disconnect();
-                    }
-
-                } catch (error) {}
-
-                ambientNodes[type] =
-                    null;
-
-            },
-            500
-        );
-
-        return;
-    }
-
-
-    /* EVITAR DUPLICADOS */
-
-    if (ambientNodes[type]) {
-        return;
-    }
-
-
-    /* PÁJAROS */
-
-    if (type === 'birds') {
-
-        const gain =
-            audioCtx.createGain();
-
-        const volume =
-            document.getElementById(
-                'birdsVol'
-            );
-
-        const value =
-            parseFloat(
-                volume?.value || 0.5
-            );
-
-        gain.gain.value =
-            value *
-            getBaseGain(type);
-
-        gain.connect(
-            audioCtx.destination
-        );
-
-        const birdInterval =
-            setInterval(
-                () => {
-
-                    if (
-                        !audioCtx ||
-                        audioCtx.state !==
-                            'running'
-                    ) {
-                        return;
-                    }
-
-                    if (
-                        Math.random() >
-                        0.4
-                    ) {
-
-                        try {
-
-                            const osc =
-                                audioCtx.createOscillator();
-
-                            const birdGain =
-                                audioCtx.createGain();
-
-                            const startFreq =
-                                2000 +
-                                Math.random() *
-                                1500;
-
-                            const now =
-                                audioCtx.currentTime;
-
-                            osc.type =
-                                'sine';
-
-                            osc.frequency.setValueAtTime(
-                                startFreq,
-                                now
-                            );
-
-                            osc.frequency.linearRampToValueAtTime(
-                                startFreq + 800,
-                                now + 0.1
-                            );
-
-                            birdGain.gain.setValueAtTime(
-                                0.001,
-                                now
-                            );
-
-                            birdGain.gain.linearRampToValueAtTime(
-                                0.04,
-                                now + 0.05
-                            );
-
-                            birdGain.gain.exponentialRampToValueAtTime(
-                                0.001,
-                                now + 0.2
-                            );
-
-                            osc.connect(
-                                birdGain
-                            );
-
-                            birdGain.connect(
-                                gain
-                            );
-
-                            osc.start();
-
-                            osc.stop(
-                                now + 0.2
-                            );
-
-                        } catch (error) {}
-                    }
-
-                },
-                900
-            );
-
-        ambientNodes[type] = {
-
-            source: null,
-            gain: gain,
-            interval: birdInterval
-
-        };
-
-        return;
-    }
-
-
-    /* RUIDO */
-
-    const buffer =
-        createWhiteNoiseBuffer();
-
-    if (!buffer) {
-        return;
-    }
-
-    const noiseSource =
-        audioCtx.createBufferSource();
-
-    noiseSource.buffer =
-        buffer;
-
-    noiseSource.loop =
-        true;
-
-    const filter =
-        audioCtx.createBiquadFilter();
-
-    const gain =
-        audioCtx.createGain();
-
-
-    switch (type) {
-
-        case 'rain':
-
-            filter.type =
-                'lowpass';
-
-            filter.frequency.value =
-                1000;
-
-            break;
-
-
-        case 'ocean':
-
-            filter.type =
-                'bandpass';
-
-            filter.frequency.value =
-                400;
-
-            filter.Q.value =
-                1;
-
-            break;
-
-
-        case 'fire':
-
-            filter.type =
-                'bandpass';
-
-            filter.frequency.value =
-                800;
-
-            filter.Q.value =
-                1;
-
-            break;
-
-
-        case 'night':
-
-            filter.type =
-                'highpass';
-
-            filter.frequency.value =
-                4000;
-
-            break;
-
-
-        case 'wind':
-
-            filter.type =
-                'bandpass';
-
-            filter.frequency.value =
-                250;
-
-            filter.Q.value =
-                3;
-
-            break;
-
-
-        case 'river':
-
-            filter.type =
-                'lowpass';
-
-            filter.frequency.value =
-                600;
-
-            break;
-
-
-        case 'storm':
-
-            filter.type =
-                'lowpass';
-
-            filter.frequency.value =
-                180;
-
-            break;
-    }
-
-
-    const slider =
-        document.getElementById(
-            type + 'Vol'
-        );
-
-    const sliderValue =
-        parseFloat(
-            slider?.value || 0.5
-        );
-
-    const targetGain =
-        sliderValue *
-        getBaseGain(type);
-
-
-    const now =
-        audioCtx.currentTime;
-
-    gain.gain.setValueAtTime(
-        0.001,
-        now
-    );
-
-    gain.gain.linearRampToValueAtTime(
-        targetGain,
-        now + 0.3
-    );
-
-
-    noiseSource.connect(
-        filter
-    );
-
-    filter.connect(
-        gain
-    );
-
-    gain.connect(
-        audioCtx.destination
-    );
-
-    noiseSource.start();
-
-
-    ambientNodes[type] = {
-
-        source: noiseSource,
-        gain: gain
-
-    };
-}
-
-
-function updateVolume(
-    type,
-    value
-) {
-
-    const node =
-        ambientNodes[type];
-
-    if (
-        !node ||
-        !node.gain ||
-        !audioCtx
-    ) {
-        return;
-    }
-
-    const numericValue =
-        parseFloat(value);
-
-    if (
-        isNaN(numericValue)
-    ) {
-        return;
-    }
-
-    const targetGain =
-        numericValue *
-        getBaseGain(type);
-
-    try {
-
-        node.gain.gain.setTargetAtTime(
-            targetGain,
-            audioCtx.currentTime,
-            0.05
-        );
-
-    } catch (error) {}
-}
-
-
-/* =========================================================
-   TEXTO A VOZ
-   ========================================================= */
-
-function speakText(
-    text,
-    options = {}
-) {
-
-    if (
-        !text ||
-        !('speechSynthesis' in window)
-    ) {
-        return false;
-    }
-
-    try {
-
-        const {
-
-            cancel = true,
-            rate = 0.9,
-            pitch = 1,
-            volume = 1
-
-        } = options;
-
-        if (cancel) {
-
-            window.speechSynthesis.cancel();
-        }
-
-        const utterance =
-            new SpeechSynthesisUtterance(
-                text
-            );
-
-        utterance.lang =
-            'es-AR';
-
-        utterance.rate =
-            rate;
-
-        utterance.pitch =
-            pitch;
-
-        utterance.volume =
-            volume;
-
-        window.speechSynthesis.speak(
-            utterance
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            'Error en voz:',
-            error
-        );
-
-        return false;
-    }
-}
-
-
-/* =========================================================
+/* =========================
    EMOCIONES
-   ========================================================= */
+========================= */
 
-function selectEmotion(
-    emotion,
-    message,
-    element
-) {
+let selectedEmotionValue='';
+let currentBase64Photo='';
+let currentBase64Audio='';
 
-    selectedEmotionValue =
-        emotion;
+function speakText(text){
 
-    document
-        .querySelectorAll(
-            '.buttons-grid .btn'
-        )
-        .forEach(
-            btn => {
+if(!('speechSynthesis' in window)) return;
 
-                btn.classList.remove(
-                    'selected'
-                );
+try{
+window.speechSynthesis.cancel();
 
-            }
-        );
+const utterance=new SpeechSynthesisUtterance(text);
+utterance.lang='es-AR';
+utterance.rate=.9;
+utterance.pitch=1;
 
-    if (element) {
+window.speechSynthesis.speak(utterance);
 
-        element.classList.add(
-            'selected'
-        );
-    }
-
-    speakText(
-        message
-    );
+}catch(e){}
 }
 
+function selectEmotion(emotion,message,element){
 
-/* =========================================================
-   FOTOS
-   ========================================================= */
+selectedEmotionValue=emotion;
 
-function compressImage(file) {
+document.querySelectorAll('.buttons-grid .btn')
+.forEach(btn=>btn.classList.remove('selected'));
 
-    return new Promise(
-        (resolve, reject) => {
-
-            const reader =
-                new FileReader();
-
-            reader.onload =
-                event => {
-
-                    const img =
-                        new Image();
-
-                    img.onload =
-                        () => {
-
-                            const MAX_WIDTH =
-                                1280;
-
-                            let width =
-                                img.width;
-
-                            let height =
-                                img.height;
-
-
-                            if (
-                                width >
-                                MAX_WIDTH
-                            ) {
-
-                                height =
-                                    Math.round(
-                                        height *
-                                        MAX_WIDTH /
-                                        width
-                                    );
-
-                                width =
-                                    MAX_WIDTH;
-                            }
-
-
-                            const canvas =
-                                document.createElement(
-                                    'canvas'
-                                );
-
-                            canvas.width =
-                                width;
-
-                            canvas.height =
-                                height;
-
-
-                            const ctx =
-                                canvas.getContext(
-                                    '2d'
-                                );
-
-                            if (!ctx) {
-
-                                reject(
-                                    new Error(
-                                        'No se pudo crear el canvas.'
-                                    )
-                                );
-
-                                return;
-                            }
-
-
-                            ctx.drawImage(
-                                img,
-                                0,
-                                0,
-                                width,
-                                height
-                            );
-
-
-                            resolve(
-                                canvas.toDataURL(
-                                    'image/jpeg',
-                                    0.70
-                                )
-                            );
-                        };
-
-
-                    img.onerror =
-                        () => {
-
-                            reject(
-                                new Error(
-                                    'Imagen inválida.'
-                                )
-                            );
-
-                        };
-
-
-                    img.src =
-                        event.target.result;
-                };
-
-
-            reader.onerror =
-                () => {
-
-                    reject(
-                        new Error(
-                            'No se pudo leer la imagen.'
-                        )
-                    );
-
-                };
-
-
-            reader.readAsDataURL(
-                file
-            );
-        }
-    );
+if(element){
+element.classList.add('selected');
 }
 
-
-async function previewPhoto(event) {
-
-    const file =
-        event.target.files?.[0];
-
-    if (!file) {
-        return;
-    }
-
-    if (
-        !file.type.startsWith(
-            'image/'
-        )
-    ) {
-
-        alert(
-            'Selecciona una imagen válida.'
-        );
-
-        event.target.value =
-            '';
-
-        return;
-    }
-
-
-    try {
-
-        currentBase64Photo =
-            await compressImage(
-                file
-            );
-
-        const img =
-            document.getElementById(
-                'photoPreviewImg'
-            );
-
-        if (img) {
-
-            img.src =
-                currentBase64Photo;
-
-            img.style.display =
-                'block';
-        }
-
-    } catch (error) {
-
-        console.error(
-            'Foto:',
-            error
-        );
-
-        alert(
-            'No se pudo procesar la imagen.'
-        );
-    }
+speakText(message);
 }
 
+/* =========================
+   FOTO
+========================= */
 
-/* =========================================================
-   GRABACIÓN DE AUDIO
-   ========================================================= */
+document.getElementById('photoInput')
+.addEventListener('change',function(event){
 
-async function toggleRecording() {
+const file=event.target.files[0];
 
-    const recordBtn =
-        document.getElementById(
-            'recordBtn'
-        );
+if(!file)return;
 
-    const audioPlayback =
-        document.getElementById(
-            'audioPlayback'
-        );
-
-
-    /* DETENER */
-
-    if (
-        mediaRecorder &&
-        mediaRecorder.state ===
-            'recording'
-    ) {
-
-        try {
-
-            mediaRecorder.stop();
-
-        } catch (error) {
-
-            console.error(
-                error
-            );
-        }
-
-        if (recordBtn) {
-
-            recordBtn.innerText =
-                'Procesando audio...';
-        }
-
-        return;
-    }
-
-
-    /* SOPORTE */
-
-    if (
-        !navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia
-    ) {
-
-        alert(
-            'El micrófono no está disponible. ' +
-            'Verifica los permisos de la aplicación.'
-        );
-
-        return;
-    }
-
-
-    if (
-        typeof MediaRecorder ===
-        'undefined'
-    ) {
-
-        alert(
-            'Este dispositivo no admite grabación de audio.'
-        );
-
-        return;
-    }
-
-
-    try {
-
-        audioStream =
-            await navigator.mediaDevices.getUserMedia({
-                audio: true
-            });
-
-
-        let mimeType =
-            '';
-
-
-        const possibleTypes = [
-
-            'audio/webm;codecs=opus',
-            'audio/webm',
-            'audio/mp4',
-            'audio/ogg;codecs=opus',
-            'audio/ogg'
-
-        ];
-
-
-        for (
-            const type
-            of possibleTypes
-        ) {
-
-            try {
-
-                if (
-                    MediaRecorder.isTypeSupported(
-                        type
-                    )
-                ) {
-
-                    mimeType =
-                        type;
-
-                    break;
-                }
-
-            } catch (error) {}
-        }
-
-
-        mediaRecorder =
-            mimeType
-                ? new MediaRecorder(
-                    audioStream,
-                    {
-                        mimeType:
-                            mimeType
-                    }
-                )
-                : new MediaRecorder(
-                    audioStream
-                );
-
-
-        audioChunks =
-            [];
-
-
-        mediaRecorder.ondataavailable =
-            event => {
-
-                if (
-                    event.data &&
-                    event.data.size > 0
-                ) {
-
-                    audioChunks.push(
-                        event.data
-                    );
-                }
-            };
-
-
-        mediaRecorder.onstop =
-            () => {
-
-                try {
-
-                    const blob =
-                        new Blob(
-                            audioChunks,
-                            {
-                                type:
-                                    mediaRecorder.mimeType ||
-                                    mimeType ||
-                                    'audio/webm'
-                            }
-                        );
-
-
-                    if (
-                        blob.size ===
-                        0
-                    ) {
-
-                        throw new Error(
-                            'El audio está vacío.'
-                        );
-                    }
-
-
-                    const reader =
-                        new FileReader();
-
-
-                    reader.onloadend =
-                        () => {
-
-                            currentBase64Audio =
-                                reader.result;
-
-
-                            if (
-                                audioPlayback
-                            ) {
-
-                                audioPlayback.src =
-                                    currentBase64Audio;
-
-                                audioPlayback.style.display =
-                                    'block';
-                            }
-
-
-                            if (
-                                recordBtn
-                            ) {
-
-                                recordBtn.innerText =
-                                    'Grabar Audio 🎙️';
-                            }
-                        };
-
-
-                    reader.onerror =
-                        () => {
-
-                            if (
-                                recordBtn
-                            ) {
-
-                                recordBtn.innerText =
-                                    'Grabar Audio 🎙️';
-                            }
-
-                            alert(
-                                'No se pudo procesar el audio.'
-                            );
-                        };
-
-
-                    reader.readAsDataURL(
-                        blob
-                    );
-
-
-                } catch (error) {
-
-                    console.error(
-                        'Procesando audio:',
-                        error
-                    );
-
-                    if (
-                        recordBtn
-                    ) {
-
-                        recordBtn.innerText =
-                            'Grabar Audio 🎙️';
-                    }
-                }
-
-
-                if (audioStream) {
-
-                    audioStream
-                        .getTracks()
-                        .forEach(
-                            track => {
-
-                                try {
-                                    track.stop();
-                                } catch (error) {}
-
-                            }
-                        );
-
-                    audioStream =
-                        null;
-                }
-
-                mediaRecorder =
-                    null;
-            };
-
-
-        mediaRecorder.onerror =
-            event => {
-
-                console.error(
-                    'MediaRecorder:',
-                    event
-                );
-
-                if (
-                    recordBtn
-                ) {
-
-                    recordBtn.innerText =
-                        'Grabar Audio 🎙️';
-                }
-            };
-
-
-        mediaRecorder.start();
-
-
-        if (recordBtn) {
-
-            recordBtn.innerText =
-                'Detener Grabación ⏹️';
-        }
-
-
-    } catch (error) {
-
-        console.error(
-            'Micrófono:',
-            error
-        );
-
-
-        if (audioStream) {
-
-            audioStream
-                .getTracks()
-                .forEach(
-                    track => {
-
-                        try {
-                            track.stop();
-                        } catch (error) {}
-
-                    }
-                );
-
-            audioStream =
-                null;
-        }
-
-
-        alert(
-            'No se pudo acceder al micrófono.\n\n' +
-            'Verifica que la aplicación tenga permiso para utilizarlo.'
-        );
-
-
-        if (recordBtn) {
-
-            recordBtn.innerText =
-                'Grabar Audio 🎙️';
-        }
-    }
+if(!file.type.startsWith('image/')){
+alert('Selecciona una imagen válida.');
+return;
 }
 
+const reader=new FileReader();
 
-/* =========================================================
-   GUARDAR FOTO
-   ========================================================= */
+reader.onload=function(e){
 
-function saveStandalonePhoto() {
+currentBase64Photo=e.target.result;
 
-    if (!currentBase64Photo) {
+const preview=document.getElementById('photoPreviewImg');
 
-        alert(
-            'Primero selecciona una foto para guardar.'
-        );
+preview.src=currentBase64Photo;
+preview.style.display='block';
 
-        return;
-    }
+};
 
+reader.readAsDataURL(file);
 
-    const emotionSelect =
-        document.getElementById(
-            'photoEmotionSelect'
-        );
+});
 
+function saveStandalonePhoto(){
 
-    const photoEmotion =
-        emotionSelect
-            ? emotionSelect.value
-            : 'No especificada';
-
-
-    const now =
-        new Date();
-
-
-    const entry = {
-
-        emotion:
-            photoEmotion ||
-            'No especificada',
-
-        note:
-            'Foto guardada',
-
-        trigger:
-            '',
-
-        member:
-            'Personal',
-
-        photo:
-            currentBase64Photo,
-
-        audio:
-            '',
-
-        date:
-            formatDate(now),
-
-        timestamp:
-            now.toISOString()
-
-    };
-
-
-    const entries =
-        getStorage(
-            'emotionEntries'
-        );
-
-
-    entries.push(
-        entry
-    );
-
-
-    if (
-        !setStorage(
-            'emotionEntries',
-            entries
-        )
-    ) {
-        return;
-    }
-
-
-    alert(
-        '¡Foto guardada con éxito! 🖼️'
-    );
-
-
-    resetPhoto();
-
-    loadEntries();
-
-    updateWeeklyChart();
+if(!currentBase64Photo){
+alert('Primero selecciona una foto.');
+return;
 }
 
+const entry={
+id:Date.now(),
+emotion:document.getElementById('photoEmotionSelect').value,
+note:'Foto guardada',
+trigger:'',
+member:'Personal',
+photo:currentBase64Photo,
+audio:'',
+date:new Date().toLocaleString('es-AR')
+};
 
-function resetPhoto() {
+const entries=getStorage('emotionEntries');
 
-    const input =
-        document.getElementById(
-            'photoInput'
-        );
+entries.push(entry);
 
-    const preview =
-        document.getElementById(
-            'photoPreviewImg'
-        );
+if(setStorage('emotionEntries',entries)){
 
+alert('¡Foto guardada! 🖼️');
 
-    if (input) {
-        input.value =
-            '';
-    }
+clearPhoto();
 
-
-    if (preview) {
-
-        preview.src =
-            '';
-
-        preview.style.display =
-            'none';
-    }
-
-
-    currentBase64Photo =
-        '';
+loadEntries();
+updateWeeklyChart();
 }
 
-
-/* =========================================================
-   GUARDAR REGISTRO
-   ========================================================= */
-
-function saveEntry() {
-
-    const noteInput =
-        document.getElementById(
-            'noteInput'
-        );
-
-    const triggerInput =
-        document.getElementById(
-            'triggerInput'
-        );
-
-    const memberSelect =
-        document.getElementById(
-            'memberSelect'
-        );
-
-
-    const note =
-        noteInput
-            ? noteInput.value.trim()
-            : '';
-
-
-    const trigger =
-        triggerInput
-            ? triggerInput.value.trim()
-            : '';
-
-
-    const member =
-        memberSelect
-            ? memberSelect.value
-            : 'Personal';
-
-
-    if (
-        !selectedEmotionValue &&
-        !note &&
-        !trigger &&
-        !currentBase64Photo &&
-        !currentBase64Audio
-    ) {
-
-        alert(
-            'Completa al menos una parte del registro.'
-        );
-
-        return;
-    }
-
-
-    const now =
-        new Date();
-
-
-    const entry = {
-
-        emotion:
-            selectedEmotionValue ||
-            'No especificada',
-
-        note:
-            note,
-
-        trigger:
-            trigger,
-
-        member:
-            member || 'Personal',
-
-        photo:
-            currentBase64Photo ||
-            '',
-
-        audio:
-            currentBase64Audio ||
-            '',
-
-        date:
-            formatDate(now),
-
-        timestamp:
-            now.toISOString()
-
-    };
-
-
-    const entries =
-        getStorage(
-            'emotionEntries'
-        );
-
-
-    entries.push(
-        entry
-    );
-
-
-    if (
-        !setStorage(
-            'emotionEntries',
-            entries
-        )
-    ) {
-        return;
-    }
-
-
-    alert(
-        '¡Registro guardado con éxito! 🎉'
-    );
-
-
-    resetEntryForm();
-
-    loadEntries();
-
-    updateWeeklyChart();
 }
 
+function clearPhoto(){
 
-function resetEntryForm() {
+document.getElementById('photoInput').value='';
+document.getElementById('photoPreviewImg').style.display='none';
+document.getElementById('photoPreviewImg').removeAttribute('src');
 
-    const note =
-        document.getElementById(
-            'noteInput'
-        );
-
-    const trigger =
-        document.getElementById(
-            'triggerInput'
-        );
-
-    const audio =
-        document.getElementById(
-            'audioPlayback'
-        );
-
-
-    if (note) {
-        note.value =
-            '';
-    }
-
-
-    if (trigger) {
-        trigger.value =
-            '';
-    }
-
-
-    if (audio) {
-
-        audio.pause();
-
-        audio.currentTime =
-            0;
-
-        audio.style.display =
-            'none';
-
-        audio.removeAttribute(
-            'src'
-        );
-
-        audio.load();
-    }
-
-
-    document
-        .querySelectorAll(
-            '.buttons-grid .btn'
-        )
-        .forEach(
-            btn =>
-                btn.classList.remove(
-                    'selected'
-                )
-        );
-
-
-    selectedEmotionValue =
-        '';
-
-    currentBase64Audio =
-        '';
-
-    resetPhoto();
+currentBase64Photo='';
 }
 
+/* =========================
+   GRABACIÓN
+========================= */
 
-/* =========================================================
-   TEXTOS
-   ========================================================= */
+let mediaRecorder=null;
+let audioStream=null;
+let audioChunks=[];
 
-function saveTextEntry(
-    inputId,
-    storageKey,
-    message
-) {
+async function toggleRecording(){
 
-    const el =
-        document.getElementById(
-            inputId
-        );
+const btn=document.getElementById('recordBtn');
+const playback=document.getElementById('audioPlayback');
 
+if(mediaRecorder && mediaRecorder.state==='recording'){
 
-    if (
-        !el ||
-        !el.value.trim()
-    ) {
+mediaRecorder.stop();
 
-        alert(
-            'Escribe algo antes de guardar.'
-        );
+btn.innerText='Procesando audio...';
 
-        return false;
-    }
-
-
-    const entries =
-        getStorage(
-            storageKey
-        );
-
-
-    const now =
-        new Date();
-
-
-    entries.push({
-
-        text:
-            el.value.trim(),
-
-        date:
-            formatDate(now),
-
-        timestamp:
-            now.toISOString()
-
-    });
-
-
-    if (
-        !setStorage(
-            storageKey,
-            entries
-        )
-    ) {
-        return false;
-    }
-
-
-    alert(
-        message
-    );
-
-
-    el.value =
-        '';
-
-
-    return true;
+return;
 }
 
+if(!navigator.mediaDevices ||
+!navigator.mediaDevices.getUserMedia){
 
-function saveGratitude() {
-
-    if (
-        saveTextEntry(
-            'gratitudeInput',
-            'gratitudeEntries',
-            '¡Gratitud guardada con éxito! ⭐'
-        )
-    ) {
-
-        loadGratitude();
-    }
+alert('Este navegador no permite acceder al micrófono.');
+return;
 }
 
+try{
 
-function saveStrategy() {
+audioStream=await navigator.mediaDevices.getUserMedia({
+audio:true
+});
 
-    if (
-        saveTextEntry(
-            'strategyInput',
-            'strategyEntries',
-            '¡Estrategia guardada con éxito! 💡'
-        )
-    ) {
+let mimeType='';
 
-        loadStrategies();
-    }
+if(window.MediaRecorder){
+
+const types=[
+'audio/webm;codecs=opus',
+'audio/webm',
+'audio/mp4',
+'audio/ogg'
+];
+
+for(const type of types){
+
+if(MediaRecorder.isTypeSupported(type)){
+mimeType=type;
+break;
 }
 
-
-function saveMicroexpression() {
-
-    if (
-        saveTextEntry(
-            'microexpressionInput',
-            'microexpressionEntries',
-            '¡Observación guardada con éxito! 👀'
-        )
-    ) {
-
-        loadMicroexpressions();
-    }
 }
 
-
-/* =========================================================
-   SEGURIDAD HTML
-   ========================================================= */
-
-function escapeHTML(value) {
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-        return '';
-    }
-
-
-    return String(value)
-        .replace(
-            /&/g,
-            '&amp;'
-        )
-        .replace(
-            /</g,
-            '&lt;'
-        )
-        .replace(
-            />/g,
-            '&gt;'
-        )
-        .replace(
-            /"/g,
-            '&quot;'
-        )
-        .replace(
-            /'/g,
-            '&#039;'
-        );
 }
 
+mediaRecorder=mimeType?
+new MediaRecorder(audioStream,{mimeType}):
+new MediaRecorder(audioStream);
 
-/* =========================================================
-   HISTORIAL
-   ========================================================= */
+audioChunks=[];
 
-function deleteItem(
-    storageKey,
-    index
-) {
+mediaRecorder.ondataavailable=function(event){
 
-    const items =
-        getStorage(
-            storageKey
-        );
-
-
-    if (
-        index < 0 ||
-        index >= items.length
-    ) {
-        return;
-    }
-
-
-    if (
-        !confirm(
-            '¿Seguro que deseas eliminar este registro?'
-        )
-    ) {
-        return;
-    }
-
-
-    items.splice(
-        index,
-        1
-    );
-
-
-    if (
-        !setStorage(
-            storageKey,
-            items
-        )
-    ) {
-        return;
-    }
-
-
-    switch (storageKey) {
-
-        case 'emotionEntries':
-
-            loadEntries();
-            updateWeeklyChart();
-
-            break;
-
-
-        case 'gratitudeEntries':
-
-            loadGratitude();
-
-            break;
-
-
-        case 'strategyEntries':
-
-            loadStrategies();
-
-            break;
-
-
-        case 'microexpressionEntries':
-
-            loadMicroexpressions();
-
-            break;
-
-
-        case 'archivedWeeks':
-
-            loadArchives();
-
-            break;
-    }
+if(event.data && event.data.size>0){
+audioChunks.push(event.data);
 }
 
+};
 
-/* =========================================================
+mediaRecorder.onstop=function(){
+
+const blob=new Blob(audioChunks,{
+type:mediaRecorder.mimeType || 'audio/webm'
+});
+
+const reader=new FileReader();
+
+reader.onloadend=function(){
+
+currentBase64Audio=reader.result;
+
+playback.src=currentBase64Audio;
+playback.style.display='block';
+
+btn.innerText='Grabar Audio 🎤';
+
+};
+
+reader.readAsDataURL(blob);
+
+if(audioStream){
+
+audioStream.getTracks().forEach(track=>track.stop());
+audioStream=null;
+
+}
+
+};
+
+mediaRecorder.onerror=function(){
+
+alert('Ocurrió un error durante la grabación.');
+
+btn.innerText='Grabar Audio 🎤';
+
+};
+
+mediaRecorder.start();
+
+btn.innerText='Detener Grabación ⏹️';
+
+}catch(error){
+
+console.error(error);
+
+alert('No se pudo acceder al micrófono. Comprueba los permisos de la aplicación.');
+
+btn.innerText='Grabar Audio 🎤';
+
+}
+
+}
+
+/* =========================
+   REGISTRO
+========================= */
+
+function saveEntry(){
+
+const note=document.getElementById('noteInput').value.trim();
+const trigger=document.getElementById('triggerInput').value.trim();
+const member=document.getElementById('memberSelect').value;
+
+if(!selectedEmotionValue && !note && !trigger && !currentBase64Photo && !currentBase64Audio){
+
+alert('Agrega al menos una emoción, nota, foto o audio.');
+return;
+
+}
+
+const entry={
+id:Date.now(),
+emotion:selectedEmotionValue || 'No especificada',
+note,
+trigger,
+member,
+photo:currentBase64Photo,
+audio:currentBase64Audio,
+date:new Date().toLocaleString('es-AR')
+};
+
+const entries=getStorage('emotionEntries');
+
+entries.push(entry);
+
+if(!setStorage('emotionEntries',entries))return;
+
+alert('¡Registro guardado con éxito! ✨');
+
+document.getElementById('noteInput').value='';
+document.getElementById('triggerInput').value='';
+
+document.getElementById('audioPlayback').pause();
+document.getElementById('audioPlayback').removeAttribute('src');
+document.getElementById('audioPlayback').style.display='none';
+
+document.querySelectorAll('.buttons-grid .btn')
+.forEach(btn=>btn.classList.remove('selected'));
+
+selectedEmotionValue='';
+currentBase64Audio='';
+
+clearPhoto();
+
+loadEntries();
+updateWeeklyChart();
+
+}
+
+/* =========================
+   LISTAS
+========================= */
+
+function deleteItem(storageKey,index){
+
+if(!confirm('¿Eliminar este registro?'))return;
+
+const items=getStorage(storageKey);
+
+items.splice(index,1);
+
+setStorage(storageKey,items);
+
+if(storageKey==='emotionEntries'){
+loadEntries();
+updateWeeklyChart();
+}else if(storageKey==='gratitudeEntries'){
+loadGratitude();
+}else if(storageKey==='strategyEntries'){
+loadStrategies();
+}else if(storageKey==='microexpressionEntries'){
+loadMicroexpressions();
+}else if(storageKey==='archivedWeeks'){
+loadArchives();
+}
+
+}
+
+function renderList(listId,storageKey,createContent){
+
+const list=document.getElementById(listId);
+
+list.innerHTML='';
+
+const items=getStorage(storageKey);
+
+if(items.length===0){
+
+list.innerHTML='<li style="text-align:center;color:#636e72">Todavía no hay registros.</li>';
+return;
+
+}
+
+items.forEach((item,index)=>{
+
+const li=document.createElement('li');
+
+li.innerHTML=createContent(item);
+
+const button=document.createElement('button');
+
+button.className='btn-delete';
+button.innerText='Eliminar';
+
+button.onclick=()=>deleteItem(storageKey,index);
+
+li.appendChild(button);
+
+list.appendChild(li);
+
+});
+
+}
+
+/* =========================
+   ESCAPAR HTML
+========================= */
+
+function escapeHTML(value){
+
+return String(value??'')
+.replace(/&/g,'&amp;')
+.replace(/</g,'&lt;')
+.replace(/>/g,'&gt;')
+.replace(/"/g,'&quot;')
+.replace(/'/g,'&#039;');
+
+}
+
+function loadEntries(){
+
+renderList(
+'entriesList',
+'emotionEntries',
+item=>{
+
+let html=
+`<strong>${escapeHTML(item.date)}</strong>
+<span class="tag-member">${escapeHTML(item.member||'Personal')}</span>
+<br>
+Emoción:
+<strong>${escapeHTML(item.emotion)}</strong>`;
+
+if(item.trigger){
+
+html+=
+`<br><em style="color:#e67e22">
+Gatillo: ${escapeHTML(item.trigger)}
+</em>`;
+
+}
+
+if(item.note){
+
+html+=`<br>${escapeHTML(item.note)}`;
+
+}
+
+if(item.photo){
+
+html+=
+`<br>
+<img src="${item.photo}"
+class="entry-img"
+alt="Foto adjunta">`;
+
+}
+
+if(item.audio){
+
+html+=
+`<br>
+<audio src="${item.audio}"
+controls
+style="width:100%;margin-top:8px"></audio>`;
+
+}
+
+return html;
+
+}
+);
+
+}
+
+function saveTextEntry(inputId,key,message,loader){
+
+const el=document.getElementById(inputId);
+
+if(!el.value.trim()){
+
+alert('Escribe algo antes de guardar.');
+return;
+
+}
+
+const data=getStorage(key);
+
+data.push({
+id:Date.now(),
+text:el.value.trim(),
+date:new Date().toLocaleString('es-AR')
+});
+
+if(setStorage(key,data)){
+
+alert(message);
+el.value='';
+loader();
+
+}
+
+}
+
+function saveGratitude(){
+
+saveTextEntry(
+'gratitudeInput',
+'gratitudeEntries',
+'¡Gratitud guardada! ⭐',
+loadGratitude
+);
+
+}
+
+function saveStrategy(){
+
+saveTextEntry(
+'strategyInput',
+'strategyEntries',
+'¡Estrategia guardada! 💡',
+loadStrategies
+);
+
+}
+
+function saveMicroexpression(){
+
+saveTextEntry(
+'microexpressionInput',
+'microexpressionEntries',
+'¡Observación guardada! 👀',
+loadMicroexpressions
+);
+
+}
+
+function loadGratitude(){
+
+renderList(
+'gratitudeList',
+'gratitudeEntries',
+item=>`<strong>${escapeHTML(item.date)}</strong><br>${escapeHTML(item.text)}`
+);
+
+}
+
+function loadStrategies(){
+
+renderList(
+'strategyList',
+'strategyEntries',
+item=>`<strong>${escapeHTML(item.date)}</strong><br>${escapeHTML(item.text)}`
+);
+
+}
+
+function loadMicroexpressions(){
+
+renderList(
+'microexpressionList',
+'microexpressionEntries',
+item=>`<strong>${escapeHTML(item.date)}</strong><br>${escapeHTML(item.text)}`
+);
+
+}
+
+function loadArchives(){
+
+renderList(
+'archivesList',
+'archivedWeeks',
+item=>
+`<strong>Semana cerrada: ${escapeHTML(item.date)}</strong>
+<br>${escapeHTML(item.summary)}`
+);
+
+}
+
+/* =========================
    PESTAÑAS
-   ========================================================= */
+========================= */
 
-function switchTab(
-    evt,
-    tabName
-) {
+function switchTab(event,name){
 
-    document
-        .querySelectorAll(
-            '.tabs-header .tab-btn'
-        )
-        .forEach(
-            btn =>
-                btn.classList.remove(
-                    'active'
-                )
-        );
+document.querySelectorAll('.tab-btn')
+.forEach(btn=>btn.classList.remove('active'));
 
+document.querySelectorAll('[id^="tab-"]')
+.forEach(tab=>tab.style.display='none');
 
-    document
-        .querySelectorAll(
-            '[id^="tab-"]'
-        )
-        .forEach(
-            el =>
-                el.style.display =
-                    'none'
-        );
+event.currentTarget.classList.add('active');
 
+document.getElementById('tab-'+name)
+.style.display='block';
 
-    const button =
-        evt?.currentTarget ||
-        evt?.target;
-
-
-    if (button) {
-
-        button.classList.add(
-            'active'
-        );
-    }
-
-
-    const tab =
-        document.getElementById(
-            `tab-${tabName}`
-        );
-
-
-    if (tab) {
-
-        tab.style.display =
-            'block';
-    }
 }
 
+/* =========================
+   GRÁFICO
+========================= */
 
-/* =========================================================
-   RENDERIZADO
-   ========================================================= */
+function updateWeeklyChart(){
 
-function renderList(
-    listId,
-    storageKey,
-    createContentFn
-) {
+const chart=document.getElementById('weeklyChart');
+const summary=document.getElementById('weeklySummary');
 
-    const list =
-        document.getElementById(
-            listId
-        );
+chart.innerHTML='';
 
+const entries=getStorage('emotionEntries');
 
-    if (!list) {
-        return;
-    }
+if(entries.length===0){
 
+chart.innerHTML=
+'<p style="margin:auto">No hay registros todavía.</p>';
 
-    list.innerHTML =
-        '';
+summary.innerText=
+'Registra tus emociones para generar el balance.';
 
+return;
 
-    const items =
-        getStorage(
-            storageKey
-        );
-
-
-    if (
-        items.length ===
-        0
-    ) {
-
-        const empty =
-            document.createElement(
-                'li'
-            );
-
-
-        empty.innerText =
-            'Todavía no hay registros.';
-
-
-        list.appendChild(
-            empty
-        );
-
-
-        return;
-    }
-
-
-    items
-        .slice()
-        .reverse()
-        .forEach(
-            (
-                item,
-                reverseIndex
-            ) => {
-
-                const realIndex =
-                    items.length -
-                    1 -
-                    reverseIndex;
-
-
-                const li =
-                    document.createElement(
-                        'li'
-                    );
-
-
-                li.innerHTML =
-                    createContentFn(
-                        item
-                    );
-
-
-                const deleteBtn =
-                    document.createElement(
-                        'button'
-                    );
-
-
-                deleteBtn.className =
-                    'btn-delete';
-
-                deleteBtn.innerText =
-                    'Eliminar';
-
-                deleteBtn.type =
-                    'button';
-
-
-                deleteBtn.onclick =
-                    () =>
-                        deleteItem(
-                            storageKey,
-                            realIndex
-                        );
-
-
-                li.appendChild(
-                    deleteBtn
-                );
-
-
-                list.appendChild(
-                    li
-                );
-            }
-        );
 }
 
+const counts={};
 
-/* =========================================================
-   CARGAR REGISTROS
-   ========================================================= */
+entries.forEach(entry=>{
 
-function loadEntries() {
+if(entry.emotion &&
+entry.emotion!=='No especificada'){
 
-    renderList(
-        'entriesList',
-        'emotionEntries',
-        item => {
+counts[entry.emotion]=(counts[entry.emotion]||0)+1;
 
-            let content =
-
-                `<strong>${escapeHTML(item.date || '')}</strong> ` +
-
-                `<span class="tag-member">` +
-                `${escapeHTML(item.member || 'Personal')}` +
-                `</span> ` +
-
-                `- Emoción: <strong>` +
-                `${escapeHTML(item.emotion || 'No especificada')}` +
-                `</strong><br>`;
-
-
-            if (item.trigger) {
-
-                content +=
-                    `<em style="color:#e67e22;font-size:0.9em;">` +
-                    `Gatillo: ${escapeHTML(item.trigger)}` +
-                    `</em><br>`;
-            }
-
-
-            if (item.note) {
-
-                content +=
-                    `${escapeHTML(item.note)}`
-                        .replace(
-                            /\n/g,
-                            '<br>'
-                        );
-            }
-
-
-            if (item.photo) {
-
-                content +=
-                    `<br><img src="${escapeHTML(item.photo)}" ` +
-                    `class="entry-img" ` +
-                    `alt="Foto adjunta">`;
-            }
-
-
-            if (item.audio) {
-
-                content +=
-                    `<br><audio src="${escapeHTML(item.audio)}" ` +
-                    `controls ` +
-                    `style="margin-top:8px;width:100%;"></audio>`;
-            }
-
-
-            return content;
-        }
-    );
 }
 
+});
 
-function loadGratitude() {
+const total=Object.values(counts)
+.reduce((a,b)=>a+b,0);
 
-    renderList(
-        'gratitudeList',
-        'gratitudeEntries',
-        item =>
-            `<strong>${escapeHTML(item.date || '')}</strong>: ` +
-            `${escapeHTML(item.text || '')}`
-    );
+if(!total){
+
+summary.innerText='No hay emociones suficientes para analizar.';
+return;
+
 }
 
+let maxEmotion='';
+let maxCount=0;
 
-function loadStrategies() {
+Object.entries(counts).forEach(([emotion,count])=>{
 
-    renderList(
-        'strategyList',
-        'strategyEntries',
-        item =>
-            `<strong>${escapeHTML(item.date || '')}</strong>: ` +
-            `${escapeHTML(item.text || '')}`
-    );
+if(count>maxCount){
+
+maxCount=count;
+maxEmotion=emotion;
+
 }
 
+const wrapper=document.createElement('div');
+wrapper.className='chart-bar-wrapper';
 
-function loadMicroexpressions() {
+const bar=document.createElement('div');
+bar.className='chart-bar';
 
-    renderList(
-        'microexpressionList',
-        'microexpressionEntries',
-        item =>
-            `<strong>${escapeHTML(item.date || '')}</strong>: ` +
-            `${escapeHTML(item.text || '')}`
-    );
+bar.style.height=Math.max(5,(count/total)*100)+'%';
+bar.title=emotion+': '+count;
+
+const label=document.createElement('span');
+label.className='chart-label';
+label.innerText=emotion.substring(0,6);
+
+wrapper.appendChild(bar);
+wrapper.appendChild(label);
+
+chart.appendChild(wrapper);
+
+});
+
+const percent=Math.round((maxCount/total)*100);
+
+summary.innerHTML=
+`Estado dominante: <strong>${escapeHTML(maxEmotion)}</strong>
+(${percent}%).
+Registros totales: ${total}.`;
+
 }
 
+/* =========================
+   ARCHIVAR
+========================= */
 
-function loadArchives() {
+function closeAndArchiveWeek(){
 
-    renderList(
-        'archivesList',
-        'archivedWeeks',
-        item =>
-            `<strong>Semana cerrada el ` +
-            `${escapeHTML(item.date || '')}</strong><br>` +
-            `${escapeHTML(item.summary || '')}`
-    );
+const entries=getStorage('emotionEntries');
+
+if(entries.length===0){
+
+alert('No hay registros para archivar.');
+return;
+
 }
 
+if(!confirm(
+'¿Deseas cerrar la semana y archivar los registros emocionales?'
+))return;
 
-/* =========================================================
-   GRÁFICO SEMANAL
-   ========================================================= */
+const archive={
+id:Date.now(),
+date:new Date().toLocaleDateString('es-AR'),
+summary:document.getElementById('weeklySummary').innerText,
+entriesCount:entries.length,
+entries:entries
+};
 
-function updateWeeklyChart() {
+const archives=getStorage('archivedWeeks');
 
-    const chartContainer =
-        document.getElementById(
-            'weeklyChart'
-        );
+archives.push(archive);
 
-    const summaryBox =
-        document.getElementById(
-            'weeklySummary'
-        );
+setStorage('archivedWeeks',archives);
 
+localStorage.removeItem('emotionEntries');
 
-    if (
-        !chartContainer ||
-        !summaryBox
-    ) {
-        return;
-    }
+loadEntries();
+loadArchives();
+updateWeeklyChart();
 
+alert('¡Semana archivada correctamente! 📦');
 
-    chartContainer.innerHTML =
-        '';
-
-
-    const allEntries =
-        getStorage(
-            'emotionEntries'
-        );
-
-
-    const entries =
-        allEntries.filter(
-            isWithinLast7Days
-        );
-
-
-    if (
-        entries.length ===
-        0
-    ) {
-
-        chartContainer.innerHTML =
-            '<p style="margin:auto;">' +
-            'No hay registros emocionales de los últimos 7 días.' +
-            '</p>';
-
-
-        summaryBox.innerText =
-            'Registra tus emociones para generar el balance semanal.';
-
-
-        return;
-    }
-
-
-    const emotionCounts =
-        {};
-
-
-    entries.forEach(
-        entry => {
-
-            if (
-                entry.emotion &&
-                entry.emotion !==
-                    'No especificada'
-            ) {
-
-                emotionCounts[
-                    entry.emotion
-                ] =
-                    (
-                        emotionCounts[
-                            entry.emotion
-                        ] ||
-                        0
-                    ) + 1;
-            }
-        }
-    );
-
-
-    const total =
-        Object.values(
-            emotionCounts
-        ).reduce(
-            (
-                a,
-                b
-            ) =>
-                a + b,
-            0
-        );
-
-
-    if (
-        total ===
-        0
-    ) {
-
-        summaryBox.innerText =
-            'No hay emociones registradas esta semana.';
-
-        return;
-    }
-
-
-    let maxEmotion =
-        '';
-
-    let maxCount =
-        0;
-
-
-    Object.entries(
-        emotionCounts
-    ).forEach(
-        (
-            [
-                emotion,
-                count
-            ]
-        ) => {
-
-            if (
-                count >
-                maxCount
-            ) {
-
-                maxCount =
-                    count;
-
-                maxEmotion =
-                    emotion;
-            }
-        }
-    );
-
-
-    Object.entries(
-        emotionCounts
-    ).forEach(
-        (
-            [
-                emotion,
-                count
-            ]
-        ) => {
-
-            const heightPct =
-                Math.max(
-                    5,
-                    (
-                        count /
-                        total
-                    ) *
-                    100
-                );
-
-
-            const wrapper =
-                document.createElement(
-                    'div'
-                );
-
-
-            wrapper.className =
-                'chart-bar-wrapper';
-
-
-            const bar =
-                document.createElement(
-                    'div'
-                );
-
-
-            bar.className =
-                'chart-bar';
-
-
-            bar.style.height =
-                `${heightPct}%`;
-
-
-            bar.title =
-                `${emotion}: ${count}`;
-
-
-            const label =
-                document.createElement(
-                    'span'
-                );
-
-
-            label.className =
-                'chart-label';
-
-
-            label.innerText =
-                String(
-                    emotion
-                ).substring(
-                    0,
-                    5
-                );
-
-
-            wrapper.appendChild(
-                bar
-            );
-
-            wrapper.appendChild(
-                label
-            );
-
-
-            chartContainer.appendChild(
-                wrapper
-            );
-        }
-    );
-
-
-    const dominantPct =
-        Math.round(
-            (
-                maxCount /
-                total
-            ) *
-            100
-        );
-
-
-    summaryBox.innerHTML =
-        `Estado dominante: <strong>` +
-        `${escapeHTML(maxEmotion)}` +
-        `</strong> (${dominantPct}%). ` +
-        `Registros de los últimos 7 días: ${total}.`;
 }
 
-
-/* =========================================================
-   ARCHIVAR SEMANA
-   ========================================================= */
-
-function closeAndArchiveWeek() {
-
-    const allEntries =
-        getStorage(
-            'emotionEntries'
-        );
-
-
-    const weeklyEntries =
-        allEntries.filter(
-            isWithinLast7Days
-        );
-
-
-    if (
-        weeklyEntries.length ===
-        0
-    ) {
-
-        alert(
-            'No hay registros de los últimos 7 días para archivar.'
-        );
-
-        return;
-    }
-
-
-    if (
-        !confirm(
-            '¿Deseas cerrar y archivar los registros de los últimos 7 días?'
-        )
-    ) {
-        return;
-    }
-
-
-    const summaryElement =
-        document.getElementById(
-            'weeklySummary'
-        );
-
-
-    const summary =
-        summaryElement
-            ? summaryElement.innerText
-            : 'Resumen semanal';
-
-
-    const now =
-        new Date();
-
-
-    const archiveItem = {
-
-        date:
-            now.toLocaleDateString(
-                'es-AR'
-            ),
-
-        timestamp:
-            now.toISOString(),
-
-        summary:
-            summary,
-
-        entriesCount:
-            weeklyEntries.length,
-
-        entries:
-            weeklyEntries
-
-    };
-
-
-    const archives =
-        getStorage(
-            'archivedWeeks'
-        );
-
-
-    archives.push(
-        archiveItem
-    );
-
-
-    if (
-        !setStorage(
-            'archivedWeeks',
-            archives
-        )
-    ) {
-        return;
-    }
-
-
-    const remainingEntries =
-        allEntries.filter(
-            entry =>
-                !isWithinLast7Days(
-                    entry
-                )
-        );
-
-
-    if (
-        !setStorage(
-            'emotionEntries',
-            remainingEntries
-        )
-    ) {
-        return;
-    }
-
-
-    loadEntries();
-
-    loadArchives();
-
-    updateWeeklyChart();
-
-
-    alert(
-        '¡Semana archivada con éxito! 📦'
-    );
-}
-
-
-/* =========================================================
-   EXPORTAR DATOS
-   ========================================================= */
-
-function exportDataJSON() {
-
-    const data = {
-
-        version:
-            2,
-
-        exportedAt:
-            new Date().toISOString(),
-
-        emotionEntries:
-            getStorage(
-                'emotionEntries'
-            ),
-
-        gratitudeEntries:
-            getStorage(
-                'gratitudeEntries'
-            ),
-
-        strategyEntries:
-            getStorage(
-                'strategyEntries'
-            ),
-
-        microexpressionEntries:
-            getStorage(
-                'microexpressionEntries'
-            ),
-
-        archivedWeeks:
-            getStorage(
-                'archivedWeeks'
-            )
-    };
-
-
-    try {
-
-        const jsonText =
-            JSON.stringify(
-                data,
-                null,
-                2
-            );
-
-
-        const blob =
-            new Blob(
-                [jsonText],
-                {
-                    type:
-                        'application/json;charset=utf-8'
-                }
-            );
-
-
-        const url =
-            URL.createObjectURL(
-                blob
-            );
-
-
-        const anchor =
-            document.createElement(
-                'a'
-            );
-
-
-        anchor.href =
-            url;
-
-
-        anchor.download =
-            `respaldo_diario_${new Date()
-                .toISOString()
-                .slice(
-                    0,
-                    10
-                )}.json`;
-
-
-        document.body.appendChild(
-            anchor
-        );
-
-
-        anchor.click();
-
-
-        document.body.removeChild(
-            anchor
-        );
-
-
-        setTimeout(
-            () => {
-
-                URL.revokeObjectURL(
-                    url
-                );
-
-            },
-            1000
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            error
-        );
-
-        alert(
-            'No se pudo crear el respaldo.'
-        );
-    }
-}
-
-
-/* =========================================================
-   IMPORTAR DATOS
-   ========================================================= */
-
-function importDataJSON(event) {
-
-    const file =
-        event.target.files?.[0];
-
-
-    if (!file) {
-        return;
-    }
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        function (e) {
-
-            try {
-
-                const imported =
-                    JSON.parse(
-                        e.target.result
-                    );
-
-
-                if (
-                    !imported ||
-                    typeof imported !==
-                        'object' ||
-                    Array.isArray(imported)
-                ) {
-
-                    throw new Error(
-                        'Formato inválido'
-                    );
-                }
-
-
-                if (
-                    !confirm(
-                        'Esto reemplazará los datos actuales. ¿Deseas continuar?'
-                    )
-                ) {
-
-                    event.target.value =
-                        '';
-
-                    return;
-                }
-
-
-                const keys = [
-
-                    'emotionEntries',
-                    'gratitudeEntries',
-                    'strategyEntries',
-                    'microexpressionEntries',
-                    'archivedWeeks'
-
-                ];
-
-
-                keys.forEach(
-                    key => {
-
-                        const value =
-                            Array.isArray(
-                                imported[key]
-                            )
-                                ? imported[key]
-                                : [];
-
-
-                        setStorage(
-                            key,
-                            value
-                        );
-                    }
-                );
-
-
-                loadEntries();
-
-                loadGratitude();
-
-                loadStrategies();
-
-                loadMicroexpressions();
-
-                loadArchives();
-
-                updateWeeklyChart();
-
-
-                alert(
-                    '¡Datos importados con éxito! 📤'
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    'Importación:',
-                    error
-                );
-
-                alert(
-                    'El archivo JSON no es válido.'
-                );
-
-            } finally {
-
-                event.target.value =
-                    '';
-            }
-        };
-
-
-    reader.onerror =
-        () => {
-
-            alert(
-                'No se pudo leer el archivo.'
-            );
-
-            event.target.value =
-                '';
-        };
-
-
-    reader.readAsText(
-        file
-    );
-}
-
-
-/* =========================================================
-   SOS — RESPIRACIÓN 4-7-8
-   CON VOZ SINCRONIZADA
-   ========================================================= */
-
-function stopBreathing(
-    cancelVoice = true
-) {
-
-    breathingActive =
-        false;
-
-
-    if (breathTimerId) {
-
-        clearTimeout(
-            breathTimerId
-        );
-
-        clearInterval(
-            breathTimerId
-        );
-
-        breathTimerId =
-            null;
-    }
-
-
-    if (breathStartTimeout) {
-
-        clearTimeout(
-            breathStartTimeout
-        );
-
-        breathStartTimeout =
-            null;
-    }
-
-
-    if (
-        cancelVoice &&
-        'speechSynthesis' in window
-    ) {
-
-        try {
-
-            window.speechSynthesis.cancel();
-
-        } catch (error) {}
-    }
-}
-
-
-function setBreathUI(
-    text,
-    seconds,
-    scale,
-    transition
-) {
-
-    const circle =
-        document.getElementById(
-            'breathCircle'
-        );
-
-    const timer =
-        document.getElementById(
-            'breathTimer'
-        );
-
-
-    if (circle) {
-
-        circle.innerText =
-            text;
-
-        circle.style.transition =
-            transition;
-
-        circle.style.transform =
-            `scale(${scale})`;
-    }
-
-
-    if (timer) {
-
-        timer.innerText =
-            seconds;
-    }
-}
-
-
-function speakBreathInstruction(
-    text
-) {
-
-    if (
-        !('speechSynthesis' in window)
-    ) {
-        return;
-    }
-
-
-    try {
-
-        window.speechSynthesis.cancel();
-
-        const utterance =
-            new SpeechSynthesisUtterance(
-                text
-            );
-
-
-        utterance.lang =
-            'es-AR';
-
-        utterance.rate =
-            0.82;
-
-        utterance.pitch =
-            1;
-
-        utterance.volume =
-            1;
-
-
-        window.speechSynthesis.speak(
-            utterance
-        );
-
-    } catch (error) {
-
-        console.error(
-            'Voz respiración:',
-            error
-        );
-    }
-}
-
-
-function runBreathingPhase(
-    phase,
-    duration,
-    text,
-    nextPhase,
-    scale,
-    transition
-) {
-
-    if (!breathingActive) {
-        return;
-    }
-
-
-    let remaining =
-        duration;
-
-
-    setBreathUI(
-        text,
-        remaining,
-        scale,
-        transition
-    );
-
-
-    speakBreathInstruction(
-        text === 'Inhala'
-            ? 'Inhalá'
-            : text === 'Mantén'
-                ? 'Mantené el aire'
-                : 'Exhalá lentamente'
-    );
-
-
-    breathTimerId =
-        setInterval(
-            () => {
-
-                if (
-                    !breathingActive
-                ) {
-
-                    clearInterval(
-                        breathTimerId
-                    );
-
-                    breathTimerId =
-                        null;
-
-                    return;
-                }
-
-
-                remaining--;
-
-
-                if (
-                    remaining >
-                    0
-                ) {
-
-                    const timer =
-                        document.getElementById(
-                            'breathTimer'
-                        );
-
-                    if (timer) {
-
-                        timer.innerText =
-                            remaining;
-                    }
-
-                    return;
-                }
-
-
-                clearInterval(
-                    breathTimerId
-                );
-
-                breathTimerId =
-                    null;
-
-
-                if (
-                    nextPhase
-                ) {
-
-                    breathStartTimeout =
-                        setTimeout(
-                            nextPhase,
-                            100
-                        );
-                }
-
-            },
-            1000
-        );
-}
-
-
-function startBreathCycle() {
-
-    /* No cancelar la voz aquí porque
-       podría cortar la instrucción */
-
-    if (breathingActive) {
-        return;
-    }
-
-
-    breathingActive =
-        true;
-
-
-    function inhale() {
-
-        if (!breathingActive) {
-            return;
-        }
-
-
-        runBreathingPhase(
-            0,
-            4,
-            'Inhala',
-            hold,
-            1.4,
-            'transform 4s linear'
-        );
-    }
-
-
-    function hold() {
-
-        if (!breathingActive) {
-            return;
-        }
-
-
-        runBreathingPhase(
-            1,
-            7,
-            'Mantén',
-            exhale,
-            1.4,
-            'none'
-        );
-    }
-
-
-    function exhale() {
-
-        if (!breathingActive) {
-            return;
-        }
-
-
-        runBreathingPhase(
-            2,
-            8,
-            'Exhala',
-            inhale,
-            1,
-            'transform 8s linear'
-        );
-    }
-
-
-    inhale();
-}
-
-
-function openSOSModal() {
-
-    const modal =
-        document.getElementById(
-            'sosModal'
-        );
-
-
-    if (!modal) {
-        return;
-    }
-
-
-    stopBreathing(
-        true
-    );
-
-
-    modal.style.display =
-        'flex';
-
-
-    const circle =
-        document.getElementById(
-            'breathCircle'
-        );
-
-
-    const timer =
-        document.getElementById(
-            'breathTimer'
-        );
-
-
-    if (circle) {
-
-        circle.innerText =
-            '4-7-8';
-
-        circle.style.transition =
-            'none';
-
-        circle.style.transform =
-            'scale(1)';
-    }
-
-
-    if (timer) {
-
-        timer.innerText =
-            '';
-    }
-
-
-    const introText =
-        'Vamos a hacer la técnica de respiración 4-7-8. ' +
-        'Primero inhalá lentamente por la nariz durante cuatro segundos. ' +
-        'Después mantené el aire durante siete segundos. ' +
-        'Finalmente exhalá lentamente por la boca durante ocho segundos. ' +
-        'Vamos a comenzar.';
-
-
-    /* =====================================================
-       IMPORTANTE:
-       Esperamos a que termine la introducción.
-       Si el navegador no informa correctamente el evento,
-       usamos un tiempo de seguridad.
-       ===================================================== */
-
-    if (
-        'speechSynthesis' in window
-    ) {
-
-        try {
-
-            window.speechSynthesis.cancel();
-
-
-            const utterance =
-                new SpeechSynthesisUtterance(
-                    introText
-                );
-
-
-            utterance.lang =
-                'es-AR';
-
-            utterance.rate =
-                0.85;
-
-            utterance.pitch =
-                1;
-
-            utterance.volume =
-                1;
-
-
-            let started =
-                false;
-
-
-            const start =
-                () => {
-
-                    if (started) {
-                        return;
-                    }
-
-                    started =
-                        true;
-
-                    if (
-                        breathStartTimeout
-                    ) {
-
-                        clearTimeout(
-                            breathStartTimeout
-                        );
-
-                        breathStartTimeout =
-                            null;
-                    }
-
-                    startBreathCycle();
-                };
-
-
-            utterance.onend =
-                start;
-
-
-            utterance.onerror =
-                start;
-
-
-            window.speechSynthesis.speak(
-                utterance
-            );
-
-
-            /* Tiempo máximo de seguridad.
-               No inicia inmediatamente y evita
-               que el ejercicio quede bloqueado. */
-
-            breathStartTimeout =
-                setTimeout(
-                    start,
-                    10000
-                );
-
-
-        } catch (error) {
-
-            console.error(
-                'Introducción SOS:',
-                error
-            );
-
-            startBreathCycle();
-        }
-
-
-    } else {
-
-        /* Sin voz */
-
-        breathStartTimeout =
-            setTimeout(
-                startBreathCycle,
-                1500
-            );
-    }
-}
-
-
-function closeSOSModal() {
-
-    const modal =
-        document.getElementById(
-            'sosModal'
-        );
-
-
-    if (modal) {
-
-        modal.style.display =
-            'none';
-    }
-
-
-    stopBreathing(
-        true
-    );
-
-
-    setBreathUI(
-        'Inhala',
-        '4',
-        1,
-        'none'
-    );
-}
-
-
-/* =========================================================
-   CERRAR SOS TOCANDO AFUERA
-   ========================================================= */
-
-document.addEventListener(
-    'click',
-    event => {
-
-        const modal =
-            document.getElementById(
-                'sosModal'
-            );
-
-
-        if (
-            modal &&
-            event.target === modal
-        ) {
-
-            closeSOSModal();
-        }
-    }
+/* =========================
+   EXPORTAR
+========================= */
+
+function exportDataJSON(){
+
+const data={
+version:2,
+exportedAt:new Date().toISOString(),
+emotionEntries:getStorage('emotionEntries'),
+gratitudeEntries:getStorage('gratitudeEntries'),
+strategyEntries:getStorage('strategyEntries'),
+microexpressionEntries:getStorage('microexpressionEntries'),
+archivedWeeks:getStorage('archivedWeeks')
+};
+
+const blob=new Blob(
+[JSON.stringify(data,null,2)],
+{type:'application/json'}
 );
 
+const url=URL.createObjectURL(blob);
 
-/* =========================================================
-   DETENER MÚSICA CUANDO LA APP PASA A SEGUNDO PLANO
-   ========================================================= */
+const anchor=document.createElement('a');
 
-document.addEventListener(
-    'visibilitychange',
-    () => {
+anchor.href=url;
+anchor.download=
+'respaldo_diario_'+
+new Date().toISOString().slice(0,10)+
+'.json';
 
-        if (
-            document.hidden &&
-            isPlaying
-        ) {
+document.body.appendChild(anchor);
 
-            isPlaying =
-                false;
+anchor.click();
 
+setTimeout(()=>{
 
-            stopMusicTimer();
+anchor.remove();
+URL.revokeObjectURL(url);
 
-            stopAutoSwitchTimer();
+},500);
 
-
-            const btn =
-                document.getElementById(
-                    'playAudioBtn'
-                );
-
-
-            if (btn) {
-
-                btn.innerText =
-                    'Reproducir Música 🎵';
-
-                btn.classList.remove(
-                    'active'
-                );
-            }
-        }
-    }
-);
-
-
-/* =========================================================
-   INICIALIZACIÓN
-   ========================================================= */
-
-function initializeApp() {
-
-    try {
-
-        loadEntries();
-
-        loadGratitude();
-
-        loadStrategies();
-
-        loadMicroexpressions();
-
-        loadArchives();
-
-        updateWeeklyChart();
-
-
-        const styleSelect =
-            document.getElementById(
-                'styleSelect'
-            );
-
-
-        if (
-            styleSelect &&
-            styles[currentStyle]
-        ) {
-
-            styleSelect.value =
-                currentStyle;
-        }
-
-
-    } catch (error) {
-
-        console.error(
-            'Error inicializando la aplicación:',
-            error
-        );
-    }
 }
 
+/* =========================
+   IMPORTAR
+========================= */
 
-if (
-    document.readyState ===
-    'loading'
-) {
+function importDataJSON(event){
 
-    document.addEventListener(
-        'DOMContentLoaded',
-        initializeApp
-    );
+const file=event.target.files[0];
 
-} else {
+if(!file)return;
 
-    initializeApp();
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+try{
+
+const data=JSON.parse(e.target.result);
+
+if(!data || typeof data!=='object'){
+throw new Error('Formato inválido');
 }
 
+if(!confirm(
+'Esto reemplazará los datos actuales. ¿Continuar?'
+))return;
 
-/* =========================================================
-   LIMPIEZA AL SALIR
-   ========================================================= */
+const keys=[
+'emotionEntries',
+'gratitudeEntries',
+'strategyEntries',
+'microexpressionEntries',
+'archivedWeeks'
+];
 
-window.addEventListener(
-    'beforeunload',
-    () => {
+keys.forEach(key=>{
 
-        stopMusicTimer();
+if(Array.isArray(data[key])){
+setStorage(key,data[key]);
+}
 
-        stopAutoSwitchTimer();
+});
 
-        stopBreathing(
-            true
-        );
+loadEntries();
+loadGratitude();
+loadStrategies();
+loadMicroexpressions();
+loadArchives();
+updateWeeklyChart();
 
+alert('¡Datos restaurados correctamente! 📤');
 
-        if (audioStream) {
+}catch(error){
 
-            audioStream
-                .getTracks()
-                .forEach(
-                    track => {
+alert('El archivo no es un respaldo válido.');
 
-                        try {
-                            track.stop();
-                        } catch (error) {}
+}
 
-                    }
-                );
+event.target.value='';
 
-            audioStream =
-                null;
-        }
+};
 
+reader.readAsText(file);
 
-        Object.keys(
-            ambientNodes
-        ).forEach(
-            type => {
+}
 
-                const node =
-                    ambientNodes[type];
+/* =========================
+   AUDIO DE RELAX
+========================= */
 
+let audioCtx=null;
+let isPlaying=false;
+let musicTimer=null;
+let autoSwitchTimer=null;
+let musicStep=0;
+let currentStyle='ambient';
 
-                if (!node) {
-                    return;
-                }
+const notes={
+C3:130.81,
+D3:146.83,
+E3:164.81,
+F3:174.61,
+G3:196,
+A3:220,
+B3:246.94,
+C4:261.63,
+D4:293.66,
+E4:329.63,
+F4:349.23,
+G4:392,
+A4:440,
+B4:493.88,
+C5:523.25,
+D5:587.33,
+E5:659.25,
+G5:783.99
+};
 
+const styles={
 
-                if (node.interval) {
+ambient:{
+tempo:500,
+wave:'sine',
+chords:[
+[notes.C3,notes.G3,notes.B3,notes.E4],
+[notes.A3,notes.E4,notes.G4,notes.C4],
+[notes.F3,notes.C4,notes.E4,notes.A4],
+[notes.G3,notes.D4,notes.F4,notes.B4]
+],
+melody:[notes.E5,null,notes.G5,notes.B4,null,notes.C5,notes.D5,null]
+},
 
-                    clearInterval(
-                        node.interval
-                    );
-                }
+piano:{
+tempo:360,
+wave:'triangle',
+chords:[
+[notes.C3,notes.G3,notes.E4],
+[notes.F3,notes.C4,notes.A4],
+[notes.A3,notes.E4,notes.C5],
+[notes.G3,notes.D4,notes.B4]
+],
+melody:[notes.G4,notes.C5,notes.E5,notes.D5,notes.C5,notes.B4,notes.A4,notes.G4]
+},
 
+lofi:{
+tempo:300,
+wave:'triangle',
+chords:[
+[notes.C3,notes.E3,notes.G3,notes.B3],
+[notes.A3,notes.C4,notes.E4,notes.G4],
+[notes.D3,notes.F3,notes.A3,notes.C4],
+[notes.G3,notes.B3,notes.D4,notes.F4]
+],
+melody:[notes.G4,notes.E5,null,notes.D5,notes.C5,null,notes.A4,notes.B4]
+},
 
-                try {
+bossa:{
+tempo:320,
+wave:'triangle',
+chords:[
+[notes.D3,notes.F3,notes.A3,notes.C4],
+[notes.G3,notes.B3,notes.D4,notes.F4],
+[notes.C3,notes.E3,notes.G3,notes.B3],
+[notes.A3,notes.C4,notes.E4,notes.G4]
+],
+melody:[notes.A4,notes.C5,notes.B4,notes.G4,notes.E5,null,notes.D5,notes.C5]
+},
 
-                    if (node.source) {
+jazz:{
+tempo:390,
+wave:'sine',
+chords:[
+[notes.F3,notes.A3,notes.C4,notes.E4],
+[notes.D3,notes.F3,notes.A3,notes.C4],
+[notes.G3,notes.B3,notes.D4,notes.F4],
+[notes.C3,notes.E3,notes.G3,notes.B3]
+],
+melody:[notes.E5,notes.D5,notes.C5,notes.A4,notes.G4,notes.A4,notes.C5,null]
+},
 
-                        node.source.stop();
-                    }
+folk:{
+tempo:340,
+wave:'triangle',
+chords:[
+[notes.C3,notes.G3,notes.C4],
+[notes.G3,notes.D4,notes.G4],
+[notes.A3,notes.E4,notes.A4],
+[notes.F3,notes.C4,notes.F4]
+],
+melody:[notes.E4,notes.G4,notes.C5,notes.G4,notes.E5,notes.D5,notes.C5,notes.G4]
+},
 
-                } catch (error) {}
+space:{
+tempo:700,
+wave:'sine',
+chords:[
+[notes.C3,notes.G3,notes.C4,notes.G4],
+[notes.F3,notes.C4,notes.F4,notes.C5],
+[notes.A3,notes.E4,notes.A4,notes.E5],
+[notes.G3,notes.D4,notes.G4,notes.D5]
+],
+melody:[notes.G5,null,notes.E5,null,notes.C5,null,notes.B4,null]
+},
 
+reggae:{
+tempo:350,
+wave:'sine',
+chords:[
+[notes.C3,notes.E3,notes.G3],
+[notes.F3,notes.A3,notes.C4],
+[notes.G3,notes.B3,notes.D4],
+[notes.C3,notes.E3,notes.G3]
+],
+melody:[null,notes.G4,null,notes.E5,null,notes.D5,notes.C5,null]
+},
 
-                try {
+synthwave:{
+tempo:230,
+wave:'triangle',
+chords:[
+[notes.C3,notes.G3,notes.C4],
+[notes.A3,notes.E4,notes.A4],
+[notes.F3,notes.C4,notes.F4],
+[notes.G3,notes.D4,notes.G4]
+],
+melody:[notes.C5,notes.E5,notes.G5,notes.E5,notes.D5,notes.B4,notes.C5,notes.G4]
+},
 
-                    if (node.source) {
+zen:{
+tempo:650,
+wave:'sine',
+chords:[
+[notes.C3,notes.G3],
+[notes.F3,notes.C4],
+[notes.A3,notes.E4],
+[notes.G3,notes.D4]
+],
+melody:[notes.E4,null,notes.G4,null,notes.B4,null,notes.A4,null]
+}
 
-                        node.source.disconnect();
-                    }
+};
 
-                    if (node.gain) {
+async function initAudio(){
 
-                        node.gain.disconnect();
-                    }
+if(!audioCtx){
 
-                } catch (error) {}
+const AudioContext=
+window.AudioContext||
+window.webkitAudioContext;
 
+if(!AudioContext){
 
-                ambientNodes[type] =
-                    null;
-            }
-        );
-    }
+alert('Este dispositivo no permite reproducir audio generado.');
+return false;
+
+}
+
+audioCtx=new AudioContext();
+
+}
+
+if(audioCtx.state==='suspended'){
+await audioCtx.resume();
+}
+
+return true;
+
+}
+
+function playTone(freq,duration,type='sine',gainValue=.04){
+
+if(!freq || !audioCtx)return;
+
+const now=audioCtx.currentTime;
+
+const osc=audioCtx.createOscillator();
+const gain=audioCtx.createGain();
+const filter=audioCtx.createBiquadFilter();
+
+osc.type=type;
+osc.frequency.setValueAtTime(freq,now);
+
+filter.type='lowpass';
+filter.frequency.setValueAtTime(1600,now);
+
+gain.gain.setValueAtTime(.0001,now);
+
+gain.gain.linearRampToValueAtTime(
+gainValue,
+now+.06
 );
 
-
-/* =========================================================
-   EVITAR QUE LA PÁGINA QUEDE CON LA VOZ ACTIVA
-   ========================================================= */
-
-window.addEventListener(
-    'pagehide',
-    () => {
-
-        try {
-
-            if (
-                'speechSynthesis' in window
-            ) {
-
-                window.speechSynthesis.cancel();
-            }
-
-        } catch (error) {}
-    }
+gain.gain.exponentialRampToValueAtTime(
+.0001,
+now+duration
 );
 
-   </script>
+osc.connect(filter);
+filter.connect(gain);
+gain.connect(audioCtx.destination);
+
+osc.start(now);
+osc.stop(now+duration+.05);
+
+}
+
+function playMusicStep(){
+
+if(!isPlaying)return;
+
+const style=styles[currentStyle];
+
+const chord=
+style.chords[
+Math.floor(musicStep/4)%style.chords.length
+];
+
+if(musicStep%4===0){
+
+chord.forEach(note=>{
+playTone(
+note,
+Math.min(style.tempo/1000*3,3),
+style.wave,
+.025
+);
+});
+
+}
+
+const melody=
+style.melody[
+musicStep%style.melody.length
+];
+
+if(melody){
+
+playTone(
+melody,
+.7,
+'sine',
+.035
+);
+
+}
+
+musicStep++;
+
+}
+
+async function toggleAudio(){
+
+const ready=await initAudio();
+
+if(!ready)return;
+
+const button=document.getElementById('playAudioBtn');
+
+if(isPlaying){
+
+isPlaying=false;
+
+clearInterval(musicTimer);
+clearInterval(autoSwitchTimer);
+
+musicTimer=null;
+autoSwitchTimer=null;
+
+button.innerText='Reproducir Música 🎵';
+button.classList.remove('active');
+
+return;
+
+}
+
+isPlaying=true;
+musicStep=0;
+
+button.innerText='Pausar Música ⏸️';
+button.classList.add('active');
+
+playMusicStep();
+
+musicTimer=setInterval(
+playMusicStep,
+styles[currentStyle].tempo
+);
+
+autoSwitchTimer=setInterval(
+()=>{
+
+if(isPlaying){
+skipToNextStyle();
+}
+
+},
+120000
+);
+
+}
+
+function skipToNextStyle(){
+
+const keys=Object.keys(styles);
+
+const index=keys.indexOf(currentStyle);
+
+currentStyle=
+keys[(index+1)%keys.length];
+
+document.getElementById('styleSelect')
+.value=currentStyle;
+
+if(isPlaying){
+
+clearInterval(musicTimer);
+
+musicStep=0;
+
+musicTimer=setInterval(
+playMusicStep,
+styles[currentStyle].tempo
+);
+
+}
+
+}
+
+document.getElementById('styleSelect')
+.addEventListener('change',function(){
+
+currentStyle=this.value;
+
+if(isPlaying){
+
+clearInterval(musicTimer);
+
+musicStep=0;
+
+musicTimer=setInterval(
+playMusicStep,
+styles[currentStyle].tempo
+);
+
+}
+
+});
+
+/* =========================
+   SONIDOS AMBIENTALES
+========================= */
+
+const ambientNodes={};
+
+function createNoiseBuffer(){
+
+if(!audioCtx)return null;
+
+const length=audioCtx.sampleRate*2;
+
+const buffer=
+audioCtx.createBuffer(
+1,
+length,
+audioCtx.sampleRate
+);
+
+const data=buffer.getChannelData(0);
+
+for(let i=0;i<length;i++){
+
+data[i]=Math.random()*2-1;
+
+}
+
+return buffer;
+
+}
+
+function getBaseGain(type){
+
+return{
+rain:.12,
+ocean:.15,
+fire:.09,
+night:.04,
+wind:.18,
+river:.15,
+birds:.15,
+storm:.2
+}[type]||.1;
+
+}
+
+async function toggleAmbient(type,active){
+
+const ready=await initAudio();
+
+if(!ready)return;
+
+if(!active){
+
+const node=ambientNodes[type];
+
+if(node){
+
+try{
+
+node.gain.gain.cancelScheduledValues(audioCtx.currentTime);
+
+node.gain.gain.exponentialRampToValueAtTime(
+.0001,
+audioCtx.currentTime+.3
+);
+
+}catch(e){}
+
+setTimeout(()=>{
+
+try{
+
+if(node.source)node.source.stop();
+
+}catch(e){}
+
+if(node.interval){
+clearInterval(node.interval);
+}
+
+delete ambientNodes[type];
+
+},400);
+
+}
+
+return;
+
+}
+
+if(ambientNodes[type]){
+return;
+}
+
+const volume=parseFloat(
+document.getElementById(type+'Vol').value
+);
+
+const gain=audioCtx.createGain();
+
+gain.gain.value=
+Math.max(.0001,volume*getBaseGain(type));
+
+gain.connect(audioCtx.destination);
+
+if(type==='birds'){
+
+const interval=setInterval(()=>{
+
+if(!audioCtx)return;
+
+if(Math.random()<.65){
+
+const osc=audioCtx.createOscillator();
+const birdGain=audioCtx.createGain();
+
+const now=audioCtx.currentTime;
+const start=1800+Math.random()*1800;
+
+osc.type='sine';
+
+osc.frequency.setValueAtTime(start,now);
+
+osc.frequency.exponentialRampToValueAtTime(
+start+700,
+now+.16
+);
+
+birdGain.gain.setValueAtTime(.0001,now);
+
+birdGain.gain.linearRampToValueAtTime(
+volume*.08,
+now+.03
+);
+
+birdGain.gain.exponentialRampToValueAtTime(
+.0001,
+now+.18
+);
+
+osc.connect(birdGain);
+birdGain.connect(gain);
+
+osc.start(now);
+osc.stop(now+.2);
+
+}
+
+},900);
+
+ambientNodes[type]={
+source:null,
+gain,
+interval
+};
+
+return;
+
+}
+
+const buffer=createNoiseBuffer();
+
+if(!buffer)return;
+
+const source=audioCtx.createBufferSource();
+
+source.buffer=buffer;
+source.loop=true;
+
+const filter=audioCtx.createBiquadFilter();
+
+switch(type){
+
+case'rain':
+filter.type='lowpass';
+filter.frequency.value=1100;
+break;
+
+case'ocean':
+filter.type='bandpass';
+filter.frequency.value=420;
+filter.Q.value=1;
+break;
+
+case'fire':
+filter.type='bandpass';
+filter.frequency.value=750;
+filter.Q.value=1;
+break;
+
+case'night':
+filter.type='highpass';
+filter.frequency.value=3500;
+break;
+
+case'wind':
+filter.type='bandpass';
+filter.frequency.value=250;
+filter.Q.value=2;
+break;
+
+case'river':
+filter.type='lowpass';
+filter.frequency.value=700;
+break;
+
+case'storm':
+filter.type='lowpass';
+filter.frequency.value=180;
+break;
+
+}
+
+source.connect(filter);
+filter.connect(gain);
+source.start();
+
+ambientNodes[type]={
+source,
+gain
+};
+
+}
+
+const ambientTypes=[
+'rain',
+'ocean',
+'fire',
+'night',
+'wind',
+'river',
+'birds',
+'storm'
+];
+
+ambientTypes.forEach(type=>{
+
+document.getElementById(type+'Noise')
+.addEventListener('change',function(){
+
+toggleAmbient(type,this.checked);
+
+});
+
+document.getElementById(type+'Vol')
+.addEventListener('input',function(){
+
+const node=ambientNodes[type];
+
+if(node && node.gain && audioCtx){
+
+const value=
+parseFloat(this.value)*getBaseGain(type);
+
+node.gain.gain.setTargetAtTime(
+Math.max(.0001,value),
+audioCtx.currentTime,
+.03
+);
+
+}
+
+});
+
+});
+
+/* =========================
+   SOS 4-7-8
+========================= */
+
+let breathTimeout=null;
+let breathInterval=null;
+let breathRunning=false;
+
+const breathPhases=[
+{
+name:'Inhala',
+seconds:4,
+className:'inhale',
+voice:'Inhala lentamente. Toma aire por cuatro segundos.'
+},
+{
+name:'Mantén',
+seconds:7,
+className:'hold',
+voice:'Mantén el aire. Quédate tranquilo durante siete segundos.'
+},
+{
+name:'Exhala',
+seconds:8,
+className:'exhale',
+voice:'Ahora exhala lentamente durante ocho segundos.'
+}
+];
+
+function openSOSModal(){
+
+const modal=document.getElementById('sosModal');
+
+modal.style.display='flex';
+
+resetBreathing();
+
+setTimeout(()=>{
+
+speakText(
+'Vamos a hacer una respiración cuatro, siete, ocho. Cuando estés preparado, pulsa comenzar.'
+);
+
+},200);
+
+}
+
+function resetBreathing(){
+
+if(breathInterval){
+clearInterval(breathInterval);
+breathInterval=null;
+}
+
+if(breathTimeout){
+clearTimeout(breathTimeout);
+breathTimeout=null;
+}
+
+breathRunning=false;
+
+const circle=document.getElementById('breathCircle');
+
+circle.className='breath-circle';
+circle.innerText='Preparado';
+
+document.getElementById('breathTimer')
+.innerText='—';
+
+document.getElementById('breathInstruction')
+.innerText=
+'Cuando estés preparado comenzamos.';
+
+}
+
+function startBreathCycle(){
+
+if(breathRunning)return;
+
+breathRunning=true;
+
+runBreathPhase(0);
+
+}
+
+function runBreathPhase(index){
+
+if(!breathRunning)return;
+
+const phase=breathPhases[index];
+
+const circle=document.getElementById('breathCircle');
+const timer=document.getElementById('breathTimer');
+const instruction=document.getElementById('breathInstruction');
+
+circle.className='breath-circle '+phase.className;
+circle.innerText=phase.name;
+
+instruction.innerText=phase.voice;
+
+speakText(phase.voice);
+
+let remaining=phase.seconds;
+
+timer.innerText=remaining;
+
+breathInterval=setInterval(()=>{
+
+remaining--;
+
+timer.innerText=remaining;
+
+if(remaining<=0){
+
+clearInterval(breathInterval);
+breathInterval=null;
+
+const next=(index+1)%breathPhases.length;
+
+if(index===breathPhases.length-1){
+
+instruction.innerText=
+'Excelente. Respira normalmente y nota cómo te sientes.';
+
+circle.className='breath-circle';
+circle.innerText='Bien';
+
+speakText(
+'Excelente. Has terminado. Respira normalmente y tómate un momento.'
+);
+
+breathRunning=false;
+
+return;
+
+}
+
+breathTimeout=setTimeout(()=>{
+runBreathPhase(next);
+},250);
+
+}
+
+},1000);
+
+}
+
+function closeSOSModal(){
+
+breathRunning=false;
+
+if(breathInterval){
+clearInterval(breathInterval);
+breathInterval=null;
+}
+
+if(breathTimeout){
+clearTimeout(breathTimeout);
+breathTimeout=null;
+}
+
+if('speechSynthesis' in window){
+
+window.speechSynthesis.cancel();
+
+}
+
+const modal=document.getElementById('sosModal');
+
+modal.style.display='none';
+
+resetBreathing();
+
+}
+
+/* =========================
+   INICIO
+========================= */
+
+window.addEventListener('load',function(){
+
+loadEntries();
+loadGratitude();
+loadStrategies();
+loadMicroexpressions();
+loadArchives();
+updateWeeklyChart();
+
+});
+
+window.addEventListener('beforeunload',function(){
+
+if(mediaRecorder &&
+mediaRecorder.state==='recording'){
+
+try{
+mediaRecorder.stop();
+}catch(e){}
+
+}
+
+if(audioStream){
+
+audioStream.getTracks()
+.forEach(track=>track.stop());
+
+}
+
+});
+
+</script></body>
+                                                            </html>
