@@ -1,3 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control y Audio</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .btn { padding: 10px 15px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; background-color: #007bff; color: white; }
+        .btn:hover { background-color: #0056b3; }
+        .btn.active { background-color: #28a745; }
+        .btn-delete { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; float: right; }
+        .buttons-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        .buttons-grid .btn.selected { border: 2px solid #000; font-weight: bold; }
+        ul { list-style: none; padding: 0; }
+        li { background: #eee; margin: 5px 0; padding: 10px; border-radius: 4px; }
+        .entry-img { max-width: 100%; height: auto; margin-top: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Control de Música y Sonidos Ambientales</h2>
+    
+    <!-- Selección de Estilo de Música -->
+    <label for="styleSelect">Estilo de Música:</label>
+    <select id="styleSelect" onchange="changeStyle()">
+        <option value="ambient">Ambient</option>
+        <option value="piano">Piano</option>
+        <option value="lofi">Lofi</option>
+        <option value="bossa">Bossa</option>
+        <option value="jazz">Jazz</option>
+        <option value="folk">Folk</option>
+        <option value="space">Space</option>
+        <option value="reggae">Reggae</option>
+        <option value="synthwave">Synthwave</option>
+        <option value="zen">Zen</option>
+    </select>
+
+    <button id="playAudioBtn" class="btn" onclick="toggleAudio()">Reproducir Música 🎵</button>
+
+    <h3>Sonidos Ambientales</h3>
+    <div>
+        <label><input type="checkbox" onchange="toggleAmbientNoise('rain', this.checked)"> Lluvia</label>
+        <input type="range" id="rainVol" min="0" max="1" step="0.1" value="0.5" oninput="updateVolume('rain', this.value)"><br>
+        
+        <label><input type="checkbox" onchange="toggleAmbientNoise('ocean', this.checked)"> Océano</label>
+        <input type="range" id="oceanVol" min="0" max="1" step="0.1" value="0.5" oninput="updateVolume('ocean', this.value)"><br>
+
+        <label><input type="checkbox" onchange="toggleAmbientNoise('fire', this.checked)"> Fuego</label>
+        <input type="range" id="fireVol" min="0" max="1" step="0.1" value="0.5" oninput="updateVolume('fire', this.value)"><br>
+
+        <label><input type="checkbox" onchange="toggleAmbientNoise('birds', this.checked)"> Pájaros</label>
+        <input type="range" id="birdsVol" min="0" max="1" step="0.1" value="0.5" oninput="updateVolume('birds', this.value)">
+    </div>
+
+    <hr>
+
+    <h2>Registro Emocional</h2>
+    <div class="buttons-grid">
+        <button class="btn" onclick="selectEmotion('Feliz', '¡Me alegra que te sientas feliz!', this)">Feliz 😀</button>
+        <button class="btn" onclick="selectEmotion('Triste', 'Lamento que te sientas así. Todo mejorará.', this)">Triste 😢</button>
+        <button class="btn" onclick="selectEmotion('Tranquilo', 'Disfruta de tu tranquilidad.', this)">Tranquilo 😌</button>
+    </div>
+
+    <br>
+    <textarea id="noteInput" placeholder="Escribe tu nota aquí..." style="width:100%; height:60px;"></textarea><br>
+    
+    <button class="btn" onclick="saveEntry()">Guardar Registro</button>
+
+    <h3>Registros Guardados</h3>
+    <ul id="entriesList"></ul>
+
+    <hr>
+
+    <h2>Foto Independiente</h2>
+    <select id="photoEmotionSelect">
+        <option value="Feliz">Feliz</option>
+        <option value="Tranquilo">Tranquilo</option>
+        <option value="Motivado">Motivado</option>
+    </select>
+    <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)"><br>
+    <img id="photoPreviewImg" src="" style="display:none; max-width:200px; margin-top:10px;"><br>
+    <button class="btn" onclick="saveStandalonePhoto()">Guardar Foto</button>
+
+    <hr>
+
+    <h2>Grabación de Audio</h2>
+    <button id="recordBtn" class="btn" onclick="toggleRecording()">Grabar Audio</button><br>
+    <audio id="audioPlayback" controls style="display:none; margin-top:10px;"></audio>
+
+    <hr>
+
+    <h2>Otras Secciones</h2>
+    <input type="text" id="gratitudeInput" placeholder="¿De qué estás agradecido hoy?">
+    <button class="btn" onclick="saveGratitude()">Guardar Gratitud</button>
+    <ul id="gratitudeList"></ul>
+
+    <input type="text" id="strategyInput" placeholder="Escribe una estrategia...">
+    <button class="btn" onclick="saveStrategy()">Guardar Estrategia</button>
+    <ul id="strategyList"></ul>
+
+    <input type="text" id="microexpressionInput" placeholder="Observación de microexpresión...">
+    <button class="btn" onclick="saveMicroexpression()">Guardar Observación</button>
+    <ul id="microexpressionList"></ul>
+</div>
+
 <script>
     let audioCtx = null;
     let isPlaying = false;
@@ -10,7 +118,6 @@
         wind: null, river: null, birds: null, storm: null
     };
 
-    // Frecuencias extendidas con alteradas (Sostenidos/Bemoles) para acordes de 7ma y 9na
     const notes = {
         C2: 65.41, Db2: 69.30, D2: 73.42, Eb2: 77.78, E2: 82.41, F2: 87.31, Gb2: 92.50, G2: 98.00, Ab2: 103.83, A2: 110.00, Bb2: 116.54, B2: 123.47,
         C3: 130.81, Db3: 138.59, D3: 146.83, Eb3: 155.56, E3: 164.81, F3: 174.61, Gb3: 185.00, G3: 196.00, Ab3: 207.65, A3: 220.00, Bb3: 233.08, B3: 246.94,
@@ -18,55 +125,54 @@
         C5: 523.25, D5: 587.33, Eb5: 622.25, E5: 659.25, F5: 698.46, G5: 783.99, Ab5: 830.61, A5: 880.00, Bb5: 932.33, B5: 987.77
     };
 
-    // Progresiones avanzadas: Tétradas (7mas y 9nas)
     const styles = {
         ambient: { 
             tempo: 380, wave: 'sine', 
             chords: [
-                [notes.C3, notes.G3, notes.B3, notes.E4, notes.D5],  // CMaj9
-                [notes.A2, notes.E3, notes.G3, notes.C4, notes.E4],  // Am7
-                [notes.F2, notes.C3, notes.E3, notes.A3, notes.C4],  // FMaj7
-                [notes.G2, notes.D3, notes.F3, notes.B3, notes.D4]   // G7
+                [notes.C3, notes.G3, notes.B3, notes.E4, notes.D5],
+                [notes.A2, notes.E3, notes.G3, notes.C4, notes.E4],
+                [notes.F2, notes.C3, notes.E3, notes.A3, notes.C4],
+                [notes.G2, notes.D3, notes.F3, notes.B3, notes.D4]
             ], 
             melody: [notes.E5, null, notes.G5, notes.B4, notes.D5, notes.C5, notes.G4, null] 
         },
         piano: { 
             tempo: 280, wave: 'triangle', 
             chords: [
-                [notes.C3, notes.E3, notes.G3, notes.B3],  // CMaj7
-                [notes.F2, notes.A3, notes.C4, notes.E4],  // FMaj7
-                [notes.A2, notes.C3, notes.E3, notes.G3],  // Am7
-                [notes.G2, notes.B3, notes.D4, notes.F4]   // G7
+                [notes.C3, notes.E3, notes.G3, notes.B3],
+                [notes.F2, notes.A3, notes.C4, notes.E4],
+                [notes.A2, notes.C3, notes.E3, notes.G3],
+                [notes.G2, notes.B3, notes.D4, notes.F4]
             ], 
             melody: [notes.G4, notes.C5, notes.E5, notes.D5, notes.C5, notes.B4, notes.A4, notes.G4] 
         },
         lofi: { 
             tempo: 240, wave: 'triangle', 
             chords: [
-                [notes.C3, notes.E3, notes.G3, notes.B3, notes.D4],  // CMaj9
-                [notes.A2, notes.C3, notes.E3, notes.G3, notes.B3],  // Am9
-                [notes.D3, notes.F3, notes.A3, notes.C4, notes.E4],  // Dm9
-                [notes.G2, notes.B3, notes.D4, notes.F4, notes.A4]   // G9
+                [notes.C3, notes.E3, notes.G3, notes.B3, notes.D4],
+                [notes.A2, notes.C3, notes.E3, notes.G3, notes.B3],
+                [notes.D3, notes.F3, notes.A3, notes.C4, notes.E4],
+                [notes.G2, notes.B3, notes.D4, notes.F4, notes.A4]
             ], 
             melody: [notes.G4, notes.E5, null, notes.D5, notes.C5, null, notes.A4, notes.B4] 
         },
         bossa: { 
             tempo: 260, wave: 'triangle', 
             chords: [
-                [notes.D3, notes.F3, notes.A3, notes.C4, notes.E4],  // Dm9
-                [notes.G2, notes.B3, notes.D4, notes.F4, notes.A4],  // G9
-                [notes.C3, notes.E3, notes.G3, notes.B3, notes.D4],  // CMaj9
-                [notes.A2, notes.C3, notes.E3, notes.G3, notes.B3]   // Am9
+                [notes.D3, notes.F3, notes.A3, notes.C4, notes.E4],
+                [notes.G2, notes.B3, notes.D4, notes.F4, notes.A4],
+                [notes.C3, notes.E3, notes.G3, notes.B3, notes.D4],
+                [notes.A2, notes.C3, notes.E3, notes.G3, notes.B3]
             ], 
             melody: [notes.A4, notes.C5, notes.B4, notes.G4, notes.E5, null, notes.D5, notes.C5] 
         },
         jazz: { 
             tempo: 320, wave: 'sine', 
             chords: [
-                [notes.F2, notes.A3, notes.C4, notes.E4, notes.G4],  // FMaj9
-                [notes.D3, notes.F3, notes.A3, notes.C4, notes.E4],  // Dm9
-                [notes.G2, notes.B3, notes.D4, notes.F4, notes.A4],  // G9
-                [notes.C3, notes.E3, notes.G3, notes.B3, notes.D4]   // CMaj9
+                [notes.F2, notes.A3, notes.C4, notes.E4, notes.G4],
+                [notes.D3, notes.F3, notes.A3, notes.C4, notes.E4],
+                [notes.G2, notes.B3, notes.D4, notes.F4, notes.A4],
+                [notes.C3, notes.E3, notes.G3, notes.B3, notes.D4]
             ], 
             melody: [notes.E5, notes.D5, notes.C5, notes.A4, notes.G4, notes.A4, notes.C5, null] 
         },
@@ -131,7 +237,6 @@
         }
     }
 
-    // Sintetizador con envolventes suaves para polifonía de acordes
     function playChordTone(freq, duration, type = 'sine', gainVal = 0.03, delay = 0) {
         if (!freq || !audioCtx) return;
         
@@ -147,7 +252,6 @@
             filter.type = 'lowpass';
             filter.frequency.setValueAtTime(type === 'sawtooth' ? 600 : 1200, audioCtx.currentTime);
 
-            // Envolvente suave de ataque y caída (ADSR simplificado)
             gainNode.gain.setValueAtTime(0.0001, audioCtx.currentTime);
             gainNode.gain.linearRampToValueAtTime(gainVal, audioCtx.currentTime + 0.2); 
             gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
@@ -166,21 +270,17 @@
         const chordIndex = Math.floor(step / 4) % style.chords.length;
         const currentChord = style.chords[chordIndex];
 
-        // 1. Disparar el acorde completo con micro-arpegio (Staggered strumming)
         if (step % 4 === 0) {
             currentChord.forEach((note, idx) => {
-                // Pequeño retardo entre notas para simular rasgueado/pulsación natural
                 const staggerDelay = idx * 0.04; 
                 playChordTone(note, 3.2, style.wave, 0.035, staggerDelay);
             });
         } 
-        // 2. Arpegiado sutil en pasos intermedios usando notas del mismo acorde
         else if (step % 2 === 0) {
             const arpeggioNote = currentChord[step % currentChord.length];
             playChordTone(arpeggioNote * 2, 1.2, 'sine', 0.02, 0);
         }
 
-        // 3. Melodía principal
         const melodyNote = style.melody[step % style.melody.length];
         if (melodyNote) {
             playChordTone(melodyNote, 1.0, 'sine', 0.045, 0);
@@ -486,6 +586,7 @@
 
     function loadEntries() {
         const list = document.getElementById('entriesList');
+        if (!list) return;
         list.innerHTML = '';
         let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
         entries.forEach((item, index) => {
@@ -507,6 +608,7 @@
 
     function loadGratitude() {
         const list = document.getElementById('gratitudeList');
+        if (!list) return;
         list.innerHTML = '';
         let items = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
         items.forEach((item, index) => {
@@ -525,6 +627,7 @@
 
     function loadStrategies() {
         const list = document.getElementById('strategyList');
+        if (!list) return;
         list.innerHTML = '';
         let items = JSON.parse(localStorage.getItem('strategyEntries')) || [];
         items.forEach((item, index) => {
@@ -543,6 +646,7 @@
 
     function loadMicroexpressions() {
         const list = document.getElementById('microexpressionList');
+        if (!list) return;
         list.innerHTML = '';
         let items = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
         items.forEach((item, index) => {
@@ -566,3 +670,5 @@
         loadMicroexpressions();
     };
 </script>
+</body>
+</html>
