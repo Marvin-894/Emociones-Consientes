@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#4a90e2">
+
 <title>Diario de Padres Conscientes & Relax</title>
 
 <style>
+
 :root{
     --bg-main:#f0f4ff;
     --card-bg:#ffffff;
@@ -20,7 +22,9 @@
     --shadow-soft:0 8px 24px rgba(149,157,165,.15);
 }
 
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
 body{
     font-family:'Segoe UI',Roboto,Arial,sans-serif;
@@ -240,7 +244,9 @@ select.child-select{
     font-size:1.4em;
 }
 
-.btn:hover{transform:scale(1.1)}
+.btn:hover{
+    transform:scale(1.1);
+}
 
 .btn.selected{
     outline:3px solid #ff9ff3;
@@ -325,9 +331,102 @@ input[type=file]{
     box-shadow:none;
 }
 
+/* =========================================================
+   RESPIRACIÓN
+   ========================================================= */
+
+.breathing-box{
+    text-align:center;
+    background:linear-gradient(145deg,#eefaf6,#eaf4ff);
+    border-radius:20px;
+    padding:20px 15px;
+    margin-top:12px;
+    display:none;
+    border:2px solid #d5eee5;
+    box-shadow:0 6px 18px rgba(0,0,0,.06);
+}
+
+.breathing-circle{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:#54a0ff;
+    margin:20px auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-weight:700;
+    font-size:.95em;
+    box-shadow:0 8px 25px rgba(84,160,255,.25);
+    transform:scale(1);
+    transition:
+        transform 4s ease-in-out,
+        background .5s ease,
+        box-shadow .5s ease;
+}
+
+.breathing-circle.prepare{
+    background:#8395a7;
+    transform:scale(1);
+}
+
+.breathing-circle.inhale{
+    background:#54a0ff;
+    transform:scale(1.45);
+    box-shadow:0 10px 35px rgba(84,160,255,.4);
+}
+
+.breathing-circle.hold{
+    background:#1dd1a1;
+    transform:scale(1.45);
+    box-shadow:0 10px 35px rgba(29,209,161,.4);
+}
+
+.breathing-circle.exhale{
+    background:#5f27cd;
+    transform:scale(.82);
+    box-shadow:0 6px 20px rgba(95,39,205,.3);
+}
+
+#breathingText{
+    display:block;
+    font-size:1.1em;
+    color:#2c3e50;
+    margin-top:10px;
+}
+
+#breathingCounter{
+    margin-top:8px;
+    font-size:1.05em;
+    font-weight:700;
+    color:#54a0ff;
+}
+
+.breathing-info{
+    background:#fff;
+    border-radius:14px;
+    padding:12px;
+    margin-top:15px;
+    font-size:.85em;
+    color:#6c7a89;
+    border:1px solid #e2e8f0;
+}
+
 .breathing-start{
     background:#10ac84!important;
     box-shadow:0 4px 0 #0e8c6c!important;
+}
+
+.breathing-stop{
+    background:#ee5253!important;
+    box-shadow:0 4px 0 #c83b3c!important;
+}
+
+.breathing-start:active,
+.breathing-stop:active{
+    transform:translateY(4px);
+    box-shadow:none!important;
 }
 
 .btn-delete{
@@ -371,7 +470,9 @@ li{
     overflow:hidden;
 }
 
-li strong{color:#54a0ff}
+li strong{
+    color:#54a0ff;
+}
 
 .badge-child{
     display:inline-block;
@@ -393,38 +494,19 @@ li strong{color:#54a0ff}
     border:2px solid #c8d6e5;
 }
 
-.breathing-box{
-    text-align:center;
-    background:#eefaf6;
-    border-radius:16px;
-    padding:15px;
-    margin-top:10px;
-    display:none;
-}
-
-.breathing-circle{
-    width:110px;
-    height:110px;
-    border-radius:50%;
-    background:#54a0ff;
-    margin:15px auto;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-weight:bold;
-    transition:transform 4s ease-in-out;
-}
-
-.breathing-circle.inhale{transform:scale(1.45)}
-.breathing-circle.hold{transform:scale(1.45)}
-.breathing-circle.exhale{transform:scale(.85)}
-
 @media(max-width:420px){
+
     .music-controls{
         grid-template-columns:1fr;
     }
+
+    .breathing-circle{
+        width:105px;
+        height:105px;
+    }
+
 }
+
 </style>
 </head>
 
@@ -434,7 +516,9 @@ li strong{color:#54a0ff}
 
 <h1>Diario de Padres Conscientes</h1>
 
-<!-- ================= MÚSICA ================= -->
+<!-- =========================================================
+     MÚSICA
+     ========================================================= -->
 
 <div class="music-player">
 
@@ -446,6 +530,7 @@ No necesita canciones externas.
 </p>
 
 <select id="styleSelect">
+
 <option value="ambient">🌌 Ambient Meditativo</option>
 <option value="piano">🎹 Piano Suave & Melódico</option>
 <option value="lofi">🎧 Lo-Fi Chill Relax</option>
@@ -456,11 +541,19 @@ No necesita canciones externas.
 <option value="reggae">🌴 Reggae Lofi Chill</option>
 <option value="synthwave">🌃 Synthwave Nocturno</option>
 <option value="zen">🧘 Meditación Zen</option>
+
 </select>
 
 <div class="music-controls">
-<button class="music-btn" id="playAudioBtn">▶️ Reproducir</button>
-<button class="music-btn" id="nextMusicBtn">🔄 Nueva Variación</button>
+
+<button class="music-btn" id="playAudioBtn">
+▶️ Reproducir
+</button>
+
+<button class="music-btn" id="nextMusicBtn">
+🔄 Nueva Variación
+</button>
+
 </div>
 
 <div class="music-status" id="musicStatus">
@@ -468,9 +561,18 @@ No necesita canciones externas.
 </div>
 
 <div class="master-control">
+
 <label>🎚️ Volumen de música</label>
-<input class="master-slider" id="masterVolume"
-type="range" min="0" max="1" step=".01" value=".55">
+
+<input
+    class="master-slider"
+    id="masterVolume"
+    type="range"
+    min="0"
+    max="1"
+    step=".01"
+    value=".55">
+
 </div>
 
 <p style="font-weight:700;color:#ff9f43">
@@ -554,7 +656,10 @@ min="0" max="1" step=".01" value=".5">
 </div>
 </div>
 
-<!-- ================= RESPIRACIÓN ================= -->
+
+<!-- =========================================================
+     RESPIRACIÓN 4-7-8
+     ========================================================= -->
 
 <div class="form-group">
 
@@ -562,32 +667,58 @@ min="0" max="1" step=".01" value=".5">
 
 <p>
 Practicá la técnica de respiración 4-7-8 para relajarte.
+La aplicación te guiará con animación, contador y voz.
 </p>
 
-<button class="action-btn breathing-start"
-id="breathingBtn">
-Comenzar Respiración 4-7-8 🫁
+<button
+    type="button"
+    class="action-btn breathing-start"
+    id="breathingBtn"
+    onclick="openBreathingExercise()">
+
+    Comenzar Respiración 4-7-8 🫁
+
 </button>
 
 <div class="breathing-box" id="breathingBox">
 
-<div class="breathing-circle" id="breathingCircle">
-Preparado
+<div
+    class="breathing-circle prepare"
+    id="breathingCircle">
+
+    Preparado
+
 </div>
 
 <strong id="breathingText">
 Preparáte...
 </strong>
 
-<p id="breathingCounter"></p>
+<p id="breathingCounter">
+Cuando estés listo, comenzamos.
+</p>
+
+<div class="breathing-info">
+
+<strong>🌬️ Técnica 4-7-8</strong><br><br>
+
+🫁 Inhalá durante 4 segundos.<br>
+🧘 Mantené el aire durante 7 segundos.<br>
+💨 Exhalá lentamente durante 8 segundos.
 
 </div>
 
 </div>
 
-<!-- ================= PERSONA ================= -->
+</div>
 
-<div class="form-group"
+
+<!-- =========================================================
+     PERSONA
+     ========================================================= -->
+
+<div
+class="form-group"
 style="background:#eef6ff;padding:15px;border-radius:16px;border:2px solid #bbe1fa">
 
 <label style="color:#0f4c81;font-size:1.05em">
@@ -595,115 +726,265 @@ style="background:#eef6ff;padding:15px;border-radius:16px;border:2px solid #bbe1
 </label>
 
 <select id="childSelect" class="child-select">
-<option value="Ían">Ían 👦</option>
-<option value="Jason">Jason 🧒</option>
-<option value="Padre">Registro Personal (Papá) 👨</option>
+
+<option value="Ían">
+Ían 👦
+</option>
+
+<option value="Jason">
+Jason 🧒
+</option>
+
+<option value="Padre">
+Registro Personal (Papá) 👨
+</option>
+
 </select>
 
 </div>
 
-<!-- ================= EMOCIONES ================= -->
+
+<!-- =========================================================
+     EMOCIONES
+     ========================================================= -->
 
 <div class="form-group">
 
 <h3>¿Cómo te sientes hoy? 🎈</h3>
 
-<p>Tocá la emoción que mejor exprese lo que sentís.</p>
+<p>
+Tocá la emoción que mejor exprese lo que sentís.
+</p>
 
 <div class="buttons-grid">
 
 <div class="emotion-card">
-<button class="btn" id="happy"
+
+<button
+class="btn"
+id="happy"
 data-emotion="Alegre"
-data-message="Me alegra verte así, ¡a disfrutar este momento!">😊</button>
-<span class="emotion-label">Alegre</span>
+data-message="Me alegra verte así, ¡a disfrutar este momento!">
+
+😊
+
+</button>
+
+<span class="emotion-label">
+Alegre
+</span>
+
 </div>
 
+
 <div class="emotion-card">
-<button class="btn" id="sad"
+
+<button
+class="btn"
+id="sad"
 data-emotion="Triste"
-data-message="Está bien sentirse triste, respirá profundo, estoy aquí contigo.">😢</button>
-<span class="emotion-label">Triste</span>
+data-message="Está bien sentirse triste, respirá profundo, estoy aquí contigo.">
+
+😢
+
+</button>
+
+<span class="emotion-label">
+Triste
+</span>
+
 </div>
 
+
 <div class="emotion-card">
-<button class="btn" id="angry"
+
+<button
+class="btn"
+id="angry"
 data-emotion="Enojado"
-data-message="Sentí esa energía, pero recordá calmarte antes de actuar.">😡</button>
-<span class="emotion-label">Enojado</span>
+data-message="Sentí esa energía, pero recordá calmarte antes de actuar.">
+
+😡
+
+</button>
+
+<span class="emotion-label">
+Enojado
+</span>
+
 </div>
 
+
 <div class="emotion-card">
-<button class="btn" id="calm"
+
+<button
+class="btn"
+id="calm"
 data-emotion="En Calma"
-data-message="Mantené esa paz interior y disfrutala.">😌</button>
-<span class="emotion-label">En Calma</span>
+data-message="Mantené esa paz interior y disfrutala.">
+
+😌
+
+</button>
+
+<span class="emotion-label">
+En Calma
+</span>
+
 </div>
 
+
 <div class="emotion-card">
-<button class="btn" id="fear"
+
+<button
+class="btn"
+id="fear"
 data-emotion="Miedo"
-data-message="El miedo nos protege, pero podemos superarlo juntos paso a paso.">😨</button>
-<span class="emotion-label">Miedo</span>
+data-message="El miedo nos protege, pero podemos superarlo juntos paso a paso.">
+
+😨
+
+</button>
+
+<span class="emotion-label">
+Miedo
+</span>
+
 </div>
 
+
 <div class="emotion-card">
-<button class="btn" id="surprise"
+
+<button
+class="btn"
+id="surprise"
 data-emotion="Sorprendido"
-data-message="¡Sorpresas que alegran! Vamos a explorar qué sucedió.">😲</button>
-<span class="emotion-label">Sorprendido</span>
+data-message="¡Sorpresas que alegran! Vamos a explorar qué sucedió.">
+
+😲
+
+</button>
+
+<span class="emotion-label">
+Sorprendido
+</span>
+
 </div>
 
+
 <div class="emotion-card">
-<button class="btn" id="anxiety"
+
+<button
+class="btn"
+id="anxiety"
 data-emotion="Ansiedad"
-data-message="Inhalá, exhalá. Todo estará bien, un paso a la vez.">😰</button>
-<span class="emotion-label">Ansiedad</span>
+data-message="Inhalá, exhalá. Todo estará bien, un paso a la vez.">
+
+😰
+
+</button>
+
+<span class="emotion-label">
+Ansiedad
+</span>
+
 </div>
 
+
 <div class="emotion-card">
-<button class="btn" id="envy"
+
+<button
+class="btn"
+id="envy"
 data-emotion="Envidia"
-data-message="Todos somos únicos y especiales a nuestra manera.">😒</button>
-<span class="emotion-label">Envidia</span>
+data-message="Todos somos únicos y especiales a nuestra manera.">
+
+😒
+
+</button>
+
+<span class="emotion-label">
+Envidia
+</span>
+
 </div>
 
+
 <div class="emotion-card">
-<button class="btn" id="boredom"
+
+<button
+class="btn"
+id="boredom"
 data-emotion="Aburrimiento"
-data-message="Un buen momento para dejar volar la imaginación.">🥱</button>
-<span class="emotion-label">Aburrimiento</span>
+data-message="Un buen momento para dejar volar la imaginación.">
+
+🥱
+
+</button>
+
+<span class="emotion-label">
+Aburrimiento
+</span>
+
 </div>
+
 
 <div class="emotion-card">
-<button class="btn" id="shame"
+
+<button
+class="btn"
+id="shame"
 data-emotion="Vergüenza"
-data-message="Nadie es perfecto, todos aprendemos de los errores.">😳</button>
-<span class="emotion-label">Vergüenza</span>
+data-message="Nadie es perfecto, todos aprendemos de los errores.">
+
+😳
+
+</button>
+
+<span class="emotion-label">
+Vergüenza
+</span>
+
 </div>
 
 </div>
+
 </div>
 
-<!-- ================= FOTO ================= -->
+
+<!-- =========================================================
+     FOTO
+     ========================================================= -->
 
 <div class="form-group">
 
 <h3>Captura de Momento 📸</h3>
 
-<label>Subir una foto:</label>
+<label>
+Subir una foto:
+</label>
 
-<p>Guardá una foto genial para recordar este día.</p>
+<p>
+Guardá una foto genial para recordar este día.
+</p>
 
-<input type="file" id="photoInput" accept="image/*">
+<input
+type="file"
+id="photoInput"
+accept="image/*">
 
-<img id="photoPreviewImg" alt="Vista previa">
+<img
+id="photoPreviewImg"
+alt="Vista previa">
 
 <label style="margin-top:10px;font-size:.9em">
 ¿Qué emoción transmitía esta foto?
 </label>
 
-<select id="photoEmotionSelect" class="emotion-select">
+<select
+id="photoEmotionSelect"
+class="emotion-select">
+
 <option>Alegre</option>
 <option>Triste</option>
 <option>Enojado</option>
@@ -714,141 +995,245 @@ data-message="Nadie es perfecto, todos aprendemos de los errores.">😳</button>
 <option>Envidia</option>
 <option>Aburrimiento</option>
 <option>Vergüenza</option>
+
 </select>
 
-<button class="action-btn"
+<button
+class="action-btn"
 style="background:#ff9f43;box-shadow:0 4px 0 #e67e22"
 id="savePhotoBtn">
+
 Guardar Foto 🖼️
+
 </button>
 
 </div>
 
-<!-- ================= AUDIO ================= -->
+
+<!-- =========================================================
+     AUDIO
+     ========================================================= -->
 
 <div class="form-group">
 
 <h3>Mensaje de Voz 🎤</h3>
 
-<label>Grabar un audio:</label>
+<label>
+Grabar un audio:
+</label>
 
-<p>Usá tu voz para contar cómo te fue hoy.</p>
+<p>
+Usá tu voz para contar cómo te fue hoy.
+</p>
 
-<button class="action-btn" id="recordBtn">
+<button
+class="action-btn"
+id="recordBtn">
+
 Grabar Audio
+
 </button>
 
-<audio id="audioPlayback" controls style="display:none"></audio>
+<audio
+id="audioPlayback"
+controls
+style="display:none">
+</audio>
 
 </div>
 
-<!-- ================= REFLEXIÓN ================= -->
+
+<!-- =========================================================
+     REFLEXIÓN
+     ========================================================= -->
 
 <div class="form-group">
 
 <h3>Reflexión Personal 📝</h3>
 
-<label>Escribí una nota:</label>
+<label>
+Escribí una nota:
+</label>
 
-<textarea id="noteInput"
-placeholder="¿Qué pasó hoy?..."></textarea>
+<textarea
+id="noteInput"
+placeholder="¿Qué pasó hoy?...">
+</textarea>
 
 </div>
 
-<button class="action-btn"
+<button
+class="action-btn"
 style="background:#10ac84;box-shadow:0 4px 0 #0e8c6c"
 id="saveEntryBtn">
+
 Guardar Registro Completo ✨
+
 </button>
 
-<!-- ================= GRATITUD ================= -->
+
+<!-- =========================================================
+     GRATITUD
+     ========================================================= -->
 
 <div class="form-group">
 
 <h3>Momento de Gratitud ⭐</h3>
 
-<p>Agradecer nos hace sentir muy bien por dentro.</p>
+<p>
+Agradecer nos hace sentir muy bien por dentro.
+</p>
 
-<textarea id="gratitudeInput"
-placeholder="¿Qué cosas lindas te pasaron hoy?"></textarea>
+<textarea
+id="gratitudeInput"
+placeholder="¿Qué cosas lindas te pasaron hoy?">
+</textarea>
 
-<button class="action-btn" id="saveGratitudeBtn">
+<button
+class="action-btn"
+id="saveGratitudeBtn">
+
 Guardar Gratitud
+
 </button>
 
 </div>
 
-<!-- ================= ESTRATEGIAS ================= -->
+
+<!-- =========================================================
+     ESTRATEGIAS
+     ========================================================= -->
 
 <div class="form-group">
 
 <h3>Estrategias de Crianza 💡</h3>
 
-<p>Ideas y herramientas para compartir en familia.</p>
+<p>
+Ideas y herramientas para compartir en familia.
+</p>
 
-<textarea id="strategyInput"
-placeholder="Anotá aquí tus descubrimientos..."></textarea>
+<textarea
+id="strategyInput"
+placeholder="Anotá aquí tus descubrimientos...">
+</textarea>
 
-<button class="action-btn" id="saveStrategyBtn">
+<button
+class="action-btn"
+id="saveStrategyBtn">
+
 Guardar Estrategia
+
 </button>
 
 </div>
 
-<!-- ================= MICROEXPRESIONES ================= -->
+
+<!-- =========================================================
+     MICROEXPRESIONES
+     ========================================================= -->
 
 <div class="form-group">
 
 <h3>Observación de Microexpresiones 👀</h3>
 
-<p>Registrá gestos o expresiones del lenguaje corporal.</p>
+<p>
+Registrá gestos o expresiones del lenguaje corporal.
+</p>
 
-<textarea id="microexpressionInput"
-placeholder="Anotá las expresiones observadas..."></textarea>
+<textarea
+id="microexpressionInput"
+placeholder="Anotá las expresiones observadas...">
+</textarea>
 
-<button class="action-btn" id="saveMicroBtn">
+<button
+class="action-btn"
+id="saveMicroBtn">
+
 Guardar Observación
+
 </button>
 
 </div>
 
-<!-- ================= HISTORIAL ================= -->
+
+<!-- =========================================================
+     HISTORIAL
+     ========================================================= -->
 
 <div id="history">
 
-<h3>Registros Guardados:</h3>
+<h3>
+Registros Guardados:
+</h3>
 
-<label style="font-size:.85em;font-weight:600;color:#54a0ff">
+<label
+style="font-size:.85em;font-weight:600;color:#54a0ff">
+
 Filtrar por:
+
 </label>
 
-<select id="filterChildSelect" class="child-select">
-<option value="Todos">Mostrar Todos</option>
-<option value="Ían">Solo Ían 👦</option>
-<option value="Jason">Solo Jason 🧒</option>
-<option value="Padre">Solo Papá 👨</option>
+<select
+id="filterChildSelect"
+class="child-select">
+
+<option value="Todos">
+Mostrar Todos
+</option>
+
+<option value="Ían">
+Solo Ían 👦
+</option>
+
+<option value="Jason">
+Solo Jason 🧒
+</option>
+
+<option value="Padre">
+Solo Papá 👨
+</option>
+
 </select>
 
 <ul id="entriesList"></ul>
 
 </div>
 
+
 <div id="gratitude-history">
-<h3>Agradecimientos:</h3>
+
+<h3>
+Agradecimientos:
+</h3>
+
 <ul id="gratitudeList"></ul>
+
 </div>
+
 
 <div id="strategies-history">
-<h3>Estrategias de Crianza:</h3>
+
+<h3>
+Estrategias de Crianza:
+</h3>
+
 <ul id="strategyList"></ul>
+
 </div>
+
 
 <div id="microexpression-history">
-<h3>Observaciones de Microexpresiones:</h3>
+
+<h3>
+Observaciones de Microexpresiones:
+</h3>
+
 <ul id="microexpressionList"></ul>
+
 </div>
 
 </div>
+
 
 <script>
 
@@ -880,6 +1265,7 @@ let ambientNodes={
 };
 
 const N={
+
 C2:65.41,
 D2:73.42,
 E2:82.41,
@@ -916,531 +1302,669 @@ C6:1046.5,
 D6:1174.66,
 E6:1318.51,
 G6:1567.98
+
 };
+
 
 const styles={
 
 ambient:{
-    bpm:58,
-    wave:'sine',
-    chords:[
-        [N.C3,N.G3,N.B3,N.E4],
-        [N.A2,N.E3,N.G3,N.C4],
-        [N.F2,N.C3,N.E3,N.A3],
-        [N.G2,N.D3,N.F3,N.B3]
-    ],
-    melody:[N.E5,null,N.G5,null,N.B4,null,N.C5,N.D5],
-    bass:[N.C3,null,null,N.G2,N.A2,null,N.F2,null],
-    drums:false,
-    pad:true
+bpm:58,
+wave:'sine',
+chords:[
+[N.C3,N.G3,N.B3,N.E4],
+[N.A2,N.E3,N.G3,N.C4],
+[N.F2,N.C3,N.E3,N.A3],
+[N.G2,N.D3,N.F3,N.B3]
+],
+melody:[
+N.E5,null,N.G5,null,
+N.B4,null,N.C5,N.D5
+],
+bass:[
+N.C3,null,null,N.G2,
+N.A2,null,N.F2,null
+],
+drums:false,
+pad:true
 },
 
 piano:{
-    bpm:68,
-    wave:'triangle',
-    chords:[
-        [N.C3,N.G3,N.E4],
-        [N.F3,N.C4,N.A4],
-        [N.A2,N.E3,N.C4],
-        [N.G2,N.D3,N.B3]
-    ],
-    melody:[
-        N.G4,N.C5,N.E5,N.D5,
-        N.C5,N.B4,N.A4,N.G4
-    ],
-    bass:[N.C3,null,N.G2,null,N.F2,null,N.G2,null],
-    drums:false,
-    piano:true
+bpm:68,
+wave:'triangle',
+chords:[
+[N.C3,N.G3,N.E4],
+[N.F3,N.C4,N.A4],
+[N.A2,N.E3,N.C4],
+[N.G2,N.D3,N.B3]
+],
+melody:[
+N.G4,N.C5,N.E5,N.D5,
+N.C5,N.B4,N.A4,N.G4
+],
+bass:[
+N.C3,null,N.G2,null,
+N.F2,null,N.G2,null
+],
+drums:false,
+piano:true
 },
 
 lofi:{
-    bpm:78,
-    wave:'triangle',
-    chords:[
-        [N.C3,N.E3,N.G3,N.B3],
-        [N.A2,N.C3,N.E3,N.G3],
-        [N.D3,N.F3,N.A3,N.C4],
-        [N.G2,N.B2,N.D3,N.F3]
-    ],
-    melody:[
-        N.G4,null,N.E5,null,
-        N.D5,N.C5,null,N.B4
-    ],
-    bass:[N.C3,N.C3,null,N.G2,N.A2,null,N.D3,N.G2],
-    drums:true,
-    loFi:true
+bpm:78,
+wave:'triangle',
+chords:[
+[N.C3,N.E3,N.G3,N.B3],
+[N.A2,N.C3,N.E3,N.G3],
+[N.D3,N.F3,N.A3,N.C4],
+[N.G2,N.B2,N.D3,N.F3]
+],
+melody:[
+N.G4,null,N.E5,null,
+N.D5,N.C5,null,N.B4
+],
+bass:[
+N.C3,N.C3,null,N.G2,
+N.A2,null,N.D3,N.G2
+],
+drums:true,
+loFi:true
 },
 
 bossa:{
-    bpm:82,
-    wave:'triangle',
-    chords:[
-        [N.D3,N.F3,N.A3,N.C4],
-        [N.G2,N.B2,N.D3,N.F3],
-        [N.C3,N.E3,N.G3,N.B3],
-        [N.A2,N.C3,N.E3,N.G3]
-    ],
-    melody:[
-        N.A4,N.C5,N.B4,N.G4,
-        N.E5,null,N.D5,N.C5
-    ],
-    bass:[N.D3,null,N.A2,N.D3,N.G2,null,N.C3,N.A2],
-    drums:true
+bpm:82,
+wave:'triangle',
+chords:[
+[N.D3,N.F3,N.A3,N.C4],
+[N.G2,N.B2,N.D3,N.F3],
+[N.C3,N.E3,N.G3,N.B3],
+[N.A2,N.C3,N.E3,N.G3]
+],
+melody:[
+N.A4,N.C5,N.B4,N.G4,
+N.E5,null,N.D5,N.C5
+],
+bass:[
+N.D3,null,N.A2,N.D3,
+N.G2,null,N.C3,N.A2
+],
+drums:true
 },
 
 jazz:{
-    bpm:64,
-    wave:'sine',
-    chords:[
-        [N.F3,N.A3,N.C4,N.E4],
-        [N.D3,N.F3,N.A3,N.C4],
-        [N.G2,N.B2,N.D3,N.F3],
-        [N.C3,N.E3,N.G3,N.B3]
-    ],
-    melody:[
-        N.E5,N.D5,N.C5,N.A4,
-        N.G4,N.A4,N.C5,null
-    ],
-    bass:[N.F2,N.A2,N.C3,N.E3,N.D3,N.F3,N.G2,N.C3],
-    drums:true,
-    jazz:true
+bpm:64,
+wave:'sine',
+chords:[
+[N.F3,N.A3,N.C4,N.E4],
+[N.D3,N.F3,N.A3,N.C4],
+[N.G2,N.B2,N.D3,N.F3],
+[N.C3,N.E3,N.G3,N.B3]
+],
+melody:[
+N.E5,N.D5,N.C5,N.A4,
+N.G4,N.A4,N.C5,null
+],
+bass:[
+N.F2,N.A2,N.C3,N.E3,
+N.D3,N.F3,N.G2,N.C3
+],
+drums:true,
+jazz:true
 },
 
 folk:{
-    bpm:72,
-    wave:'triangle',
-    chords:[
-        [N.C3,N.G3,N.C4],
-        [N.G2,N.D3,N.G3],
-        [N.A2,N.E3,N.A3],
-        [N.F2,N.C3,N.F3]
-    ],
-    melody:[
-        N.E4,N.G4,N.C5,N.G4,
-        N.E5,N.D5,N.C5,N.G4
-    ],
-    bass:[N.C3,null,N.G2,N.C3,N.A2,null,N.F2,N.G2],
-    drums:false,
-    pluck:true
+bpm:72,
+wave:'triangle',
+chords:[
+[N.C3,N.G3,N.C4],
+[N.G2,N.D3,N.G3],
+[N.A2,N.E3,N.A3],
+[N.F2,N.C3,N.F3]
+],
+melody:[
+N.E4,N.G4,N.C5,N.G4,
+N.E5,N.D5,N.C5,N.G4
+],
+bass:[
+N.C3,null,N.G2,N.C3,
+N.A2,null,N.F2,N.G2
+],
+drums:false,
+pluck:true
 },
 
 space:{
-    bpm:50,
-    wave:'sine',
-    chords:[
-        [N.C3,N.G3,N.C4,N.G4],
-        [N.F3,N.C4,N.F4,N.C5],
-        [N.A2,N.E3,N.A3,N.E4],
-        [N.G2,N.D3,N.G3,N.D4]
-    ],
-    melody:[
-        N.G5,null,N.E5,null,
-        N.C5,null,N.B4,null
-    ],
-    bass:[N.C3,null,null,null,N.F2,null,null,null],
-    drums:false,
-    pad:true,
-    space:true
+bpm:50,
+wave:'sine',
+chords:[
+[N.C3,N.G3,N.C4,N.G4],
+[N.F3,N.C4,N.F4,N.C5],
+[N.A2,N.E3,N.A3,N.E4],
+[N.G2,N.D3,N.G3,N.D4]
+],
+melody:[
+N.G5,null,N.E5,null,
+N.C5,null,N.B4,null
+],
+bass:[
+N.C3,null,null,null,
+N.F2,null,null,null
+],
+drums:false,
+pad:true,
+space:true
 },
 
 reggae:{
-    bpm:76,
-    wave:'sine',
-    chords:[
-        [N.C3,N.E3,N.G3],
-        [N.F2,N.A2,N.C3],
-        [N.G2,N.B2,N.D3],
-        [N.C3,N.E3,N.G3]
-    ],
-    melody:[
-        null,N.G4,null,N.E5,
-        null,N.D5,N.C5,null
-    ],
-    bass:[N.C3,N.C3,N.G2,N.C3,N.F2,N.F2,N.C3,N.G2],
-    drums:true,
-    reggae:true
+bpm:76,
+wave:'sine',
+chords:[
+[N.C3,N.E3,N.G3],
+[N.F2,N.A2,N.C3],
+[N.G2,N.B2,N.D3],
+[N.C3,N.E3,N.G3]
+],
+melody:[
+null,N.G4,null,N.E5,
+null,N.D5,N.C5,null
+],
+bass:[
+N.C3,N.C3,N.G2,N.C3,
+N.F2,N.F2,N.C3,N.G2
+],
+drums:true,
+reggae:true
 },
 
 synthwave:{
-    bpm:94,
-    wave:'sawtooth',
-    chords:[
-        [N.C3,N.G3,N.C4],
-        [N.A2,N.E3,N.A3],
-        [N.F2,N.C3,N.F3],
-        [N.G2,N.D3,N.G3]
-    ],
-    melody:[
-        N.C5,N.E5,N.G5,N.E5,
-        N.D5,N.B4,N.C5,N.G4
-    ],
-    bass:[N.C2,N.C2,N.G2,N.C2,N.A2,N.A2,N.F2,N.G2],
-    drums:true,
-    synth:true
+bpm:94,
+wave:'sawtooth',
+chords:[
+[N.C3,N.G3,N.C4],
+[N.A2,N.E3,N.A3],
+[N.F2,N.C3,N.F3],
+[N.G2,N.D3,N.G3]
+],
+melody:[
+N.C5,N.E5,N.G5,N.E5,
+N.D5,N.B4,N.C5,N.G4
+],
+bass:[
+N.C2,N.C2,N.G2,N.C2,
+N.A2,N.A2,N.F2,N.G2
+],
+drums:true,
+synth:true
 },
 
 zen:{
-    bpm:48,
-    wave:'sine',
-    chords:[
-        [N.C3,N.G3],
-        [N.F3,N.C4],
-        [N.A2,N.E3],
-        [N.G2,N.D3]
-    ],
-    melody:[
-        N.E4,null,null,N.G4,
-        null,N.B4,null,N.A4
-    ],
-    bass:[N.C3,null,null,null,N.F2,null,null,null],
-    drums:false,
-    zen:true
+bpm:48,
+wave:'sine',
+chords:[
+[N.C3,N.G3],
+[N.F3,N.C4],
+[N.A2,N.E3],
+[N.G2,N.D3]
+],
+melody:[
+N.E4,null,null,N.G4,
+null,N.B4,null,N.A4
+],
+bass:[
+N.C3,null,null,null,
+N.F2,null,null,null
+],
+drums:false,
+zen:true
 }
 
 };
 
+
 /* =========================================================
-   INICIALIZACIÓN
+   AUDIO
    ========================================================= */
 
 async function initAudio(){
 
-    if(!audioCtx){
+if(!audioCtx){
 
-        audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+audioCtx=new(
+window.AudioContext||
+window.webkitAudioContext
+)();
 
-        masterBus=audioCtx.createGain();
-        musicBus=audioCtx.createGain();
-        reverbBus=audioCtx.createGain();
+masterBus=audioCtx.createGain();
+musicBus=audioCtx.createGain();
+reverbBus=audioCtx.createGain();
 
-        masterBus.gain.value=
-            parseFloat(document.getElementById('masterVolume').value);
+masterBus.gain.value=
+parseFloat(
+document.getElementById('masterVolume').value
+);
 
-        musicBus.gain.value=.65;
-        reverbBus.gain.value=.18;
+musicBus.gain.value=.65;
+reverbBus.gain.value=.18;
 
-        musicBus.connect(masterBus);
-        reverbBus.connect(masterBus);
-        masterBus.connect(audioCtx.destination);
+musicBus.connect(masterBus);
+reverbBus.connect(masterBus);
+masterBus.connect(audioCtx.destination);
 
-        createReverb();
-    }
+createReverb();
 
-    if(audioCtx.state==='suspended'){
-        await audioCtx.resume();
-    }
 }
+
+if(audioCtx.state==='suspended'){
+await audioCtx.resume();
+}
+
+}
+
 
 function createReverb(){
 
-    const length=audioCtx.sampleRate*2.5;
+const length=
+audioCtx.sampleRate*2.5;
 
-    const impulse=audioCtx.createBuffer(
-        2,
-        length,
-        audioCtx.sampleRate
-    );
+const impulse=
+audioCtx.createBuffer(
+2,
+length,
+audioCtx.sampleRate
+);
 
-    for(let c=0;c<2;c++){
+for(let c=0;c<2;c++){
 
-        const data=impulse.getChannelData(c);
+const data=
+impulse.getChannelData(c);
 
-        for(let i=0;i<length;i++){
+for(let i=0;i<length;i++){
 
-            data[i]=(Math.random()*2-1)*
-                Math.pow(1-i/length,2.5);
-        }
-    }
+data[i]=
+(Math.random()*2-1)*
+Math.pow(1-i/length,2.5);
 
-    const convolver=audioCtx.createConvolver();
-
-    convolver.buffer=impulse;
-
-    reverbBus.connect(convolver);
-
-    convolver.connect(masterBus);
 }
 
+}
+
+const convolver=
+audioCtx.createConvolver();
+
+convolver.buffer=impulse;
+
+reverbBus.connect(convolver);
+convolver.connect(masterBus);
+
+}
+
+
 /* =========================================================
-   SÍNTESIS DE NOTAS
+   SÍNTESIS
    ========================================================= */
 
 function synthNote(
-    freq,
-    duration,
-    type='sine',
-    volume=.05,
-    destination=musicBus,
-    options={}
+freq,
+duration,
+type='sine',
+volume=.05,
+destination=musicBus,
+options={}
 ){
 
-    if(!freq||!audioCtx)return;
+if(!freq||!audioCtx)return;
 
-    const now=audioCtx.currentTime;
+const now=
+audioCtx.currentTime;
 
-    const osc=audioCtx.createOscillator();
-    const gain=audioCtx.createGain();
-    const filter=audioCtx.createBiquadFilter();
+const osc=
+audioCtx.createOscillator();
 
-    osc.type=type;
+const gain=
+audioCtx.createGain();
 
-    osc.frequency.setValueAtTime(freq,now);
+const filter=
+audioCtx.createBiquadFilter();
 
-    if(options.detune){
-        osc.detune.value=options.detune;
-    }
+osc.type=type;
 
-    filter.type='lowpass';
+osc.frequency.setValueAtTime(
+freq,
+now
+);
 
-    filter.frequency.setValueAtTime(
-        options.filter||3000,
-        now
-    );
-
-    const attack=options.attack||.04;
-    const release=options.release||duration*.65;
-
-    gain.gain.setValueAtTime(.0001,now);
-
-    gain.gain.linearRampToValueAtTime(
-        volume,
-        now+attack
-    );
-
-    gain.gain.setValueAtTime(
-        volume,
-        now+Math.max(attack,duration*.35)
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        now+duration+release
-    );
-
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(destination);
-
-    if(options.reverb!==false){
-        gain.connect(reverbBus);
-    }
-
-    osc.start(now);
-    osc.stop(now+duration+release+.05);
+if(options.detune){
+osc.detune.value=options.detune;
 }
 
-/* Piano sintetizado */
+filter.type='lowpass';
 
-function pianoNote(freq,duration=.8,volume=.06){
+filter.frequency.setValueAtTime(
+options.filter||3000,
+now
+);
 
-    synthNote(
-        freq,
-        duration,
-        'triangle',
-        volume,
-        musicBus,
-        {
-            attack:.008,
-            release:.7,
-            filter:3200
-        }
-    );
+const attack=
+options.attack||.04;
 
-    synthNote(
-        freq*2,
-        duration*.55,
-        'sine',
-        volume*.18,
-        musicBus,
-        {
-            attack:.003,
-            release:.4,
-            filter:4500
-        }
-    );
+const release=
+options.release||duration*.65;
+
+gain.gain.setValueAtTime(
+.0001,
+now
+);
+
+gain.gain.linearRampToValueAtTime(
+volume,
+now+attack
+);
+
+gain.gain.setValueAtTime(
+volume,
+now+Math.max(
+attack,
+duration*.35
+)
+);
+
+gain.gain.exponentialRampToValueAtTime(
+.0001,
+now+duration+release
+);
+
+osc.connect(filter);
+filter.connect(gain);
+gain.connect(destination);
+
+if(options.reverb!==false){
+gain.connect(reverbBus);
 }
 
-/* Bajo */
+osc.start(now);
 
-function bassNote(freq,duration=.45,volume=.06){
+osc.stop(
+now+duration+release+.05
+);
 
-    synthNote(
-        freq,
-        duration,
-        'sine',
-        volume,
-        musicBus,
-        {
-            attack:.025,
-            release:.35,
-            filter:900,
-            reverb:false
-        }
-    );
 }
 
-/* Pad */
+
+function pianoNote(
+freq,
+duration=.8,
+volume=.06
+){
+
+synthNote(
+freq,
+duration,
+'triangle',
+volume,
+musicBus,
+{
+attack:.008,
+release:.7,
+filter:3200
+}
+);
+
+synthNote(
+freq*2,
+duration*.55,
+'sine',
+volume*.18,
+musicBus,
+{
+attack:.003,
+release:.4,
+filter:4500
+}
+);
+
+}
+
+
+function bassNote(
+freq,
+duration=.45,
+volume=.06
+){
+
+synthNote(
+freq,
+duration,
+'sine',
+volume,
+musicBus,
+{
+attack:.025,
+release:.35,
+filter:900,
+reverb:false
+}
+);
+
+}
+
 
 function padChord(chord){
 
-    chord.forEach((freq,i)=>{
+chord.forEach((freq,i)=>{
 
-        synthNote(
-            freq,
-            3.8,
-            'sine',
-            .018,
-            musicBus,
-            {
-                attack:1.1,
-                release:1.5,
-                filter:1200+i*300
-            }
-        );
+synthNote(
+freq,
+3.8,
+'sine',
+.018,
+musicBus,
+{
+attack:1.1,
+release:1.5,
+filter:1200+i*300
+}
+);
 
-        if(i<2){
+if(i<2){
 
-            synthNote(
-                freq*2,
-                3.2,
-                'triangle',
-                .008,
-                musicBus,
-                {
-                    attack:1.4,
-                    release:1.2,
-                    filter:1800
-                }
-            );
-        }
-    });
+synthNote(
+freq*2,
+3.2,
+'triangle',
+.008,
+musicBus,
+{
+attack:1.4,
+release:1.2,
+filter:1800
+}
+);
+
 }
 
+});
+
+}
+
+
 /* =========================================================
-   PERCUSIÓN SINTÉTICA
+   PERCUSIÓN
    ========================================================= */
 
 function kick(volume=.07){
 
-    if(!audioCtx)return;
+if(!audioCtx)return;
 
-    const now=audioCtx.currentTime;
+const now=
+audioCtx.currentTime;
 
-    const osc=audioCtx.createOscillator();
-    const gain=audioCtx.createGain();
+const osc=
+audioCtx.createOscillator();
 
-    osc.type='sine';
+const gain=
+audioCtx.createGain();
 
-    osc.frequency.setValueAtTime(120,now);
-    osc.frequency.exponentialRampToValueAtTime(45,now+.16);
+osc.type='sine';
 
-    gain.gain.setValueAtTime(volume,now);
-    gain.gain.exponentialRampToValueAtTime(.001,now+.2);
+osc.frequency.setValueAtTime(
+120,
+now
+);
 
-    osc.connect(gain);
-    gain.connect(musicBus);
+osc.frequency.exponentialRampToValueAtTime(
+45,
+now+.16
+);
 
-    osc.start(now);
-    osc.stop(now+.22);
+gain.gain.setValueAtTime(
+volume,
+now
+);
+
+gain.gain.exponentialRampToValueAtTime(
+.001,
+now+.2
+);
+
+osc.connect(gain);
+gain.connect(musicBus);
+
+osc.start(now);
+osc.stop(now+.22);
+
 }
+
 
 function snare(volume=.035){
 
-    if(!audioCtx)return;
+if(!audioCtx)return;
 
-    const buffer=audioCtx.createBuffer(
-        1,
-        audioCtx.sampleRate*.15,
-        audioCtx.sampleRate
-    );
+const buffer=
+audioCtx.createBuffer(
+1,
+audioCtx.sampleRate*.15,
+audioCtx.sampleRate
+);
 
-    const data=buffer.getChannelData(0);
+const data=
+buffer.getChannelData(0);
 
-    for(let i=0;i<data.length;i++){
-        data[i]=(Math.random()*2-1)*
-            Math.pow(1-i/data.length,2);
-    }
+for(let i=0;i<data.length;i++){
 
-    const source=audioCtx.createBufferSource();
-    const filter=audioCtx.createBiquadFilter();
-    const gain=audioCtx.createGain();
+data[i]=
+(Math.random()*2-1)*
+Math.pow(
+1-i/data.length,
+2
+);
 
-    source.buffer=buffer;
-
-    filter.type='highpass';
-    filter.frequency.value=1300;
-
-    gain.gain.value=volume;
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(musicBus);
-
-    source.start();
 }
+
+const source=
+audioCtx.createBufferSource();
+
+const filter=
+audioCtx.createBiquadFilter();
+
+const gain=
+audioCtx.createGain();
+
+source.buffer=buffer;
+
+filter.type='highpass';
+filter.frequency.value=1300;
+
+gain.gain.value=volume;
+
+source.connect(filter);
+filter.connect(gain);
+gain.connect(musicBus);
+
+source.start();
+
+}
+
 
 function hat(volume=.018){
 
-    if(!audioCtx)return;
+if(!audioCtx)return;
 
-    const buffer=audioCtx.createBuffer(
-        1,
-        audioCtx.sampleRate*.06,
-        audioCtx.sampleRate
-    );
+const buffer=
+audioCtx.createBuffer(
+1,
+audioCtx.sampleRate*.06,
+audioCtx.sampleRate
+);
 
-    const data=buffer.getChannelData(0);
+const data=
+buffer.getChannelData(0);
 
-    for(let i=0;i<data.length;i++){
-        data[i]=(Math.random()*2-1)*
-            Math.pow(1-i/data.length,4);
-    }
+for(let i=0;i<data.length;i++){
 
-    const source=audioCtx.createBufferSource();
-    const filter=audioCtx.createBiquadFilter();
-    const gain=audioCtx.createGain();
+data[i]=
+(Math.random()*2-1)*
+Math.pow(
+1-i/data.length,
+4
+);
 
-    source.buffer=buffer;
-
-    filter.type='highpass';
-    filter.frequency.value=5000;
-
-    gain.gain.value=volume;
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(musicBus);
-
-    source.start();
 }
 
+const source=
+audioCtx.createBufferSource();
+
+const filter=
+audioCtx.createBiquadFilter();
+
+const gain=
+audioCtx.createGain();
+
+source.buffer=buffer;
+
+filter.type='highpass';
+filter.frequency.value=5000;
+
+gain.gain.value=volume;
+
+source.connect(filter);
+filter.connect(gain);
+gain.connect(musicBus);
+
+source.start();
+
+}
+
+
 /* =========================================================
-   ARPEGIOS
+   ARPEGIO
    ========================================================= */
 
 function arpeggio(chord){
 
-    const notes=chord;
+const notes=chord;
 
-    const index=
-        (step+variation)%notes.length;
+const index=
+(step+variation)%notes.length;
 
-    if(notes[index]){
+if(notes[index]){
 
-        synthNote(
-            notes[index]*2,
-            .32,
-            'triangle',
-            .025,
-            musicBus,
-            {
-                attack:.015,
-                release:.25,
-                filter:2600
-            }
-        );
-    }
+synthNote(
+notes[index]*2,
+.32,
+'triangle',
+.025,
+musicBus,
+{
+attack:.015,
+release:.25,
+filter:2600
 }
+);
+
+}
+
+}
+
 
 /* =========================================================
    PASO MUSICAL
@@ -1448,203 +1972,233 @@ function arpeggio(chord){
 
 function playMusicStep(){
 
-    if(!audioCtx||!isPlaying)return;
+if(!audioCtx||!isPlaying)return;
 
-    const style=styles[currentStyle];
+const style=
+styles[currentStyle];
 
-    const beat=step%16;
+const beat=
+step%16;
 
-    const chordIndex=
-        Math.floor(step/16)%style.chords.length;
+const chordIndex=
+Math.floor(step/16)%
+style.chords.length;
 
-    const chord=style.chords[chordIndex];
+const chord=
+style.chords[chordIndex];
 
-    /* Acorde cada compás */
+if(beat===0){
 
-    if(beat===0){
+if(style.piano){
 
-        if(style.piano){
-            chord.forEach((n,i)=>{
-                pianoNote(n,2.1,.035-i*.004);
-            });
-        }
-        else{
-            chord.forEach((n,i)=>{
-                synthNote(
-                    n,
-                    style.pad?4.2:2,
-                    style.wave,
-                    style.pad?.022:.025,
-                    musicBus,
-                    {
-                        attack:style.pad?1:.15,
-                        release:style.pad?1.1:.6,
-                        filter:style.synth?1800:2200
-                    }
-                );
-            });
-        }
+chord.forEach((n,i)=>{
 
-        if(style.pad){
-            padChord(chord);
-        }
-    }
+pianoNote(
+n,
+2.1,
+.035-i*.004
+);
 
-    /* Bajo */
+});
 
-    if(style.bass){
+}else{
 
-        const bassIndex=beat%style.bass.length;
-        const bass=style.bass[bassIndex];
+chord.forEach((n,i)=>{
 
-        if(bass){
-
-            bassNote(
-                bass,
-                style.jazz?.35:.42,
-                style.reggae?.07:.05
-            );
-        }
-    }
-
-    /* Melodía */
-
-    if(beat%2===0){
-
-        const melody=
-            style.melody[
-                Math.floor(beat/2)%style.melody.length
-            ];
-
-        if(melody){
-
-            if(style.piano){
-
-                pianoNote(
-                    melody,
-                    .65,
-                    .045
-                );
-
-            }else{
-
-                synthNote(
-                    melody,
-                    style.space?.8:.55,
-                    style.synth?'sawtooth':
-                    style.pluck?'triangle':'sine',
-                    style.zen?.025:.035,
-                    musicBus,
-                    {
-                        attack:style.zen?.12:.025,
-                        release:style.space?.1:.4,
-                        filter:style.synth?2500:3500
-                    }
-                );
-            }
-        }
-    }
-
-    /* Arpegios en Space */
-
-    if(style.space && beat%2===1){
-        arpeggio(chord);
-    }
-
-    /* Folk */
-
-    if(style.pluck && beat%2===1){
-
-        const note=chord[
-            (beat/2)%chord.length
-        ];
-
-        synthNote(
-            note*2,
-            .35,
-            'triangle',
-            .025,
-            musicBus,
-            {
-                attack:.01,
-                release:.25,
-                filter:2800
-            }
-        );
-    }
-
-    /* Batería */
-
-    if(style.drums){
-
-        if(beat===0||beat===8){
-            kick(style.reggae?.05:.07);
-        }
-
-        if(
-            beat===4||
-            beat===12
-        ){
-            snare(style.jazz?.025:.032);
-        }
-
-        if(beat%2===0){
-            hat(style.loFi?.014:.012);
-        }
-    }
-
-    /* Reggae */
-
-    if(style.reggae){
-
-        if(beat%2===1){
-
-            chord.forEach(n=>{
-                synthNote(
-                    n*2,
-                    .18,
-                    'sine',
-                    .012,
-                    musicBus,
-                    {
-                        attack:.005,
-                        release:.12,
-                        filter:2300,
-                        reverb:false
-                    }
-                );
-            });
-        }
-    }
-
-    /* Jazz pequeñas notas de acompañamiento */
-
-    if(style.jazz && beat%4===3){
-
-        const n=chord[
-            (variation+beat)%chord.length
-        ];
-
-        synthNote(
-            n*2,
-            .3,
-            'triangle',
-            .018,
-            musicBus,
-            {
-                attack:.02,
-                release:.25,
-                filter:3000
-            }
-        );
-    }
-
-    step++;
-
-    if(step%128===0){
-        variation++;
-    }
+synthNote(
+n,
+style.pad?4.2:2,
+style.wave,
+style.pad?.022:.025,
+musicBus,
+{
+attack:style.pad?1:.15,
+release:style.pad?1.1:.6,
+filter:style.synth?1800:2200
 }
+);
+
+});
+
+}
+
+if(style.pad){
+padChord(chord);
+}
+
+}
+
+
+if(style.bass){
+
+const bassIndex=
+beat%style.bass.length;
+
+const bass=
+style.bass[bassIndex];
+
+if(bass){
+
+bassNote(
+bass,
+style.jazz?.35:.42,
+style.reggae?.07:.05
+);
+
+}
+
+}
+
+
+if(beat%2===0){
+
+const melody=
+style.melody[
+Math.floor(beat/2)%
+style.melody.length
+];
+
+if(melody){
+
+if(style.piano){
+
+pianoNote(
+melody,
+.65,
+.045
+);
+
+}else{
+
+synthNote(
+melody,
+style.space?.8:.55,
+style.synth?'sawtooth':
+style.pluck?'triangle':'sine',
+style.zen?.025:.035,
+musicBus,
+{
+attack:style.zen?.12:.025,
+release:style.space?.1:.4,
+filter:style.synth?2500:3500
+}
+);
+
+}
+
+}
+
+}
+
+
+if(style.space&&beat%2===1){
+arpeggio(chord);
+}
+
+
+if(style.pluck&&beat%2===1){
+
+const note=
+chord[(beat/2)%chord.length];
+
+synthNote(
+note*2,
+.35,
+'triangle',
+.025,
+musicBus,
+{
+attack:.01,
+release:.25,
+filter:2800
+}
+);
+
+}
+
+
+if(style.drums){
+
+if(beat===0||beat===8){
+
+kick(
+style.reggae?.05:.07
+);
+
+}
+
+if(beat===4||beat===12){
+
+snare(
+style.jazz?.025:.032
+);
+
+}
+
+if(beat%2===0){
+
+hat(
+style.loFi?.014:.012
+);
+
+}
+
+}
+
+
+if(style.reggae&&beat%2===1){
+
+chord.forEach(n=>{
+
+synthNote(
+n*2,
+.18,
+'sine',
+.012,
+musicBus,
+{
+attack:.005,
+release:.12,
+filter:2300,
+reverb:false
+}
+);
+
+});
+
+}
+
+
+if(style.jazz&&beat%4===3){
+
+const n=
+chord[
+(variation+beat)%chord.length
+];
+
+synthNote(
+n*2,
+.3,
+'triangle',
+.018,
+musicBus,
+{
+attack:.02,
+release:.25,
+filter:3000
+}
+);
+
+}
+
+step++;
+
+if(step%128===0){
+variation++;
+}
+
+}
+
 
 /* =========================================================
    CONTROLES MUSICALES
@@ -1652,111 +2206,143 @@ function playMusicStep(){
 
 async function toggleAudio(){
 
-    await initAudio();
+await initAudio();
 
-    const btn=
-        document.getElementById('playAudioBtn');
+const btn=
+document.getElementById(
+'playAudioBtn'
+);
 
-    if(isPlaying){
+if(isPlaying){
 
-        isPlaying=false;
+isPlaying=false;
 
-        clearInterval(musicTimer);
+clearInterval(musicTimer);
 
-        musicTimer=null;
+musicTimer=null;
 
-        btn.textContent='▶️ Reproducir';
-        btn.classList.remove('active');
+btn.textContent=
+'▶️ Reproducir';
 
-        document.getElementById('musicStatus').textContent=
-            '🎵 Música pausada';
+btn.classList.remove('active');
 
-        return;
-    }
+document.getElementById(
+'musicStatus'
+).textContent=
+'🎵 Música pausada';
 
-    isPlaying=true;
+return;
 
-    step=0;
-
-    variation++;
-
-    btn.textContent='⏸️ Pausar';
-    btn.classList.add('active');
-
-    startMusicTimer();
-
-    document.getElementById('musicStatus').textContent=
-        '🎶 Reproduciendo: '+
-        document.getElementById('styleSelect')
-        .selectedOptions[0].text;
 }
+
+isPlaying=true;
+
+step=0;
+
+variation++;
+
+btn.textContent=
+'⏸️ Pausar';
+
+btn.classList.add('active');
+
+startMusicTimer();
+
+document.getElementById(
+'musicStatus'
+).textContent=
+'🎶 Reproduciendo: '+
+document.getElementById(
+'styleSelect'
+).selectedOptions[0].text;
+
+}
+
 
 function startMusicTimer(){
 
-    clearInterval(musicTimer);
+clearInterval(musicTimer);
 
-    const style=styles[currentStyle];
+const style=
+styles[currentStyle];
 
-    const interval=
-        (60000/style.bpm)/2;
+const interval=
+(60000/style.bpm)/2;
 
-    playMusicStep();
+playMusicStep();
 
-    musicTimer=setInterval(
-        playMusicStep,
-        interval
-    );
+musicTimer=
+setInterval(
+playMusicStep,
+interval
+);
+
 }
+
 
 function changeStyle(){
 
-    currentStyle=
-        document.getElementById('styleSelect').value;
+currentStyle=
+document.getElementById(
+'styleSelect'
+).value;
 
-    variation++;
+variation++;
+step=0;
 
-    step=0;
+if(isPlaying){
 
-    if(isPlaying){
+startMusicTimer();
 
-        startMusicTimer();
+document.getElementById(
+'musicStatus'
+).textContent=
+'🎶 Reproduciendo: '+
+document.getElementById(
+'styleSelect'
+).selectedOptions[0].text;
 
-        document.getElementById('musicStatus').textContent=
-            '🎶 Reproduciendo: '+
-            document.getElementById('styleSelect')
-            .selectedOptions[0].text;
-    }
 }
+
+}
+
 
 async function newVariation(){
 
-    await initAudio();
+await initAudio();
 
-    variation++;
+variation++;
+step=0;
 
-    step=0;
+if(isPlaying){
 
-    if(isPlaying){
+startMusicTimer();
 
-        startMusicTimer();
+}else{
 
-    }else{
+const style=
+styles[currentStyle];
 
-        const style=styles[currentStyle];
+style.chords[0].forEach(n=>{
 
-        style.chords[0].forEach(n=>{
-            synthNote(
-                n,
-                1.5,
-                style.wave,
-                .025
-            );
-        });
-    }
+synthNote(
+n,
+1.5,
+style.wave,
+.025
+);
 
-    document.getElementById('musicStatus').textContent=
-        '✨ Nueva variación musical';
+});
+
 }
+
+document.getElementById(
+'musicStatus'
+).textContent=
+'✨ Nueva variación musical';
+
+}
+
 
 /* =========================================================
    SONIDOS AMBIENTALES
@@ -1764,237 +2350,297 @@ async function newVariation(){
 
 function createNoiseBuffer(seconds=2){
 
-    const buffer=audioCtx.createBuffer(
-        1,
-        audioCtx.sampleRate*seconds,
-        audioCtx.sampleRate
-    );
+const buffer=
+audioCtx.createBuffer(
+1,
+audioCtx.sampleRate*seconds,
+audioCtx.sampleRate
+);
 
-    const data=buffer.getChannelData(0);
+const data=
+buffer.getChannelData(0);
 
-    for(let i=0;i<data.length;i++){
-        data[i]=Math.random()*2-1;
-    }
+for(let i=0;i<data.length;i++){
 
-    return buffer;
+data[i]=Math.random()*2-1;
+
 }
+
+return buffer;
+
+}
+
 
 function getBaseGain(type){
 
-    const gains={
-        rain:.13,
-        ocean:.16,
-        fire:.09,
-        night:.025,
-        wind:.15,
-        river:.13,
-        birds:.12,
-        storm:.15
-    };
+const gains={
 
-    return gains[type]||.1;
+rain:.13,
+ocean:.16,
+fire:.09,
+night:.025,
+wind:.15,
+river:.13,
+birds:.12,
+storm:.15
+
+};
+
+return gains[type]||.1;
+
 }
 
-async function toggleAmbientNoise(type,active){
 
-    await initAudio();
+async function toggleAmbientNoise(
+type,
+active
+){
 
-    if(!active){
+await initAudio();
 
-        const node=ambientNodes[type];
+if(!active){
 
-        if(node){
+const node=
+ambientNodes[type];
 
-            try{
-                node.gain.gain.exponentialRampToValueAtTime(
-                    .0001,
-                    audioCtx.currentTime+.6
-                );
-            }catch(e){}
+if(node){
 
-            setTimeout(()=>{
+try{
 
-                try{
-                    if(node.source)node.source.stop();
-                    if(node.interval)clearInterval(node.interval);
-                }catch(e){}
+node.gain.gain.exponentialRampToValueAtTime(
+.0001,
+audioCtx.currentTime+.6
+);
 
-                ambientNodes[type]=null;
+}catch(e){}
 
-            },650);
-        }
+setTimeout(()=>{
 
-        return;
-    }
+try{
 
-    const slider=
-        document.getElementById(type+'Vol');
+if(node.source)
+node.source.stop();
 
-    const volume=
-        parseFloat(slider.value)*
-        getBaseGain(type);
+if(node.interval)
+clearInterval(node.interval);
 
-    /* Pájaros */
+}catch(e){}
 
-    if(type==='birds'){
+ambientNodes[type]=null;
 
-        const gain=audioCtx.createGain();
+},650);
 
-        gain.gain.value=volume;
-
-        gain.connect(masterBus);
-
-        const interval=setInterval(()=>{
-
-            if(Math.random()<.55)return;
-
-            const osc=audioCtx.createOscillator();
-            const g=audioCtx.createGain();
-
-            const start=
-                1700+Math.random()*1400;
-
-            osc.type='sine';
-
-            osc.frequency.setValueAtTime(
-                start,
-                audioCtx.currentTime
-            );
-
-            osc.frequency.exponentialRampToValueAtTime(
-                start*1.35,
-                audioCtx.currentTime+.12
-            );
-
-            g.gain.setValueAtTime(
-                .0001,
-                audioCtx.currentTime
-            );
-
-            g.gain.linearRampToValueAtTime(
-                volume*.8,
-                audioCtx.currentTime+.03
-            );
-
-            g.gain.exponentialRampToValueAtTime(
-                .0001,
-                audioCtx.currentTime+.3
-            );
-
-            osc.connect(g);
-            g.connect(gain);
-
-            osc.start();
-            osc.stop(audioCtx.currentTime+.32);
-
-        },850);
-
-        ambientNodes[type]={
-            source:null,
-            gain,
-            interval
-        };
-
-        return;
-    }
-
-    const source=
-        audioCtx.createBufferSource();
-
-    source.buffer=createNoiseBuffer(2);
-    source.loop=true;
-
-    const filter=
-        audioCtx.createBiquadFilter();
-
-    const gain=
-        audioCtx.createGain();
-
-    if(type==='rain'){
-
-        filter.type='lowpass';
-        filter.frequency.value=1800;
-
-    }else if(type==='ocean'){
-
-        filter.type='bandpass';
-        filter.frequency.value=500;
-        filter.Q.value=.7;
-
-    }else if(type==='fire'){
-
-        filter.type='bandpass';
-        filter.frequency.value=900;
-        filter.Q.value=.7;
-
-    }else if(type==='night'){
-
-        filter.type='highpass';
-        filter.frequency.value=3500;
-
-    }else if(type==='wind'){
-
-        filter.type='bandpass';
-        filter.frequency.value=250;
-        filter.Q.value=.8;
-
-    }else if(type==='river'){
-
-        filter.type='lowpass';
-        filter.frequency.value=900;
-
-    }else if(type==='storm'){
-
-        filter.type='lowpass';
-        filter.frequency.value=300;
-    }
-
-    gain.gain.value=.0001;
-
-    gain.gain.linearRampToValueAtTime(
-        volume,
-        audioCtx.currentTime+.7
-    );
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(masterBus);
-
-    source.start();
-
-    ambientNodes[type]={
-        source,
-        gain
-    };
 }
 
-function updateAmbientVolume(type,value){
+return;
 
-    if(
-        ambientNodes[type] &&
-        ambientNodes[type].gain
-    ){
-
-        ambientNodes[type].gain.gain.setTargetAtTime(
-            parseFloat(value)*getBaseGain(type),
-            audioCtx.currentTime,
-            .03
-        );
-    }
 }
+
+
+const slider=
+document.getElementById(
+type+'Vol'
+);
+
+const volume=
+parseFloat(slider.value)*
+getBaseGain(type);
+
+
+if(type==='birds'){
+
+const gain=
+audioCtx.createGain();
+
+gain.gain.value=volume;
+
+gain.connect(masterBus);
+
+const interval=
+setInterval(()=>{
+
+if(Math.random()<.55)return;
+
+const osc=
+audioCtx.createOscillator();
+
+const g=
+audioCtx.createGain();
+
+const start=
+1700+Math.random()*1400;
+
+osc.type='sine';
+
+osc.frequency.setValueAtTime(
+start,
+audioCtx.currentTime
+);
+
+osc.frequency.exponentialRampToValueAtTime(
+start*1.35,
+audioCtx.currentTime+.12
+);
+
+g.gain.setValueAtTime(
+.0001,
+audioCtx.currentTime
+);
+
+g.gain.linearRampToValueAtTime(
+volume*.8,
+audioCtx.currentTime+.03
+);
+
+g.gain.exponentialRampToValueAtTime(
+.0001,
+audioCtx.currentTime+.3
+);
+
+osc.connect(g);
+g.connect(gain);
+
+osc.start();
+
+osc.stop(
+audioCtx.currentTime+.32
+);
+
+},850);
+
+ambientNodes[type]={
+source:null,
+gain,
+interval
+};
+
+return;
+
+}
+
+
+const source=
+audioCtx.createBufferSource();
+
+source.buffer=
+createNoiseBuffer(2);
+
+source.loop=true;
+
+const filter=
+audioCtx.createBiquadFilter();
+
+const gain=
+audioCtx.createGain();
+
+
+if(type==='rain'){
+
+filter.type='lowpass';
+filter.frequency.value=1800;
+
+}else if(type==='ocean'){
+
+filter.type='bandpass';
+filter.frequency.value=500;
+filter.Q.value=.7;
+
+}else if(type==='fire'){
+
+filter.type='bandpass';
+filter.frequency.value=900;
+filter.Q.value=.7;
+
+}else if(type==='night'){
+
+filter.type='highpass';
+filter.frequency.value=3500;
+
+}else if(type==='wind'){
+
+filter.type='bandpass';
+filter.frequency.value=250;
+filter.Q.value=.8;
+
+}else if(type==='river'){
+
+filter.type='lowpass';
+filter.frequency.value=900;
+
+}else if(type==='storm'){
+
+filter.type='lowpass';
+filter.frequency.value=300;
+
+}
+
+
+gain.gain.value=.0001;
+
+gain.gain.linearRampToValueAtTime(
+volume,
+audioCtx.currentTime+.7
+);
+
+source.connect(filter);
+filter.connect(gain);
+gain.connect(masterBus);
+
+source.start();
+
+ambientNodes[type]={
+source,
+gain
+};
+
+}
+
+
+function updateAmbientVolume(
+type,
+value
+){
+
+if(
+ambientNodes[type] &&
+ambientNodes[type].gain
+){
+
+ambientNodes[type]
+.gain
+.gain
+.setTargetAtTime(
+parseFloat(value)*
+getBaseGain(type),
+audioCtx.currentTime,
+.03
+);
+
+}
+
+}
+
 
 /* =========================================================
    VOLUMEN
    ========================================================= */
 
-document.getElementById('masterVolume')
-.addEventListener('input',function(){
+document.getElementById(
+'masterVolume'
+)
+.addEventListener(
+'input',
+function(){
 
-    if(masterBus){
-        masterBus.gain.value=
-            parseFloat(this.value);
-    }
+if(masterBus){
+
+masterBus.gain.value=
+parseFloat(this.value);
+
+}
+
 });
+
 
 /* =========================================================
    VOZ
@@ -2002,22 +2648,25 @@ document.getElementById('masterVolume')
 
 function speakText(text){
 
-    if('speechSynthesis' in window){
+if('speechSynthesis' in window){
 
-        window.speechSynthesis.cancel();
+window.speechSynthesis.cancel();
 
-        const utterance=
-            new SpeechSynthesisUtterance(text);
+const utterance=
+new SpeechSynthesisUtterance(text);
 
-        utterance.lang='es-AR';
-        utterance.rate=.9;
-        utterance.pitch=1;
+utterance.lang='es-AR';
+utterance.rate=.9;
+utterance.pitch=1;
 
-        window.speechSynthesis.speak(
-            utterance
-        );
-    }
+window.speechSynthesis.speak(
+utterance
+);
+
 }
+
+}
+
 
 /* =========================================================
    RESPIRACIÓN 4-7-8
@@ -2025,161 +2674,503 @@ function speakText(text){
 
 let isBreathing=false;
 let breathingTimeout=null;
+let breathingCountdownTimeout=null;
+let breathingCycleNumber=0;
+
+
+/*
+   Limpiar temporizadores
+*/
+
+function clearBreathingTimers(){
+
+clearTimeout(
+breathingTimeout
+);
+
+clearTimeout(
+breathingCountdownTimeout
+);
+
+breathingTimeout=null;
+breathingCountdownTimeout=null;
+
+}
+
+
+/*
+   Voz específica del ejercicio
+*/
+
+function speakBreathing(text){
+
+if(!('speechSynthesis' in window))
+return;
+
+window.speechSynthesis.cancel();
+
+const utterance=
+new SpeechSynthesisUtterance(text);
+
+utterance.lang='es-AR';
+utterance.rate=.88;
+utterance.pitch=1;
+utterance.volume=1;
+
+window.speechSynthesis.speak(
+utterance
+);
+
+}
+
+
+/*
+   Detener respiración
+*/
 
 function stopBreathing(){
 
-    isBreathing=false;
+isBreathing=false;
 
-    clearTimeout(breathingTimeout);
+clearBreathingTimers();
 
-    const btn=
-        document.getElementById('breathingBtn');
+if('speechSynthesis' in window){
 
-    const box=
-        document.getElementById('breathingBox');
+window.speechSynthesis.cancel();
 
-    const circle=
-        document.getElementById('breathingCircle');
-
-    btn.textContent=
-        'Comenzar Respiración 4-7-8 🫁';
-
-    btn.style.background='#10ac84';
-
-    circle.className='breathing-circle';
-
-    box.style.display='none';
-
-    speakText('Ejercicio finalizado.');
 }
+
+const btn=
+document.getElementById(
+'breathingBtn'
+);
+
+const box=
+document.getElementById(
+'breathingBox'
+);
+
+const circle=
+document.getElementById(
+'breathingCircle'
+);
+
+const text=
+document.getElementById(
+'breathingText'
+);
+
+const counter=
+document.getElementById(
+'breathingCounter'
+);
+
+
+if(btn){
+
+btn.textContent=
+'Comenzar Respiración 4-7-8 🫁';
+
+btn.classList.remove(
+'breathing-stop'
+);
+
+btn.classList.add(
+'breathing-start'
+);
+
+}
+
+
+if(circle){
+
+circle.className=
+'breathing-circle prepare';
+
+circle.textContent=
+'Preparado';
+
+}
+
+
+if(text){
+
+text.textContent=
+'Ejercicio detenido';
+
+}
+
+
+if(counter){
+
+counter.textContent=
+'Cuando estés listo, podés comenzar nuevamente.';
+
+}
+
+
+setTimeout(()=>{
+
+if(!isBreathing&&box){
+
+box.style.display='none';
+
+}
+
+},900);
+
+}
+
+
+/*
+   Iniciar / detener
+*/
 
 function openBreathingExercise(){
 
-    if(isBreathing){
+if(isBreathing){
 
-        stopBreathing();
-        return;
-    }
+stopBreathing();
 
-    isBreathing=true;
+return;
 
-    const btn=
-        document.getElementById('breathingBtn');
-
-    const box=
-        document.getElementById('breathingBox');
-
-    btn.textContent=
-        'Detener Respiración ⏹️';
-
-    btn.style.background='#ee5253';
-
-    box.style.display='block';
-
-    breathingCycle();
 }
+
+isBreathing=true;
+
+breathingCycleNumber=0;
+
+const btn=
+document.getElementById(
+'breathingBtn'
+);
+
+const box=
+document.getElementById(
+'breathingBox'
+);
+
+const circle=
+document.getElementById(
+'breathingCircle'
+);
+
+const text=
+document.getElementById(
+'breathingText'
+);
+
+const counter=
+document.getElementById(
+'breathingCounter'
+);
+
+
+clearBreathingTimers();
+
+
+box.style.display='block';
+
+
+btn.textContent=
+'Detener Respiración ⏹️';
+
+btn.classList.remove(
+'breathing-start'
+);
+
+btn.classList.add(
+'breathing-stop'
+);
+
+
+circle.className=
+'breathing-circle prepare';
+
+circle.textContent=
+'Preparáte';
+
+
+text.textContent=
+'Vamos a comenzar...';
+
+
+counter.textContent=
+'Preparación';
+
+
+speakBreathing(
+'Vamos a comenzar el ejercicio de respiración cuatro, siete, ocho. Busca una posición cómoda y relaja los hombros.'
+);
+
+
+breathingTimeout=
+setTimeout(()=>{
+
+if(!isBreathing)return;
+
+speakBreathing(
+'Comenzamos.'
+);
+
+breathingTimeout=
+setTimeout(()=>{
+
+if(isBreathing){
+
+breathingCycle();
+
+}
+
+},1200);
+
+},3000);
+
+}
+
+
+/*
+   Ciclo 4-7-8
+*/
 
 function breathingCycle(){
 
-    if(!isBreathing)return;
+if(!isBreathing)return;
 
-    const text=
-        document.getElementById('breathingText');
+breathingCycleNumber++;
 
-    const counter=
-        document.getElementById('breathingCounter');
 
-    const circle=
-        document.getElementById('breathingCircle');
+/*
+   INHALAR 4
+*/
 
-    /* INHALAR */
+breathingPhase(
 
-    circle.className='breathing-circle inhale';
+'inhale',
 
-    text.textContent='Inhalá por la nariz 🌬️';
+'Inhalá',
 
-    speakText('Inhalá lentamente por la nariz.');
+'Inhalá lentamente por la nariz.',
 
-    let seconds=4;
+4,
 
-    counter.textContent=
-        'Inhalá durante '+seconds+' segundos';
+()=>{
 
-    breathingCountdown(
-        seconds,
-        ()=>{
-            if(!isBreathing)return;
+if(!isBreathing)return;
 
-            /* RETENER */
 
-            circle.className='breathing-circle hold';
+/*
+   RETENER 7
+*/
 
-            text.textContent='Mantené el aire 🫁';
+breathingPhase(
 
-            speakText('Mantené el aire.');
+'hold',
 
-            breathingCountdown(
-                7,
-                ()=>{
-                    if(!isBreathing)return;
+'Mantené',
 
-                    /* EXHALAR */
+'Mantené el aire suavemente.',
 
-                    circle.className='breathing-circle exhale';
+7,
 
-                    text.textContent=
-                        'Exhalá lentamente por la boca 💨';
+()=>{
 
-                    speakText(
-                        'Exhalá lentamente por la boca.'
-                    );
+if(!isBreathing)return;
 
-                    breathingCountdown(
-                        8,
-                        ()=>{
-                            if(isBreathing){
-                                breathingCycle();
-                            }
-                        }
-                    );
-                }
-            );
-        }
-    );
+
+/*
+   EXHALAR 8
+*/
+
+breathingPhase(
+
+'exhale',
+
+'Exhalá',
+
+'Exhalá lentamente por la boca.',
+
+8,
+
+()=>{
+
+if(!isBreathing)return;
+
+const counter=
+document.getElementById(
+'breathingCounter'
+);
+
+const text=
+document.getElementById(
+'breathingText'
+);
+
+const circle=
+document.getElementById(
+'breathingCircle'
+);
+
+
+circle.className=
+'breathing-circle prepare';
+
+circle.textContent=
+'Bien hecho';
+
+
+text.textContent=
+'Ciclo '+
+breathingCycleNumber+
+' completado 🌿';
+
+
+counter.textContent=
+'Preparando el siguiente ciclo...';
+
+
+speakBreathing(
+'Muy bien. Relaja el cuerpo.'
+);
+
+
+breathingTimeout=
+setTimeout(()=>{
+
+if(isBreathing){
+
+breathingCycle();
+
 }
 
-function breathingCountdown(seconds,callback){
+},2500);
 
-    let remaining=seconds;
-
-    const counter=
-        document.getElementById('breathingCounter');
-
-    counter.textContent=
-        remaining+' segundos';
-
-    function tick(){
-
-        if(!isBreathing)return;
-
-        remaining--;
-
-        if(remaining<=0){
-
-            callback();
-            return;
-        }
-
-        counter.textContent=
-            remaining+' segundos';
-
-        breathingTimeout=
-            setTimeout(tick,1000);
-    }
-
-    breathingTimeout=
-        setTimeout(tick,1000);
 }
+
+);
+
+}
+
+);
+
+}
+
+}
+
+
+/*
+   Fase de respiración
+*/
+
+function breathingPhase(
+
+phase,
+title,
+voiceText,
+seconds,
+callback
+
+){
+
+if(!isBreathing)return;
+
+const circle=
+document.getElementById(
+'breathingCircle'
+);
+
+const text=
+document.getElementById(
+'breathingText'
+);
+
+
+circle.className=
+'breathing-circle '+
+phase;
+
+circle.textContent=
+title;
+
+
+text.textContent=
+title;
+
+
+speakBreathing(
+voiceText
+);
+
+
+breathingCountdown(
+seconds,
+callback
+);
+
+}
+
+
+/*
+   Contador
+*/
+
+function breathingCountdown(
+seconds,
+callback
+){
+
+if(!isBreathing)return;
+
+let remaining=seconds;
+
+const counter=
+document.getElementById(
+'breathingCounter'
+);
+
+
+counter.textContent=
+remaining+
+' segundos';
+
+
+function tick(){
+
+if(!isBreathing)return;
+
+remaining--;
+
+if(remaining<=0){
+
+callback();
+
+return;
+
+}
+
+
+counter.textContent=
+remaining+
+' segundos';
+
+
+breathingCountdownTimeout=
+setTimeout(
+tick,
+1000
+);
+
+}
+
+
+breathingCountdownTimeout=
+setTimeout(
+tick,
+1000
+);
+
+}
+
 
 /* =========================================================
    EMOCIONES
@@ -2189,588 +3180,879 @@ let selectedEmotionValue='';
 let currentBase64Audio='';
 let currentBase64Photo='';
 
-document.querySelectorAll('.buttons-grid .btn')
+
+document.querySelectorAll(
+'.buttons-grid .btn'
+)
 .forEach(button=>{
 
-    button.addEventListener('click',()=>{
+button.addEventListener(
+'click',
+()=>{
 
-        selectedEmotionValue=
-            button.dataset.emotion;
+selectedEmotionValue=
+button.dataset.emotion;
 
-        document.querySelectorAll(
-            '.buttons-grid .btn'
-        ).forEach(btn=>
-            btn.classList.remove('selected')
-        );
 
-        button.classList.add('selected');
+document.querySelectorAll(
+'.buttons-grid .btn'
+)
+.forEach(btn=>
+btn.classList.remove(
+'selected'
+)
+);
 
-        speakText(
-            button.dataset.message
-        );
-    });
+
+button.classList.add(
+'selected'
+);
+
+
+speakText(
+button.dataset.message
+);
+
+}
+);
+
 });
+
 
 /* =========================================================
    FOTO
    ========================================================= */
 
-document.getElementById('photoInput')
-.addEventListener('change',function(event){
+document.getElementById(
+'photoInput'
+)
+.addEventListener(
+'change',
+function(event){
 
-    const file=event.target.files[0];
+const file=
+event.target.files[0];
 
-    if(!file)return;
+if(!file)return;
 
-    const reader=new FileReader();
+const reader=
+new FileReader();
 
-    reader.onload=()=>{
-        currentBase64Photo=reader.result;
+reader.onload=()=>{
 
-        const img=
-            document.getElementById(
-                'photoPreviewImg'
-            );
+currentBase64Photo=
+reader.result;
 
-        img.src=currentBase64Photo;
-        img.style.display='block';
-    };
+const img=
+document.getElementById(
+'photoPreviewImg'
+);
 
-    reader.readAsDataURL(file);
+img.src=
+currentBase64Photo;
+
+img.style.display=
+'block';
+
+};
+
+reader.readAsDataURL(file);
+
 });
 
-document.getElementById('savePhotoBtn')
-.addEventListener('click',saveStandalonePhoto);
+
+document.getElementById(
+'savePhotoBtn'
+)
+.addEventListener(
+'click',
+saveStandalonePhoto
+);
+
 
 function saveStandalonePhoto(){
 
-    if(!currentBase64Photo){
+if(!currentBase64Photo){
 
-        alert('Primero seleccioná una foto.');
-        return;
-    }
+alert(
+'Primero seleccioná una foto.'
+);
 
-    const entry={
-        child:
-            document.getElementById('childSelect').value,
+return;
 
-        emotion:
-            document.getElementById(
-                'photoEmotionSelect'
-            ).value,
-
-        note:'Foto guardada',
-
-        photo:currentBase64Photo,
-
-        audio:'',
-
-        date:new Date().toLocaleString()
-    };
-
-    const entries=
-        JSON.parse(
-            localStorage.getItem('emotionEntries')
-        )||[];
-
-    entries.push(entry);
-
-    localStorage.setItem(
-        'emotionEntries',
-        JSON.stringify(entries)
-    );
-
-    alert('¡Foto guardada con éxito! 🖼️');
-
-    currentBase64Photo='';
-
-    document.getElementById('photoInput').value='';
-
-    document.getElementById(
-        'photoPreviewImg'
-    ).style.display='none';
-
-    loadEntries();
 }
 
+
+const entry={
+
+child:
+document.getElementById(
+'childSelect'
+).value,
+
+emotion:
+document.getElementById(
+'photoEmotionSelect'
+).value,
+
+note:'Foto guardada',
+
+photo:
+currentBase64Photo,
+
+audio:'',
+
+date:
+new Date().toLocaleString()
+
+};
+
+
+const entries=
+JSON.parse(
+localStorage.getItem(
+'emotionEntries'
+)
+)||[];
+
+
+entries.push(entry);
+
+
+localStorage.setItem(
+'emotionEntries',
+JSON.stringify(entries)
+);
+
+
+alert(
+'¡Foto guardada con éxito! 🖼️'
+);
+
+
+currentBase64Photo='';
+
+document.getElementById(
+'photoInput'
+).value='';
+
+document.getElementById(
+'photoPreviewImg'
+).style.display='none';
+
+
+loadEntries();
+
+}
+
+
 /* =========================================================
-   GRABACIÓN DE AUDIO
+   GRABACIÓN
    ========================================================= */
 
 let mediaRecorder=null;
 let audioChunks=[];
 
-document.getElementById('recordBtn')
-.addEventListener('click',toggleRecording);
+
+document.getElementById(
+'recordBtn'
+)
+.addEventListener(
+'click',
+toggleRecording
+);
+
 
 async function toggleRecording(){
 
-    const button=
-        document.getElementById('recordBtn');
+const button=
+document.getElementById(
+'recordBtn'
+);
 
-    const playback=
-        document.getElementById('audioPlayback');
+const playback=
+document.getElementById(
+'audioPlayback'
+);
 
-    if(
-        mediaRecorder &&
-        mediaRecorder.state==='recording'
-    ){
 
-        mediaRecorder.stop();
+if(
+mediaRecorder &&
+mediaRecorder.state==='recording'
+){
 
-        button.textContent='Grabar Audio';
+mediaRecorder.stop();
 
-        return;
-    }
+button.textContent=
+'Grabar Audio';
 
-    try{
+return;
 
-        const stream=
-            await navigator.mediaDevices
-            .getUserMedia({
-                audio:true
-            });
-
-        let mimeType='';
-
-        if(MediaRecorder.isTypeSupported(
-            'audio/webm'
-        )){
-            mimeType='audio/webm';
-        }
-
-        mediaRecorder=
-            mimeType
-            ?new MediaRecorder(stream,{mimeType})
-            :new MediaRecorder(stream);
-
-        audioChunks=[];
-
-        mediaRecorder.ondataavailable=
-            event=>{
-                if(event.data.size>0){
-                    audioChunks.push(event.data);
-                }
-            };
-
-        mediaRecorder.onstop=()=>{
-
-            stream.getTracks().forEach(
-                track=>track.stop()
-            );
-
-            const blob=
-                new Blob(
-                    audioChunks,
-                    {
-                        type:mediaRecorder.mimeType
-                    }
-                );
-
-            const reader=new FileReader();
-
-            reader.onloadend=()=>{
-
-                currentBase64Audio=
-                    reader.result;
-
-                playback.src=
-                    currentBase64Audio;
-
-                playback.style.display='block';
-            };
-
-            reader.readAsDataURL(blob);
-        };
-
-        mediaRecorder.start();
-
-        button.textContent=
-            'Detener Grabación ⏹️';
-
-    }catch(error){
-
-        alert(
-            'No se pudo acceder al micrófono. '+
-            'Verificá los permisos del navegador.'
-        );
-    }
 }
+
+
+try{
+
+const stream=
+await navigator.mediaDevices
+.getUserMedia({
+audio:true
+});
+
+
+let mimeType='';
+
+
+if(
+MediaRecorder.isTypeSupported(
+'audio/webm'
+)
+){
+
+mimeType='audio/webm';
+
+}
+
+
+mediaRecorder=
+mimeType
+?new MediaRecorder(
+stream,
+{mimeType}
+)
+:new MediaRecorder(
+stream
+);
+
+
+audioChunks=[];
+
+
+mediaRecorder.ondataavailable=
+event=>{
+
+if(event.data.size>0){
+
+audioChunks.push(
+event.data
+);
+
+}
+
+};
+
+
+mediaRecorder.onstop=()=>{
+
+stream.getTracks().forEach(
+track=>
+track.stop()
+);
+
+
+const blob=
+new Blob(
+audioChunks,
+{
+type:
+mediaRecorder.mimeType
+}
+);
+
+
+const reader=
+new FileReader();
+
+
+reader.onloadend=()=>{
+
+currentBase64Audio=
+reader.result;
+
+playback.src=
+currentBase64Audio;
+
+playback.style.display=
+'block';
+
+};
+
+
+reader.readAsDataURL(blob);
+
+};
+
+
+mediaRecorder.start();
+
+button.textContent=
+'Detener Grabación ⏹️';
+
+
+}catch(error){
+
+alert(
+'No se pudo acceder al micrófono. Verificá los permisos del navegador.'
+);
+
+}
+
+}
+
 
 /* =========================================================
    GUARDAR REGISTRO
    ========================================================= */
 
-document.getElementById('saveEntryBtn')
-.addEventListener('click',saveEntry);
+document.getElementById(
+'saveEntryBtn'
+)
+.addEventListener(
+'click',
+saveEntry
+);
+
 
 function saveEntry(){
 
-    const entry={
-        child:
-            document.getElementById(
-                'childSelect'
-            ).value,
+const entry={
 
-        emotion:
-            selectedEmotionValue||
-            'No especificada',
+child:
+document.getElementById(
+'childSelect'
+).value,
 
-        note:
-            document.getElementById(
-                'noteInput'
-            ).value,
+emotion:
+selectedEmotionValue||
+'No especificada',
 
-        photo:currentBase64Photo,
+note:
+document.getElementById(
+'noteInput'
+).value,
 
-        audio:currentBase64Audio,
+photo:
+currentBase64Photo,
 
-        date:new Date().toLocaleString()
-    };
+audio:
+currentBase64Audio,
 
-    if(
-        !entry.note.trim() &&
-        !entry.photo &&
-        !entry.audio &&
-        entry.emotion==='No especificada'
-    ){
+date:
+new Date().toLocaleString()
 
-        alert(
-            'Agregá una emoción, nota, foto o audio antes de guardar.'
-        );
+};
 
-        return;
-    }
 
-    const entries=
-        JSON.parse(
-            localStorage.getItem('emotionEntries')
-        )||[];
+if(
+!entry.note.trim() &&
+!entry.photo &&
+!entry.audio &&
+entry.emotion==='No especificada'
+){
 
-    entries.push(entry);
+alert(
+'Agregá una emoción, nota, foto o audio antes de guardar.'
+);
 
-    localStorage.setItem(
-        'emotionEntries',
-        JSON.stringify(entries)
-    );
+return;
 
-    alert('¡Registro guardado con éxito! 🎉');
-
-    document.getElementById('noteInput').value='';
-
-    document.getElementById('photoInput').value='';
-
-    document.getElementById(
-        'photoPreviewImg'
-    ).style.display='none';
-
-    document.getElementById(
-        'audioPlayback'
-    ).style.display='none';
-
-    document.getElementById(
-        'audioPlayback'
-    ).src='';
-
-    document.querySelectorAll(
-        '.buttons-grid .btn'
-    ).forEach(btn=>
-        btn.classList.remove('selected')
-    );
-
-    selectedEmotionValue='';
-    currentBase64Audio='';
-    currentBase64Photo='';
-
-    loadEntries();
 }
+
+
+const entries=
+JSON.parse(
+localStorage.getItem(
+'emotionEntries'
+)
+)||[];
+
+
+entries.push(entry);
+
+
+localStorage.setItem(
+'emotionEntries',
+JSON.stringify(entries)
+);
+
+
+alert(
+'¡Registro guardado con éxito! 🎉'
+);
+
+
+document.getElementById(
+'noteInput'
+).value='';
+
+document.getElementById(
+'photoInput'
+).value='';
+
+document.getElementById(
+'photoPreviewImg'
+).style.display=
+'none';
+
+document.getElementById(
+'audioPlayback'
+).style.display=
+'none';
+
+document.getElementById(
+'audioPlayback'
+).src='';
+
+
+document.querySelectorAll(
+'.buttons-grid .btn'
+)
+.forEach(btn=>
+btn.classList.remove(
+'selected'
+)
+);
+
+
+selectedEmotionValue='';
+currentBase64Audio='';
+currentBase64Photo='';
+
+
+loadEntries();
+
+}
+
 
 /* =========================================================
    GRATITUD
    ========================================================= */
 
-document.getElementById('saveGratitudeBtn')
-.addEventListener('click',saveGratitude);
+document.getElementById(
+'saveGratitudeBtn'
+)
+.addEventListener(
+'click',
+saveGratitude
+);
+
 
 function saveGratitude(){
 
-    const input=
-        document.getElementById(
-            'gratitudeInput'
-        );
+const input=
+document.getElementById(
+'gratitudeInput'
+);
 
-    if(!input.value.trim())return;
+if(!input.value.trim())return;
 
-    const items=
-        JSON.parse(
-            localStorage.getItem(
-                'gratitudeEntries'
-            )
-        )||[];
 
-    items.push({
-        text:input.value.trim(),
-        date:new Date().toLocaleString()
-    });
+const items=
+JSON.parse(
+localStorage.getItem(
+'gratitudeEntries'
+)
+)||[];
 
-    localStorage.setItem(
-        'gratitudeEntries',
-        JSON.stringify(items)
-    );
 
-    input.value='';
+items.push({
 
-    alert('¡Gratitud guardada! ⭐');
+text:
+input.value.trim(),
 
-    loadGratitude();
+date:
+new Date().toLocaleString()
+
+});
+
+
+localStorage.setItem(
+'gratitudeEntries',
+JSON.stringify(items)
+);
+
+
+input.value='';
+
+alert(
+'¡Gratitud guardada! ⭐'
+);
+
+
+loadGratitude();
+
 }
+
 
 /* =========================================================
    ESTRATEGIAS
    ========================================================= */
 
-document.getElementById('saveStrategyBtn')
-.addEventListener('click',saveStrategy);
+document.getElementById(
+'saveStrategyBtn'
+)
+.addEventListener(
+'click',
+saveStrategy
+);
+
 
 function saveStrategy(){
 
-    const input=
-        document.getElementById(
-            'strategyInput'
-        );
+const input=
+document.getElementById(
+'strategyInput'
+);
 
-    if(!input.value.trim())return;
+if(!input.value.trim())return;
 
-    const items=
-        JSON.parse(
-            localStorage.getItem(
-                'strategyEntries'
-            )
-        )||[];
 
-    items.push({
-        text:input.value.trim(),
-        date:new Date().toLocaleString()
-    });
+const items=
+JSON.parse(
+localStorage.getItem(
+'strategyEntries'
+)
+)||[];
 
-    localStorage.setItem(
-        'strategyEntries',
-        JSON.stringify(items)
-    );
 
-    input.value='';
+items.push({
 
-    alert('¡Estrategia guardada! 💡');
+text:
+input.value.trim(),
 
-    loadStrategies();
+date:
+new Date().toLocaleString()
+
+});
+
+
+localStorage.setItem(
+'strategyEntries',
+JSON.stringify(items)
+);
+
+
+input.value='';
+
+alert(
+'¡Estrategia guardada! 💡'
+);
+
+
+loadStrategies();
+
 }
+
 
 /* =========================================================
    MICROEXPRESIONES
    ========================================================= */
 
-document.getElementById('saveMicroBtn')
-.addEventListener('click',saveMicroexpression);
+document.getElementById(
+'saveMicroBtn'
+)
+.addEventListener(
+'click',
+saveMicroexpression
+);
+
 
 function saveMicroexpression(){
 
-    const input=
-        document.getElementById(
-            'microexpressionInput'
-        );
+const input=
+document.getElementById(
+'microexpressionInput'
+);
 
-    if(!input.value.trim())return;
+if(!input.value.trim())return;
 
-    const items=
-        JSON.parse(
-            localStorage.getItem(
-                'microexpressionEntries'
-            )
-        )||[];
 
-    items.push({
+const items=
+JSON.parse(
+localStorage.getItem(
+'microexpressionEntries'
+)
+)||[];
 
-        child:
-            document.getElementById(
-                'childSelect'
-            ).value,
 
-        text:input.value.trim(),
+items.push({
 
-        date:new Date().toLocaleString()
+child:
+document.getElementById(
+'childSelect'
+).value,
 
-    });
+text:
+input.value.trim(),
 
-    localStorage.setItem(
-        'microexpressionEntries',
-        JSON.stringify(items)
-    );
+date:
+new Date().toLocaleString()
 
-    input.value='';
+});
 
-    alert('¡Observación guardada! 👀');
 
-    loadMicroexpressions();
+localStorage.setItem(
+'microexpressionEntries',
+JSON.stringify(items)
+);
+
+
+input.value='';
+
+alert(
+'¡Observación guardada! 👀'
+);
+
+
+loadMicroexpressions();
+
 }
+
 
 /* =========================================================
    ELIMINAR
    ========================================================= */
 
-function deleteItem(storageKey,index){
+function deleteItem(
+storageKey,
+index
+){
 
-    const items=
-        JSON.parse(
-            localStorage.getItem(storageKey)
-        )||[];
+const items=
+JSON.parse(
+localStorage.getItem(
+storageKey
+)
+)||[];
 
-    if(!confirm('¿Querés eliminar este registro?')){
-        return;
-    }
 
-    items.splice(index,1);
+if(
+!confirm(
+'¿Querés eliminar este registro?'
+)
+){
 
-    localStorage.setItem(
-        storageKey,
-        JSON.stringify(items)
-    );
+return;
 
-    if(storageKey==='emotionEntries'){
-        loadEntries();
-    }
-
-    if(storageKey==='gratitudeEntries'){
-        loadGratitude();
-    }
-
-    if(storageKey==='strategyEntries'){
-        loadStrategies();
-    }
-
-    if(storageKey==='microexpressionEntries'){
-        loadMicroexpressions();
-    }
 }
 
+
+items.splice(
+index,
+1
+);
+
+
+localStorage.setItem(
+storageKey,
+JSON.stringify(items)
+);
+
+
+if(storageKey==='emotionEntries'){
+loadEntries();
+}
+
+if(storageKey==='gratitudeEntries'){
+loadGratitude();
+}
+
+if(storageKey==='strategyEntries'){
+loadStrategies();
+}
+
+if(storageKey==='microexpressionEntries'){
+loadMicroexpressions();
+}
+
+}
+
+
 /* =========================================================
-   HISTORIAL DE REGISTROS
+   HISTORIAL
    ========================================================= */
 
 function loadEntries(){
 
-    const list=
-        document.getElementById(
-            'entriesList'
-        );
+const list=
+document.getElementById(
+'entriesList'
+);
 
-    const filter=
-        document.getElementById(
-            'filterChildSelect'
-        ).value;
+const filter=
+document.getElementById(
+'filterChildSelect'
+).value;
 
-    list.innerHTML='';
 
-    const entries=
-        JSON.parse(
-            localStorage.getItem(
-                'emotionEntries'
-            )
-        )||[];
+list.innerHTML='';
 
-    entries.forEach((item,index)=>{
 
-        const child=item.child||'General';
+const entries=
+JSON.parse(
+localStorage.getItem(
+'emotionEntries'
+)
+)||[];
 
-        if(
-            filter!=='Todos' &&
-            child!==filter
-        ){
-            return;
-        }
 
-        const li=
-            document.createElement('li');
+entries.forEach(
+(item,index)=>{
 
-        const badge=
-            document.createElement('span');
+const child=
+item.child||
+'General';
 
-        badge.className='badge-child';
 
-        badge.textContent=
-            '👤 '+child;
+if(
+filter!=='Todos' &&
+child!==filter
+){
 
-        li.appendChild(badge);
+return;
 
-        li.appendChild(
-            document.createElement('br')
-        );
-
-        const strong=
-            document.createElement('strong');
-
-        strong.textContent=
-            item.date+' - Emoción: '+
-            item.emotion;
-
-        li.appendChild(strong);
-
-        li.appendChild(
-            document.createElement('br')
-        );
-
-        if(item.note){
-
-            li.appendChild(
-                document.createTextNode(
-                    item.note
-                )
-            );
-        }
-
-        if(item.photo){
-
-            const img=
-                document.createElement('img');
-
-            img.src=item.photo;
-
-            img.className='entry-img';
-
-            li.appendChild(img);
-        }
-
-        if(item.audio){
-
-            const audio=
-                document.createElement('audio');
-
-            audio.src=item.audio;
-            audio.controls=true;
-            audio.style.width='100%';
-            audio.style.marginTop='8px';
-
-            li.appendChild(audio);
-        }
-
-        const deleteBtn=
-            document.createElement('button');
-
-        deleteBtn.className='btn-delete';
-
-        deleteBtn.textContent='Eliminar';
-
-        deleteBtn.onclick=()=>{
-            deleteItem(
-                'emotionEntries',
-                index
-            );
-        };
-
-        li.appendChild(deleteBtn);
-
-        list.appendChild(li);
-    });
 }
+
+
+const li=
+document.createElement(
+'li'
+);
+
+
+const badge=
+document.createElement(
+'span'
+);
+
+badge.className=
+'badge-child';
+
+badge.textContent=
+'👤 '+child;
+
+li.appendChild(
+badge
+);
+
+li.appendChild(
+document.createElement(
+'br'
+)
+);
+
+
+const strong=
+document.createElement(
+'strong'
+);
+
+strong.textContent=
+item.date+
+' - Emoción: '+
+item.emotion;
+
+li.appendChild(
+strong
+);
+
+li.appendChild(
+document.createElement(
+'br'
+)
+);
+
+
+if(item.note){
+
+li.appendChild(
+document.createTextNode(
+item.note
+)
+);
+
+}
+
+
+if(item.photo){
+
+const img=
+document.createElement(
+'img'
+);
+
+img.src=
+item.photo;
+
+img.className=
+'entry-img';
+
+li.appendChild(
+img
+);
+
+}
+
+
+if(item.audio){
+
+const audio=
+document.createElement(
+'audio'
+);
+
+audio.src=
+item.audio;
+
+audio.controls=true;
+
+audio.style.width=
+'100%';
+
+audio.style.marginTop=
+'8px';
+
+li.appendChild(
+audio
+);
+
+}
+
+
+const deleteBtn=
+document.createElement(
+'button'
+);
+
+deleteBtn.className=
+'btn-delete';
+
+deleteBtn.textContent=
+'Eliminar';
+
+
+deleteBtn.onclick=()=>{
+
+deleteItem(
+'emotionEntries',
+index
+);
+
+};
+
+
+li.appendChild(
+deleteBtn
+);
+
+list.appendChild(
+li
+);
+
+});
+
+}
+
 
 /* =========================================================
    CARGAR GRATITUD
@@ -2778,49 +4060,72 @@ function loadEntries(){
 
 function loadGratitude(){
 
-    const list=
-        document.getElementById(
-            'gratitudeList'
-        );
+const list=
+document.getElementById(
+'gratitudeList'
+);
 
-    list.innerHTML='';
+list.innerHTML='';
 
-    const items=
-        JSON.parse(
-            localStorage.getItem(
-                'gratitudeEntries'
-            )
-        )||[];
 
-    items.forEach((item,index)=>{
+const items=
+JSON.parse(
+localStorage.getItem(
+'gratitudeEntries'
+)
+)||[];
 
-        const li=
-            document.createElement('li');
 
-        li.innerHTML=
-            '<strong>'+
-            escapeHTML(item.date)+
-            '</strong>: '+
-            escapeHTML(item.text);
+items.forEach(
+(item,index)=>{
 
-        const btn=
-            document.createElement('button');
+const li=
+document.createElement(
+'li'
+);
 
-        btn.className='btn-delete';
-        btn.textContent='Eliminar';
 
-        btn.onclick=()=>{
-            deleteItem(
-                'gratitudeEntries',
-                index
-            );
-        };
+li.innerHTML=
+'<strong>'+
+escapeHTML(item.date)+
+'</strong>: '+
+escapeHTML(item.text);
 
-        li.appendChild(btn);
 
-        list.appendChild(li);
-    });
+const btn=
+document.createElement(
+'button'
+);
+
+btn.className=
+'btn-delete';
+
+btn.textContent=
+'Eliminar';
+
+
+btn.onclick=()=>{
+
+deleteItem(
+'gratitudeEntries',
+index
+);
+
+};
+
+
+li.appendChild(
+btn
+);
+
+list.appendChild(
+li
+);
+
+});
+
 }
+
 
 /* =========================================================
    CARGAR ESTRATEGIAS
@@ -2828,49 +4133,72 @@ function loadGratitude(){
 
 function loadStrategies(){
 
-    const list=
-        document.getElementById(
-            'strategyList'
-        );
+const list=
+document.getElementById(
+'strategyList'
+);
 
-    list.innerHTML='';
+list.innerHTML='';
 
-    const items=
-        JSON.parse(
-            localStorage.getItem(
-                'strategyEntries'
-            )
-        )||[];
 
-    items.forEach((item,index)=>{
+const items=
+JSON.parse(
+localStorage.getItem(
+'strategyEntries'
+)
+)||[];
 
-        const li=
-            document.createElement('li');
 
-        li.innerHTML=
-            '<strong>'+
-            escapeHTML(item.date)+
-            '</strong>: '+
-            escapeHTML(item.text);
+items.forEach(
+(item,index)=>{
 
-        const btn=
-            document.createElement('button');
+const li=
+document.createElement(
+'li'
+);
 
-        btn.className='btn-delete';
-        btn.textContent='Eliminar';
 
-        btn.onclick=()=>{
-            deleteItem(
-                'strategyEntries',
-                index
-            );
-        };
+li.innerHTML=
+'<strong>'+
+escapeHTML(item.date)+
+'</strong>: '+
+escapeHTML(item.text);
 
-        li.appendChild(btn);
 
-        list.appendChild(li);
-    });
+const btn=
+document.createElement(
+'button'
+);
+
+btn.className=
+'btn-delete';
+
+btn.textContent=
+'Eliminar';
+
+
+btn.onclick=()=>{
+
+deleteItem(
+'strategyEntries',
+index
+);
+
+};
+
+
+li.appendChild(
+btn
+);
+
+list.appendChild(
+li
+);
+
+});
+
 }
+
 
 /* =========================================================
    CARGAR MICROEXPRESIONES
@@ -2878,150 +4206,223 @@ function loadStrategies(){
 
 function loadMicroexpressions(){
 
-    const list=
-        document.getElementById(
-            'microexpressionList'
-        );
+const list=
+document.getElementById(
+'microexpressionList'
+);
 
-    list.innerHTML='';
+list.innerHTML='';
 
-    const items=
-        JSON.parse(
-            localStorage.getItem(
-                'microexpressionEntries'
-            )
-        )||[];
 
-    items.forEach((item,index)=>{
+const items=
+JSON.parse(
+localStorage.getItem(
+'microexpressionEntries'
+)
+)||[];
 
-        const li=
-            document.createElement('li');
 
-        li.innerHTML=
-            '<strong>'+
-            escapeHTML(item.date)+
-            '</strong> ('+
-            escapeHTML(item.child||'General')+
-            '): '+
-            escapeHTML(item.text);
+items.forEach(
+(item,index)=>{
 
-        const btn=
-            document.createElement('button');
+const li=
+document.createElement(
+'li'
+);
 
-        btn.className='btn-delete';
-        btn.textContent='Eliminar';
 
-        btn.onclick=()=>{
-            deleteItem(
-                'microexpressionEntries',
-                index
-            );
-        };
+li.innerHTML=
+'<strong>'+
+escapeHTML(item.date)+
+'</strong> ('+
+escapeHTML(
+item.child||
+'General'
+)+
+'): '+
+escapeHTML(item.text);
 
-        li.appendChild(btn);
 
-        list.appendChild(li);
-    });
+const btn=
+document.createElement(
+'button'
+);
+
+btn.className=
+'btn-delete';
+
+btn.textContent=
+'Eliminar';
+
+
+btn.onclick=()=>{
+
+deleteItem(
+'microexpressionEntries',
+index
+);
+
+};
+
+
+li.appendChild(
+btn
+);
+
+list.appendChild(
+li
+);
+
+});
+
 }
 
+
 /* =========================================================
-   SEGURIDAD PARA TEXTO DEL HISTORIAL
+   SEGURIDAD
    ========================================================= */
 
 function escapeHTML(text){
 
-    return String(text)
-        .replace(/&/g,'&amp;')
-        .replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;')
-        .replace(/"/g,'&quot;')
-        .replace(/'/g,'&#039;');
+return String(text)
+
+.replace(
+/&/g,
+'&amp;'
+)
+
+.replace(
+/</g,
+'&lt;'
+)
+
+.replace(
+/>/g,
+'&gt;'
+)
+
+.replace(
+/"/g,
+'&quot;'
+)
+
+.replace(
+/'/g,
+'&#039;'
+);
+
 }
+
 
 /* =========================================================
    EVENTOS
    ========================================================= */
 
-document.getElementById('playAudioBtn')
+document.getElementById(
+'playAudioBtn'
+)
 .addEventListener(
-    'click',
-    toggleAudio
+'click',
+toggleAudio
 );
 
-document.getElementById('nextMusicBtn')
+
+document.getElementById(
+'nextMusicBtn'
+)
 .addEventListener(
-    'click',
-    newVariation
+'click',
+newVariation
 );
 
-document.getElementById('styleSelect')
+
+document.getElementById(
+'styleSelect'
+)
 .addEventListener(
-    'change',
-    changeStyle
+'change',
+changeStyle
 );
 
-document.getElementById('filterChildSelect')
+
+document.getElementById(
+'filterChildSelect'
+)
 .addEventListener(
-    'change',
-    loadEntries
+'change',
+loadEntries
 );
 
-/* Ambientales */
+
+/* =========================================================
+   AMBIENTALES
+   ========================================================= */
 
 [
-    'rain',
-    'ocean',
-    'fire',
-    'night',
-    'wind',
-    'river',
-    'birds',
-    'storm'
-].forEach(type=>{
+'rain',
+'ocean',
+'fire',
+'night',
+'wind',
+'river',
+'birds',
+'storm'
+]
+.forEach(
+type=>{
 
-    document.getElementById(type+'Noise')
-    .addEventListener(
-        'change',
-        function(){
-            toggleAmbientNoise(
-                type,
-                this.checked
-            );
-        }
-    );
+document.getElementById(
+type+'Noise'
+)
+.addEventListener(
+'change',
+function(){
 
-    document.getElementById(type+'Vol')
-    .addEventListener(
-        'input',
-        function(){
-            updateAmbientVolume(
-                type,
-                this.value
-            );
-        }
-    );
+toggleAmbientNoise(
+type,
+this.checked
+);
+
+}
+);
+
+
+document.getElementById(
+type+'Vol'
+)
+.addEventListener(
+'input',
+function(){
+
+updateAmbientVolume(
+type,
+this.value
+);
+
+}
+);
+
 });
 
-/* Respiración */
-
-document.getElementById('breathingBtn')
-.addEventListener(
-    'click',
-    openBreathingExercise
-);
 
 /* =========================================================
    INICIO
    ========================================================= */
 
-window.addEventListener('load',()=>{
+window.addEventListener(
+'load',
+()=>{
 
-    loadEntries();
-    loadGratitude();
-    loadStrategies();
-    loadMicroexpressions();
+loadEntries();
 
-});
+loadGratitude();
+
+loadStrategies();
+
+loadMicroexpressions();
+
+}
+);
 
 </script>
 
