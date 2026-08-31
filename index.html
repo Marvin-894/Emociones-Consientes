@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -228,8 +227,7 @@ select.child-select{
     flex-direction:column;
     align-items:center;
     gap:4px;
-    width:64px;
-    position:relative;
+    width:60px;
 }
 
 .btn{
@@ -260,32 +258,6 @@ select.child-select{
     color:var(--text-dark);
     font-weight:600;
     text-align:center;
-}
-
-.btn-undo-emotion{
-    background:#ff6b6b;
-    color:#fff;
-    border:none;
-    border-radius:50%;
-    width:18px;
-    height:18px;
-    font-size:.65em;
-    cursor:pointer;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    position:absolute;
-    top:-4px;
-    right:4px;
-    box-shadow:0 2px 4px rgba(0,0,0,0.2);
-}
-
-.btn-undo-emotion:hover{
-    background:#ee5253;
-}
-
-.emotion-card.selected-card .btn-undo-emotion{
-    display:flex;
 }
 
 #happy{background:#feca57}
@@ -717,16 +689,16 @@ Diseñada para immersión profunda.
 <h3>¿Cómo te sientes hoy? 🎈</h3>
 <p>Tocá la emoción que mejor exprese lo que sentís.</p>
 <div class="buttons-grid">
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="happy" data-emotion="Alegre" data-message="Me alegra verte así, ¡a disfrutar este momento!">😊</button><span class="emotion-label">Alegre</span></div>
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="sad" data-emotion="Triste" data-message="Está bien sentirse triste, respirá profundo, estoy aquí contigo.">😢</button><span class="emotion-label">Triste</span></div>
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="angry" data-emotion="Enojado" data-message="Sentí esa energía, pero recordá calmarte antes de actuar.">😡</button><span class="emotion-label">Enojado</span></div>
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="calm" data-emotion="En Calma" data-message="Mantené esa paz interior y disfrutala.">😌</button><span class="emotion-label">En Calma</span></div>
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="fear" data-emotion="Miedo" data-message="El miedo nos protege, pero podemos superarlo juntos paso a paso.">😨</button><span class="emotion-label">Miedo</span></div>
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="surprise" data-emotion="Sorprendido" data-message="¡Sorpresas que alegran! Vamos a explorar qué sucedió.">😲</button><span class="emotion-label">Sorprendido</span></div>
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="anxiety" data-emotion="Ansiedad" data-message="Inhalá, exhalá. Todo estará bien, un paso a la vez.">😰</button><span class="emotion-label">Ansiedad</span></div>
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="envy" data-emotion="Envidia" data-message="Todos somos únicos y especiales a nuestra manera.">😒</button><span class="emotion-label">Envidia</span></div>
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="boredom" data-emotion="Aburrimiento" data-message="Un buen momento para dejar volar la imaginación.">🥱</button><span class="emotion-label">Aburrimiento</span></div>
-<div class="emotion-card"><button class="btn-undo-emotion" title="Borrar selección">✖</button><button class="btn" id="shame" data-emotion="Vergüenza" data-message="Nadie es perfecto, todos aprendemos de los errores.">😳</button><span class="emotion-label">Vergüenza</span></div>
+<div class="emotion-card"><button class="btn" id="happy" data-emotion="Alegre" data-message="Me alegra verte así, ¡a disfrutar este momento!">😊</button><span class="emotion-label">Alegre</span></div>
+<div class="emotion-card"><button class="btn" id="sad" data-emotion="Triste" data-message="Está bien sentirse triste, respirá profundo, estoy aquí contigo.">😢</button><span class="emotion-label">Triste</span></div>
+<div class="emotion-card"><button class="btn" id="angry" data-emotion="Enojado" data-message="Sentí esa energía, pero recordá calmarte antes de actuar.">😡</button><span class="emotion-label">Enojado</span></div>
+<div class="emotion-card"><button class="btn" id="calm" data-emotion="En Calma" data-message="Mantené esa paz interior y disfrutala.">😌</button><span class="emotion-label">En Calma</span></div>
+<div class="emotion-card"><button class="btn" id="fear" data-emotion="Miedo" data-message="El miedo nos protege, pero podemos superarlo juntos paso a paso.">😨</button><span class="emotion-label">Miedo</span></div>
+<div class="emotion-card"><button class="btn" id="surprise" data-emotion="Sorprendido" data-message="¡Sorpresas que alegran! Vamos a explorar qué sucedió.">😲</button><span class="emotion-label">Sorprendido</span></div>
+<div class="emotion-card"><button class="btn" id="anxiety" data-emotion="Ansiedad" data-message="Inhalá, exhalá. Todo estará bien, un paso a la vez.">😰</button><span class="emotion-label">Ansiedad</span></div>
+<div class="emotion-card"><button class="btn" id="envy" data-emotion="Envidia" data-message="Todos somos únicos y especiales a nuestra manera.">😒</button><span class="emotion-label">Envidia</span></div>
+<div class="emotion-card"><button class="btn" id="boredom" data-emotion="Aburrimiento" data-message="Un buen momento para dejar volar la imaginación.">🥱</button><span class="emotion-label">Aburrimiento</span></div>
+<div class="emotion-card"><button class="btn" id="shame" data-emotion="Vergüenza" data-message="Nadie es perfecto, todos aprendemos de los errores.">😳</button><span class="emotion-label">Vergüenza</span></div>
 </div>
 </div>
 
@@ -1610,52 +1582,14 @@ let currentBase64Photo = '';
 document.querySelectorAll('.buttons-grid .btn').forEach(button => {
     button.addEventListener('click', () => {
         selectedEmotionValue = button.dataset.emotion;
-        document.querySelectorAll('.buttons-grid .btn').forEach(btn => {
-            btn.classList.remove('selected');
-            if (btn.parentElement) btn.parentElement.classList.remove('selected-card');
-        });
-        
+        document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
         button.classList.add('selected');
-        if (button.parentElement) button.parentElement.classList.add('selected-card');
-        
         speakText(button.dataset.message);
 
         const selectedChild = document.getElementById('childSelect').value;
         saveWeeklyEmotion(selectedEmotionValue, selectedChild);
     });
 });
-
-document.querySelectorAll('.btn-undo-emotion').forEach(undoBtn => {
-    undoBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const card = undoBtn.parentElement;
-        const btn = card.querySelector('.btn');
-        const emotionToRemove = btn.dataset.emotion;
-        const selectedChild = document.getElementById('childSelect').value;
-
-        btn.classList.remove('selected');
-        card.classList.remove('selected-card');
-        selectedEmotionValue = '';
-
-        if('speechSynthesis' in window) window.speechSynthesis.cancel();
-
-        removeLastWeeklyEmotion(emotionToRemove, selectedChild);
-    });
-});
-
-function removeLastWeeklyEmotion(emotion, child){
-    let weeklyEntries = JSON.parse(localStorage.getItem('weeklyEmotionEntries')) || [];
-    
-    for(let i = weeklyEntries.length - 1; i >= 0; i--){
-        if(weeklyEntries[i].emotion === emotion && weeklyEntries[i].child === child){
-            weeklyEntries.splice(i, 1);
-            break;
-        }
-    }
-
-    localStorage.setItem('weeklyEmotionEntries', JSON.stringify(weeklyEntries));
-    loadWeeklyEmotions();
-}
 
 /* CONTROL SEMANAL DE EMOCIONES */
 function getWeekKey(date = new Date()){
@@ -1918,27 +1852,227 @@ function saveEntry(){
     const entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
     entries.push(entry);
     localStorage.setItem('emotionEntries', JSON.stringify(entries));
-    alert('¡Registro completo guardado con éxito! ✨');
 
-    // Limpieza
+    alert('¡Registro guardado con éxito! 🎉');
+
     document.getElementById('noteInput').value = '';
-    currentBase64Photo = '';
-    currentBase64Audio = '';
-    selectedEmotionValue = '';
     document.getElementById('photoInput').value = '';
     document.getElementById('photoPreviewImg').style.display = 'none';
     document.getElementById('audioPlayback').style.display = 'none';
-    document.querySelectorAll('.buttons-grid .btn').forEach(btn => {
-        btn.classList.remove('selected');
-        if (btn.parentElement) btn.parentElement.classList.remove('selected-card');
-    });
+    document.getElementById('audioPlayback').src = '';
+
+    document.querySelectorAll('.buttons-grid .btn').forEach(btn => btn.classList.remove('selected'));
+    selectedEmotionValue = '';
+    currentBase64Audio = '';
+    currentBase64Photo = '';
 
     loadEntries();
 }
 
-// Carga Inicial
+/* GRATITUD */
+document.getElementById('saveGratitudeBtn').addEventListener('click', saveGratitude);
+
+function saveGratitude(){
+    const input = document.getElementById('gratitudeInput');
+    if(!input.value.trim()) return;
+
+    const items = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+    items.push({text: input.value.trim(), date: new Date().toLocaleString()});
+    localStorage.setItem('gratitudeEntries', JSON.stringify(items));
+
+    input.value = '';
+    alert('¡Gratitud guardada! ⭐');
+    loadGratitude();
+}
+
+/* ESTRATEGIAS */
+document.getElementById('saveStrategyBtn').addEventListener('click', saveStrategy);
+
+function saveStrategy(){
+    const input = document.getElementById('strategyInput');
+    if(!input.value.trim()) return;
+
+    const items = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+    items.push({text: input.value.trim(), date: new Date().toLocaleString()});
+    localStorage.setItem('strategyEntries', JSON.stringify(items));
+
+    input.value = '';
+    alert('¡Estrategia guardada! 💡');
+    loadStrategies();
+}
+
+/* MICROEXPRESIONES */
+document.getElementById('saveMicroBtn').addEventListener('click', saveMicroexpression);
+
+function saveMicroexpression(){
+    const input = document.getElementById('microexpressionInput');
+    if(!input.value.trim()) return;
+
+    const items = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+    items.push({
+        child: document.getElementById('childSelect').value,
+        text: input.value.trim(),
+        date: new Date().toLocaleString()
+    });
+    localStorage.setItem('microexpressionEntries', JSON.stringify(items));
+
+    input.value = '';
+    alert('¡Observación guardada! 👀');
+    loadMicroexpressions();
+}
+
+/* ELIMINAR */
+function deleteItem(storageKey, index){
+    const items = JSON.parse(localStorage.getItem(storageKey)) || [];
+    if(!confirm('¿Querés eliminar este registro?')) return;
+
+    items.splice(index, 1);
+    localStorage.setItem(storageKey, JSON.stringify(items));
+
+    if(storageKey === 'emotionEntries') loadEntries();
+    if(storageKey === 'gratitudeEntries') loadGratitude();
+    if(storageKey === 'strategyEntries') loadStrategies();
+    if(storageKey === 'microexpressionEntries') loadMicroexpressions();
+}
+
+/* HISTORIAL */
+function loadEntries(){
+    const list = document.getElementById('entriesList');
+    const filter = document.getElementById('filterChildSelect').value;
+    list.innerHTML = '';
+
+    const entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+    entries.forEach((item, index) => {
+        const child = item.child || 'General';
+        if(filter !== 'Todos' && child !== filter) return;
+
+        const li = document.createElement('li');
+        const badge = document.createElement('span');
+        badge.className = 'badge-child';
+        badge.textContent = '👤 ' + (child === 'Padre' ? 'Papá' : child);
+        li.appendChild(badge);
+        li.appendChild(document.createElement('br'));
+
+        const strong = document.createElement('strong');
+        strong.textContent = item.date + ' - Emoción: ' + item.emotion;
+        li.appendChild(strong);
+        li.appendChild(document.createElement('br'));
+
+        if(item.note) li.appendChild(document.createTextNode(item.note));
+
+        if(item.photo){
+            const img = document.createElement('img');
+            img.src = item.photo;
+            img.className = 'entry-img';
+            li.appendChild(img);
+        }
+
+        if(item.audio){
+            const audio = document.createElement('audio');
+            audio.src = item.audio;
+            audio.controls = true;
+            audio.style.width = '100%';
+            audio.style.marginTop = '8px';
+            li.appendChild(audio);
+        }
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn-delete';
+        deleteBtn.textContent = 'Eliminar';
+        deleteBtn.onclick = () => deleteItem('emotionEntries', index);
+
+        li.appendChild(deleteBtn);
+        list.appendChild(li);
+    });
+}
+
+function loadGratitude(){
+    const list = document.getElementById('gratitudeList');
+    list.innerHTML = '';
+    const items = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+    items.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = '<strong>' + escapeHTML(item.date) + '</strong>: ' + escapeHTML(item.text);
+        const btn = document.createElement('button');
+        btn.className = 'btn-delete';
+        btn.textContent = 'Eliminar';
+        btn.onclick = () => deleteItem('gratitudeEntries', index);
+        li.appendChild(btn);
+        list.appendChild(li);
+    });
+}
+
+function loadStrategies(){
+    const list = document.getElementById('strategyList');
+    list.innerHTML = '';
+    const items = JSON.parse(localStorage.getItem('strategyEntries')) || [];
+    items.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = '<strong>' + escapeHTML(item.date) + '</strong>: ' + escapeHTML(item.text);
+        const btn = document.createElement('button');
+        btn.className = 'btn-delete';
+        btn.textContent = 'Eliminar';
+        btn.onclick = () => deleteItem('strategyEntries', index);
+        li.appendChild(btn);
+        list.appendChild(li);
+    });
+}
+
+function loadMicroexpressions(){
+    const list = document.getElementById('microexpressionList');
+    list.innerHTML = '';
+    const items = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
+    items.forEach((item, index) => {
+        const li = document.createElement('li');
+        const childName = item.child === 'Padre' ? 'Papá' : (item.child || 'General');
+        li.innerHTML = '<strong>' + escapeHTML(item.date) + '</strong> (' + escapeHTML(childName) + '): ' + escapeHTML(item.text);
+        const btn = document.createElement('button');
+        btn.className = 'btn-delete';
+        btn.textContent = 'Eliminar';
+        btn.onclick = () => deleteItem('microexpressionEntries', index);
+        li.appendChild(btn);
+        list.appendChild(li);
+    });
+}
+
+function escapeHTML(text){
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/* EVENTOS DE MÚSICA Y AMBIENTE */
+document.getElementById('playAudioBtn').addEventListener('click', toggleAudio);
+document.getElementById('nextMusicBtn').addEventListener('click', newVariation);
+document.getElementById('styleSelect').addEventListener('change', changeStyle);
+document.getElementById('filterChildSelect').addEventListener('change', loadEntries);
+document.getElementById('weeklyChildFilter').addEventListener('change', loadWeeklyEmotions);
+
+['rain', 'ocean', 'fire', 'night', 'wind', 'river', 'birds', 'storm'].forEach(type => {
+    const check = document.getElementById(type + 'Noise');
+    const slider = document.getElementById(type + 'Vol');
+    if(check){
+        check.addEventListener('change', function(){
+            toggleAmbientNoise(type, this.checked);
+        });
+    }
+    if(slider){
+        slider.addEventListener('input', function(){
+            updateAmbientVolume(type, this.value);
+        });
+    }
+});
+
+// Carga Inicial de Registros
 window.addEventListener('DOMContentLoaded', () => {
+    loadEntries();
     loadWeeklyEmotions();
+    loadGratitude();
+    loadStrategies();
+    loadMicroexpressions();
 });
 </script>
 </body>
