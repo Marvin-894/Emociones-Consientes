@@ -64,7 +64,7 @@
             border: 2px dashed #ffeaa7;
             margin-bottom: 25px;
         }
-        .music-player select, select.emotion-select {
+        .music-player select, select.emotion-select, select.child-select {
             padding: 10px;
             border-radius: 12px;
             border: 2px solid #ffeaa7;
@@ -78,9 +78,14 @@
             cursor: pointer;
             box-sizing: border-box;
         }
-        select.emotion-select {
+        select.emotion-select, select.child-select {
             border-color: #54a0ff;
             margin-top: 8px;
+        }
+        select.child-select {
+            background-color: #e3f2fd;
+            font-size: 1em;
+            border-color: #2196f3;
         }
         .music-controls {
             display: flex;
@@ -172,6 +177,11 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
             box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            line-height: 1;
         }
         .btn:hover { 
             transform: scale(1.15) rotate(5deg); 
@@ -197,7 +207,7 @@
         #fear { background-color: #5f27cd; }
         #surprise { background-color: #ff9f43; }
         #anxiety { background-color: #c8d6e5; }
-        #envy { background-color: #c8d6e5; }
+        #envy { background-color: #a3cb38; }
         #boredom { background-color: #8395a7; }
         #shame { background-color: #ff9ff3; }
         
@@ -278,6 +288,16 @@
         ul { padding-left: 0; list-style-type: none; margin-bottom: 0; }
         li { margin-bottom: 14px; word-wrap: break-word; color: var(--text-dark); background: #ffffff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
         li strong { color: #54a0ff; }
+        .badge-child {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-bottom: 6px;
+        }
         .entry-img { max-width: 100%; height: auto; border-radius: 12px; margin-top: 8px; display: block; border: 2px solid #c8d6e5; }
         .photo-preview { max-width: 120px; height: auto; border-radius: 8px; margin-top: 8px; display: none; }
     </style>
@@ -379,48 +399,58 @@
             </button>
         </div>
 
+        <!-- SELECCIÓN DE PERSONA / HIJO -->
+        <div class="form-group" style="background: #eef6ff; padding: 15px; border-radius: 16px; border: 2px solid #bbe1fa;">
+            <label style="color: #0f4c81; font-size: 1.05em;">👦 Registro para:</label>
+            <select id="childSelect" class="child-select">
+                <option value="Ían">Ían 👦</option>
+                <option value="Jason">Jason 🧒</option>
+                <option value="Padre">Registro Personal (Papá) 👨</option>
+            </select>
+        </div>
+
         <div class="form-group">
             <h3>¿Cómo te sientes hoy? 🎈</h3>
             <p>Tocá la emoción que mejor exprese lo que sentís.</p>
             <div class="buttons-grid">
                 <div class="emotion-card">
-                    <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!', this)" title="Alegre"></button>
+                    <button class="btn" id="happy" onclick="selectEmotion('Alegre', 'Me alegra verte así, ¡a disfrutar este momento!', this)" title="Alegre">😊</button>
                     <span class="emotion-label">Alegre</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.', this)" title="Triste"></button>
+                    <button class="btn" id="sad" onclick="selectEmotion('Triste', 'Está bien sentirse triste, respira profundo, estoy aquí contigo.', this)" title="Triste">😢</button>
                     <span class="emotion-label">Triste</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.', this)" title="Enojado"></button>
+                    <button class="btn" id="angry" onclick="selectEmotion('Enojado', 'Siente esa energía, pero recuerda calmarte antes de actuar.', this)" title="Enojado">😡</button>
                     <span class="emotion-label">Enojado</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.', this)" title="En Calma"></button>
+                    <button class="btn" id="calm" onclick="selectEmotion('En Calma', 'Mantén esa paz interior y disfrútala.', this)" title="En Calma">😌</button>
                     <span class="emotion-label">En Calma</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.', this)" title="Miedo"></button>
+                    <button class="btn" id="fear" onclick="selectEmotion('Miedo', 'El miedo nos protege, pero podemos superarlo juntos paso a paso.', this)" title="Miedo">😨</button>
                     <span class="emotion-label">Miedo</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.', this)" title="Sorprendido"></button>
+                    <button class="btn" id="surprise" onclick="selectEmotion('Sorprendido', '¡Sorpresas que alegran! Vamos a explorar qué sucedió.', this)" title="Sorprendido">😲</button>
                     <span class="emotion-label">Sorprendido</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.', this)" title="Ansiedad"></button>
+                    <button class="btn" id="anxiety" onclick="selectEmotion('Ansiedad', 'Inhala, exhala. Todo estará bien, un paso a la vez.', this)" title="Ansiedad">😰</button>
                     <span class="emotion-label">Ansiedad</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.', this)" title="Envidia"></button>
+                    <button class="btn" id="envy" onclick="selectEmotion('Envidia', 'Todos somos únicos y especiales a nuestra manera.', this)" title="Envidia">😒</button>
                     <span class="emotion-label">Envidia</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.', this)" title="Aburrimiento"></button>
+                    <button class="btn" id="boredom" onclick="selectEmotion('Aburrimiento', 'Un buen momento para dejar volar la imaginación.', this)" title="Aburrimiento">🥱</button>
                     <span class="emotion-label">Aburrimiento</span>
                 </div>
                 <div class="emotion-card">
-                    <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.', this)" title="Vergüenza"></button>
+                    <button class="btn" id="shame" onclick="selectEmotion('Vergüenza', 'Nadie es perfecto, todos aprendemos de los errores.', this)" title="Vergüenza">😳</button>
                     <span class="emotion-label">Vergüenza</span>
                 </div>
             </div>
@@ -490,6 +520,13 @@
 
         <div id="history">
             <h3>Registros Guardados:</h3>
+            <label style="font-size: 0.85em; font-weight: 600; color: #54a0ff;">Filtrar por:</label>
+            <select id="filterChildSelect" class="child-select" onchange="loadEntries()" style="margin-bottom: 12px;">
+                <option value="Todos">Mostrar Todos</option>
+                <option value="Ían">Solo Ían 👦</option>
+                <option value="Jason">Solo Jason 🧒</option>
+                <option value="Padre">Solo Papá 👨</option>
+            </select>
             <ul id="entriesList"></ul>
         </div>
 
@@ -786,8 +823,10 @@
                 alert('Primero selecciona una foto para guardar.');
                 return;
             }
+            const selectedChild = document.getElementById('childSelect').value;
             const photoEmotion = document.getElementById('photoEmotionSelect').value;
             const entry = {
+                child: selectedChild,
                 emotion: photoEmotion,
                 note: 'Foto guardada',
                 photo: currentBase64Photo,
@@ -843,8 +882,10 @@
         }
 
         function saveEntry() {
+            const selectedChild = document.getElementById('childSelect').value;
             const noteInput = document.getElementById('noteInput');
             const entry = {
+                child: selectedChild,
                 emotion: selectedEmotionValue || 'No especificada',
                 note: noteInput.value,
                 photo: currentBase64Photo,
@@ -893,9 +934,10 @@
         }
 
         function saveMicroexpression() {
+            const selectedChild = document.getElementById('childSelect').value;
             const microexpressionInput = document.getElementById('microexpressionInput');
             if (!microexpressionInput.value.trim()) return;
-            const entry = { text: microexpressionInput.value, date: new Date().toLocaleString() };
+            const entry = { child: selectedChild, text: microexpressionInput.value, date: new Date().toLocaleString() };
             let observations = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
             observations.push(entry);
             localStorage.setItem('microexpressionEntries', JSON.stringify(observations));
@@ -917,11 +959,20 @@
 
         function loadEntries() {
             const list = document.getElementById('entriesList');
+            const filterValue = document.getElementById('filterChildSelect').value;
             list.innerHTML = '';
             let entries = JSON.parse(localStorage.getItem('emotionEntries')) || [];
+            
             entries.forEach((item, index) => {
+                const childName = item.child || 'General';
+                
+                if (filterValue !== 'Todos' && childName !== filterValue) {
+                    return;
+                }
+
                 const li = document.createElement('li');
-                let content = `<strong>${item.date}</strong> - Emoción: ${item.emotion}<br>${item.note}`;
+                let content = `<span class="badge-child">👤 ${childName}</span><br>`;
+                content += `<strong>${item.date}</strong> - Emoción: ${item.emotion}<br>${item.note}`;
                 if (item.photo) content += `<br><img src="${item.photo}" class="entry-img">`;
                 if (item.audio) content += `<br><audio src="${item.audio}" controls style="margin-top:8px; width:100%;"></audio>`;
                 content += `<button class="btn-delete" onclick="deleteItem('emotionEntries', ${index})">Eliminar</button>`;
@@ -958,7 +1009,8 @@
             let items = JSON.parse(localStorage.getItem('microexpressionEntries')) || [];
             items.forEach((item, index) => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.date}</strong>: ${item.text}<button class="btn-delete" onclick="deleteItem('microexpressionEntries', ${index})">Eliminar</button>`;
+                const childName = item.child ? `(${item.child}) ` : '';
+                li.innerHTML = `<strong>${item.date}</strong> ${childName}: ${item.text}<button class="btn-delete" onclick="deleteItem('microexpressionEntries', ${index})">Eliminar</button>`;
                 list.appendChild(li);
             });
         }
