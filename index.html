@@ -4,11 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#4a90e2">
-
 <title>Diario de Padres Conscientes & Relax</title>
 
 <style>
-
 :root{
     --bg-main:#f0f4ff;
     --card-bg:#ffffff;
@@ -24,6 +22,11 @@
 
 *{
     box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
 }
 
 body{
@@ -36,6 +39,17 @@ body{
     background-size:24px 24px;
     color:var(--text-dark);
     min-height:100vh;
+}
+
+button,
+select,
+input,
+textarea{
+    font-family:inherit;
+}
+
+button{
+    touch-action:manipulation;
 }
 
 .container{
@@ -66,7 +80,12 @@ p{
     margin-top:0;
     font-size:.9em;
     color:var(--text-muted);
+    line-height:1.45;
 }
+
+/* =========================
+   MÚSICA
+========================= */
 
 .music-player{
     background:#fff9e6;
@@ -121,11 +140,12 @@ select.child-select{
     font-weight:bold;
     font-size:.95em;
     box-shadow:0 4px 0 #0e8c6c;
+    min-height:46px;
 }
 
 .music-btn:active{
-    transform:translateY(4px);
-    box-shadow:none;
+    transform:translateY(3px);
+    box-shadow:1px 1px 0 #0e8c6c;
 }
 
 .music-btn.active{
@@ -202,6 +222,10 @@ select.child-select{
     height:6px;
 }
 
+/* =========================
+   FORMULARIOS
+========================= */
+
 .form-group{
     margin-top:22px;
     text-align:left;
@@ -242,10 +266,15 @@ select.child-select{
     align-items:center;
     justify-content:center;
     font-size:1.4em;
+    padding:0;
 }
 
 .btn:hover{
-    transform:scale(1.1);
+    transform:scale(1.08);
+}
+
+.btn:active{
+    transform:scale(.96);
 }
 
 .btn.selected{
@@ -301,10 +330,12 @@ input[type=file]{
 
 #photoPreviewImg{
     max-width:120px;
+    max-height:150px;
     height:auto;
     border-radius:8px;
     margin-top:8px;
     display:none;
+    object-fit:cover;
 }
 
 #audioPlayback{
@@ -324,16 +355,17 @@ input[type=file]{
     margin-top:10px;
     width:100%;
     box-shadow:0 4px 0 #2e86de;
+    min-height:46px;
 }
 
 .action-btn:active{
-    transform:translateY(4px);
-    box-shadow:none;
+    transform:translateY(3px);
+    box-shadow:1px 1px 0 #2e86de;
 }
 
-/* =========================================================
+/* =========================
    RESPIRACIÓN
-   ========================================================= */
+========================= */
 
 .breathing-box{
     text-align:center;
@@ -411,6 +443,7 @@ input[type=file]{
     font-size:.85em;
     color:#6c7a89;
     border:1px solid #e2e8f0;
+    line-height:1.5;
 }
 
 .breathing-start{
@@ -423,24 +456,9 @@ input[type=file]{
     box-shadow:0 4px 0 #c83b3c!important;
 }
 
-.breathing-start:active,
-.breathing-stop:active{
-    transform:translateY(4px);
-    box-shadow:none!important;
-}
-
-.btn-delete{
-    background:#ff6b6b;
-    color:#fff;
-    border:none;
-    padding:6px 12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:.8em;
-    font-weight:bold;
-    margin-top:8px;
-    float:right;
-}
+/* =========================
+   HISTORIAL
+========================= */
 
 #history,
 #gratitude-history,
@@ -462,12 +480,14 @@ ul{
 li{
     margin-bottom:14px;
     word-wrap:break-word;
+    overflow-wrap:anywhere;
     color:var(--text-dark);
     background:#fff;
     padding:12px;
     border-radius:12px;
     border:1px solid #e2e8f0;
     overflow:hidden;
+    line-height:1.45;
 }
 
 li strong{
@@ -487,14 +507,84 @@ li strong{
 
 .entry-img{
     max-width:100%;
+    max-height:400px;
     height:auto;
     border-radius:12px;
     margin-top:8px;
     display:block;
     border:2px solid #c8d6e5;
+    object-fit:contain;
 }
 
+.btn-delete{
+    background:#ff6b6b;
+    color:#fff;
+    border:none;
+    padding:7px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:.8em;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.empty-history{
+    text-align:center;
+    color:#8a97a6;
+    font-size:.9em;
+    padding:15px;
+    background:transparent;
+    border:none;
+}
+
+/* =========================
+   MENSAJES
+========================= */
+
+.app-message{
+    position:fixed;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%) translateY(100px);
+    background:#2c3e50;
+    color:#fff;
+    padding:12px 18px;
+    border-radius:12px;
+    z-index:9999;
+    opacity:0;
+    transition:.3s ease;
+    max-width:90%;
+    box-shadow:0 8px 25px rgba(0,0,0,.2);
+    font-size:.9em;
+}
+
+.app-message.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+.app-message.success{
+    background:#10ac84;
+}
+
+.app-message.error{
+    background:#ee5253;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
 @media(max-width:420px){
+
+    body{
+        padding:8px;
+    }
+
+    .container{
+        padding:15px;
+        border-radius:20px;
+    }
 
     .music-controls{
         grid-template-columns:1fr;
@@ -505,8 +595,11 @@ li strong{
         height:105px;
     }
 
-}
+    h1{
+        font-size:1.5em;
+    }
 
+}
 </style>
 </head>
 
@@ -518,7 +611,7 @@ li strong{
 
 <!-- =========================================================
      MÚSICA
-     ========================================================= -->
+========================================================= -->
 
 <div class="music-player">
 
@@ -530,7 +623,6 @@ No necesita canciones externas.
 </p>
 
 <select id="styleSelect">
-
 <option value="ambient">🌌 Ambient Meditativo</option>
 <option value="piano">🎹 Piano Suave & Melódico</option>
 <option value="lofi">🎧 Lo-Fi Chill Relax</option>
@@ -541,16 +633,15 @@ No necesita canciones externas.
 <option value="reggae">🌴 Reggae Lofi Chill</option>
 <option value="synthwave">🌃 Synthwave Nocturno</option>
 <option value="zen">🧘 Meditación Zen</option>
-
 </select>
 
 <div class="music-controls">
 
-<button class="music-btn" id="playAudioBtn">
+<button type="button" class="music-btn" id="playAudioBtn">
 ▶️ Reproducir
 </button>
 
-<button class="music-btn" id="nextMusicBtn">
+<button type="button" class="music-btn" id="nextMusicBtn">
 🔄 Nueva Variación
 </button>
 
@@ -562,16 +653,18 @@ No necesita canciones externas.
 
 <div class="master-control">
 
-<label>🎚️ Volumen de música</label>
+<label for="masterVolume">
+🎚️ Volumen de música
+</label>
 
 <input
-    class="master-slider"
-    id="masterVolume"
-    type="range"
-    min="0"
-    max="1"
-    step=".01"
-    value=".55">
+class="master-slider"
+id="masterVolume"
+type="range"
+min="0"
+max="1"
+step=".01"
+value=".55">
 
 </div>
 
@@ -659,7 +752,7 @@ min="0" max="1" step=".01" value=".5">
 
 <!-- =========================================================
      RESPIRACIÓN 4-7-8
-     ========================================================= -->
+========================================================= -->
 
 <div class="form-group">
 
@@ -671,22 +764,21 @@ La aplicación te guiará con animación, contador y voz.
 </p>
 
 <button
-    type="button"
-    class="action-btn breathing-start"
-    id="breathingBtn"
-    onclick="openBreathingExercise()">
+type="button"
+class="action-btn breathing-start"
+id="breathingBtn">
 
-    Comenzar Respiración 4-7-8 🫁
+Comenzar Respiración 4-7-8 🫁
 
 </button>
 
 <div class="breathing-box" id="breathingBox">
 
 <div
-    class="breathing-circle prepare"
-    id="breathingCircle">
+class="breathing-circle prepare"
+id="breathingCircle">
 
-    Preparado
+Preparado
 
 </div>
 
@@ -715,7 +807,7 @@ Cuando estés listo, comenzamos.
 
 <!-- =========================================================
      PERSONA
-     ========================================================= -->
+========================================================= -->
 
 <div
 class="form-group"
@@ -746,7 +838,7 @@ Registro Personal (Papá) 👨
 
 <!-- =========================================================
      EMOCIONES
-     ========================================================= -->
+========================================================= -->
 
 <div class="form-group">
 
@@ -759,208 +851,118 @@ Tocá la emoción que mejor exprese lo que sentís.
 <div class="buttons-grid">
 
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="happy"
 data-emotion="Alegre"
-data-message="Me alegra verte así, ¡a disfrutar este momento!">
-
+data-message="Me alegra verte así. ¡A disfrutar este momento!">
 😊
-
 </button>
-
-<span class="emotion-label">
-Alegre
-</span>
-
+<span class="emotion-label">Alegre</span>
 </div>
 
-
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="sad"
 data-emotion="Triste"
-data-message="Está bien sentirse triste, respirá profundo, estoy aquí contigo.">
-
+data-message="Está bien sentirse triste. Respirá profundo. Estoy aquí contigo.">
 😢
-
 </button>
-
-<span class="emotion-label">
-Triste
-</span>
-
+<span class="emotion-label">Triste</span>
 </div>
 
-
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="angry"
 data-emotion="Enojado"
 data-message="Sentí esa energía, pero recordá calmarte antes de actuar.">
-
 😡
-
 </button>
-
-<span class="emotion-label">
-Enojado
-</span>
-
+<span class="emotion-label">Enojado</span>
 </div>
 
-
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="calm"
 data-emotion="En Calma"
 data-message="Mantené esa paz interior y disfrutala.">
-
 😌
-
 </button>
-
-<span class="emotion-label">
-En Calma
-</span>
-
+<span class="emotion-label">En Calma</span>
 </div>
 
-
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="fear"
 data-emotion="Miedo"
 data-message="El miedo nos protege, pero podemos superarlo juntos paso a paso.">
-
 😨
-
 </button>
-
-<span class="emotion-label">
-Miedo
-</span>
-
+<span class="emotion-label">Miedo</span>
 </div>
 
-
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="surprise"
 data-emotion="Sorprendido"
 data-message="¡Sorpresas que alegran! Vamos a explorar qué sucedió.">
-
 😲
-
 </button>
-
-<span class="emotion-label">
-Sorprendido
-</span>
-
+<span class="emotion-label">Sorprendido</span>
 </div>
 
-
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="anxiety"
 data-emotion="Ansiedad"
 data-message="Inhalá, exhalá. Todo estará bien, un paso a la vez.">
-
 😰
-
 </button>
-
-<span class="emotion-label">
-Ansiedad
-</span>
-
+<span class="emotion-label">Ansiedad</span>
 </div>
 
-
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="envy"
 data-emotion="Envidia"
 data-message="Todos somos únicos y especiales a nuestra manera.">
-
 😒
-
 </button>
-
-<span class="emotion-label">
-Envidia
-</span>
-
+<span class="emotion-label">Envidia</span>
 </div>
 
-
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="boredom"
 data-emotion="Aburrimiento"
 data-message="Un buen momento para dejar volar la imaginación.">
-
 🥱
-
 </button>
-
-<span class="emotion-label">
-Aburrimiento
-</span>
-
+<span class="emotion-label">Aburrimiento</span>
 </div>
-
 
 <div class="emotion-card">
-
-<button
-class="btn"
+<button type="button" class="btn"
 id="shame"
 data-emotion="Vergüenza"
-data-message="Nadie es perfecto, todos aprendemos de los errores.">
-
+data-message="Nadie es perfecto. Todos aprendemos de los errores.">
 😳
-
 </button>
-
-<span class="emotion-label">
-Vergüenza
-</span>
-
+<span class="emotion-label">Vergüenza</span>
 </div>
 
 </div>
-
 </div>
 
 
 <!-- =========================================================
      FOTO
-     ========================================================= -->
+========================================================= -->
 
 <div class="form-group">
 
 <h3>Captura de Momento 📸</h3>
 
-<label>
+<label for="photoInput">
 Subir una foto:
 </label>
 
@@ -999,6 +1001,7 @@ class="emotion-select">
 </select>
 
 <button
+type="button"
 class="action-btn"
 style="background:#ff9f43;box-shadow:0 4px 0 #e67e22"
 id="savePhotoBtn">
@@ -1012,7 +1015,7 @@ Guardar Foto 🖼️
 
 <!-- =========================================================
      AUDIO
-     ========================================================= -->
+========================================================= -->
 
 <div class="form-group">
 
@@ -1027,6 +1030,7 @@ Usá tu voz para contar cómo te fue hoy.
 </p>
 
 <button
+type="button"
 class="action-btn"
 id="recordBtn">
 
@@ -1045,13 +1049,13 @@ style="display:none">
 
 <!-- =========================================================
      REFLEXIÓN
-     ========================================================= -->
+========================================================= -->
 
 <div class="form-group">
 
 <h3>Reflexión Personal 📝</h3>
 
-<label>
+<label for="noteInput">
 Escribí una nota:
 </label>
 
@@ -1063,6 +1067,7 @@ placeholder="¿Qué pasó hoy?...">
 </div>
 
 <button
+type="button"
 class="action-btn"
 style="background:#10ac84;box-shadow:0 4px 0 #0e8c6c"
 id="saveEntryBtn">
@@ -1074,7 +1079,7 @@ Guardar Registro Completo ✨
 
 <!-- =========================================================
      GRATITUD
-     ========================================================= -->
+========================================================= -->
 
 <div class="form-group">
 
@@ -1090,6 +1095,7 @@ placeholder="¿Qué cosas lindas te pasaron hoy?">
 </textarea>
 
 <button
+type="button"
 class="action-btn"
 id="saveGratitudeBtn">
 
@@ -1102,7 +1108,7 @@ Guardar Gratitud
 
 <!-- =========================================================
      ESTRATEGIAS
-     ========================================================= -->
+========================================================= -->
 
 <div class="form-group">
 
@@ -1118,6 +1124,7 @@ placeholder="Anotá aquí tus descubrimientos...">
 </textarea>
 
 <button
+type="button"
 class="action-btn"
 id="saveStrategyBtn">
 
@@ -1130,7 +1137,7 @@ Guardar Estrategia
 
 <!-- =========================================================
      MICROEXPRESIONES
-     ========================================================= -->
+========================================================= -->
 
 <div class="form-group">
 
@@ -1146,6 +1153,7 @@ placeholder="Anotá las expresiones observadas...">
 </textarea>
 
 <button
+type="button"
 class="action-btn"
 id="saveMicroBtn">
 
@@ -1158,7 +1166,7 @@ Guardar Observación
 
 <!-- =========================================================
      HISTORIAL
-     ========================================================= -->
+========================================================= -->
 
 <div id="history">
 
@@ -1167,6 +1175,7 @@ Registros Guardados:
 </h3>
 
 <label
+for="filterChildSelect"
 style="font-size:.85em;font-weight:600;color:#54a0ff">
 
 Filtrar por:
@@ -1235,20 +1244,96 @@ Observaciones de Microexpresiones:
 </div>
 
 
+<div id="appMessage" class="app-message"></div>
+
+
 <script>
+"use strict";
 
 /* =========================================================
-   MOTOR MUSICAL INTERNO
-   ========================================================= */
+   UTILIDADES
+========================================================= */
+
+function $(id){
+    return document.getElementById(id);
+}
+
+function showMessage(message,type="success"){
+    const box=$("appMessage");
+
+    if(!box){
+        alert(message);
+        return;
+    }
+
+    box.textContent=message;
+    box.className="app-message show "+type;
+
+    clearTimeout(showMessage.timer);
+
+    showMessage.timer=setTimeout(()=>{
+        box.className="app-message";
+    },3000);
+}
+
+function safeGetArray(key){
+    try{
+        const data=localStorage.getItem(key);
+
+        if(!data){
+            return [];
+        }
+
+        const parsed=JSON.parse(data);
+
+        return Array.isArray(parsed)?parsed:[];
+
+    }catch(error){
+        console.error("Error leyendo localStorage:",error);
+        return [];
+    }
+}
+
+function safeSet(key,value){
+    try{
+        localStorage.setItem(key,JSON.stringify(value));
+        return true;
+    }catch(error){
+        console.error("Error guardando en localStorage:",error);
+
+        showMessage(
+            "No se pudo guardar. Puede que el almacenamiento del navegador esté lleno.",
+            "error"
+        );
+
+        return false;
+    }
+}
+
+function escapeHTML(text){
+
+    return String(text??"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   MOTOR MUSICAL
+========================================================= */
 
 let audioCtx=null;
 let masterBus=null;
 let musicBus=null;
 let reverbBus=null;
+let reverbConvolver=null;
 
 let isPlaying=false;
-let currentStyle='ambient';
-
+let currentStyle="ambient";
 let musicTimer=null;
 let step=0;
 let variation=0;
@@ -1301,16 +1386,16 @@ B5:987.77,
 C6:1046.5,
 D6:1174.66,
 E6:1318.51,
+F6:1396.91,
 G6:1567.98
 
 };
-
 
 const styles={
 
 ambient:{
 bpm:58,
-wave:'sine',
+wave:"sine",
 chords:[
 [N.C3,N.G3,N.B3,N.E4],
 [N.A2,N.E3,N.G3,N.C4],
@@ -1331,7 +1416,7 @@ pad:true
 
 piano:{
 bpm:68,
-wave:'triangle',
+wave:"triangle",
 chords:[
 [N.C3,N.G3,N.E4],
 [N.F3,N.C4,N.A4],
@@ -1352,7 +1437,7 @@ piano:true
 
 lofi:{
 bpm:78,
-wave:'triangle',
+wave:"triangle",
 chords:[
 [N.C3,N.E3,N.G3,N.B3],
 [N.A2,N.C3,N.E3,N.G3],
@@ -1373,7 +1458,7 @@ loFi:true
 
 bossa:{
 bpm:82,
-wave:'triangle',
+wave:"triangle",
 chords:[
 [N.D3,N.F3,N.A3,N.C4],
 [N.G2,N.B2,N.D3,N.F3],
@@ -1393,7 +1478,7 @@ drums:true
 
 jazz:{
 bpm:64,
-wave:'sine',
+wave:"sine",
 chords:[
 [N.F3,N.A3,N.C4,N.E4],
 [N.D3,N.F3,N.A3,N.C4],
@@ -1414,7 +1499,7 @@ jazz:true
 
 folk:{
 bpm:72,
-wave:'triangle',
+wave:"triangle",
 chords:[
 [N.C3,N.G3,N.C4],
 [N.G2,N.D3,N.G3],
@@ -1435,7 +1520,7 @@ pluck:true
 
 space:{
 bpm:50,
-wave:'sine',
+wave:"sine",
 chords:[
 [N.C3,N.G3,N.C4,N.G4],
 [N.F3,N.C4,N.F4,N.C5],
@@ -1457,7 +1542,7 @@ space:true
 
 reggae:{
 bpm:76,
-wave:'sine',
+wave:"sine",
 chords:[
 [N.C3,N.E3,N.G3],
 [N.F2,N.A2,N.C3],
@@ -1478,7 +1563,7 @@ reggae:true
 
 synthwave:{
 bpm:94,
-wave:'sawtooth',
+wave:"sawtooth",
 chords:[
 [N.C3,N.G3,N.C4],
 [N.A2,N.E3,N.A3],
@@ -1499,7 +1584,7 @@ synth:true
 
 zen:{
 bpm:48,
-wave:'sine',
+wave:"sine",
 chords:[
 [N.C3,N.G3],
 [N.F3,N.C4],
@@ -1522,1155 +1607,1225 @@ zen:true
 
 
 /* =========================================================
-   AUDIO
-   ========================================================= */
+   INICIALIZAR AUDIO
+========================================================= */
 
 async function initAudio(){
 
-if(!audioCtx){
+    try{
 
-audioCtx=new(
-window.AudioContext||
-window.webkitAudioContext
-)();
+        if(!audioCtx){
 
-masterBus=audioCtx.createGain();
-musicBus=audioCtx.createGain();
-reverbBus=audioCtx.createGain();
+            const AudioContextClass=
+                window.AudioContext||
+                window.webkitAudioContext;
 
-masterBus.gain.value=
-parseFloat(
-document.getElementById('masterVolume').value
-);
+            if(!AudioContextClass){
+                throw new Error("Web Audio API no disponible");
+            }
 
-musicBus.gain.value=.65;
-reverbBus.gain.value=.18;
+            audioCtx=new AudioContextClass();
 
-musicBus.connect(masterBus);
-reverbBus.connect(masterBus);
-masterBus.connect(audioCtx.destination);
+            masterBus=audioCtx.createGain();
+            musicBus=audioCtx.createGain();
+            reverbBus=audioCtx.createGain();
 
-createReverb();
+            masterBus.gain.value=
+                parseFloat($("masterVolume").value)||0.55;
 
+            musicBus.gain.value=.65;
+            reverbBus.gain.value=.16;
+
+            musicBus.connect(masterBus);
+            reverbBus.connect(masterBus);
+            masterBus.connect(audioCtx.destination);
+
+            createReverb();
+
+        }
+
+        if(audioCtx.state==="suspended"){
+            await audioCtx.resume();
+        }
+
+        return true;
+
+    }catch(error){
+
+        console.error("No se pudo iniciar el audio:",error);
+
+        showMessage(
+            "El audio no está disponible en este navegador.",
+            "error"
+        );
+
+        return false;
+    }
 }
 
-if(audioCtx.state==='suspended'){
-await audioCtx.resume();
-}
 
-}
-
+/* =========================================================
+   REVERB
+========================================================= */
 
 function createReverb(){
 
-const length=
-audioCtx.sampleRate*2.5;
+    if(!audioCtx)return;
 
-const impulse=
-audioCtx.createBuffer(
-2,
-length,
-audioCtx.sampleRate
-);
+    try{
 
-for(let c=0;c<2;c++){
+        const length=
+            Math.floor(audioCtx.sampleRate*2.2);
 
-const data=
-impulse.getChannelData(c);
+        const impulse=
+            audioCtx.createBuffer(
+                2,
+                length,
+                audioCtx.sampleRate
+            );
 
-for(let i=0;i<length;i++){
+        for(let c=0;c<2;c++){
 
-data[i]=
-(Math.random()*2-1)*
-Math.pow(1-i/length,2.5);
+            const data=
+                impulse.getChannelData(c);
 
-}
+            for(let i=0;i<length;i++){
 
-}
+                data[i]=
+                    (Math.random()*2-1)*
+                    Math.pow(1-i/length,2.5);
 
-const convolver=
-audioCtx.createConvolver();
+            }
 
-convolver.buffer=impulse;
+        }
 
-reverbBus.connect(convolver);
-convolver.connect(masterBus);
+        reverbConvolver=
+            audioCtx.createConvolver();
 
+        reverbConvolver.buffer=impulse;
+
+        reverbBus.connect(reverbConvolver);
+        reverbConvolver.connect(masterBus);
+
+    }catch(error){
+
+        console.warn("Reverb no disponible:",error);
+
+    }
 }
 
 
 /* =========================================================
    SÍNTESIS
-   ========================================================= */
+========================================================= */
 
 function synthNote(
-freq,
-duration,
-type='sine',
-volume=.05,
-destination=musicBus,
-options={}
+    freq,
+    duration,
+    type="sine",
+    volume=.05,
+    destination=musicBus,
+    options={}
 ){
 
-if(!freq||!audioCtx)return;
+    if(!freq||!audioCtx||!destination)return;
 
-const now=
-audioCtx.currentTime;
+    try{
 
-const osc=
-audioCtx.createOscillator();
+        const now=audioCtx.currentTime;
 
-const gain=
-audioCtx.createGain();
+        const osc=
+            audioCtx.createOscillator();
 
-const filter=
-audioCtx.createBiquadFilter();
+        const gain=
+            audioCtx.createGain();
 
-osc.type=type;
+        const filter=
+            audioCtx.createBiquadFilter();
 
-osc.frequency.setValueAtTime(
-freq,
-now
-);
+        osc.type=type;
 
-if(options.detune){
-osc.detune.value=options.detune;
-}
+        osc.frequency.setValueAtTime(
+            freq,
+            now
+        );
 
-filter.type='lowpass';
+        if(options.detune){
+            osc.detune.value=options.detune;
+        }
 
-filter.frequency.setValueAtTime(
-options.filter||3000,
-now
-);
+        filter.type="lowpass";
 
-const attack=
-options.attack||.04;
+        filter.frequency.setValueAtTime(
+            options.filter||3000,
+            now
+        );
 
-const release=
-options.release||duration*.65;
+        const attack=
+            options.attack??.04;
 
-gain.gain.setValueAtTime(
-.0001,
-now
-);
+        const release=
+            options.release??Math.max(.05,duration*.65);
 
-gain.gain.linearRampToValueAtTime(
-volume,
-now+attack
-);
+        const endTime=
+            now+Math.max(.05,duration);
 
-gain.gain.setValueAtTime(
-volume,
-now+Math.max(
-attack,
-duration*.35
-)
-);
+        const releaseEnd=
+            endTime+Math.max(.05,release);
 
-gain.gain.exponentialRampToValueAtTime(
-.0001,
-now+duration+release
-);
+        gain.gain.setValueAtTime(
+            .0001,
+            now
+        );
 
-osc.connect(filter);
-filter.connect(gain);
-gain.connect(destination);
+        gain.gain.linearRampToValueAtTime(
+            Math.max(.0001,volume),
+            now+Math.min(attack,duration*.5)
+        );
 
-if(options.reverb!==false){
-gain.connect(reverbBus);
-}
+        gain.gain.setValueAtTime(
+            Math.max(.0001,volume),
+            Math.max(
+                now+Math.min(attack,duration*.5),
+                endTime-.03
+            )
+        );
 
-osc.start(now);
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            releaseEnd
+        );
 
-osc.stop(
-now+duration+release+.05
-);
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(destination);
 
+        if(options.reverb!==false && reverbBus){
+            gain.connect(reverbBus);
+        }
+
+        osc.start(now);
+
+        osc.stop(releaseEnd+.05);
+
+    }catch(error){
+
+        console.warn("Error sintetizando nota:",error);
+
+    }
 }
 
 
 function pianoNote(
-freq,
-duration=.8,
-volume=.06
+    freq,
+    duration=.8,
+    volume=.06
 ){
 
-synthNote(
-freq,
-duration,
-'triangle',
-volume,
-musicBus,
-{
-attack:.008,
-release:.7,
-filter:3200
-}
-);
+    synthNote(
+        freq,
+        duration,
+        "triangle",
+        volume,
+        musicBus,
+        {
+            attack:.008,
+            release:.7,
+            filter:3200
+        }
+    );
 
-synthNote(
-freq*2,
-duration*.55,
-'sine',
-volume*.18,
-musicBus,
-{
-attack:.003,
-release:.4,
-filter:4500
-}
-);
-
+    synthNote(
+        freq*2,
+        duration*.55,
+        "sine",
+        volume*.18,
+        musicBus,
+        {
+            attack:.003,
+            release:.4,
+            filter:4500
+        }
+    );
 }
 
 
 function bassNote(
-freq,
-duration=.45,
-volume=.06
+    freq,
+    duration=.45,
+    volume=.06
 ){
 
-synthNote(
-freq,
-duration,
-'sine',
-volume,
-musicBus,
-{
-attack:.025,
-release:.35,
-filter:900,
-reverb:false
-}
-);
-
+    synthNote(
+        freq,
+        duration,
+        "sine",
+        volume,
+        musicBus,
+        {
+            attack:.025,
+            release:.35,
+            filter:900,
+            reverb:false
+        }
+    );
 }
 
 
 function padChord(chord){
 
-chord.forEach((freq,i)=>{
+    chord.forEach((freq,i)=>{
 
-synthNote(
-freq,
-3.8,
-'sine',
-.018,
-musicBus,
-{
-attack:1.1,
-release:1.5,
-filter:1200+i*300
-}
-);
+        synthNote(
+            freq,
+            3.5,
+            "sine",
+            .012,
+            musicBus,
+            {
+                attack:1.0,
+                release:1.2,
+                filter:1200+i*300
+            }
+        );
 
-if(i<2){
-
-synthNote(
-freq*2,
-3.2,
-'triangle',
-.008,
-musicBus,
-{
-attack:1.4,
-release:1.2,
-filter:1800
-}
-);
-
-}
-
-});
-
+    });
 }
 
 
 /* =========================================================
    PERCUSIÓN
-   ========================================================= */
+========================================================= */
 
 function kick(volume=.07){
 
-if(!audioCtx)return;
+    if(!audioCtx||!musicBus)return;
 
-const now=
-audioCtx.currentTime;
+    try{
 
-const osc=
-audioCtx.createOscillator();
+        const now=audioCtx.currentTime;
 
-const gain=
-audioCtx.createGain();
+        const osc=
+            audioCtx.createOscillator();
 
-osc.type='sine';
+        const gain=
+            audioCtx.createGain();
 
-osc.frequency.setValueAtTime(
-120,
-now
-);
+        osc.type="sine";
 
-osc.frequency.exponentialRampToValueAtTime(
-45,
-now+.16
-);
+        osc.frequency.setValueAtTime(
+            120,
+            now
+        );
 
-gain.gain.setValueAtTime(
-volume,
-now
-);
+        osc.frequency.exponentialRampToValueAtTime(
+            45,
+            now+.16
+        );
 
-gain.gain.exponentialRampToValueAtTime(
-.001,
-now+.2
-);
+        gain.gain.setValueAtTime(
+            volume,
+            now
+        );
 
-osc.connect(gain);
-gain.connect(musicBus);
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            now+.2
+        );
 
-osc.start(now);
-osc.stop(now+.22);
+        osc.connect(gain);
+        gain.connect(musicBus);
+
+        osc.start(now);
+        osc.stop(now+.22);
+
+    }catch(error){}
 
 }
 
 
 function snare(volume=.035){
 
-if(!audioCtx)return;
+    if(!audioCtx||!musicBus)return;
 
-const buffer=
-audioCtx.createBuffer(
-1,
-audioCtx.sampleRate*.15,
-audioCtx.sampleRate
-);
+    try{
 
-const data=
-buffer.getChannelData(0);
+        const buffer=
+            audioCtx.createBuffer(
+                1,
+                Math.floor(audioCtx.sampleRate*.15),
+                audioCtx.sampleRate
+            );
 
-for(let i=0;i<data.length;i++){
+        const data=buffer.getChannelData(0);
 
-data[i]=
-(Math.random()*2-1)*
-Math.pow(
-1-i/data.length,
-2
-);
+        for(let i=0;i<data.length;i++){
 
-}
+            data[i]=
+                (Math.random()*2-1)*
+                Math.pow(1-i/data.length,2);
 
-const source=
-audioCtx.createBufferSource();
+        }
 
-const filter=
-audioCtx.createBiquadFilter();
+        const source=
+            audioCtx.createBufferSource();
 
-const gain=
-audioCtx.createGain();
+        const filter=
+            audioCtx.createBiquadFilter();
 
-source.buffer=buffer;
+        const gain=
+            audioCtx.createGain();
 
-filter.type='highpass';
-filter.frequency.value=1300;
+        source.buffer=buffer;
 
-gain.gain.value=volume;
+        filter.type="highpass";
+        filter.frequency.value=1300;
 
-source.connect(filter);
-filter.connect(gain);
-gain.connect(musicBus);
+        gain.gain.value=volume;
 
-source.start();
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(musicBus);
+
+        source.start();
+
+    }catch(error){}
 
 }
 
 
 function hat(volume=.018){
 
-if(!audioCtx)return;
+    if(!audioCtx||!musicBus)return;
 
-const buffer=
-audioCtx.createBuffer(
-1,
-audioCtx.sampleRate*.06,
-audioCtx.sampleRate
-);
+    try{
 
-const data=
-buffer.getChannelData(0);
+        const buffer=
+            audioCtx.createBuffer(
+                1,
+                Math.floor(audioCtx.sampleRate*.06),
+                audioCtx.sampleRate
+            );
 
-for(let i=0;i<data.length;i++){
+        const data=buffer.getChannelData(0);
 
-data[i]=
-(Math.random()*2-1)*
-Math.pow(
-1-i/data.length,
-4
-);
+        for(let i=0;i<data.length;i++){
 
-}
+            data[i]=
+                (Math.random()*2-1)*
+                Math.pow(1-i/data.length,4);
 
-const source=
-audioCtx.createBufferSource();
+        }
 
-const filter=
-audioCtx.createBiquadFilter();
+        const source=
+            audioCtx.createBufferSource();
 
-const gain=
-audioCtx.createGain();
+        const filter=
+            audioCtx.createBiquadFilter();
 
-source.buffer=buffer;
+        const gain=
+            audioCtx.createGain();
 
-filter.type='highpass';
-filter.frequency.value=5000;
+        source.buffer=buffer;
 
-gain.gain.value=volume;
+        filter.type="highpass";
+        filter.frequency.value=5000;
 
-source.connect(filter);
-filter.connect(gain);
-gain.connect(musicBus);
+        gain.gain.value=volume;
 
-source.start();
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(musicBus);
+
+        source.start();
+
+    }catch(error){}
 
 }
 
 
 /* =========================================================
    ARPEGIO
-   ========================================================= */
+========================================================= */
 
 function arpeggio(chord){
 
-const notes=chord;
+    if(!chord||!chord.length)return;
 
-const index=
-(step+variation)%notes.length;
+    const index=
+        (step+variation)%chord.length;
 
-if(notes[index]){
+    const note=chord[index];
 
-synthNote(
-notes[index]*2,
-.32,
-'triangle',
-.025,
-musicBus,
-{
-attack:.015,
-release:.25,
-filter:2600
-}
-);
+    if(note){
 
-}
+        synthNote(
+            note*2,
+            .32,
+            "triangle",
+            .025,
+            musicBus,
+            {
+                attack:.015,
+                release:.25,
+                filter:2600
+            }
+        );
 
+    }
 }
 
 
 /* =========================================================
    PASO MUSICAL
-   ========================================================= */
+========================================================= */
 
 function playMusicStep(){
 
-if(!audioCtx||!isPlaying)return;
+    if(!audioCtx||!isPlaying)return;
 
-const style=
-styles[currentStyle];
+    const style=styles[currentStyle];
 
-const beat=
-step%16;
+    if(!style)return;
 
-const chordIndex=
-Math.floor(step/16)%
-style.chords.length;
+    const beat=step%16;
 
-const chord=
-style.chords[chordIndex];
+    const chordIndex=
+        Math.floor(step/16)%style.chords.length;
 
-if(beat===0){
+    const chord=style.chords[chordIndex];
 
-if(style.piano){
+    if(beat===0){
 
-chord.forEach((n,i)=>{
+        if(style.piano){
 
-pianoNote(
-n,
-2.1,
-.035-i*.004
-);
+            chord.forEach((n,i)=>{
 
-});
+                pianoNote(
+                    n,
+                    2.1,
+                    Math.max(.012,.035-i*.004)
+                );
 
-}else{
+            });
 
-chord.forEach((n,i)=>{
+        }else{
 
-synthNote(
-n,
-style.pad?4.2:2,
-style.wave,
-style.pad?.022:.025,
-musicBus,
-{
-attack:style.pad?1:.15,
-release:style.pad?1.1:.6,
-filter:style.synth?1800:2200
-}
-);
+            chord.forEach((n,i)=>{
 
-});
+                synthNote(
+                    n,
+                    style.pad?4.0:2,
+                    style.wave,
+                    style.pad?.018:.022,
+                    musicBus,
+                    {
+                        attack:style.pad?1:.15,
+                        release:style.pad?1.1:.6,
+                        filter:style.synth?1800:2200
+                    }
+                );
 
-}
+            });
 
-if(style.pad){
-padChord(chord);
-}
+        }
 
-}
+        if(style.pad){
+            padChord(chord);
+        }
+    }
 
 
-if(style.bass){
+    if(style.bass){
 
-const bassIndex=
-beat%style.bass.length;
+        const bassIndex=
+            beat%style.bass.length;
 
-const bass=
-style.bass[bassIndex];
+        const bass=
+            style.bass[bassIndex];
 
-if(bass){
+        if(bass){
 
-bassNote(
-bass,
-style.jazz?.35:.42,
-style.reggae?.07:.05
-);
+            bassNote(
+                bass,
+                style.jazz?.35:.42,
+                style.reggae?.07:.05
+            );
 
-}
+        }
 
-}
+    }
 
 
-if(beat%2===0){
+    if(beat%2===0){
 
-const melody=
-style.melody[
-Math.floor(beat/2)%
-style.melody.length
-];
+        const melody=
+            style.melody[
+                Math.floor(beat/2)%style.melody.length
+            ];
 
-if(melody){
+        if(melody){
 
-if(style.piano){
+            if(style.piano){
 
-pianoNote(
-melody,
-.65,
-.045
-);
+                pianoNote(
+                    melody,
+                    .65,
+                    .045
+                );
 
-}else{
+            }else{
 
-synthNote(
-melody,
-style.space?.8:.55,
-style.synth?'sawtooth':
-style.pluck?'triangle':'sine',
-style.zen?.025:.035,
-musicBus,
-{
-attack:style.zen?.12:.025,
-release:style.space?.1:.4,
-filter:style.synth?2500:3500
-}
-);
+                synthNote(
+                    melody,
+                    style.space?.8:.55,
+                    style.synth
+                        ?"sawtooth"
+                        :style.pluck
+                            ?"triangle"
+                            :"sine",
+                    style.zen?.025:.035,
+                    musicBus,
+                    {
+                        attack:style.zen?.12:.025,
+                        release:style.space?.1:.4,
+                        filter:style.synth?2500:3500
+                    }
+                );
 
-}
+            }
 
-}
+        }
 
-}
+    }
 
 
-if(style.space&&beat%2===1){
-arpeggio(chord);
-}
+    if(style.space&&beat%2===1){
+        arpeggio(chord);
+    }
 
 
-if(style.pluck&&beat%2===1){
+    if(style.pluck&&beat%2===1){
 
-const note=
-chord[(beat/2)%chord.length];
+        const note=
+            chord[Math.floor(beat/2)%chord.length];
 
-synthNote(
-note*2,
-.35,
-'triangle',
-.025,
-musicBus,
-{
-attack:.01,
-release:.25,
-filter:2800
-}
-);
+        if(note){
 
-}
+            synthNote(
+                note*2,
+                .35,
+                "triangle",
+                .025,
+                musicBus,
+                {
+                    attack:.01,
+                    release:.25,
+                    filter:2800
+                }
+            );
 
+        }
 
-if(style.drums){
+    }
 
-if(beat===0||beat===8){
 
-kick(
-style.reggae?.05:.07
-);
+    if(style.drums){
 
-}
+        if(beat===0||beat===8){
+            kick(style.reggae?.05:.07);
+        }
 
-if(beat===4||beat===12){
+        if(beat===4||beat===12){
+            snare(style.jazz?.025:.032);
+        }
 
-snare(
-style.jazz?.025:.032
-);
+        if(beat%2===0){
+            hat(style.loFi?.014:.012);
+        }
 
-}
+    }
 
-if(beat%2===0){
 
-hat(
-style.loFi?.014:.012
-);
+    if(style.reggae&&beat%2===1){
 
-}
+        chord.forEach(n=>{
 
-}
+            synthNote(
+                n*2,
+                .18,
+                "sine",
+                .012,
+                musicBus,
+                {
+                    attack:.005,
+                    release:.12,
+                    filter:2300,
+                    reverb:false
+                }
+            );
 
+        });
 
-if(style.reggae&&beat%2===1){
+    }
 
-chord.forEach(n=>{
 
-synthNote(
-n*2,
-.18,
-'sine',
-.012,
-musicBus,
-{
-attack:.005,
-release:.12,
-filter:2300,
-reverb:false
-}
-);
+    if(style.jazz&&beat%4===3){
 
-});
+        const n=
+            chord[
+                (variation+beat)%chord.length
+            ];
 
-}
+        if(n){
 
+            synthNote(
+                n*2,
+                .3,
+                "triangle",
+                .018,
+                musicBus,
+                {
+                    attack:.02,
+                    release:.25,
+                    filter:3000
+                }
+            );
 
-if(style.jazz&&beat%4===3){
+        }
 
-const n=
-chord[
-(variation+beat)%chord.length
-];
+    }
 
-synthNote(
-n*2,
-.3,
-'triangle',
-.018,
-musicBus,
-{
-attack:.02,
-release:.25,
-filter:3000
-}
-);
+    step++;
 
-}
-
-step++;
-
-if(step%128===0){
-variation++;
-}
-
+    if(step%128===0){
+        variation++;
+    }
 }
 
 
 /* =========================================================
-   CONTROLES MUSICALES
-   ========================================================= */
+   CONTROLES MÚSICA
+========================================================= */
 
 async function toggleAudio(){
 
-await initAudio();
+    const initialized=await initAudio();
 
-const btn=
-document.getElementById(
-'playAudioBtn'
-);
+    if(!initialized)return;
 
-if(isPlaying){
+    const btn=$("playAudioBtn");
 
-isPlaying=false;
+    if(isPlaying){
 
-clearInterval(musicTimer);
+        isPlaying=false;
 
-musicTimer=null;
+        clearInterval(musicTimer);
+        musicTimer=null;
 
-btn.textContent=
-'▶️ Reproducir';
+        btn.textContent="▶️ Reproducir";
+        btn.classList.remove("active");
 
-btn.classList.remove('active');
+        $("musicStatus").textContent="🎵 Música pausada";
 
-document.getElementById(
-'musicStatus'
-).textContent=
-'🎵 Música pausada';
+        return;
+    }
 
-return;
+    isPlaying=true;
 
-}
+    step=0;
+    variation++;
 
-isPlaying=true;
+    btn.textContent="⏸️ Pausar";
+    btn.classList.add("active");
 
-step=0;
+    startMusicTimer();
 
-variation++;
-
-btn.textContent=
-'⏸️ Pausar';
-
-btn.classList.add('active');
-
-startMusicTimer();
-
-document.getElementById(
-'musicStatus'
-).textContent=
-'🎶 Reproduciendo: '+
-document.getElementById(
-'styleSelect'
-).selectedOptions[0].text;
-
+    $("musicStatus").textContent=
+        "🎶 Reproduciendo: "+
+        $("styleSelect").selectedOptions[0].text;
 }
 
 
 function startMusicTimer(){
 
-clearInterval(musicTimer);
+    clearInterval(musicTimer);
 
-const style=
-styles[currentStyle];
+    const style=styles[currentStyle];
 
-const interval=
-(60000/style.bpm)/2;
+    if(!style)return;
 
-playMusicStep();
+    const interval=
+        Math.max(80,(60000/style.bpm)/2);
 
-musicTimer=
-setInterval(
-playMusicStep,
-interval
-);
+    playMusicStep();
 
+    musicTimer=
+        setInterval(
+            playMusicStep,
+            interval
+        );
 }
 
 
 function changeStyle(){
 
-currentStyle=
-document.getElementById(
-'styleSelect'
-).value;
+    currentStyle=$("styleSelect").value;
 
-variation++;
-step=0;
+    variation++;
+    step=0;
 
-if(isPlaying){
+    if(isPlaying){
 
-startMusicTimer();
+        startMusicTimer();
 
-document.getElementById(
-'musicStatus'
-).textContent=
-'🎶 Reproduciendo: '+
-document.getElementById(
-'styleSelect'
-).selectedOptions[0].text;
+        $("musicStatus").textContent=
+            "🎶 Reproduciendo: "+
+            $("styleSelect").selectedOptions[0].text;
 
-}
+    }else{
 
+        $("musicStatus").textContent=
+            "🎵 Estilo seleccionado: "+
+            $("styleSelect").selectedOptions[0].text;
+
+    }
 }
 
 
 async function newVariation(){
 
-await initAudio();
+    const initialized=await initAudio();
 
-variation++;
-step=0;
+    if(!initialized)return;
 
-if(isPlaying){
+    variation++;
+    step=0;
 
-startMusicTimer();
+    if(isPlaying){
 
-}else{
+        startMusicTimer();
 
-const style=
-styles[currentStyle];
+        $("musicStatus").textContent=
+            "✨ Nueva variación: "+
+            $("styleSelect").selectedOptions[0].text;
 
-style.chords[0].forEach(n=>{
+    }else{
 
-synthNote(
-n,
-1.5,
-style.wave,
-.025
-);
+        const style=styles[currentStyle];
 
-});
+        if(style&&style.chords[0]){
 
-}
+            style.chords[0].forEach(n=>{
 
-document.getElementById(
-'musicStatus'
-).textContent=
-'✨ Nueva variación musical';
+                synthNote(
+                    n,
+                    1.2,
+                    style.wave,
+                    .025
+                );
 
+            });
+
+        }
+
+        $("musicStatus").textContent=
+            "✨ Nueva variación musical";
+
+    }
 }
 
 
 /* =========================================================
-   SONIDOS AMBIENTALES
-   ========================================================= */
+   RUIDO AMBIENTAL
+========================================================= */
 
 function createNoiseBuffer(seconds=2){
 
-const buffer=
-audioCtx.createBuffer(
-1,
-audioCtx.sampleRate*seconds,
-audioCtx.sampleRate
-);
+    if(!audioCtx)return null;
 
-const data=
-buffer.getChannelData(0);
+    const buffer=
+        audioCtx.createBuffer(
+            1,
+            Math.floor(audioCtx.sampleRate*seconds),
+            audioCtx.sampleRate
+        );
 
-for(let i=0;i<data.length;i++){
+    const data=buffer.getChannelData(0);
 
-data[i]=Math.random()*2-1;
+    for(let i=0;i<data.length;i++){
+        data[i]=Math.random()*2-1;
+    }
 
-}
-
-return buffer;
-
+    return buffer;
 }
 
 
 function getBaseGain(type){
 
-const gains={
+    const gains={
+        rain:.13,
+        ocean:.16,
+        fire:.09,
+        night:.025,
+        wind:.15,
+        river:.13,
+        birds:.12,
+        storm:.15
+    };
 
-rain:.13,
-ocean:.16,
-fire:.09,
-night:.025,
-wind:.15,
-river:.13,
-birds:.12,
-storm:.15
-
-};
-
-return gains[type]||.1;
-
+    return gains[type]||.1;
 }
 
 
-async function toggleAmbientNoise(
-type,
-active
-){
+async function toggleAmbientNoise(type,active){
 
-await initAudio();
+    const initialized=await initAudio();
 
-if(!active){
+    if(!initialized){
 
-const node=
-ambientNodes[type];
+        const checkbox=$(type+"Noise");
 
-if(node){
+        if(checkbox){
+            checkbox.checked=false;
+        }
 
-try{
+        return;
+    }
 
-node.gain.gain.exponentialRampToValueAtTime(
-.0001,
-audioCtx.currentTime+.6
-);
+    if(!active){
 
-}catch(e){}
+        stopAmbientNode(type);
 
-setTimeout(()=>{
+        return;
+    }
 
-try{
+    stopAmbientNode(type);
 
-if(node.source)
-node.source.stop();
+    const slider=$(type+"Vol");
 
-if(node.interval)
-clearInterval(node.interval);
+    const volume=
+        parseFloat(slider?.value||".5")*
+        getBaseGain(type);
 
-}catch(e){}
+    if(type==="birds"){
 
-ambientNodes[type]=null;
+        createBirds(volume);
 
-},650);
+        return;
+    }
 
-}
+    try{
 
-return;
+        const source=
+            audioCtx.createBufferSource();
 
-}
+        source.buffer=
+            createNoiseBuffer(3);
 
+        source.loop=true;
 
-const slider=
-document.getElementById(
-type+'Vol'
-);
+        const filter=
+            audioCtx.createBiquadFilter();
 
-const volume=
-parseFloat(slider.value)*
-getBaseGain(type);
+        const gain=
+            audioCtx.createGain();
 
+        configureAmbientFilter(
+            type,
+            filter
+        );
 
-if(type==='birds'){
+        gain.gain.setValueAtTime(
+            .0001,
+            audioCtx.currentTime
+        );
 
-const gain=
-audioCtx.createGain();
+        gain.gain.linearRampToValueAtTime(
+            volume,
+            audioCtx.currentTime+.7
+        );
 
-gain.gain.value=volume;
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(masterBus);
 
-gain.connect(masterBus);
+        source.start();
 
-const interval=
-setInterval(()=>{
+        ambientNodes[type]={
+            source,
+            gain
+        };
 
-if(Math.random()<.55)return;
+    }catch(error){
 
-const osc=
-audioCtx.createOscillator();
+        console.error(
+            "Error creando sonido ambiental:",
+            error
+        );
 
-const g=
-audioCtx.createGain();
+        showMessage(
+            "No se pudo activar este sonido.",
+            "error"
+        );
 
-const start=
-1700+Math.random()*1400;
-
-osc.type='sine';
-
-osc.frequency.setValueAtTime(
-start,
-audioCtx.currentTime
-);
-
-osc.frequency.exponentialRampToValueAtTime(
-start*1.35,
-audioCtx.currentTime+.12
-);
-
-g.gain.setValueAtTime(
-.0001,
-audioCtx.currentTime
-);
-
-g.gain.linearRampToValueAtTime(
-volume*.8,
-audioCtx.currentTime+.03
-);
-
-g.gain.exponentialRampToValueAtTime(
-.0001,
-audioCtx.currentTime+.3
-);
-
-osc.connect(g);
-g.connect(gain);
-
-osc.start();
-
-osc.stop(
-audioCtx.currentTime+.32
-);
-
-},850);
-
-ambientNodes[type]={
-source:null,
-gain,
-interval
-};
-
-return;
-
+    }
 }
 
 
-const source=
-audioCtx.createBufferSource();
+function configureAmbientFilter(type,filter){
 
-source.buffer=
-createNoiseBuffer(2);
+    switch(type){
 
-source.loop=true;
+        case "rain":
+            filter.type="lowpass";
+            filter.frequency.value=1800;
+            break;
 
-const filter=
-audioCtx.createBiquadFilter();
+        case "ocean":
+            filter.type="bandpass";
+            filter.frequency.value=500;
+            filter.Q.value=.7;
+            break;
 
-const gain=
-audioCtx.createGain();
+        case "fire":
+            filter.type="bandpass";
+            filter.frequency.value=900;
+            filter.Q.value=.7;
+            break;
 
+        case "night":
+            filter.type="highpass";
+            filter.frequency.value=3500;
+            break;
 
-if(type==='rain'){
+        case "wind":
+            filter.type="bandpass";
+            filter.frequency.value=250;
+            filter.Q.value=.8;
+            break;
 
-filter.type='lowpass';
-filter.frequency.value=1800;
+        case "river":
+            filter.type="lowpass";
+            filter.frequency.value=900;
+            break;
 
-}else if(type==='ocean'){
+        case "storm":
+            filter.type="lowpass";
+            filter.frequency.value=300;
+            break;
 
-filter.type='bandpass';
-filter.frequency.value=500;
-filter.Q.value=.7;
-
-}else if(type==='fire'){
-
-filter.type='bandpass';
-filter.frequency.value=900;
-filter.Q.value=.7;
-
-}else if(type==='night'){
-
-filter.type='highpass';
-filter.frequency.value=3500;
-
-}else if(type==='wind'){
-
-filter.type='bandpass';
-filter.frequency.value=250;
-filter.Q.value=.8;
-
-}else if(type==='river'){
-
-filter.type='lowpass';
-filter.frequency.value=900;
-
-}else if(type==='storm'){
-
-filter.type='lowpass';
-filter.frequency.value=300;
-
+        default:
+            filter.type="lowpass";
+            filter.frequency.value=1500;
+    }
 }
 
 
-gain.gain.value=.0001;
+function createBirds(volume){
 
-gain.gain.linearRampToValueAtTime(
-volume,
-audioCtx.currentTime+.7
-);
+    if(!audioCtx)return;
 
-source.connect(filter);
-filter.connect(gain);
-gain.connect(masterBus);
+    const gain=
+        audioCtx.createGain();
 
-source.start();
+    gain.gain.value=volume;
 
-ambientNodes[type]={
-source,
-gain
-};
+    gain.connect(masterBus);
 
+    const interval=
+        setInterval(()=>{
+
+            if(!audioCtx)return;
+
+            if(Math.random()<.45)return;
+
+            try{
+
+                const osc=
+                    audioCtx.createOscillator();
+
+                const g=
+                    audioCtx.createGain();
+
+                const start=
+                    1600+Math.random()*1500;
+
+                const now=
+                    audioCtx.currentTime;
+
+                osc.type="sine";
+
+                osc.frequency.setValueAtTime(
+                    start,
+                    now
+                );
+
+                osc.frequency.exponentialRampToValueAtTime(
+                    start*1.35,
+                    now+.12
+                );
+
+                g.gain.setValueAtTime(
+                    .0001,
+                    now
+                );
+
+                g.gain.linearRampToValueAtTime(
+                    volume*.8,
+                    now+.03
+                );
+
+                g.gain.exponentialRampToValueAtTime(
+                    .0001,
+                    now+.3
+                );
+
+                osc.connect(g);
+                g.connect(gain);
+
+                osc.start(now);
+                osc.stop(now+.32);
+
+            }catch(error){}
+
+        },850);
+
+    ambientNodes.birds={
+        source:null,
+        gain,
+        interval
+    };
 }
 
 
-function updateAmbientVolume(
-type,
-value
-){
+function stopAmbientNode(type){
 
-if(
-ambientNodes[type] &&
-ambientNodes[type].gain
-){
+    const node=ambientNodes[type];
 
-ambientNodes[type]
-.gain
-.gain
-.setTargetAtTime(
-parseFloat(value)*
-getBaseGain(type),
-audioCtx.currentTime,
-.03
-);
+    if(!node)return;
 
+    try{
+
+        if(node.gain&&audioCtx){
+
+            node.gain.gain.cancelScheduledValues(
+                audioCtx.currentTime
+            );
+
+            node.gain.gain.setTargetAtTime(
+                .0001,
+                audioCtx.currentTime,
+                .08
+            );
+
+        }
+
+    }catch(error){}
+
+    setTimeout(()=>{
+
+        try{
+
+            if(node.source){
+                node.source.stop();
+            }
+
+        }catch(error){}
+
+        try{
+
+            if(node.interval){
+                clearInterval(node.interval);
+            }
+
+        }catch(error){}
+
+    },500);
+
+    ambientNodes[type]=null;
 }
+
+
+function updateAmbientVolume(type,value){
+
+    const node=ambientNodes[type];
+
+    if(!node||!node.gain||!audioCtx)return;
+
+    const target=
+        parseFloat(value)*
+        getBaseGain(type);
+
+    try{
+
+        node.gain.gain.setTargetAtTime(
+            Math.max(.0001,target),
+            audioCtx.currentTime,
+            .03
+        );
+
+    }catch(error){}
 
 }
 
 
 /* =========================================================
-   VOLUMEN
-   ========================================================= */
+   VOLUMEN GENERAL
+========================================================= */
 
-document.getElementById(
-'masterVolume'
-)
-.addEventListener(
-'input',
-function(){
+$("masterVolume").addEventListener(
+    "input",
+    function(){
 
-if(masterBus){
+        if(masterBus){
 
-masterBus.gain.value=
-parseFloat(this.value);
+            masterBus.gain.value=
+                parseFloat(this.value)||0;
 
-}
+        }
 
-});
+    }
+);
 
 
 /* =========================================================
    VOZ
-   ========================================================= */
+========================================================= */
 
 function speakText(text){
 
-if('speechSynthesis' in window){
+    if(!("speechSynthesis" in window)){
+        return;
+    }
 
-window.speechSynthesis.cancel();
+    try{
 
-const utterance=
-new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.cancel();
 
-utterance.lang='es-AR';
-utterance.rate=.9;
-utterance.pitch=1;
+        const utterance=
+            new SpeechSynthesisUtterance(text);
 
-window.speechSynthesis.speak(
-utterance
-);
+        utterance.lang="es-AR";
+        utterance.rate=.9;
+        utterance.pitch=1;
+        utterance.volume=1;
 
-}
+        window.speechSynthesis.speak(
+            utterance
+        );
 
+    }catch(error){
+
+        console.warn("Voz no disponible:",error);
+
+    }
 }
 
 
 /* =========================================================
    RESPIRACIÓN 4-7-8
-   ========================================================= */
+========================================================= */
 
 let isBreathing=false;
 let breathingTimeout=null;
@@ -2678,1753 +2833,1593 @@ let breathingCountdownTimeout=null;
 let breathingCycleNumber=0;
 
 
-/*
-   Limpiar temporizadores
-*/
-
 function clearBreathingTimers(){
 
-clearTimeout(
-breathingTimeout
-);
+    if(breathingTimeout){
+        clearTimeout(breathingTimeout);
+    }
 
-clearTimeout(
-breathingCountdownTimeout
-);
+    if(breathingCountdownTimeout){
+        clearTimeout(breathingCountdownTimeout);
+    }
 
-breathingTimeout=null;
-breathingCountdownTimeout=null;
-
+    breathingTimeout=null;
+    breathingCountdownTimeout=null;
 }
 
-
-/*
-   Voz específica del ejercicio
-*/
 
 function speakBreathing(text){
 
-if(!('speechSynthesis' in window))
-return;
+    if(!("speechSynthesis" in window)){
+        return;
+    }
 
-window.speechSynthesis.cancel();
+    try{
 
-const utterance=
-new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.cancel();
 
-utterance.lang='es-AR';
-utterance.rate=.88;
-utterance.pitch=1;
-utterance.volume=1;
+        const utterance=
+            new SpeechSynthesisUtterance(text);
 
-window.speechSynthesis.speak(
-utterance
-);
+        utterance.lang="es-AR";
+        utterance.rate=.88;
+        utterance.pitch=1;
+        utterance.volume=1;
+
+        window.speechSynthesis.speak(
+            utterance
+        );
+
+    }catch(error){}
 
 }
 
-
-/*
-   Detener respiración
-*/
 
 function stopBreathing(){
 
-isBreathing=false;
+    isBreathing=false;
 
-clearBreathingTimers();
+    clearBreathingTimers();
 
-if('speechSynthesis' in window){
+    if("speechSynthesis" in window){
 
-window.speechSynthesis.cancel();
+        try{
+            window.speechSynthesis.cancel();
+        }catch(error){}
 
+    }
+
+    const btn=$("breathingBtn");
+    const box=$("breathingBox");
+    const circle=$("breathingCircle");
+    const text=$("breathingText");
+    const counter=$("breathingCounter");
+
+    if(btn){
+
+        btn.textContent=
+            "Comenzar Respiración 4-7-8 🫁";
+
+        btn.classList.remove("breathing-stop");
+        btn.classList.add("breathing-start");
+
+    }
+
+    if(circle){
+
+        circle.className=
+            "breathing-circle prepare";
+
+        circle.textContent="Preparado";
+
+    }
+
+    if(text){
+        text.textContent="Ejercicio detenido";
+    }
+
+    if(counter){
+        counter.textContent=
+            "Cuando estés listo, podés comenzar nuevamente.";
+    }
+
+    if(box){
+
+        setTimeout(()=>{
+
+            if(!isBreathing){
+                box.style.display="none";
+            }
+
+        },700);
+
+    }
 }
 
-const btn=
-document.getElementById(
-'breathingBtn'
-);
-
-const box=
-document.getElementById(
-'breathingBox'
-);
-
-const circle=
-document.getElementById(
-'breathingCircle'
-);
-
-const text=
-document.getElementById(
-'breathingText'
-);
-
-const counter=
-document.getElementById(
-'breathingCounter'
-);
-
-
-if(btn){
-
-btn.textContent=
-'Comenzar Respiración 4-7-8 🫁';
-
-btn.classList.remove(
-'breathing-stop'
-);
-
-btn.classList.add(
-'breathing-start'
-);
-
-}
-
-
-if(circle){
-
-circle.className=
-'breathing-circle prepare';
-
-circle.textContent=
-'Preparado';
-
-}
-
-
-if(text){
-
-text.textContent=
-'Ejercicio detenido';
-
-}
-
-
-if(counter){
-
-counter.textContent=
-'Cuando estés listo, podés comenzar nuevamente.';
-
-}
-
-
-setTimeout(()=>{
-
-if(!isBreathing&&box){
-
-box.style.display='none';
-
-}
-
-},900);
-
-}
-
-
-/*
-   Iniciar / detener
-*/
 
 function openBreathingExercise(){
 
-if(isBreathing){
+    if(isBreathing){
 
-stopBreathing();
+        stopBreathing();
 
-return;
+        return;
+    }
 
+    isBreathing=true;
+    breathingCycleNumber=0;
+
+    const btn=$("breathingBtn");
+    const box=$("breathingBox");
+    const circle=$("breathingCircle");
+    const text=$("breathingText");
+    const counter=$("breathingCounter");
+
+    clearBreathingTimers();
+
+    box.style.display="block";
+
+    btn.textContent=
+        "Detener Respiración ⏹️";
+
+    btn.classList.remove("breathing-start");
+    btn.classList.add("breathing-stop");
+
+    circle.className=
+        "breathing-circle prepare";
+
+    circle.textContent=
+        "Preparáte";
+
+    text.textContent=
+        "Vamos a comenzar...";
+
+    counter.textContent=
+        "Preparación";
+
+    speakBreathing(
+        "Vamos a comenzar el ejercicio de respiración cuatro, siete, ocho. Buscá una posición cómoda y relajá los hombros."
+    );
+
+    breathingTimeout=
+        setTimeout(()=>{
+
+            if(!isBreathing)return;
+
+            speakBreathing(
+                "Comenzamos."
+            );
+
+            breathingTimeout=
+                setTimeout(()=>{
+
+                    if(isBreathing){
+                        breathingCycle();
+                    }
+
+                },1200);
+
+        },3000);
 }
 
-isBreathing=true;
-
-breathingCycleNumber=0;
-
-const btn=
-document.getElementById(
-'breathingBtn'
-);
-
-const box=
-document.getElementById(
-'breathingBox'
-);
-
-const circle=
-document.getElementById(
-'breathingCircle'
-);
-
-const text=
-document.getElementById(
-'breathingText'
-);
-
-const counter=
-document.getElementById(
-'breathingCounter'
-);
-
-
-clearBreathingTimers();
-
-
-box.style.display='block';
-
-
-btn.textContent=
-'Detener Respiración ⏹️';
-
-btn.classList.remove(
-'breathing-start'
-);
-
-btn.classList.add(
-'breathing-stop'
-);
-
-
-circle.className=
-'breathing-circle prepare';
-
-circle.textContent=
-'Preparáte';
-
-
-text.textContent=
-'Vamos a comenzar...';
-
-
-counter.textContent=
-'Preparación';
-
-
-speakBreathing(
-'Vamos a comenzar el ejercicio de respiración cuatro, siete, ocho. Busca una posición cómoda y relaja los hombros.'
-);
-
-
-breathingTimeout=
-setTimeout(()=>{
-
-if(!isBreathing)return;
-
-speakBreathing(
-'Comenzamos.'
-);
-
-breathingTimeout=
-setTimeout(()=>{
-
-if(isBreathing){
-
-breathingCycle();
-
-}
-
-},1200);
-
-},3000);
-
-}
-
-
-/*
-   Ciclo 4-7-8
-*/
 
 function breathingCycle(){
 
-if(!isBreathing)return;
+    if(!isBreathing)return;
 
-breathingCycleNumber++;
+    breathingCycleNumber++;
 
+    breathingPhase(
+        "inhale",
+        "Inhalá",
+        "Inhalá lentamente por la nariz.",
+        4,
+        ()=>{
 
-/*
-   INHALAR 4
-*/
+            if(!isBreathing)return;
 
-breathingPhase(
+            breathingPhase(
+                "hold",
+                "Mantené",
+                "Mantené el aire suavemente.",
+                7,
+                ()=>{
 
-'inhale',
+                    if(!isBreathing)return;
 
-'Inhalá',
+                    breathingPhase(
+                        "exhale",
+                        "Exhalá",
+                        "Exhalá lentamente por la boca.",
+                        8,
+                        ()=>{
 
-'Inhalá lentamente por la nariz.',
+                            if(!isBreathing)return;
 
-4,
+                            const counter=
+                                $("breathingCounter");
 
-()=>{
+                            const text=
+                                $("breathingText");
 
-if(!isBreathing)return;
+                            const circle=
+                                $("breathingCircle");
 
+                            circle.className=
+                                "breathing-circle prepare";
 
-/*
-   RETENER 7
-*/
+                            circle.textContent=
+                                "Bien hecho";
 
-breathingPhase(
+                            text.textContent=
+                                "Ciclo "+
+                                breathingCycleNumber+
+                                " completado 🌿";
 
-'hold',
+                            counter.textContent=
+                                "Preparando el siguiente ciclo...";
 
-'Mantené',
+                            speakBreathing(
+                                "Muy bien. Relajá el cuerpo."
+                            );
 
-'Mantené el aire suavemente.',
+                            breathingTimeout=
+                                setTimeout(()=>{
 
-7,
+                                    if(isBreathing){
+                                        breathingCycle();
+                                    }
 
-()=>{
+                                },2500);
 
-if(!isBreathing)return;
+                        }
+                    );
 
+                }
+            );
 
-/*
-   EXHALAR 8
-*/
-
-breathingPhase(
-
-'exhale',
-
-'Exhalá',
-
-'Exhalá lentamente por la boca.',
-
-8,
-
-()=>{
-
-if(!isBreathing)return;
-
-const counter=
-document.getElementById(
-'breathingCounter'
-);
-
-const text=
-document.getElementById(
-'breathingText'
-);
-
-const circle=
-document.getElementById(
-'breathingCircle'
-);
-
-
-circle.className=
-'breathing-circle prepare';
-
-circle.textContent=
-'Bien hecho';
-
-
-text.textContent=
-'Ciclo '+
-breathingCycleNumber+
-' completado 🌿';
-
-
-counter.textContent=
-'Preparando el siguiente ciclo...';
-
-
-speakBreathing(
-'Muy bien. Relaja el cuerpo.'
-);
-
-
-breathingTimeout=
-setTimeout(()=>{
-
-if(isBreathing){
-
-breathingCycle();
-
+        }
+    );
 }
 
-},2500);
-
-}
-
-);
-
-}
-
-);
-
-}
-
-}
-
-
-/*
-   Fase de respiración
-*/
 
 function breathingPhase(
-
-phase,
-title,
-voiceText,
-seconds,
-callback
-
+    phase,
+    title,
+    voiceText,
+    seconds,
+    callback
 ){
 
-if(!isBreathing)return;
+    if(!isBreathing)return;
 
-const circle=
-document.getElementById(
-'breathingCircle'
-);
+    const circle=$("breathingCircle");
+    const text=$("breathingText");
 
-const text=
-document.getElementById(
-'breathingText'
-);
+    circle.className=
+        "breathing-circle "+phase;
 
+    circle.textContent=title;
 
-circle.className=
-'breathing-circle '+
-phase;
+    text.textContent=title;
 
-circle.textContent=
-title;
+    speakBreathing(voiceText);
 
-
-text.textContent=
-title;
-
-
-speakBreathing(
-voiceText
-);
-
-
-breathingCountdown(
-seconds,
-callback
-);
-
+    breathingCountdown(
+        seconds,
+        callback
+    );
 }
 
-
-/*
-   Contador
-*/
 
 function breathingCountdown(
-seconds,
-callback
+    seconds,
+    callback
 ){
 
-if(!isBreathing)return;
+    if(!isBreathing)return;
 
-let remaining=seconds;
+    let remaining=seconds;
 
-const counter=
-document.getElementById(
-'breathingCounter'
-);
+    const counter=$("breathingCounter");
 
+    counter.textContent=
+        remaining+" segundos";
 
-counter.textContent=
-remaining+
-' segundos';
+    function tick(){
 
+        if(!isBreathing)return;
 
-function tick(){
+        remaining--;
 
-if(!isBreathing)return;
+        if(remaining<=0){
 
-remaining--;
+            callback();
 
-if(remaining<=0){
+            return;
+        }
 
-callback();
+        counter.textContent=
+            remaining+" segundos";
 
-return;
+        breathingCountdownTimeout=
+            setTimeout(
+                tick,
+                1000
+            );
+    }
 
-}
-
-
-counter.textContent=
-remaining+
-' segundos';
-
-
-breathingCountdownTimeout=
-setTimeout(
-tick,
-1000
-);
-
-}
-
-
-breathingCountdownTimeout=
-setTimeout(
-tick,
-1000
-);
-
+    breathingCountdownTimeout=
+        setTimeout(
+            tick,
+            1000
+        );
 }
 
 
 /* =========================================================
    EMOCIONES
-   ========================================================= */
+========================================================= */
 
-let selectedEmotionValue='';
-let currentBase64Audio='';
-let currentBase64Photo='';
-
-
-document.querySelectorAll(
-'.buttons-grid .btn'
-)
-.forEach(button=>{
-
-button.addEventListener(
-'click',
-()=>{
-
-selectedEmotionValue=
-button.dataset.emotion;
+let selectedEmotionValue="";
+let currentBase64Audio="";
+let currentBase64Photo="";
 
 
 document.querySelectorAll(
-'.buttons-grid .btn'
-)
-.forEach(btn=>
-btn.classList.remove(
-'selected'
-)
-);
+    ".buttons-grid .btn"
+).forEach(button=>{
 
+    button.addEventListener(
+        "click",
+        ()=>{
 
-button.classList.add(
-'selected'
-);
+            selectedEmotionValue=
+                button.dataset.emotion||"";
 
+            document.querySelectorAll(
+                ".buttons-grid .btn"
+            ).forEach(btn=>{
+                btn.classList.remove("selected");
+            });
 
-speakText(
-button.dataset.message
-);
+            button.classList.add("selected");
 
-}
-);
+            speakText(
+                button.dataset.message||""
+            );
+
+        }
+    );
 
 });
 
 
 /* =========================================================
    FOTO
-   ========================================================= */
+========================================================= */
 
-document.getElementById(
-'photoInput'
-)
-.addEventListener(
-'change',
-function(event){
+$("photoInput").addEventListener(
+    "change",
+    function(event){
 
-const file=
-event.target.files[0];
+        const file=
+            event.target.files?.[0];
 
-if(!file)return;
+        if(!file)return;
 
-const reader=
-new FileReader();
+        if(!file.type.startsWith("image/")){
 
-reader.onload=()=>{
+            showMessage(
+                "Seleccioná una imagen válida.",
+                "error"
+            );
 
-currentBase64Photo=
-reader.result;
+            this.value="";
 
-const img=
-document.getElementById(
-'photoPreviewImg'
+            return;
+        }
+
+        /*
+           Reducimos la imagen para evitar llenar
+           localStorage con archivos demasiado grandes.
+        */
+
+        resizeImageToDataURL(
+            file,
+            1200,
+            .82
+        ).then(dataURL=>{
+
+            currentBase64Photo=dataURL;
+
+            const img=$("photoPreviewImg");
+
+            img.src=dataURL;
+            img.style.display="block";
+
+        }).catch(error=>{
+
+            console.error(error);
+
+            showMessage(
+                "No se pudo procesar la foto.",
+                "error"
+            );
+
+        });
+
+    }
 );
 
-img.src=
-currentBase64Photo;
 
-img.style.display=
-'block';
+function resizeImageToDataURL(
+    file,
+    maxSize=1200,
+    quality=.82
+){
 
-};
+    return new Promise((resolve,reject)=>{
 
-reader.readAsDataURL(file);
+        const reader=new FileReader();
 
-});
+        reader.onload=event=>{
+
+            const img=new Image();
+
+            img.onload=()=>{
+
+                let width=img.width;
+                let height=img.height;
+
+                if(width>height){
+
+                    if(width>maxSize){
+
+                        height=
+                            Math.round(
+                                height*maxSize/width
+                            );
+
+                        width=maxSize;
+                    }
+
+                }else{
+
+                    if(height>maxSize){
+
+                        width=
+                            Math.round(
+                                width*maxSize/height
+                            );
+
+                        height=maxSize;
+                    }
+                }
+
+                const canvas=
+                    document.createElement("canvas");
+
+                canvas.width=width;
+                canvas.height=height;
+
+                const ctx=
+                    canvas.getContext("2d");
+
+                if(!ctx){
+
+                    reject(
+                        new Error("Canvas no disponible")
+                    );
+
+                    return;
+                }
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+                resolve(
+                    canvas.toDataURL(
+                        "image/jpeg",
+                        quality
+                    )
+                );
+
+            };
+
+            img.onerror=()=>{
+                reject(
+                    new Error("Imagen inválida")
+                );
+            };
+
+            img.src=event.target.result;
+
+        };
+
+        reader.onerror=()=>{
+            reject(
+                new Error("No se pudo leer el archivo")
+            );
+        };
+
+        reader.readAsDataURL(file);
+
+    });
+}
 
 
-document.getElementById(
-'savePhotoBtn'
-)
-.addEventListener(
-'click',
-saveStandalonePhoto
+$("savePhotoBtn").addEventListener(
+    "click",
+    saveStandalonePhoto
 );
 
 
 function saveStandalonePhoto(){
 
-if(!currentBase64Photo){
+    if(!currentBase64Photo){
 
-alert(
-'Primero seleccioná una foto.'
-);
+        showMessage(
+            "Primero seleccioná una foto.",
+            "error"
+        );
 
-return;
+        return;
+    }
 
+    const entry={
+
+        child:$("childSelect").value,
+
+        emotion:$("photoEmotionSelect").value,
+
+        note:"Foto guardada",
+
+        photo:currentBase64Photo,
+
+        audio:"",
+
+        date:new Date().toLocaleString("es-AR")
+
+    };
+
+    const entries=
+        safeGetArray("emotionEntries");
+
+    entries.push(entry);
+
+    if(!safeSet("emotionEntries",entries)){
+        return;
+    }
+
+    showMessage(
+        "¡Foto guardada con éxito! 🖼️"
+    );
+
+    resetPhoto();
+
+    loadEntries();
 }
 
 
-const entry={
+function resetPhoto(){
 
-child:
-document.getElementById(
-'childSelect'
-).value,
+    currentBase64Photo="";
 
-emotion:
-document.getElementById(
-'photoEmotionSelect'
-).value,
+    $("photoInput").value="";
 
-note:'Foto guardada',
-
-photo:
-currentBase64Photo,
-
-audio:'',
-
-date:
-new Date().toLocaleString()
-
-};
-
-
-const entries=
-JSON.parse(
-localStorage.getItem(
-'emotionEntries'
-)
-)||[];
-
-
-entries.push(entry);
-
-
-localStorage.setItem(
-'emotionEntries',
-JSON.stringify(entries)
-);
-
-
-alert(
-'¡Foto guardada con éxito! 🖼️'
-);
-
-
-currentBase64Photo='';
-
-document.getElementById(
-'photoInput'
-).value='';
-
-document.getElementById(
-'photoPreviewImg'
-).style.display='none';
-
-
-loadEntries();
+    $("photoPreviewImg").src="";
+    $("photoPreviewImg").style.display="none";
 
 }
 
 
 /* =========================================================
-   GRABACIÓN
-   ========================================================= */
+   GRABACIÓN DE AUDIO
+========================================================= */
 
 let mediaRecorder=null;
 let audioChunks=[];
+let recordingStream=null;
 
 
-document.getElementById(
-'recordBtn'
-)
-.addEventListener(
-'click',
-toggleRecording
+$("recordBtn").addEventListener(
+    "click",
+    toggleRecording
 );
 
 
 async function toggleRecording(){
 
-const button=
-document.getElementById(
-'recordBtn'
-);
+    const button=$("recordBtn");
+    const playback=$("audioPlayback");
 
-const playback=
-document.getElementById(
-'audioPlayback'
-);
+    if(
+        mediaRecorder &&
+        mediaRecorder.state==="recording"
+    ){
 
+        try{
+            mediaRecorder.stop();
+        }catch(error){}
 
-if(
-mediaRecorder &&
-mediaRecorder.state==='recording'
-){
+        button.textContent=
+            "Procesando audio...";
 
-mediaRecorder.stop();
+        button.disabled=true;
 
-button.textContent=
-'Grabar Audio';
+        return;
+    }
 
-return;
+    if(
+        !navigator.mediaDevices||
+        !navigator.mediaDevices.getUserMedia||
+        typeof MediaRecorder==="undefined"
+    ){
 
+        showMessage(
+            "La grabación de audio no está disponible en este navegador.",
+            "error"
+        );
+
+        return;
+    }
+
+    try{
+
+        recordingStream=
+            await navigator.mediaDevices.getUserMedia({
+                audio:true
+            });
+
+        let mimeType="";
+
+        const possibleTypes=[
+            "audio/webm;codecs=opus",
+            "audio/webm",
+            "audio/mp4",
+            "audio/ogg;codecs=opus"
+        ];
+
+        for(const type of possibleTypes){
+
+            if(
+                MediaRecorder.isTypeSupported &&
+                MediaRecorder.isTypeSupported(type)
+            ){
+
+                mimeType=type;
+                break;
+            }
+
+        }
+
+        mediaRecorder=
+            mimeType
+                ?new MediaRecorder(
+                    recordingStream,
+                    {mimeType}
+                )
+                :new MediaRecorder(
+                    recordingStream
+                );
+
+        audioChunks=[];
+
+        mediaRecorder.ondataavailable=
+            event=>{
+
+                if(event.data&&event.data.size>0){
+
+                    audioChunks.push(event.data);
+
+                }
+
+            };
+
+        mediaRecorder.onerror=
+            event=>{
+
+                console.error(
+                    "MediaRecorder error:",
+                    event
+                );
+
+                cleanupRecording();
+
+                button.disabled=false;
+                button.textContent="Grabar Audio";
+
+                showMessage(
+                    "Ocurrió un error durante la grabación.",
+                    "error"
+                );
+
+            };
+
+        mediaRecorder.onstop=
+            ()=>{
+
+                const actualMime=
+                    mediaRecorder?.mimeType||
+                    mimeType||
+                    "audio/webm";
+
+                const blob=
+                    new Blob(
+                        audioChunks,
+                        {type:actualMime}
+                    );
+
+                cleanupRecording();
+
+                if(blob.size===0){
+
+                    button.disabled=false;
+                    button.textContent="Grabar Audio";
+
+                    showMessage(
+                        "No se grabó ningún audio.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+                const reader=
+                    new FileReader();
+
+                reader.onloadend=()=>{
+
+                    currentBase64Audio=
+                        reader.result;
+
+                    playback.src=
+                        currentBase64Audio;
+
+                    playback.style.display="block";
+
+                    button.disabled=false;
+                    button.textContent=
+                        "Grabar Audio";
+
+                    showMessage(
+                        "Audio grabado correctamente. 🎤"
+                    );
+
+                };
+
+                reader.onerror=()=>{
+
+                    button.disabled=false;
+                    button.textContent="Grabar Audio";
+
+                    showMessage(
+                        "No se pudo procesar el audio.",
+                        "error"
+                    );
+
+                };
+
+                reader.readAsDataURL(blob);
+
+            };
+
+        mediaRecorder.start();
+
+        button.textContent=
+            "Detener Grabación ⏹️";
+
+        showMessage(
+            "Grabando audio..."
+        );
+
+    }catch(error){
+
+        console.error(
+            "Error accediendo al micrófono:",
+            error
+        );
+
+        cleanupRecording();
+
+        button.disabled=false;
+        button.textContent="Grabar Audio";
+
+        showMessage(
+            "No se pudo acceder al micrófono. Revisá los permisos del navegador.",
+            "error"
+        );
+
+    }
 }
 
 
-try{
+function cleanupRecording(){
 
-const stream=
-await navigator.mediaDevices
-.getUserMedia({
-audio:true
-});
+    if(recordingStream){
 
+        recordingStream
+            .getTracks()
+            .forEach(track=>{
 
-let mimeType='';
+                try{
+                    track.stop();
+                }catch(error){}
 
+            });
 
-if(
-MediaRecorder.isTypeSupported(
-'audio/webm'
-)
-){
+    }
 
-mimeType='audio/webm';
-
-}
-
-
-mediaRecorder=
-mimeType
-?new MediaRecorder(
-stream,
-{mimeType}
-)
-:new MediaRecorder(
-stream
-);
-
-
-audioChunks=[];
-
-
-mediaRecorder.ondataavailable=
-event=>{
-
-if(event.data.size>0){
-
-audioChunks.push(
-event.data
-);
-
-}
-
-};
-
-
-mediaRecorder.onstop=()=>{
-
-stream.getTracks().forEach(
-track=>
-track.stop()
-);
-
-
-const blob=
-new Blob(
-audioChunks,
-{
-type:
-mediaRecorder.mimeType
-}
-);
-
-
-const reader=
-new FileReader();
-
-
-reader.onloadend=()=>{
-
-currentBase64Audio=
-reader.result;
-
-playback.src=
-currentBase64Audio;
-
-playback.style.display=
-'block';
-
-};
-
-
-reader.readAsDataURL(blob);
-
-};
-
-
-mediaRecorder.start();
-
-button.textContent=
-'Detener Grabación ⏹️';
-
-
-}catch(error){
-
-alert(
-'No se pudo acceder al micrófono. Verificá los permisos del navegador.'
-);
-
-}
-
+    recordingStream=null;
+    mediaRecorder=null;
 }
 
 
 /* =========================================================
-   GUARDAR REGISTRO
-   ========================================================= */
+   GUARDAR REGISTRO COMPLETO
+========================================================= */
 
-document.getElementById(
-'saveEntryBtn'
-)
-.addEventListener(
-'click',
-saveEntry
+$("saveEntryBtn").addEventListener(
+    "click",
+    saveEntry
 );
 
 
 function saveEntry(){
 
-const entry={
+    const note=
+        $("noteInput").value.trim();
 
-child:
-document.getElementById(
-'childSelect'
-).value,
+    const emotion=
+        selectedEmotionValue||
+        "No especificada";
 
-emotion:
-selectedEmotionValue||
-'No especificada',
+    const entry={
 
-note:
-document.getElementById(
-'noteInput'
-).value,
+        child:$("childSelect").value,
 
-photo:
-currentBase64Photo,
+        emotion,
 
-audio:
-currentBase64Audio,
+        note,
 
-date:
-new Date().toLocaleString()
+        photo:currentBase64Photo,
 
-};
+        audio:currentBase64Audio,
 
+        date:new Date().toLocaleString("es-AR")
 
-if(
-!entry.note.trim() &&
-!entry.photo &&
-!entry.audio &&
-entry.emotion==='No especificada'
-){
+    };
 
-alert(
-'Agregá una emoción, nota, foto o audio antes de guardar.'
-);
+    if(
+        !note &&
+        !entry.photo &&
+        !entry.audio &&
+        emotion==="No especificada"
+    ){
 
-return;
+        showMessage(
+            "Agregá una emoción, nota, foto o audio antes de guardar.",
+            "error"
+        );
 
-}
+        return;
+    }
 
+    const entries=
+        safeGetArray("emotionEntries");
 
-const entries=
-JSON.parse(
-localStorage.getItem(
-'emotionEntries'
-)
-)||[];
+    entries.push(entry);
 
+    if(!safeSet("emotionEntries",entries)){
+        return;
+    }
 
-entries.push(entry);
+    showMessage(
+        "¡Registro guardado con éxito! 🎉"
+    );
 
+    $("noteInput").value="";
 
-localStorage.setItem(
-'emotionEntries',
-JSON.stringify(entries)
-);
+    resetPhoto();
 
+    $("audioPlayback").style.display="none";
+    $("audioPlayback").removeAttribute("src");
 
-alert(
-'¡Registro guardado con éxito! 🎉'
-);
+    document.querySelectorAll(
+        ".buttons-grid .btn"
+    ).forEach(btn=>{
+        btn.classList.remove("selected");
+    });
 
+    selectedEmotionValue="";
+    currentBase64Audio="";
 
-document.getElementById(
-'noteInput'
-).value='';
-
-document.getElementById(
-'photoInput'
-).value='';
-
-document.getElementById(
-'photoPreviewImg'
-).style.display=
-'none';
-
-document.getElementById(
-'audioPlayback'
-).style.display=
-'none';
-
-document.getElementById(
-'audioPlayback'
-).src='';
-
-
-document.querySelectorAll(
-'.buttons-grid .btn'
-)
-.forEach(btn=>
-btn.classList.remove(
-'selected'
-)
-);
-
-
-selectedEmotionValue='';
-currentBase64Audio='';
-currentBase64Photo='';
-
-
-loadEntries();
-
+    loadEntries();
 }
 
 
 /* =========================================================
    GRATITUD
-   ========================================================= */
+========================================================= */
 
-document.getElementById(
-'saveGratitudeBtn'
-)
-.addEventListener(
-'click',
-saveGratitude
+$("saveGratitudeBtn").addEventListener(
+    "click",
+    saveGratitude
 );
 
 
 function saveGratitude(){
 
-const input=
-document.getElementById(
-'gratitudeInput'
-);
+    const input=$("gratitudeInput");
 
-if(!input.value.trim())return;
+    const text=input.value.trim();
 
+    if(!text){
 
-const items=
-JSON.parse(
-localStorage.getItem(
-'gratitudeEntries'
-)
-)||[];
+        showMessage(
+            "Escribí algo para guardar tu gratitud.",
+            "error"
+        );
 
+        return;
+    }
 
-items.push({
+    const items=
+        safeGetArray("gratitudeEntries");
 
-text:
-input.value.trim(),
+    items.push({
 
-date:
-new Date().toLocaleString()
+        text,
 
-});
+        date:new Date().toLocaleString("es-AR")
 
+    });
 
-localStorage.setItem(
-'gratitudeEntries',
-JSON.stringify(items)
-);
+    if(!safeSet("gratitudeEntries",items)){
+        return;
+    }
 
+    input.value="";
 
-input.value='';
+    showMessage(
+        "¡Gratitud guardada! ⭐"
+    );
 
-alert(
-'¡Gratitud guardada! ⭐'
-);
-
-
-loadGratitude();
-
+    loadGratitude();
 }
 
 
 /* =========================================================
    ESTRATEGIAS
-   ========================================================= */
+========================================================= */
 
-document.getElementById(
-'saveStrategyBtn'
-)
-.addEventListener(
-'click',
-saveStrategy
+$("saveStrategyBtn").addEventListener(
+    "click",
+    saveStrategy
 );
 
 
 function saveStrategy(){
 
-const input=
-document.getElementById(
-'strategyInput'
-);
+    const input=$("strategyInput");
 
-if(!input.value.trim())return;
+    const text=input.value.trim();
 
+    if(!text){
 
-const items=
-JSON.parse(
-localStorage.getItem(
-'strategyEntries'
-)
-)||[];
+        showMessage(
+            "Escribí una estrategia antes de guardar.",
+            "error"
+        );
 
+        return;
+    }
 
-items.push({
+    const items=
+        safeGetArray("strategyEntries");
 
-text:
-input.value.trim(),
+    items.push({
 
-date:
-new Date().toLocaleString()
+        text,
 
-});
+        date:new Date().toLocaleString("es-AR")
 
+    });
 
-localStorage.setItem(
-'strategyEntries',
-JSON.stringify(items)
-);
+    if(!safeSet("strategyEntries",items)){
+        return;
+    }
 
+    input.value="";
 
-input.value='';
+    showMessage(
+        "¡Estrategia guardada! 💡"
+    );
 
-alert(
-'¡Estrategia guardada! 💡'
-);
-
-
-loadStrategies();
-
+    loadStrategies();
 }
 
 
 /* =========================================================
    MICROEXPRESIONES
-   ========================================================= */
+========================================================= */
 
-document.getElementById(
-'saveMicroBtn'
-)
-.addEventListener(
-'click',
-saveMicroexpression
+$("saveMicroBtn").addEventListener(
+    "click",
+    saveMicroexpression
 );
 
 
 function saveMicroexpression(){
 
-const input=
-document.getElementById(
-'microexpressionInput'
-);
+    const input=$("microexpressionInput");
 
-if(!input.value.trim())return;
+    const text=input.value.trim();
 
+    if(!text){
 
-const items=
-JSON.parse(
-localStorage.getItem(
-'microexpressionEntries'
-)
-)||[];
+        showMessage(
+            "Escribí una observación antes de guardar.",
+            "error"
+        );
 
+        return;
+    }
 
-items.push({
+    const items=
+        safeGetArray(
+            "microexpressionEntries"
+        );
 
-child:
-document.getElementById(
-'childSelect'
-).value,
+    items.push({
 
-text:
-input.value.trim(),
+        child:$("childSelect").value,
 
-date:
-new Date().toLocaleString()
+        text,
 
-});
+        date:new Date().toLocaleString("es-AR")
 
+    });
 
-localStorage.setItem(
-'microexpressionEntries',
-JSON.stringify(items)
-);
+    if(
+        !safeSet(
+            "microexpressionEntries",
+            items
+        )
+    ){
+        return;
+    }
 
+    input.value="";
 
-input.value='';
+    showMessage(
+        "¡Observación guardada! 👀"
+    );
 
-alert(
-'¡Observación guardada! 👀'
-);
-
-
-loadMicroexpressions();
-
+    loadMicroexpressions();
 }
 
 
 /* =========================================================
    ELIMINAR
-   ========================================================= */
+========================================================= */
 
-function deleteItem(
-storageKey,
-index
-){
+function deleteItem(storageKey,index){
 
-const items=
-JSON.parse(
-localStorage.getItem(
-storageKey
-)
-)||[];
+    const items=
+        safeGetArray(storageKey);
 
+    if(
+        index<0||
+        index>=items.length
+    ){
+        return;
+    }
 
-if(
-!confirm(
-'¿Querés eliminar este registro?'
-)
-){
+    if(
+        !confirm(
+            "¿Querés eliminar este registro?"
+        )
+    ){
+        return;
+    }
 
-return;
+    items.splice(index,1);
 
-}
+    if(!safeSet(storageKey,items)){
+        return;
+    }
 
+    if(storageKey==="emotionEntries"){
+        loadEntries();
+    }
 
-items.splice(
-index,
-1
-);
+    if(storageKey==="gratitudeEntries"){
+        loadGratitude();
+    }
 
+    if(storageKey==="strategyEntries"){
+        loadStrategies();
+    }
 
-localStorage.setItem(
-storageKey,
-JSON.stringify(items)
-);
+    if(storageKey==="microexpressionEntries"){
+        loadMicroexpressions();
+    }
 
-
-if(storageKey==='emotionEntries'){
-loadEntries();
-}
-
-if(storageKey==='gratitudeEntries'){
-loadGratitude();
-}
-
-if(storageKey==='strategyEntries'){
-loadStrategies();
-}
-
-if(storageKey==='microexpressionEntries'){
-loadMicroexpressions();
-}
-
+    showMessage(
+        "Registro eliminado."
+    );
 }
 
 
 /* =========================================================
-   HISTORIAL
-   ========================================================= */
+   HISTORIAL PRINCIPAL
+========================================================= */
 
 function loadEntries(){
 
-const list=
-document.getElementById(
-'entriesList'
-);
+    const list=$("entriesList");
 
-const filter=
-document.getElementById(
-'filterChildSelect'
-).value;
+    if(!list)return;
 
+    const filter=
+        $("filterChildSelect").value;
 
-list.innerHTML='';
+    list.innerHTML="";
 
+    const entries=
+        safeGetArray("emotionEntries");
 
-const entries=
-JSON.parse(
-localStorage.getItem(
-'emotionEntries'
-)
-)||[];
+    let visibleCount=0;
 
+    entries.forEach(
+        (item,index)=>{
 
-entries.forEach(
-(item,index)=>{
+            const child=
+                item.child||
+                "General";
 
-const child=
-item.child||
-'General';
+            if(
+                filter!=="Todos" &&
+                child!==filter
+            ){
+                return;
+            }
 
+            visibleCount++;
 
-if(
-filter!=='Todos' &&
-child!==filter
-){
+            const li=
+                document.createElement("li");
 
-return;
+            const badge=
+                document.createElement("span");
 
-}
+            badge.className="badge-child";
 
+            badge.textContent=
+                "👤 "+child;
 
-const li=
-document.createElement(
-'li'
-);
+            li.appendChild(badge);
 
+            li.appendChild(
+                document.createElement("br")
+            );
 
-const badge=
-document.createElement(
-'span'
-);
+            const strong=
+                document.createElement("strong");
 
-badge.className=
-'badge-child';
+            strong.textContent=
+                (item.date||"")+
+                " - Emoción: "+
+                (item.emotion||
+                    "No especificada");
 
-badge.textContent=
-'👤 '+child;
+            li.appendChild(strong);
 
-li.appendChild(
-badge
-);
+            if(item.note){
 
-li.appendChild(
-document.createElement(
-'br'
-)
-);
+                li.appendChild(
+                    document.createElement("br")
+                );
 
+                const note=
+                    document.createElement(
+                        "div"
+                    );
 
-const strong=
-document.createElement(
-'strong'
-);
+                note.style.marginTop="6px";
 
-strong.textContent=
-item.date+
-' - Emoción: '+
-item.emotion;
+                note.textContent=item.note;
 
-li.appendChild(
-strong
-);
+                li.appendChild(note);
 
-li.appendChild(
-document.createElement(
-'br'
-)
-);
+            }
 
+            if(item.photo){
 
-if(item.note){
+                const img=
+                    document.createElement("img");
 
-li.appendChild(
-document.createTextNode(
-item.note
-)
-);
+                img.src=item.photo;
+                img.className="entry-img";
+                img.alt="Foto del registro";
 
-}
+                img.onerror=()=>{
+                    img.remove();
+                };
 
+                li.appendChild(img);
 
-if(item.photo){
+            }
 
-const img=
-document.createElement(
-'img'
-);
+            if(item.audio){
 
-img.src=
-item.photo;
+                const audio=
+                    document.createElement("audio");
 
-img.className=
-'entry-img';
+                audio.src=item.audio;
+                audio.controls=true;
+                audio.preload="metadata";
+                audio.style.width="100%";
+                audio.style.marginTop="8px";
 
-li.appendChild(
-img
-);
+                li.appendChild(audio);
 
-}
+            }
 
+            const deleteBtn=
+                document.createElement("button");
 
-if(item.audio){
+            deleteBtn.type="button";
+            deleteBtn.className="btn-delete";
+            deleteBtn.textContent="Eliminar";
 
-const audio=
-document.createElement(
-'audio'
-);
+            deleteBtn.addEventListener(
+                "click",
+                ()=>deleteItem(
+                    "emotionEntries",
+                    index
+                )
+            );
 
-audio.src=
-item.audio;
+            li.appendChild(deleteBtn);
 
-audio.controls=true;
+            list.appendChild(li);
 
-audio.style.width=
-'100%';
+        }
+    );
 
-audio.style.marginTop=
-'8px';
+    if(visibleCount===0){
 
-li.appendChild(
-audio
-);
+        const li=
+            document.createElement("li");
 
-}
+        li.className="empty-history";
 
+        li.textContent=
+            entries.length===0
+                ?"Todavía no hay registros guardados."
+                :"No hay registros para este filtro.";
 
-const deleteBtn=
-document.createElement(
-'button'
-);
-
-deleteBtn.className=
-'btn-delete';
-
-deleteBtn.textContent=
-'Eliminar';
-
-
-deleteBtn.onclick=()=>{
-
-deleteItem(
-'emotionEntries',
-index
-);
-
-};
-
-
-li.appendChild(
-deleteBtn
-);
-
-list.appendChild(
-li
-);
-
-});
-
+        list.appendChild(li);
+    }
 }
 
 
 /* =========================================================
-   CARGAR GRATITUD
-   ========================================================= */
+   GRATITUD
+========================================================= */
 
 function loadGratitude(){
 
-const list=
-document.getElementById(
-'gratitudeList'
-);
+    const list=$("gratitudeList");
 
-list.innerHTML='';
+    if(!list)return;
 
+    list.innerHTML="";
 
-const items=
-JSON.parse(
-localStorage.getItem(
-'gratitudeEntries'
-)
-)||[];
+    const items=
+        safeGetArray("gratitudeEntries");
 
+    if(items.length===0){
 
-items.forEach(
-(item,index)=>{
+        const li=
+            document.createElement("li");
 
-const li=
-document.createElement(
-'li'
-);
+        li.className="empty-history";
 
+        li.textContent=
+            "Todavía no hay agradecimientos guardados.";
 
-li.innerHTML=
-'<strong>'+
-escapeHTML(item.date)+
-'</strong>: '+
-escapeHTML(item.text);
+        list.appendChild(li);
 
+        return;
+    }
 
-const btn=
-document.createElement(
-'button'
-);
+    items.forEach(
+        (item,index)=>{
 
-btn.className=
-'btn-delete';
+            const li=
+                document.createElement("li");
 
-btn.textContent=
-'Eliminar';
+            const strong=
+                document.createElement("strong");
 
+            strong.textContent=
+                item.date||"";
 
-btn.onclick=()=>{
+            li.appendChild(strong);
 
-deleteItem(
-'gratitudeEntries',
-index
-);
+            li.appendChild(
+                document.createTextNode(
+                    ": "+(item.text||"")
+                )
+            );
 
-};
+            const btn=
+                document.createElement("button");
 
+            btn.type="button";
+            btn.className="btn-delete";
+            btn.textContent="Eliminar";
 
-li.appendChild(
-btn
-);
+            btn.addEventListener(
+                "click",
+                ()=>deleteItem(
+                    "gratitudeEntries",
+                    index
+                )
+            );
 
-list.appendChild(
-li
-);
+            li.appendChild(btn);
 
-});
+            list.appendChild(li);
 
+        }
+    );
 }
 
 
 /* =========================================================
-   CARGAR ESTRATEGIAS
-   ========================================================= */
+   ESTRATEGIAS
+========================================================= */
 
 function loadStrategies(){
 
-const list=
-document.getElementById(
-'strategyList'
-);
+    const list=$("strategyList");
 
-list.innerHTML='';
+    if(!list)return;
 
+    list.innerHTML="";
 
-const items=
-JSON.parse(
-localStorage.getItem(
-'strategyEntries'
-)
-)||[];
+    const items=
+        safeGetArray("strategyEntries");
 
+    if(items.length===0){
 
-items.forEach(
-(item,index)=>{
+        const li=
+            document.createElement("li");
 
-const li=
-document.createElement(
-'li'
-);
+        li.className="empty-history";
 
+        li.textContent=
+            "Todavía no hay estrategias guardadas.";
 
-li.innerHTML=
-'<strong>'+
-escapeHTML(item.date)+
-'</strong>: '+
-escapeHTML(item.text);
+        list.appendChild(li);
 
+        return;
+    }
 
-const btn=
-document.createElement(
-'button'
-);
+    items.forEach(
+        (item,index)=>{
 
-btn.className=
-'btn-delete';
+            const li=
+                document.createElement("li");
 
-btn.textContent=
-'Eliminar';
+            const strong=
+                document.createElement("strong");
 
+            strong.textContent=
+                item.date||"";
 
-btn.onclick=()=>{
+            li.appendChild(strong);
 
-deleteItem(
-'strategyEntries',
-index
-);
+            li.appendChild(
+                document.createTextNode(
+                    ": "+(item.text||"")
+                )
+            );
 
-};
+            const btn=
+                document.createElement("button");
 
+            btn.type="button";
+            btn.className="btn-delete";
+            btn.textContent="Eliminar";
 
-li.appendChild(
-btn
-);
+            btn.addEventListener(
+                "click",
+                ()=>deleteItem(
+                    "strategyEntries",
+                    index
+                )
+            );
 
-list.appendChild(
-li
-);
+            li.appendChild(btn);
 
-});
+            list.appendChild(li);
 
+        }
+    );
 }
 
 
 /* =========================================================
-   CARGAR MICROEXPRESIONES
-   ========================================================= */
+   MICROEXPRESIONES
+========================================================= */
 
 function loadMicroexpressions(){
 
-const list=
-document.getElementById(
-'microexpressionList'
-);
+    const list=
+        $("microexpressionList");
 
-list.innerHTML='';
+    if(!list)return;
 
+    list.innerHTML="";
 
-const items=
-JSON.parse(
-localStorage.getItem(
-'microexpressionEntries'
-)
-)||[];
+    const items=
+        safeGetArray(
+            "microexpressionEntries"
+        );
 
+    if(items.length===0){
 
-items.forEach(
-(item,index)=>{
+        const li=
+            document.createElement("li");
 
-const li=
-document.createElement(
-'li'
-);
+        li.className="empty-history";
 
+        li.textContent=
+            "Todavía no hay observaciones guardadas.";
 
-li.innerHTML=
-'<strong>'+
-escapeHTML(item.date)+
-'</strong> ('+
-escapeHTML(
-item.child||
-'General'
-)+
-'): '+
-escapeHTML(item.text);
+        list.appendChild(li);
 
+        return;
+    }
 
-const btn=
-document.createElement(
-'button'
-);
+    items.forEach(
+        (item,index)=>{
 
-btn.className=
-'btn-delete';
+            const li=
+                document.createElement("li");
 
-btn.textContent=
-'Eliminar';
+            const strong=
+                document.createElement("strong");
 
+            strong.textContent=
+                item.date||"";
 
-btn.onclick=()=>{
+            li.appendChild(strong);
 
-deleteItem(
-'microexpressionEntries',
-index
-);
+            li.appendChild(
+                document.createTextNode(
+                    " ("+
+                    (item.child||"General")+
+                    "): "+
+                    (item.text||"")
+                )
+            );
 
-};
+            const btn=
+                document.createElement("button");
 
+            btn.type="button";
+            btn.className="btn-delete";
+            btn.textContent="Eliminar";
 
-li.appendChild(
-btn
-);
+            btn.addEventListener(
+                "click",
+                ()=>deleteItem(
+                    "microexpressionEntries",
+                    index
+                )
+            );
 
-list.appendChild(
-li
-);
+            li.appendChild(btn);
 
-});
+            list.appendChild(li);
 
-}
-
-
-/* =========================================================
-   SEGURIDAD
-   ========================================================= */
-
-function escapeHTML(text){
-
-return String(text)
-
-.replace(
-/&/g,
-'&amp;'
-)
-
-.replace(
-/</g,
-'&lt;'
-)
-
-.replace(
-/>/g,
-'&gt;'
-)
-
-.replace(
-/"/g,
-'&quot;'
-)
-
-.replace(
-/'/g,
-'&#039;'
-);
-
+        }
+    );
 }
 
 
 /* =========================================================
    EVENTOS
-   ========================================================= */
+========================================================= */
 
-document.getElementById(
-'playAudioBtn'
-)
-.addEventListener(
-'click',
-toggleAudio
+$("playAudioBtn").addEventListener(
+    "click",
+    toggleAudio
 );
 
-
-document.getElementById(
-'nextMusicBtn'
-)
-.addEventListener(
-'click',
-newVariation
+$("nextMusicBtn").addEventListener(
+    "click",
+    newVariation
 );
 
-
-document.getElementById(
-'styleSelect'
-)
-.addEventListener(
-'change',
-changeStyle
+$("styleSelect").addEventListener(
+    "change",
+    changeStyle
 );
 
-
-document.getElementById(
-'filterChildSelect'
-)
-.addEventListener(
-'change',
-loadEntries
+$("filterChildSelect").addEventListener(
+    "change",
+    loadEntries
 );
 
 
 /* =========================================================
    AMBIENTALES
-   ========================================================= */
+========================================================= */
 
 [
-'rain',
-'ocean',
-'fire',
-'night',
-'wind',
-'river',
-'birds',
-'storm'
-]
-.forEach(
-type=>{
+    "rain",
+    "ocean",
+    "fire",
+    "night",
+    "wind",
+    "river",
+    "birds",
+    "storm"
+].forEach(type=>{
 
-document.getElementById(
-type+'Noise'
-)
-.addEventListener(
-'change',
-function(){
+    const checkbox=
+        $(type+"Noise");
 
-toggleAmbientNoise(
-type,
-this.checked
-);
+    const slider=
+        $(type+"Vol");
 
-}
-);
+    if(checkbox){
 
+        checkbox.addEventListener(
+            "change",
+            function(){
 
-document.getElementById(
-type+'Vol'
-)
-.addEventListener(
-'input',
-function(){
+                toggleAmbientNoise(
+                    type,
+                    this.checked
+                );
 
-updateAmbientVolume(
-type,
-this.value
-);
+            }
+        );
 
-}
-);
+    }
+
+    if(slider){
+
+        slider.addEventListener(
+            "input",
+            function(){
+
+                updateAmbientVolume(
+                    type,
+                    this.value
+                );
+
+            }
+        );
+
+    }
 
 });
 
 
 /* =========================================================
-   INICIO
-   ========================================================= */
-
-window.addEventListener(
-'load',
-()=>{
-
-loadEntries();
-
-loadGratitude();
-
-loadStrategies();
-
-loadMicroexpressions();
-
-}
-);
-
-</script>
-
-</body>
-    </html>
+  
