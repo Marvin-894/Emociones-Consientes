@@ -1193,992 +1193,647 @@ const styles = {
             N.C2, null, null, null, N.F2, null, null, null, 
             N.A2, null, null, null, N.G2, null, null, null,
             N.D2, null, null, null, N.F2, null, null, null,
-            N.Ab2, null, null, null, N.G2, null, null, null,
-            N.C2, null, null, null, N.A2, null, null, null,
+                        N.C2, null, null, null, N.A2, null, null, null,
             N.F2, null, null, null, N.G2, null, null, null
         ],
         drums:false, zen:true
     }
 };
 
-async function initAudio(){
-    if(!audioCtx){
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        masterBus = audioCtx.createGain();
-        musicBus = audioCtx.createGain();
-        reverbBus = audioCtx.createGain();
-        delayBus = audioCtx.createGain();
+/* =========================================================
+   SISTEMA DE AUDIO, EFECTOS Y AMBIENTE (WEB AUDIO API)
+   ========================================================= */
+function initAudioEngine() {
+    if (audioCtx) return;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
 
-        // Filtro Cálido Pasabajo Master
-        warmthFilter = audioCtx.createBiquadFilter();
-        warmthFilter.type = 'lowpass';
-        warmthFilter.frequency.value = 4200;
+    masterBus = audioCtx.createGain();
+    masterBus.gain.value = parseFloat(document.getElementById('masterVolume').value);
+    masterBus.connect(audioCtx.destination);
 
-        masterBus.gain.value = parseFloat(document.getElementById('masterVolume').value);
-        musicBus.gain.value = 0.60;
-        reverbBus.gain.value = 0.28;
-        delayBus.gain.value = 0.18;
+    warmthFilter = audioCtx.createBiquadFilter();
+    warmthFilter.type = 'lowshelf';
+    warmthFilter.frequency.value = 250;
+    warmthFilter.gain.value = 3;
 
-        // Conexiones de la cadena de efectos
-        musicBus.connect(warmthFilter);
-        reverbBus.connect(warmthFilter);
-        delayBus.connect(warmthFilter);
+    musicBus = audioCtx.createGain();
+    musicBus.gain.value = 0.8;
+    musicBus.connect(warmthFilter);
+    warmthFilter.connect(masterBus);
 
-        warmthFilter.connect(masterBus);
-        masterBus.connect(audioCtx.destination);
-
-        createReverb();
-        createDelay();
-    }
-    if(audioCtx.state === 'suspended'){
-        await audioCtx.resume();
-    }
-}
-
-function createReverb(){
-    const length = audioCtx.sampleRate * 3.2;
-    const impulse = audioCtx.createBuffer(2, length, audioCtx.sampleRate);
-    for(let c = 0; c < 2; c++){
-        const data = impulse.getChannelData(c);
-        for(let i = 0; i < length; i++){
-            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.2);
+    // Reverb Convolver sintético
+    reverbBus = audioCtx.createGain();
+    const rate = audioCtx.sampleRate;
+    const length = rate * 2.5;
+    const impulse = audioCtx.createBuffer(2, length, rate);
+    for (let c = 0; c < 2; c++) {
+        const channel = impulse.getChannelData(c);
+        for (let i = 0; i < length; i++) {
+            channel[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
         }
     }
     const convolver = audioCtx.createConvolver();
     convolver.buffer = impulse;
     reverbBus.connect(convolver);
     convolver.connect(masterBus);
-}
+    reverbBus.gain.value = 0.35;
 
-function createDelay(){
+    // Delay Estéreo
+    delayBus = audioCtx.createGain();
     const delayNode = audioCtx.createDelay();
+    delayNode.delayTime.value = 0.375;
     const feedback = audioCtx.createGain();
-    
-    delayNode.delayTime.value = 0.375; // Delay en corchea con punto
-    feedback.gain.value = 0.35;
+    feedback.gain.value = 0.25;
 
     delayBus.connect(delayNode);
     delayNode.connect(feedback);
     feedback.connect(delayNode);
     delayNode.connect(masterBus);
-}
+    delayBus.gain.value = 0.2;
 
-/* SINTETIZADOR SOBERANO CON PANEO ESTEREO Y ENVOLVENTES REALISTAS */
-function synthNote(freq, duration, type = 'sine', volume = 0.05, destination = musicBus, options = {}){
-    if(!freq || !audioCtx) return;
-    const now = audioCtx.currentTime;
-    
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    const filter = audioCtx.createBiquadFilter();
-    
-    // Paneo Estéreo para inmersión
-    const panner = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
-    if(panner){
-        panner.pan.value = options.pan !== undefined ? options.pan : (Math.random() * 0.6 - 0.3);
-    }
-
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, now);
-    if(options.detune) osc.detune.value = options.detune;
-
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(options.filter || 2800, now);
-
-    const attack = options.attack || 0.05;
-    const release = options.release || duration * 0.7;
-
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.linearRampToValueAtTime(volume, now + attack);
-    gain.gain.setValueAtTime(volume, now + Math.max(attack, duration * 0.3));
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration + release);
-
-    osc.connect(filter);
-    
-    if(panner){
-        filter.connect(panner);
-        panner.connect(gain);
-    } else {
-        filter.connect(gain);
-    }
-
-    gain.connect(destination);
-
-    if(options.reverb !== false) gain.connect(reverbBus);
-    if(options.delay) gain.connect(delayBus);
-
-    osc.start(now);
-    osc.stop(now + duration + release + 0.1);
-}
-
-// Emulación de Piano Acústico Multicapa
-function pianoNote(freq, duration = 1.2, volume = 0.06, pan = 0){
-    // Voz fundamental
-    synthNote(freq, duration, 'triangle', volume, musicBus, {attack:0.005, release:0.8, filter:2800, pan:pan});
-    // Armónico suave
-    synthNote(freq * 2, duration * 0.6, 'sine', volume * 0.22, musicBus, {attack:0.003, release:0.4, filter:3800, pan:pan, reverb:true});
-    // Sub-armónico de caja de resonancia
-    synthNote(freq * 0.5, duration * 0.8, 'sine', volume * 0.15, musicBus, {attack:0.01, release:0.6, filter:1200, pan:pan, reverb:false});
-}
-
-function bassNote(freq, duration = 0.5, volume = 0.07){
-    // Sub-Bass fundamental
-    synthNote(freq, duration, 'sine', volume, musicBus, {attack:0.02, release:0.4, filter:600, reverb:false, pan:0});
-    // Armónico para presencia
-    synthNote(freq * 2, duration * 0.8, 'triangle', volume * 0.25, musicBus, {attack:0.02, release:0.3, filter:1200, reverb:false, pan:0});
-}
-
-function padChord(chord){
-    chord.forEach((freq, i) => {
-        const pan = (i / chord.length) * 1.2 - 0.6;
-        synthNote(freq, 4.5, 'sine', 0.022, musicBus, {attack:1.4, release:2.0, filter:1100 + i * 250, pan:pan, detune: i % 2 === 0 ? 4 : -4});
-        synthNote(freq * 2, 4.0, 'triangle', 0.009, musicBus, {attack:1.8, release:1.8, filter:1600, pan:-pan});
+    document.getElementById('masterVolume').addEventListener('input', (e) => {
+        if (masterBus) masterBus.gain.value = parseFloat(e.target.value);
     });
 }
 
-function kick(volume = 0.07){
-    if(!audioCtx) return;
-    const now = audioCtx.currentTime;
+function playSynthNote(freq, dur, type = 'sine', vol = 0.2, sendReverb = true) {
+    if (!audioCtx || !freq) return;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
 
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(110, now);
-    osc.frequency.exponentialRampToValueAtTime(38, now + 0.18);
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
-    gain.gain.setValueAtTime(volume, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    gain.gain.setValueAtTime(0, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
 
     osc.connect(gain);
     gain.connect(musicBus);
-    osc.start(now);
-    osc.stop(now + 0.24);
+
+    if (sendReverb && reverbBus) gain.connect(reverbBus);
+    if (sendReverb && delayBus) gain.connect(delayBus);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur);
 }
 
-function snare(volume = 0.035){
-    if(!audioCtx) return;
-    const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.18, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for(let i = 0; i < data.length; i++){
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 2.2);
-    }
-    const source = audioCtx.createBufferSource();
-    const filter = audioCtx.createBiquadFilter();
+function playPercussion(type) {
+    if (!audioCtx) return;
+    const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
 
-    source.buffer = buffer;
-    filter.type = 'highpass';
-    filter.frequency.value = 1100;
-    gain.gain.value = volume;
+    if (type === 'kick') {
+        osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(musicBus);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+    } else if (type === 'hihat') {
+        const bufferSize = audioCtx.sampleRate * 0.05;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
 
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(musicBus);
-    source.start();
-}
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 7000;
 
-function hat(volume = 0.016){
-    if(!audioCtx) return;
-    const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.05, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for(let i = 0; i < data.length; i++){
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 4.5);
-    }
-    const source = audioCtx.createBufferSource();
-    const filter = audioCtx.createBiquadFilter();
-    const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
 
-    source.buffer = buffer;
-    filter.type = 'highpass';
-    filter.frequency.value = 5500;
-    gain.gain.value = volume;
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(musicBus);
-    source.start();
-}
-
-function arpeggio(chord){
-    const index = (step + variation) % chord.length;
-    if(chord[index]){
-        const pan = (index / chord.length) * 1.4 - 0.7;
-        synthNote(chord[index] * 2, 0.45, 'triangle', 0.028, musicBus, {attack:0.01, release:0.35, filter:2400, pan:pan, delay:true});
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(musicBus);
+        noise.start();
     }
 }
 
-/* MOTOR DE SECUENCIA Y ESTRUCTURA MUSICAL DINÁMICA */
-function playMusicStep(){
-    if(!audioCtx || !isPlaying) return;
-    const style = styles[currentStyle];
-    const beat = step % 16;
-    const chordIndex = Math.floor(step / 16) % style.chords.length;
-    const chord = style.chords[chordIndex];
+function stepScheduler() {
+    const st = styles[currentStyle];
+    const chordIndex = Math.floor(step / 8) % st.chords.length;
+    const currentChord = st.chords[chordIndex];
 
-    // Cambio de Acorde en el compás
-    if(beat === 0){
-        if(style.piano){
-            chord.forEach((n, i) => {
-                const pan = (i / chord.length) * 0.8 - 0.4;
-                pianoNote(n, 2.6, 0.038 - i * 0.003, pan);
-            });
-        } else {
-            chord.forEach((n, i) => {
-                const pan = (i / chord.length) * 1.0 - 0.5;
-                synthNote(n, style.pad ? 4.8 : 2.4, style.wave, style.pad ? 0.022 : 0.028, musicBus, {
-                    attack: style.pad ? 1.2 : 0.12,
-                    release: style.pad ? 1.4 : 0.7,
-                    filter: style.synth ? 1900 : 2200,
-                    pan: pan
-                });
-            });
-        }
-        if(style.pad) padChord(chord);
-    }
-
-    // Línea de Bajo
-    if(style.bass){
-        const bassIndex = beat % style.bass.length;
-        const bass = style.bass[bassIndex];
-        if(bass){
-            bassNote(bass, style.jazz ? 0.45 : 0.5, style.reggae ? 0.08 : 0.06);
-        }
-    }
-
-    // Melodía Principal
-    if(beat % 2 === 0){
-        const melodyIndex = Math.floor(beat / 2) % style.melody.length;
-        const melody = style.melody[melodyIndex];
-        if(melody){
-            const pan = Math.sin(step * 0.2) * 0.5;
-            if(style.piano){
-                pianoNote(melody, 0.85, 0.048, pan);
-            } else {
-                synthNote(melody, style.space ? 1.0 : 0.65, style.synth ? 'sawtooth' : (style.pluck ? 'triangle' : 'sine'), style.zen ? 0.028 : 0.038, musicBus, {
-                    attack: style.zen ? 0.15 : 0.02,
-                    release: style.space ? 0.8 : 0.45,
-                    filter: style.synth ? 2600 : 3400,
-                    pan: pan,
-                    delay: true
-                });
-            }
-        }
-    }
-
-    // Capas de Textura y Arpegios
-    if((style.space || style.spatial) && beat % 2 === 1) arpeggio(chord);
-    if(style.pluck && beat % 2 === 1){
-        const note = chord[(beat / 2) % chord.length];
-        synthNote(note * 2, 0.4, 'triangle', 0.028, musicBus, {attack:0.008, release:0.3, filter:2800, delay:true});
-    }
-
-    // Percusión / Batería
-    if(style.drums){
-        if(beat === 0 || beat === 8) kick(style.reggae ? 0.05 : 0.07);
-        if(beat === 4 || beat === 12) snare(style.jazz ? 0.025 : 0.034);
-        if(beat % 2 === 0) hat(style.loFi ? 0.016 : 0.014);
-        if(style.bossa && (beat === 3 || beat === 6 || beat === 11 || beat === 14)){
-            hat(0.010);
-        }
-    }
-
-    if(style.reggae && beat % 2 === 1){
-        chord.forEach((n, i) => {
-            synthNote(n * 2, 0.2, 'sine', 0.014, musicBus, {attack:0.005, release:0.12, filter:2200, reverb:false});
+    // Acordes suaves al inicio del compás
+    if (step % 8 === 0) {
+        currentChord.forEach((note, i) => {
+            setTimeout(() => {
+                playSynthNote(note, 3.5, st.wave, 0.08 / (i + 1), true);
+            }, i * 40);
         });
     }
 
-    if(style.jazz && beat % 4 === 3){
-        const n = chord[(variation + beat) % chord.length];
-        synthNote(n * 2, 0.35, 'triangle', 0.02, musicBus, {attack:0.015, release:0.28, filter:2900, delay:true});
+    // Melodía principal
+    const melNote = st.melody[step % st.melody.length];
+    if (melNote) {
+        playSynthNote(melNote, 0.8, 'sine', 0.15, true);
+    }
+
+    // Línea de Bajo
+    const bassNote = st.bass[step % st.bass.length];
+    if (bassNote) {
+        playSynthNote(bassNote, 0.6, 'triangle', 0.25, false);
+    }
+
+    // Batería suave opcional
+    if (st.drums) {
+        if (step % 4 === 0) playPercussion('kick');
+        if (step % 2 !== 0) playPercussion('hihat');
     }
 
     step++;
-    if(step % 128 === 0) variation++;
 }
 
-async function toggleAudio(){
-    await initAudio();
+function toggleAudio() {
+    initAudioEngine();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
     const btn = document.getElementById('playAudioBtn');
-    if(isPlaying){
+    const status = document.getElementById('musicStatus');
+
+    if (!isPlaying) {
+        isPlaying = true;
+        step = 0;
+        const interval = (60 / styles[currentStyle].bpm / 2) * 1000;
+        musicTimer = setInterval(stepScheduler, interval);
+        btn.classList.add('active');
+        btn.textContent = '⏸️ Pausar';
+        status.textContent = '🎵 Reproduciendo: ' + document.getElementById('styleSelect').selectedOptions[0].text;
+    } else {
         isPlaying = false;
         clearInterval(musicTimer);
-        musicTimer = null;
-        btn.textContent = '▶️ Reproducir';
         btn.classList.remove('active');
-        document.getElementById('musicStatus').textContent = '🎵 Música detenida';
-        return;
+        btn.textContent = '▶️ Reproducir';
+        status.textContent = '🎵 Música detenida';
     }
-    isPlaying = true;
-    step = 0;
-    variation++;
-    btn.textContent = '⏸️ Pausar';
-    btn.classList.add('active');
-    startMusicTimer();
-    document.getElementById('musicStatus').textContent = '🎶 Reproduciendo: ' + document.getElementById('styleSelect').selectedOptions[0].text;
 }
 
-function startMusicTimer(){
-    clearInterval(musicTimer);
-    const style = styles[currentStyle];
-    const interval = (60000 / style.bpm) / 4; // Subdivisión de semicorchea para mayor fluidez
-    playMusicStep();
-    musicTimer = setInterval(playMusicStep, interval);
-}
-
-function changeStyle(){
+function changeStyle() {
     currentStyle = document.getElementById('styleSelect').value;
-    variation++;
-    step = 0;
-    if(isPlaying){
-        startMusicTimer();
-        document.getElementById('musicStatus').textContent = '🎶 Reproduciendo: ' + document.getElementById('styleSelect').selectedOptions[0].text;
+    if (isPlaying) {
+        clearInterval(musicTimer);
+        step = 0;
+        const interval = (60 / styles[currentStyle].bpm / 2) * 1000;
+        musicTimer = setInterval(stepScheduler, interval);
+        document.getElementById('musicStatus').textContent = '🎵 Reproduciendo: ' + document.getElementById('styleSelect').selectedOptions[0].text;
     }
 }
 
-async function nextTrack(){
-    await initAudio();
+function nextTrack() {
     const select = document.getElementById('styleSelect');
-    let nextIndex = select.selectedIndex + 1;
-    if(nextIndex >= select.options.length){
-        nextIndex = 0;
-    }
+    let nextIndex = (select.selectedIndex + 1) % select.options.length;
     select.selectedIndex = nextIndex;
-    currentStyle = select.value;
-    variation++;
-    step = 0;
-    
-    if(!isPlaying){
-        isPlaying = true;
-        const btn = document.getElementById('playAudioBtn');
-        btn.textContent = '⏸️ Pausar';
-        btn.classList.add('active');
-    }
-    
-    startMusicTimer();
-    document.getElementById('musicStatus').textContent = '🎶 Reproduciendo: ' + select.options[nextIndex].text;
+    changeStyle();
 }
 
-async function newVariation(){
-    await initAudio();
+function newVariation() {
     variation++;
     step = 0;
-    if(isPlaying){
-        startMusicTimer();
-    } else {
-        const style = styles[currentStyle];
-        style.chords[0].forEach(n => synthNote(n, 2.0, style.wave, 0.03));
+    if (isPlaying) {
+        document.getElementById('musicStatus').textContent = '🎵 Variación ' + (variation + 1) + ' aplicada';
     }
-    document.getElementById('musicStatus').textContent = '✨ Nueva variación armónica generada';
 }
 
-function createNoiseBuffer(seconds = 2){
-    const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * seconds, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for(let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+/* =========================================================
+   GENERADOR DE SONIDOS DE AMBIENTE (RUIDO BLANCO/ROSA/OLAS)
+   ========================================================= */
+function createNoiseBuffer(type = 'pink') {
+    if (!audioCtx) return null;
+    const bufferSize = audioCtx.sampleRate * 2;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const output = buffer.getChannelData(0);
+
+    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+
+    for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        if (type === 'pink') {
+            b0 = 0.99886 * b0 + white * 0.0555179;
+            b1 = 0.99332 * b1 + white * 0.0750759;
+            b2 = 0.96900 * b2 + white * 0.1538520;
+            b3 = 0.86650 * b3 + white * 0.3104856;
+            b4 = 0.55000 * b4 + white * 0.5329522;
+            b5 = -0.7616 * b5 - white * 0.0168980;
+            output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+            output[i] *= 0.11;
+            b6 = white * 0.115926;
+        } else {
+            output[i] = white;
+        }
+    }
     return buffer;
 }
 
-function getBaseGain(type){
-    const gains = {rain:0.13, ocean:0.16, fire:0.09, night:0.025, wind:0.15, river:0.13, birds:0.12, storm:0.15};
-    return gains[type] || 0.1;
-}
+function toggleAmbientNoise(type, enabled) {
+    initAudioEngine();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
 
-async function toggleAmbientNoise(type, active){
-    await initAudio();
-    if(!active){
-        const node = ambientNodes[type];
-        if(node){
-            try { node.gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6); } catch(e){}
-            setTimeout(() => {
-                try {
-                    if(node.source) node.source.stop();
-                    if(node.interval) clearInterval(node.interval);
-                } catch(e){}
-                ambientNodes[type] = null;
-            }, 650);
+    if (enabled) {
+        const noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = createNoiseBuffer('pink');
+        noiseSource.loop = true;
+
+        const gainNode = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+
+        if (type === 'rain') {
+            filter.type = 'lowpass';
+            filter.frequency.value = 1200;
+        } else if (type === 'ocean') {
+            filter.type = 'bandpass';
+            filter.frequency.value = 400;
+            // Modulación de olas
+            const lfo = audioCtx.createOscillator();
+            lfo.frequency.value = 0.1;
+            const lfoGain = audioCtx.createGain();
+            lfoGain.gain.value = 300;
+            lfo.connect(lfoGain);
+            lfoGain.connect(filter.frequency);
+            lfo.start();
+        } else if (type === 'fire') {
+            filter.type = 'bandpass';
+            filter.frequency.value = 800;
+        } else {
+            filter.type = 'lowpass';
+            filter.frequency.value = 800;
         }
-        return;
-    }
 
-    const slider = document.getElementById(type + 'Vol');
-    const volume = parseFloat(slider.value) * getBaseGain(type);
+        const sliderVal = document.getElementById(type + 'Vol').value;
+        gainNode.gain.value = parseFloat(sliderVal) * 0.3;
 
-    if(type === 'birds'){
-        const gain = audioCtx.createGain();
-        gain.gain.value = volume;
-        gain.connect(masterBus);
+        noiseSource.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(masterBus);
 
-        const interval = setInterval(() => {
-            if(Math.random() < 0.55) return;
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            const start = 1700 + Math.random() * 1400;
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(start, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(start * 1.35, audioCtx.currentTime + 0.12);
-
-            g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-            g.gain.linearRampToValueAtTime(volume * 0.8, audioCtx.currentTime + 0.03);
-            g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
-
-            osc.connect(g);
-            g.connect(gain);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.32);
-        }, 850);
-
-        ambientNodes[type] = {source:null, gain, interval};
-        return;
-    }
-
-    const source = audioCtx.createBufferSource();
-    source.buffer = createNoiseBuffer(2);
-    source.loop = true;
-
-    const filter = audioCtx.createBiquadFilter();
-    const gain = audioCtx.createGain();
-
-    if(type === 'rain') { filter.type = 'lowpass'; filter.frequency.value = 1800; }
-    else if(type === 'ocean') { filter.type = 'bandpass'; filter.frequency.value = 500; filter.Q.value = 0.7; }
-    else if(type === 'fire') { filter.type = 'bandpass'; filter.frequency.value = 900; filter.Q.value = 0.7; }
-    else if(type === 'night') { filter.type = 'highpass'; filter.frequency.value = 3500; }
-    else if(type === 'wind') { filter.type = 'bandpass'; filter.frequency.value = 250; filter.Q.value = 0.8; }
-    else if(type === 'river') { filter.type = 'lowpass'; filter.frequency.value = 900; }
-    else if(type === 'storm') { filter.type = 'lowpass'; filter.frequency.value = 300; }
-
-    gain.gain.value = 0.0001;
-    gain.gain.linearRampToValueAtTime(volume, audioCtx.currentTime + 0.7);
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(masterBus);
-    source.start();
-
-    ambientNodes[type] = {source, gain};
-}
-
-function updateAmbientVolume(type, value){
-    if(ambientNodes[type] && ambientNodes[type].gain){
-        ambientNodes[type].gain.gain.setTargetAtTime(parseFloat(value) * getBaseGain(type), audioCtx.currentTime, 0.03);
+        noiseSource.start();
+        ambientNodes[type] = { source: noiseSource, gain: gainNode };
+    } else {
+        if (ambientNodes[type]) {
+            ambientNodes[type].source.stop();
+            ambientNodes[type].source.disconnect();
+            ambientNodes[type] = null;
+        }
     }
 }
 
-document.getElementById('masterVolume').addEventListener('input', function(){
-    if(masterBus) masterBus.gain.value = parseFloat(this.value);
-});
-
-function speakText(text){
-    if('speechSynthesis' in window){
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'es-AR';
-        utterance.rate = 0.9;
-        utterance.pitch = 1;
-        window.speechSynthesis.speak(utterance);
+function updateAmbientVolume(type, value) {
+    if (ambientNodes[type]) {
+        ambientNodes[type].gain.gain.value = parseFloat(value) * 0.3;
     }
 }
 
-/* RESPIRACIÓN 4-7-8 */
+/* =========================================================
+   EJERCICIO DE RESPIRACIÓN GUIADA 4-7-8
+   ========================================================= */
 let breathingInterval = null;
-let breathingTimeout = null;
-let isBreathingActive = false;
 
-function openBreathingExercise(){
-    const box = document.getElementById('breathingBox');
-    const btn = document.getElementById('breathingBtn');
-    
-    if(isBreathingActive){
-        stopBreathingExercise();
-        return;
+function speak(text) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'es-ES';
+        msg.rate = 0.9;
+        window.speechSynthesis.speak(msg);
     }
-
-    isBreathingActive = true;
-    box.style.display = 'block';
-    btn.textContent = 'Detener Respiración 🛑';
-    btn.classList.remove('breathing-start');
-    btn.classList.add('breathing-stop');
-    
-    startBreathingCycle();
 }
 
-function stopBreathingExercise(){
-    isBreathingActive = false;
-    clearInterval(breathingInterval);
-    clearTimeout(breathingTimeout);
-    
+function openBreathingExercise() {
     const box = document.getElementById('breathingBox');
     const btn = document.getElementById('breathingBtn');
-    const circle = document.getElementById('breathingCircle');
-    
-    box.style.display = 'none';
-    btn.textContent = 'Comenzar Respiración 4-7-8 🫁';
-    btn.classList.remove('breathing-stop');
-    btn.classList.add('breathing-start');
-    
-    circle.className = 'breathing-circle prepare';
-    circle.textContent = 'Preparado';
-    document.getElementById('breathingText').textContent = 'Preparáte...';
-    document.getElementById('breathingCounter').textContent = 'Cuando estés listo, comenzamos.';
-    
-    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+    if (box.style.display === 'block') {
+        box.style.display = 'none';
+        btn.textContent = 'Comenzar Respiración 4-7-8 🫁';
+        btn.classList.remove('breathing-stop');
+        btn.classList.add('breathing-start');
+        clearInterval(breathingInterval);
+        window.speechSynthesis.cancel();
+    } else {
+        box.style.display = 'block';
+        btn.textContent = 'Detener Respiración 🛑';
+        btn.classList.remove('breathing-start');
+        btn.classList.add('breathing-stop');
+        runBreathingCycle();
+    }
 }
 
-function startBreathingCycle(){
-    if(!isBreathingActive) return;
-
+function runBreathingCycle() {
     const circle = document.getElementById('breathingCircle');
     const text = document.getElementById('breathingText');
     const counter = document.getElementById('breathingCounter');
 
-    let phase = 0; // 0: Inhala, 1: Retén, 2: Exhala
-    let count = 4;
+    let phase = 0;
+    let sec = 4;
 
-    function runPhase(){
-        if(!isBreathingActive) return;
-
-        clearInterval(breathingInterval);
-
-        if(phase === 0){
+    const startPhase = () => {
+        if (phase === 0) {
+            // Inhalar 4s
             circle.className = 'breathing-circle inhale';
-            circle.textContent = 'Inhalá';
-            text.textContent = 'Inhalá lentamente por la nariz...';
-            speakText('Inhalá');
-            count = 4;
-            counter.textContent = count + 's';
-
-            breathingInterval = setInterval(() => {
-                count--;
-                if(count > 0){
-                    counter.textContent = count + 's';
-                } else {
-                    clearInterval(breathingInterval);
-                    phase = 1;
-                    runPhase();
-                }
-            }, 1000);
-
-        } else if(phase === 1){
+            text.textContent = '🫁 Inhalá suavemente...';
+            speak('Inhalá');
+            sec = 4;
+        } else if (phase === 1) {
+            // Mantener 7s
             circle.className = 'breathing-circle hold';
-            circle.textContent = 'Mantené';
-            text.textContent = 'Mantené el aire en tus pulmones...';
-            speakText('Mantené el aire');
-            count = 7;
-            counter.textContent = count + 's';
-
-            breathingInterval = setInterval(() => {
-                count--;
-                if(count > 0){
-                    counter.textContent = count + 's';
-                } else {
-                    clearInterval(breathingInterval);
-                    phase = 2;
-                    runPhase();
-                }
-            }, 1000);
-
-        } else if(phase === 2){
+            text.textContent = '🧘 Mantené el aire...';
+            speak('Mantené');
+            sec = 7;
+        } else if (phase === 2) {
+            // Exhalar 8s
             circle.className = 'breathing-circle exhale';
-            circle.textContent = 'Exhalá';
-            text.textContent = 'Exhalá suavemente por la boca...';
-            speakText('Exhalá suavemente');
-            count = 8;
-            counter.textContent = count + 's';
-
-            breathingInterval = setInterval(() => {
-                count--;
-                if(count > 0){
-                    counter.textContent = count + 's';
-                } else {
-                    clearInterval(breathingInterval);
-                    phase = 0;
-                    runPhase();
-                }
-            }, 1000);
+            text.textContent = '💨 Exhalá despacio...';
+            speak('Exhalá');
+            sec = 8;
         }
-    }
+    };
 
-    runPhase();
+    startPhase();
+
+    breathingInterval = setInterval(() => {
+        sec--;
+        counter.textContent = sec + 's';
+        if (sec <= 0) {
+            phase = (phase + 1) % 3;
+            startPhase();
+        }
+    }, 1000);
 }
 
-/* LÓGICA DEL DIARIO Y ALMACENAMIENTO LOCAL */
+/* =========================================================
+   GESTIÓN DE REGISTROS, LOCALSTORAGE Y EMOCIONES
+   ========================================================= */
 let selectedEmotion = '';
-let currentAudioBlob = null;
+let audioBlob = null;
 let mediaRecorder = null;
 let audioChunks = [];
 
-// Selección de botones de emoción
-document.querySelectorAll('.buttons-grid .btn').forEach(btn => {
-    btn.addEventListener('click', function(){
-        document.querySelectorAll('.buttons-grid .btn').forEach(b => b.classList.remove('selected'));
+// Selección de Emoción
+document.querySelectorAll('.emotion-card .btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.emotion-card .btn').forEach(b => b.classList.remove('selected'));
         this.classList.add('selected');
         selectedEmotion = this.getAttribute('data-emotion');
         const msg = this.getAttribute('data-message');
         
-        // Registrar en control semanal
-        const child = document.getElementById('childSelect').value;
-        saveWeeklyEmotion(child, selectedEmotion);
+        // Registrar en el control semanal
+        saveWeeklyEmotion(selectedEmotion);
         
-        alert(msg);
+        alert(`Emoción seleccionada: ${selectedEmotion}\n\n${msg}`);
     });
-});
-
-// Vista previa de imagen
-document.getElementById('photoInput').addEventListener('change', function(e){
-    const file = e.target.files[0];
-    const preview = document.getElementById('photoPreviewImg');
-    if(file){
-        const reader = new FileReader();
-        reader.onload = function(evt){
-            preview.src = evt.target.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    } else {
-        preview.style.display = 'none';
-    }
-});
-
-// Grabadora de voz
-document.getElementById('recordBtn').addEventListener('click', async function(){
-    const btn = this;
-    const audioPlayback = document.getElementById('audioPlayback');
-
-    if(mediaRecorder && mediaRecorder.state === 'recording'){
-        mediaRecorder.stop();
-        btn.textContent = 'Grabar Audio';
-        btn.style.background = '#54a0ff';
-        return;
-    }
-
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
-
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-            currentAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-            const audioUrl = URL.createObjectURL(currentAudioBlob);
-            audioPlayback.src = audioUrl;
-            audioPlayback.style.display = 'block';
-        };
-
-        mediaRecorder.start();
-        btn.textContent = 'Detener Grabación 🔴';
-        btn.style.background = '#ee5253';
-    } catch(err){
-        alert('No se pudo acceder al micrófono.');
-    }
-});
-
-// Guardar Foto Independiente
-document.getElementById('savePhotoBtn').addEventListener('click', function(){
-    const fileInput = document.getElementById('photoInput');
-    const emotion = document.getElementById('photoEmotionSelect').value;
-    const child = document.getElementById('childSelect').value;
-
-    if(!fileInput.files[0]){
-        alert('Por favor elegí una foto primero.');
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(evt){
-        const entry = {
-            id: Date.now(),
-            date: new Date().toLocaleDateString('es-AR') + ' ' + new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'}),
-            child: child,
-            type: 'photo',
-            image: evt.target.result,
-            emotion: emotion
-        };
-        saveToStorage('journal_entries', entry);
-        document.getElementById('photoInput').value = '';
-        document.getElementById('photoPreviewImg').style.display = 'none';
-        loadEntries();
-        alert('¡Foto guardada correctamente!');
-    };
-    reader.readAsDataURL(fileInput.files[0]);
 });
 
 // Guardar Registro Completo
-document.getElementById('saveEntryBtn').addEventListener('click', function(){
+document.getElementById('saveEntryBtn').addEventListener('click', () => {
     const child = document.getElementById('childSelect').value;
     const note = document.getElementById('noteInput').value;
-    const photoInput = document.getElementById('photoInput');
 
-    if(!selectedEmotion && !note && !photoInput.files[0] && !currentAudioBlob){
-        alert('Completá al menos un campo (Emoción, Nota, Foto o Audio) para guardar.');
+    if (!selectedEmotion && !note) {
+        alert('Por favor, selecciona una emoción o escribe una nota antes de guardar.');
         return;
     }
 
-    const processSave = (imageData, audioData) => {
-        const entry = {
-            id: Date.now(),
-            date: new Date().toLocaleDateString('es-AR') + ' ' + new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'}),
-            child: child,
-            type: 'full',
-            emotion: selectedEmotion || 'No especificada',
-            note: note,
-            image: imageData,
-            audio: audioData
-        };
-        saveToStorage('journal_entries', entry);
-        
-        // Reset campos
-        document.getElementById('noteInput').value = '';
-        document.getElementById('photoInput').value = '';
-        document.getElementById('photoPreviewImg').style.display = 'none';
-        document.getElementById('audioPlayback').style.display = 'none';
-        document.querySelectorAll('.buttons-grid .btn').forEach(b => b.classList.remove('selected'));
-        selectedEmotion = '';
-        currentAudioBlob = null;
-        
-        loadEntries();
-        alert('¡Registro guardado con éxito!');
+    const entry = {
+        id: Date.now(),
+        child: child,
+        emotion: selectedEmotion || 'Sin especificar',
+        note: note,
+        date: new Date().toLocaleString('es-AR')
     };
 
-    let imageData = null;
-    let audioData = null;
+    saveToStorage('diario_entries', entry);
+    document.getElementById('noteInput').value = '';
+    loadEntries();
+    alert('¡Registro guardado con éxito!');
+});
 
-    const file = photoInput.files[0];
-    if(file){
+// Foto Preview y Guardado
+document.getElementById('photoInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
         const reader = new FileReader();
-        reader.onload = function(evt){
-            imageData = evt.target.result;
-            checkAudioAndSave();
+        reader.onload = function(evt) {
+            const img = document.getElementById('photoPreviewImg');
+            img.src = evt.target.result;
+            img.style.display = 'block';
         };
         reader.readAsDataURL(file);
-    } else {
-        checkAudioAndSave();
-    }
-
-    function checkAudioAndSave(){
-        if(currentAudioBlob){
-            const reader = new FileReader();
-            reader.onload = function(evt){
-                audioData = evt.target.result;
-                processSave(imageData, audioData);
-            };
-            reader.readAsDataURL(currentAudioBlob);
-        } else {
-            processSave(imageData, audioData);
-        }
     }
 });
 
-// Guardar Gratitud
-document.getElementById('saveGratitudeBtn').addEventListener('click', function(){
-    const text = document.getElementById('gratitudeInput').value;
+document.getElementById('savePhotoBtn').addEventListener('click', () => {
+    const img = document.getElementById('photoPreviewImg');
+    const emotion = document.getElementById('photoEmotionSelect').value;
     const child = document.getElementById('childSelect').value;
-    if(!text.trim()){ alert('Escribí tu agradecimiento.'); return; }
-    
-    saveToStorage('gratitude_entries', {
-        id: Date.now(),
-        date: new Date().toLocaleDateString('es-AR'),
-        child: child,
-        text: text
-    });
-    document.getElementById('gratitudeInput').value = '';
-    loadGratitudes();
-    alert('¡Momento de gratitud guardado!');
-});
 
-// Guardar Estrategia
-document.getElementById('saveStrategyBtn').addEventListener('click', function(){
-    const text = document.getElementById('strategyInput').value;
-    const child = document.getElementById('childSelect').value;
-    if(!text.trim()){ alert('Escribí la estrategia.'); return; }
-
-    saveToStorage('strategy_entries', {
-        id: Date.now(),
-        date: new Date().toLocaleDateString('es-AR'),
-        child: child,
-        text: text
-    });
-    document.getElementById('strategyInput').value = '';
-    loadStrategies();
-    alert('¡Estrategia guardada!');
-});
-
-// Guardar Microexpresión
-document.getElementById('saveMicroBtn').addEventListener('click', function(){
-    const text = document.getElementById('microexpressionInput').value;
-    const child = document.getElementById('childSelect').value;
-    if(!text.trim()){ alert('Escribí la observación.'); return; }
-
-    saveToStorage('micro_entries', {
-        id: Date.now(),
-        date: new Date().toLocaleDateString('es-AR'),
-        child: child,
-        text: text
-    });
-    document.getElementById('microexpressionInput').value = '';
-    loadMicroexpressions();
-    alert('¡Observación guardada!');
-});
-
-/* HELPERS DE STORAGE */
-function getStorage(key){
-    return JSON.parse(localStorage.getItem(key) || '[]');
-}
-
-function saveToStorage(key, data){
-    const items = getStorage(key);
-    items.unshift(data);
-    localStorage.setItem(key, JSON.stringify(items));
-}
-
-function deleteFromStorage(key, id, reloadFn){
-    let items = getStorage(key);
-    items = items.filter(item => item.id !== id);
-    localStorage.setItem(key, JSON.stringify(items));
-    reloadFn();
-}
-
-/* CARGA DE HISTORIALES */
-function loadEntries(){
-    const list = document.getElementById('entriesList');
-    const filter = document.getElementById('filterChildSelect').value;
-    const items = getStorage('journal_entries');
-
-    list.innerHTML = '';
-    const filtered = filter === 'Todos' ? items : items.filter(i => i.child === filter);
-
-    if(filtered.length === 0){
-        list.innerHTML = '<li>No hay registros guardados.</li>';
+    if (img.style.display === 'none') {
+        alert('Por favor selecciona una foto primero.');
         return;
     }
 
-    filtered.forEach(item => {
+    const entry = {
+        id: Date.now(),
+        child: child,
+        emotion: emotion,
+        image: img.src,
+        date: new Date().toLocaleString('es-AR')
+    };
+
+    saveToStorage('diario_entries', entry);
+    alert('¡Foto guardada exitosamente!');
+    loadEntries();
+});
+
+// Grabación de Audio
+const recordBtn = document.getElementById('recordBtn');
+recordBtn.addEventListener('click', async () => {
+    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const player = document.getElementById('audioPlayback');
+                player.src = audioUrl;
+                player.style.display = 'block';
+            };
+
+            mediaRecorder.start();
+            recordBtn.textContent = '⏹️ Detener Grabación';
+            recordBtn.style.background = '#ff6b6b';
+        } catch (err) {
+            alert('No se pudo acceder al micrófono.');
+        }
+    } else {
+        mediaRecorder.stop();
+        recordBtn.textContent = 'Grabar Audio';
+        recordBtn.style.background = '#54a0ff';
+    }
+});
+
+// Secciones Únicas (Gratitud, Estrategias, Microexpresiones)
+document.getElementById('saveGratitudeBtn').addEventListener('click', () => {
+    const input = document.getElementById('gratitudeInput');
+    if (!input.value.trim()) return;
+    saveGenericSection('diario_gratitude', input.value, 'gratitudeList');
+    input.value = '';
+});
+
+document.getElementById('saveStrategyBtn').addEventListener('click', () => {
+    const input = document.getElementById('strategyInput');
+    if (!input.value.trim()) return;
+    saveGenericSection('diario_strategies', input.value, 'strategyList');
+    input.value = '';
+});
+
+document.getElementById('saveMicroBtn').addEventListener('click', () => {
+    const input = document.getElementById('microexpressionInput');
+    if (!input.value.trim()) return;
+    saveGenericSection('diario_micro', input.value, 'microexpressionList');
+    input.value = '';
+});
+
+function saveGenericSection(key, text, listId) {
+    const child = document.getElementById('childSelect').value;
+    const item = { id: Date.now(), child, text, date: new Date().toLocaleString('es-AR') };
+    saveToStorage(key, item);
+    loadGenericSection(key, listId);
+}
+
+// LocalStorage Utils
+function saveToStorage(key, item) {
+    const items = JSON.parse(localStorage.getItem(key) || '[]');
+    items.unshift(item);
+    localStorage.setItem(key, JSON.stringify(items));
+}
+
+function removeFromStorage(key, id) {
+    let items = JSON.parse(localStorage.getItem(key) || '[]');
+    items = items.filter(i => i.id !== id);
+    localStorage.setItem(key, JSON.stringify(items));
+}
+
+function loadEntries() {
+    const filter = document.getElementById('filterChildSelect').value;
+    const items = JSON.parse(localStorage.getItem('diario_entries') || '[]');
+    const list = document.getElementById('entriesList');
+    list.innerHTML = '';
+
+    items.filter(i => filter === 'Todos' || i.child === filter).forEach(i => {
         const li = document.createElement('li');
-        let html = `<span class="badge-child">${item.child}</span> <small style="color:#6c7a89">${item.date}</small>
-        <button class="btn-delete" onclick="deleteFromStorage('journal_entries', ${item.id}, loadEntries)">Eliminar</button><br>`;
-
-        if(item.emotion) html += `<strong>Emoción:</strong> ${item.emotion}<br>`;
-        if(item.note) html += `<strong>Nota:</strong> ${item.note}<br>`;
-        if(item.image) html += `<img src="${item.image}" class="entry-img" alt="Foto">`;
-        if(item.audio) html += `<audio src="${item.audio}" controls style="margin-top:8px;width:100%"></audio>`;
-
-        li.innerHTML = html;
+        li.innerHTML = `
+            <span class="badge-child">${i.child}</span>
+            <button class="btn-delete" onclick="deleteEntry('diario_entries', ${i.id})">Eliminar</button>
+            <br><strong>Fecha:</strong> ${i.date}
+            <br><strong>Emoción:</strong> ${i.emotion}
+            ${i.note ? `<br><strong>Nota:</strong> ${i.note}` : ''}
+            ${i.image ? `<br><img src="${i.image}" class="entry-img">` : ''}
+        `;
         list.appendChild(li);
     });
 }
 
-function saveWeeklyEmotion(child, emotion){
-    const key = 'weekly_emotions';
-    const items = getStorage(key);
-    items.push({
-        timestamp: Date.now(),
-        child: child,
-        emotion: emotion
+function loadGenericSection(key, listId) {
+    const items = JSON.parse(localStorage.getItem(key) || '[]');
+    const list = document.getElementById(listId);
+    list.innerHTML = '';
+
+    items.forEach(i => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span class="badge-child">${i.child}</span>
+            <button class="btn-delete" onclick="deleteGeneric('${key}', ${i.id}, '${listId}')">Eliminar</button>
+            <br><small>${i.date}</small>
+            <p style="margin:6px 0 0">${i.text}</p>
+        `;
+        list.appendChild(li);
     });
-    localStorage.setItem(key, JSON.stringify(items));
+}
+
+function deleteEntry(key, id) {
+    removeFromStorage(key, id);
+    loadEntries();
+}
+
+function deleteGeneric(key, id, listId) {
+    removeFromStorage(key, id);
+    loadGenericSection(key, listId);
+}
+
+/* =========================================================
+   CONTROL SEMANAL DE EMOCIONES
+   ========================================================= */
+function saveWeeklyEmotion(emotion) {
+    const child = document.getElementById('childSelect').value;
+    const records = JSON.parse(localStorage.getItem('diario_weekly_emotions') || '[]');
+    records.push({
+        child: child,
+        emotion: emotion,
+        timestamp: Date.now()
+    });
+    localStorage.setItem('diario_weekly_emotions', JSON.stringify(records));
     loadWeeklyEmotions();
 }
 
 function loadWeeklyEmotions() {
-    const list = document.getElementById('weeklyEmotionList');
-    if (!list) return;
-    
-    const weekly = JSON.parse(localStorage.getItem('weekly_emotions') || '[]');
     const filter = document.getElementById('weeklyChildFilter').value;
-    
-    const filtered = filter === 'Todos'
-        ? weekly.map((item, index) => ({...item, originalIndex: index}))
-        : weekly
-            .map((item, index) => ({...item, originalIndex: index}))
-            .filter(item => item.child === filter);
-    
-    if (filtered.length === 0) {
-        list.innerHTML = '<div class="weekly-empty">No hay registros de emociones para este filtro.</div>';
+    const records = JSON.parse(localStorage.getItem('diario_weekly_emotions') || '[]');
+    const container = document.getElementById('weeklyEmotionList');
+    container.innerHTML = '';
+
+    if (records.length === 0) {
+        container.innerHTML = '<div class="weekly-empty">No hay emociones registradas esta semana.</div>';
         return;
     }
-    
+
+    // Filtrar por los últimos 7 días
+    const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+    const recentRecords = records.filter(r => r.timestamp >= oneWeekAgo && (filter === 'Todos' || r.child === filter));
+
     const counts = {};
-    filtered.forEach(item => {
-        counts[item.emotion] = (counts[item.emotion] || 0) + 1;
+    recentRecords.forEach(r => {
+        counts[r.emotion] = (counts[r.emotion] || 0) + 1;
     });
-    
-    let html = `<div class="weekly-card">
-        <div class="weekly-title">Resumen de Emociones</div>
-        <div class="weekly-child">${filter}</div>`;
-        
-    for (const [emotion, count] of Object.entries(counts)) {
-        html += `<div class="weekly-emotion">
-            <span>${emotion}</span>
-            <span class="weekly-count">${count}</span>
-        </div>`;
-    }
-    
-    html += `<div class="weekly-total">Total de registros: ${filtered.length}</div>`;
-    
-    html += `<div style="margin-top:15px;font-weight:700;color:#54a0ff">
-        Registros individuales:
-    </div>`;
-    
-    filtered.forEach((item) => {
-        const fecha = new Date(item.date).toLocaleString();
-        
-        html += `<div class="weekly-emotion" style="margin-top:8px">
-            <span>
-                ${item.child} — ${item.emotion}<br>
-                <small style="color:#6c7a89">${fecha}</small>
-            </span>
-            <button class="btn-delete-small" onclick="deleteWeeklyEmotion(${item.originalIndex})">X</button>
-        </div>`;
+
+    const card = document.createElement('div');
+    card.className = 'weekly-card';
+    card.innerHTML = `
+        <div class="weekly-title">Resumen de los últimos 7 días</div>
+        <div class="weekly-period">Filtro actual: ${filter}</div>
+    `;
+
+    let total = 0;
+    Object.keys(counts).forEach(emo => {
+        total += counts[emo];
+        const row = document.createElement('div');
+        row.className = 'weekly-emotion';
+        row.innerHTML = `<span>${emo}</span><span class="weekly-count">${counts[emo]}</span>`;
+        card.appendChild(row);
     });
-    
-    html += `<button class="btn-delete" style="float:none;margin-top:10px;width:100%" onclick="clearWeeklyEmotions('${filter}')">
-        Eliminar Todo (${filter})
-    </button>
-    </div>`;
-    
-    list.innerHTML = html;
+
+    card.innerHTML += `<div class="weekly-total">Total de registros: ${total}</div>`;
+    container.appendChild(card);
 }
 
-function deleteWeeklyEmotion(index) {
-    let weekly = JSON.parse(localStorage.getItem('weekly_emotions') || '[]');
-    
-    if (index >= 0 && index < weekly.length) {
-        weekly.splice(index, 1);
-    }
-    
-    localStorage.setItem('weekly_emotions', JSON.stringify(weekly));
-    loadWeeklyEmotions();
-}
-
-function loadStrategies(){
-    const list = document.getElementById('strategyList');
-    const items = getStorage('strategy_entries');
-    list.innerHTML = items.length === 0 ? '<li>Sin estrategias aún.</li>' : '';
-    items.forEach(item => {
-        list.innerHTML += `<li><span class="badge-child">${item.child}</span> <small>${item.date}</small>
-        <button class="btn-delete" onclick="deleteFromStorage('strategy_entries', ${item.id}, loadStrategies)">Eliminar</button><br>${item.text}</li>`;
-    });
-}
-
-function loadMicroexpressions(){
-    const list = document.getElementById('microexpressionList');
-    const items = getStorage('micro_entries');
-    list.innerHTML = items.length === 0 ? '<li>Sin observaciones aún.</li>' : '';
-    items.forEach(item => {
-        list.innerHTML += `<li><span class="badge-child">${item.child}</span> <small>${item.date}</small>
-        <button class="btn-delete" onclick="deleteFromStorage('micro_entries', ${item.id}, loadMicroexpressions)">Eliminar</button><br>${item.text}</li>`;
-    });
-}
-
-// Carga Inicial
+// Inicialización general al cargar
 window.addEventListener('DOMContentLoaded', () => {
     loadEntries();
+    loadGenericSection('diario_gratitude', 'gratitudeList');
+    loadGenericSection('diario_strategies', 'strategyList');
+    loadGenericSection('diario_micro', 'microexpressionList');
     loadWeeklyEmotions();
-    loadGratitudes();
-    loadStrategies();
-    loadMicroexpressions();
 });
-
 </script>
 </body>
 </html>
+    
+    
