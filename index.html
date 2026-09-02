@@ -1,1839 +1,313 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#4a90e2">
-
-<title>Diario de Padres Conscientes & Relax</title>
-
-<style>
-
-:root{
-    --bg-main:#f0f4ff;
-    --card-bg:#ffffff;
-    --primary-blue:#4a90e2;
-    --primary-hover:#357abd;
-    --text-dark:#2c3e50;
-    --text-muted:#6c7a89;
-    --border-soft:#e2e8f0;
-    --radius-large:24px;
-    --radius-medium:16px;
-    --shadow-soft:0 8px 24px rgba(149,157,165,.15);
-}
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-    font-family:'Segoe UI',Roboto,Arial,sans-serif;
-    text-align:center;
-    padding:15px;
-    margin:0;
-    background-color:var(--bg-main);
-    background-image:radial-gradient(#e1e9ff 2px,transparent 2px);
-    background-size:24px 24px;
-    color:var(--text-dark);
-    min-height:100vh;
-}
-
-.container{
-    max-width:620px;
-    margin:0 auto;
-    background:#fff;
-    padding:20px;
-    border-radius:var(--radius-large);
-    border:4px solid #fff;
-    box-shadow:var(--shadow-soft);
-}
-
-h1{
-    margin-top:0;
-    color:#ff6b6b;
-    font-size:1.8em;
-    letter-spacing:.5px;
-    text-shadow:2px 2px 0 #ffe3e3;
-}
-
-h3{
-    margin-bottom:6px;
-    color:#48dbfb;
-    font-size:1.2em;
-}
-
-p{
-    margin-top:0;
-    font-size:.9em;
-    color:var(--text-muted);
-}
-
-.music-player{
-    background:#fff9e6;
-    padding:15px;
-    border-radius:var(--radius-medium);
-    border:2px dashed #ffeaa7;
-    margin-bottom:25px;
-}
-
-.music-player select,
-select.emotion-select,
-select.child-select{
-    padding:11px;
-    border-radius:12px;
-    border:2px solid #ffeaa7;
-    background:#fff;
-    font-size:.9em;
-    color:var(--text-dark);
-    font-weight:600;
-    outline:none;
-    margin-bottom:10px;
-    width:100%;
-    cursor:pointer;
-}
-
-select.emotion-select,
-select.child-select{
-    border-color:#54a0ff;
-    margin-top:8px;
-}
-
-select.child-select{
-    background:#e3f2fd;
-    font-size:1em;
-    border-color:#2196f3;
-}
-
-.music-controls{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:8px;
-    margin-bottom:12px;
-}
-
-.music-btn{
-    background:#10ac84;
-    color:#fff;
-    border:none;
-    padding:12px 6px;
-    border-radius:12px;
-    cursor:pointer;
-    font-weight:bold;
-    font-size:.85em;
-    box-shadow:0 4px 0 #0e8c6c;
-}
-
-.music-btn:active{
-    transform:translateY(4px);
-    box-shadow:none;
-}
-
-.music-btn.active{
-    background:#ee5253;
-    box-shadow:0 4px 0 #c83b3c;
-}
-
-.music-status{
-    background:#fff;
-    border-radius:12px;
-    padding:10px;
-    margin:10px 0 15px;
-    font-size:.85em;
-    color:#6c7a89;
-    border:1px solid #ffeaa7;
-}
-
-.master-control{
-    background:#fff;
-    border-radius:12px;
-    padding:10px;
-    margin-bottom:15px;
-    text-align:left;
-}
-
-.master-control label{
-    display:block;
-    font-size:.85em;
-    font-weight:bold;
-    margin-bottom:5px;
-}
-
-.master-slider{
-    width:100%;
-    accent-color:#10ac84;
-}
-
-.ambient-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-    gap:10px;
-    margin-top:10px;
-    text-align:left;
-}
-
-.ambient-item{
-    background:#fff;
-    padding:10px;
-    border-radius:14px;
-    border:2px solid #ffeaa7;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.ambient-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    font-size:.85em;
-    font-weight:600;
-}
-
-.ambient-item input[type=checkbox]{
-    cursor:pointer;
-    accent-color:#10ac84;
-    width:18px;
-    height:18px;
-}
-
-.volume-slider{
-    width:100%;
-    accent-color:#ff9ff3;
-    height:6px;
-}
-
-.form-group{
-    margin-top:22px;
-    text-align:left;
-}
-
-.form-group label{
-    display:block;
-    margin-bottom:5px;
-    font-weight:700;
-    color:#2e86de;
-}
-
-.buttons-grid{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:12px;
-    margin:18px 0;
-}
-
-.emotion-card{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:4px;
-    width:60px;
-}
-
-.btn{
-    border:3px solid #fff;
-    border-radius:50%;
-    cursor:pointer;
-    width:48px;
-    height:48px;
-    transition:.2s;
-    box-shadow:0 4px 10px rgba(0,0,0,.08);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:1.4em;
-}
-
-.btn:hover{
-    transform:scale(1.1);
-}
-
-.btn.selected{
-    outline:3px solid #ff9ff3;
-    transform:scale(1.12);
-}
-
-.emotion-label{
-    font-size:.75em;
-    color:var(--text-dark);
-    font-weight:600;
-    text-align:center;
-}
-
-#happy{background:#feca57}
-#sad{background:#54a0ff}
-#angry{background:#ff6b6b}
-#calm{background:#1dd1a1}
-#fear{background:#5f27cd}
-#surprise{background:#ff9f43}
-#anxiety{background:#c8d6e5}
-#envy{background:#a3cb38}
-#boredom{background:#8395a7}
-#shame{background:#ff9ff3}
-
-textarea{
-    width:100%;
-    min-height:85px;
-    padding:12px;
-    margin-top:8px;
-    border-radius:14px;
-    border:2px solid #c8d6e5;
-    background:#fafbfc;
-    color:var(--text-dark);
-    resize:vertical;
-    font-family:inherit;
-    font-size:.95em;
-}
-
-textarea:focus{
-    outline:none;
-    border-color:#54a0ff;
-    background:#fff;
-}
-
-input[type=file]{
-    width:100%;
-    padding:10px;
-    border-radius:12px;
-    border:2px dashed #54a0ff;
-    background:#f0f8ff;
-}
-
-#photoPreviewImg{
-    max-width:120px;
-    height:auto;
-    border-radius:8px;
-    margin-top:8px;
-    display:none;
-}
-
-#audioPlayback{
-    margin-top:10px;
-    width:100%;
-}
-
-.action-btn{
-    background:#54a0ff;
-    color:#fff;
-    border:none;
-    padding:12px 20px;
-    border-radius:14px;
-    cursor:pointer;
-    font-weight:700;
-    font-size:.95em;
-    margin-top:10px;
-    width:100%;
-    box-shadow:0 4px 0 #2e86de;
-}
-
-.action-btn:active{
-    transform:translateY(4px);
-    box-shadow:none;
-}
-
-/* RESPIRACIÓN */
-.breathing-box{
-    text-align:center;
-    background:linear-gradient(145deg,#eefaf6,#eaf4ff);
-    border-radius:20px;
-    padding:20px 15px;
-    margin-top:12px;
-    display:none;
-    border:2px solid #d5eee5;
-    box-shadow:0 6px 18px rgba(0,0,0,.06);
-}
-
-.breathing-circle{
-    width:120px;
-    height:120px;
-    border-radius:50%;
-    background:#54a0ff;
-    margin:20px auto;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-weight:700;
-    font-size:.95em;
-    box-shadow:0 8px 25px rgba(84,160,255,.25);
-    transform:scale(1);
-    transition:
-        transform 4s ease-in-out,
-        background .5s ease,
-        box-shadow .5s ease;
-}
-
-.breathing-circle.prepare{
-    background:#8395a7;
-    transform:scale(1);
-}
-
-.breathing-circle.inhale{
-    background:#54a0ff;
-    transform:scale(1.45);
-    box-shadow:0 10px 35px rgba(84,160,255,.4);
-}
-
-.breathing-circle.hold{
-    background:#1dd1a1;
-    transform:scale(1.45);
-    box-shadow:0 10px 35px rgba(29,209,161,.4);
-}
-
-.breathing-circle.exhale{
-    background:#5f27cd;
-    transform:scale(.82);
-    box-shadow:0 6px 20px rgba(95,39,205,.3);
-}
-
-#breathingText{
-    display:block;
-    font-size:1.1em;
-    color:#2c3e50;
-    margin-top:10px;
-}
-
-#breathingCounter{
-    margin-top:8px;
-    font-size:1.05em;
-    font-weight:700;
-    color:#54a0ff;
-}
-
-.breathing-info{
-    background:#fff;
-    border-radius:14px;
-    padding:12px;
-    margin-top:15px;
-    font-size:.85em;
-    color:#6c7a89;
-    border:1px solid #e2e8f0;
-}
-
-.breathing-start{
-    background:#10ac84!important;
-    box-shadow:0 4px 0 #0e8c6c!important;
-}
-
-.breathing-stop{
-    background:#ee5253!important;
-    box-shadow:0 4px 0 #c83b3c!important;
-}
-
-.breathing-start:active,
-.breathing-stop:active{
-    transform:translateY(4px);
-    box-shadow:none!important;
-}
-
-.btn-delete{
-    background:#ff6b6b;
-    color:#fff;
-    border:none;
-    padding:6px 12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:.8em;
-    font-weight:bold;
-    margin-top:8px;
-    float:right;
-}
-
-#history,
-#gratitude-history,
-#strategies-history,
-#microexpression-history,
-#weekly-emotions-history{
-    margin-top:22px;
-    text-align:left;
-    background:#f8f9fa;
-    padding:18px;
-    border-radius:16px;
-    border:2px solid #e9ecef;
-}
-
-ul{
-    padding-left:0;
-    list-style:none;
-}
-
-li{
-    margin-bottom:14px;
-    word-wrap:break-word;
-    color:var(--text-dark);
-    background:#fff;
-    padding:12px;
-    border-radius:12px;
-    border:1px solid #e2e8f0;
-    overflow:hidden;
-}
-
-li strong{
-    color:#54a0ff;
-}
-
-.badge-child{
-    display:inline-block;
-    background:#e3f2fd;
-    color:#1976d2;
-    padding:2px 8px;
-    border-radius:10px;
-    font-weight:bold;
-    font-size:.85em;
-    margin-bottom:6px;
-}
-
-.entry-img{
-    max-width:100%;
-    height:auto;
-    border-radius:12px;
-    margin-top:8px;
-    display:block;
-    border:2px solid #c8d6e5;
-}
-
-@media(max-width:420px){
-    .music-controls{
-        grid-template-columns:1fr;
-    }
-    .breathing-circle{
-        width:105px;
-        height:105px;
-    }
-}
-
-.weekly-card{
-    background:#fff;
-    padding:14px;
-    border-radius:14px;
-    border:1px solid #e2e8f0;
-    margin-bottom:14px;
-}
-
-.weekly-title{
-    color:#54a0ff;
-    font-weight:700;
-    font-size:1em;
-    margin-bottom:8px;
-}
-
-.weekly-period{
-    color:#6c7a89;
-    font-size:.82em;
-    margin-bottom:12px;
-}
-
-.weekly-child{
-    background:#e3f2fd;
-    color:#1976d2;
-    padding:5px 10px;
-    border-radius:10px;
-    font-weight:bold;
-    display:inline-block;
-    margin-bottom:10px;
-}
-
-.weekly-emotion{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:#fafbfc;
-    border:1px solid #e2e8f0;
-    padding:8px 10px;
-    border-radius:10px;
-    margin-bottom:6px;
-    font-size:.9em;
-}
-
-.weekly-count{
-    background:#54a0ff;
-    color:#fff;
-    padding:3px 9px;
-    border-radius:10px;
-    font-weight:bold;
-}
-
-.weekly-total{
-    margin-top:10px;
-    padding-top:8px;
-    border-top:1px dashed #c8d6e5;
-    font-weight:bold;
-    color:#2c3e50;
-}
-
-.weekly-empty{
-    color:#6c7a89;
-    text-align:center;
-    padding:10px;
-    font-size:.9em;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>Diario de Padres Conscientes</h1>
-
-<!-- MÚSICA -->
-<div class="music-player">
-<h3>Rincón de Relax y Meditación 🎨</h3>
-<p>
-Música polifónica de alta producción generada en tiempo real.
-Diseñada para immersión profunda.
-</p>
-
-<select id="styleSelect" onchange="changeStyle()">
-<option value="ambient">🌌 Ambient Meditativo Inmersivo</option>
-<option value="piano">🎹 Piano Neoclásico Suave</option>
-<option value="lofi">🎧 Lo-Fi Chill & Grooves</option>
-<option value="bossa">🏖️ Bossa Nova Warm Breeze</option>
-<option value="jazz">🎷 Midnight Jazz Ballad</option>
-<option value="folk">🎸 Acoustic Folk Warmth</option>
-<option value="space">🌌 Deep Space Atmospheric</option>
-<option value="reggae">🌴 Reggae Lofi Sunset</option>
-<option value="synthwave">🌃 Synthwave Nocturno Relax</option>
-<option value="zen">🧘 Meditación Zen Armónica</option>
-</select>
-
-<div class="music-controls">
-<button class="music-btn" id="playAudioBtn" onclick="toggleAudio()">▶️ Reproducir</button>
-<button class="music-btn" id="nextTrackBtn" onclick="nextTrack()" style="background:#54a0ff;box-shadow:0 4px 0 #2e86de">⏭️ Siguiente Tema</button>
-<button class="music-btn" id="nextMusicBtn" onclick="newVariation()">🔄 Variación</button>
-</div>
-
-<div class="music-status" id="musicStatus">🎵 Música detenida</div>
-
-<div class="master-control">
-<label>🎚️ Volumen de música</label>
-<input class="master-slider" id="masterVolume" type="range" min="0" max="1" step=".01" value=".55">
-</div>
-
-<p style="font-weight:700;color:#ff9f43">Sonidos Relajantes Combinables:</p>
-
-<div class="ambient-grid">
-<div class="ambient-item">
-<div class="ambient-header"><span>🌧️ Lluvia</span><input type="checkbox" id="rainNoise" onchange="toggleAmbientNoise('rain', this.checked)"></div>
-<input type="range" class="volume-slider" id="rainVol" min="0" max="1" step=".01" value=".5" oninput="updateAmbientVolume('rain', this.value)">
-</div>
-
-<div class="ambient-item">
-<div class="ambient-header"><span>🌊 Olas del Mar</span><input type="checkbox" id="oceanNoise" onchange="toggleAmbientNoise('ocean', this.checked)"></div>
-<input type="range" class="volume-slider" id="oceanVol" min="0" max="1" step=".01" value=".5" oninput="updateAmbientVolume('ocean', this.value)">
-</div>
-
-<div class="ambient-item">
-<div class="ambient-header"><span>🔥 Fogata</span><input type="checkbox" id="fireNoise" onchange="toggleAmbientNoise('fire', this.checked)"></div>
-<input type="range" class="volume-slider" id="fireVol" min="0" max="1" step=".01" value=".5" oninput="updateAmbientVolume('fire', this.value)">
-</div>
-
-<div class="ambient-item">
-<div class="ambient-header"><span>🌙 Noche</span><input type="checkbox" id="nightNoise" onchange="toggleAmbientNoise('night', this.checked)"></div>
-<input type="range" class="volume-slider" id="nightVol" min="0" max="1" step=".01" value=".5" oninput="updateAmbientVolume('night', this.value)">
-</div>
-
-<div class="ambient-item">
-<div class="ambient-header"><span>🍃 Viento</span><input type="checkbox" id="windNoise" onchange="toggleAmbientNoise('wind', this.checked)"></div>
-<input type="range" class="volume-slider" id="windVol" min="0" max="1" step=".01" value=".5" oninput="updateAmbientVolume('wind', this.value)">
-</div>
-
-<div class="ambient-item">
-<div class="ambient-header"><span>🏞️ Río</span><input type="checkbox" id="riverNoise" onchange="toggleAmbientNoise('river', this.checked)"></div>
-<input type="range" class="volume-slider" id="riverVol" min="0" max="1" step=".01" value=".5" oninput="updateAmbientVolume('river', this.value)">
-</div>
-
-<div class="ambient-item">
-<div class="ambient-header"><span>🐦 Pájaros</span><input type="checkbox" id="birdsNoise" onchange="toggleAmbientNoise('birds', this.checked)"></div>
-<input type="range" class="volume-slider" id="birdsVol" min="0" max="1" step=".01" value=".5" oninput="updateAmbientVolume('birds', this.value)">
-</div>
-
-<div class="ambient-item">
-<div class="ambient-header"><span>⚡ Tormenta</span><input type="checkbox" id="stormNoise" onchange="toggleAmbientNoise('storm', this.checked)"></div>
-<input type="range" class="volume-slider" id="stormVol" min="0" max="1" step=".01" value=".5" oninput="updateAmbientVolume('storm', this.value)">
-</div>
-</div>
-</div>
-
-<!-- RESPIRACIÓN 4-7-8 -->
-<div class="form-group">
-<h3>Ejercicio de Respiración 🧘</h3>
-<p>Practicá la técnica de respiración 4-7-8 para relajarte. La aplicación te guiará con animación, contador y voz.</p>
-<button type="button" class="action-btn breathing-start" id="breathingBtn" onclick="openBreathingExercise()">Comenzar Respiración 4-7-8 🫁</button>
-
-<div class="breathing-box" id="breathingBox">
-<div class="breathing-circle prepare" id="breathingCircle">Preparado</div>
-<strong id="breathingText">Preparáte...</strong>
-<p id="breathingCounter">Cuando estés listo, comenzamos.</p>
-<div class="breathing-info">
-<strong>🌬️ Técnica 4-7-8</strong><br><br>
-🫁 Inhalá durante 4 segundos.<br>
-🧘 Mantené el aire durante 7 segundos.<br>
-💨 Exhalá lentamente durante 8 segundos.
-</div>
-</div>
-</div>
-
-<!-- PERSONA -->
-<div class="form-group" style="background:#eef6ff;padding:15px;border-radius:16px;border:2px solid #bbe1fa">
-<label style="color:#0f4c81;font-size:1.05em">👦 Registro para:</label>
-<select id="childSelect" class="child-select">
-<option value="Ían">Ían 👦</option>
-<option value="Jason">Jason 🧒</option>
-<option value="Padre">Registro Personal (Papá) 👨</option>
-</select>
-</div>
-
-<!-- EMOCIONES -->
-<div class="form-group">
-<h3>¿Cómo te sientes hoy? 🎈</h3>
-<p>Tocá la emoción que mejor exprese lo que sentís.</p>
-<div class="buttons-grid">
-<div class="emotion-card"><button class="btn" id="happy" data-emotion="Alegre" data-message="Me alegra verte así, ¡a disfrutar este momento!">😊</button><span class="emotion-label">Alegre</span></div>
-<div class="emotion-card"><button class="btn" id="sad" data-emotion="Triste" data-message="Está bien sentirse triste, respirá profundo, estoy aquí contigo.">😢</button><span class="emotion-label">Triste</span></div>
-<div class="emotion-card"><button class="btn" id="angry" data-emotion="Enojado" data-message="Sentí esa energía, pero recordá calmarte antes de actuar.">😡</button><span class="emotion-label">Enojado</span></div>
-<div class="emotion-card"><button class="btn" id="calm" data-emotion="En Calma" data-message="Mantené esa paz interior y disfrutala.">😌</button><span class="emotion-label">En Calma</span></div>
-<div class="emotion-card"><button class="btn" id="fear" data-emotion="Miedo" data-message="El miedo nos protege, pero podemos superarlo juntos paso a paso.">😨</button><span class="emotion-label">Miedo</span></div>
-<div class="emotion-card"><button class="btn" id="surprise" data-emotion="Sorprendido" data-message="¡Sorpresas que alegran! Vamos a explorar qué sucedió.">😲</button><span class="emotion-label">Sorprendido</span></div>
-<div class="emotion-card"><button class="btn" id="anxiety" data-emotion="Ansiedad" data-message="Inhalá, exhalá. Todo estará bien, un paso a la vez.">😰</button><span class="emotion-label">Ansiedad</span></div>
-<div class="emotion-card"><button class="btn" id="envy" data-emotion="Envidia" data-message="Todos somos únicos y especiales a nuestra manera.">😒</button><span class="emotion-label">Envidia</span></div>
-<div class="emotion-card"><button class="btn" id="boredom" data-emotion="Aburrimiento" data-message="Un buen momento para dejar volar la imaginación.">🥱</button><span class="emotion-label">Aburrimiento</span></div>
-<div class="emotion-card"><button class="btn" id="shame" data-emotion="Vergüenza" data-message="Nadie es perfecto, todos aprendemos de los errores.">😳</button><span class="emotion-label">Vergüenza</span></div>
-</div>
-</div>
-
-<!-- FOTO -->
-<div class="form-group">
-<h3>Captura de Momento 📸</h3>
-<label>Subir una foto:</label>
-<p>Guardá una foto genial para recordar este día.</p>
-<input type="file" id="photoInput" accept="image/*">
-<img id="photoPreviewImg" alt="Vista previa">
-<label style="margin-top:10px;font-size:.9em">¿Qué emoción transmitía esta foto?</label>
-<select id="photoEmotionSelect" class="emotion-select">
-<option>Alegre</option>
-<option>Triste</option>
-<option>Enojado</option>
-<option>En Calma</option>
-<option>Miedo</option>
-<option>Sorprendido</option>
-<option>Ansiedad</option>
-<option>Envidia</option>
-<option>Aburrimiento</option>
-<option>Vergüenza</option>
-</select>
-<button class="action-btn" style="background:#ff9f43;box-shadow:0 4px 0 #e67e22" id="savePhotoBtn">Guardar Foto 🖼️</button>
-</div>
-
-<!-- AUDIO -->
-<div class="form-group">
-<h3>Mensaje de Voz 🎤</h3>
-<label>Grabar un audio:</label>
-<p>Usá tu voz para contar cómo te fue hoy.</p>
-<button class="action-btn" id="recordBtn">Grabar Audio</button>
-<audio id="audioPlayback" controls style="display:none"></audio>
-</div>
-
-<!-- REFLEXIÓN -->
-<div class="form-group">
-<h3>Reflexión Personal 📝</h3>
-<label>Escribí una nota:</label>
-<textarea id="noteInput" placeholder="¿Qué pasó hoy?..."></textarea>
-</div>
-<button class="action-btn" style="background:#10ac84;box-shadow:0 4px 0 #0e8c6c" id="saveEntryBtn">Guardar Registro Completo ✨</button>
-
-<!-- GRATITUD -->
-<div class="form-group">
-<h3>Momento de Gratitud ⭐</h3>
-<p>Agradecer nos hace sentir muy bien por dentro.</p>
-<textarea id="gratitudeInput" placeholder="¿Qué cosas lindas te pasaron hoy?"></textarea>
-<button class="action-btn" id="saveGratitudeBtn">Guardar Gratitud</button>
-</div>
-
-<!-- ESTRATEGIAS -->
-<div class="form-group">
-<h3>Estrategias de Crianza 💡</h3>
-<p>Ideas y herramientas para compartir en familia.</p>
-<textarea id="strategyInput" placeholder="Anotá aquí tus descubrimientos..."></textarea>
-<button class="action-btn" id="saveStrategyBtn">Guardar Estrategia</button>
-</div>
-
-<!-- MICROEXPRESIONES -->
-<div class="form-group">
-<h3>Observación de Microexpresiones 👀</h3>
-<p>Registrá gestos o expresiones del lenguaje corporal.</p>
-<textarea id="microexpressionInput" placeholder="Anotá las expresiones observadas..."></textarea>
-<button class="action-btn" id="saveMicroBtn">Guardar Observación</button>
-</div>
-
-<!-- HISTORIAL -->
-<div id="history">
-<h3>Registros Guardados:</h3>
-<label style="font-size:.85em;font-weight:600;color:#54a0ff">Filtrar por:</label>
-<select id="filterChildSelect" class="child-select" onchange="loadEntries()">
-<option value="Todos">Mostrar Todos</option>
-<option value="Ían">Solo Ían 👦</option>
-<option value="Jason">Solo Jason 🧒</option>
-<option value="Padre">Solo Papá 👨</option>
-</select>
-<ul id="entriesList"></ul>
-</div>
-
-<!-- CONTROL SEMANAL DE EMOCIONES -->
-<div id="weekly-emotions-history">
-<h3>Control Semanal de Emociones 📊</h3>
-<p>Cada vez que se selecciona una emoción, queda registrada automáticamente.</p>
-<label style="font-size:.85em;font-weight:600;color:#54a0ff">Filtrar por:</label>
-<select id="weeklyChildFilter" class="child-select" onchange="loadWeeklyEmotions()">
-<option value="Todos">Todos</option>
-<option value="Ían">Solo Ían 👦</option>
-<option value="Jason">Solo Jason 🧒</option>
-<option value="Padre">Solo Papá 👨</option>
-</select>
-<div id="weeklyEmotionList"></div>
-</div>
-
-<div id="gratitude-history">
-<h3>Agradecimientos:</h3>
-<ul id="gratitudeList"></ul>
-</div>
-
-<div id="strategies-history">
-<h3>Estrategias de Crianza:</h3>
-<ul id="strategyList"></ul>
-</div>
-
-<div id="microexpression-history">
-<h3>Observaciones de Microexpresiones:</h3>
-<ul id="microexpressionList"></ul>
-</div>
-
-</div>
-
-<script>
-'use strict';
-
-/* =========================================================
-   MOTOR AUDIOFÓNICO Y PRODUCCIÓN MUSICAL AVANZADA (WEB AUDIO API)
-   ========================================================= */
-let audioCtx = null;
-let masterBus = null;
-let musicBus = null;
-let reverbBus = null;
-let delayBus = null;
-let warmthFilter = null;
-
-let isPlaying = false;
-let currentStyle = 'ambient';
-
-let musicTimer = null;
-let step = 0;
-let variation = 0;
-
-let ambientNodes = {
-    rain: null, ocean: null, fire: null, night: null,
-    wind: null, river: null, birds: null, storm: null
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Moon,
+  Sun,
+  Home,
+  Music2,
+  Heart,
+  BookOpen,
+  BarChart3,
+  Wind,
+  BookHeart,
+  HeartPulse,
+  Lightbulb,
+  Eye,
+  type LucideIcon,
+} from 'lucide-react';
+import { ProfileSelector } from '@/components/ProfileSelector';
+import { BreathingExercise } from '@/components/BreathingExercise';
+import { EmotionalCheckIn } from '@/components/EmotionalCheckIn';
+import { GenerativeMusicPlayer } from '@/components/GenerativeMusicPlayer';
+import { NatureSoundsMixer } from '@/components/NatureSoundsMixer';
+import { PhotoCapture } from '@/components/PhotoCapture';
+import { VoiceNote } from '@/components/VoiceNote';
+import { JournalTextModule } from '@/components/JournalTextModule';
+import { HistoryPanel } from '@/components/HistoryPanel';
+import { EmotionDashboard } from '@/components/EmotionDashboard';
+import { type ProfileId } from '@/types';
+import { loadTheme, saveTheme } from '@/utils/storage';
+import { AudioProvider } from '@/audio/AudioContext';
+
+// ==========================================
+// 1. UTILIDADES DE ARMAZENAMIENTO Y PROGRESO
+// ==========================================
+
+export const saveJournalEntry = (profileId: string, entryData: any) => {
+  try {
+    const key = `dpcr_journal_${profileId}`;
+    const existing = JSON.parse(localStorage.getItem(key) || '[]');
+    const newEntries = [entryData, ...existing];
+    localStorage.setItem(key, JSON.stringify(newEntries));
+    
+    // Disparar evento para actualizar paneles en tiempo real
+    window.dispatchEvent(new Event('dpcr-update'));
+  } catch (error) {
+    console.error('Error al guardar registro:', error);
+  }
 };
 
-// Frecuencias exactas de notas
-const N = {
-    C2:65.41, D2:73.42, Eb2:77.78, E2:82.41, F2:87.31, G2:98.00, Ab2:103.83, A2:110, Bb2:116.54, B2:123.47,
-    C3:130.81, D3:146.83, Eb3:155.56, E3:164.81, F3:174.61, G3:196, Ab3:207.65, A3:220, Bb3:233.08, B3:246.94,
-    C4:261.63, Db4:277.18, D4:293.66, Eb4:311.13, E4:329.63, F4:349.23, Gb4:369.99, G4:392, Ab4:415.30, A4:440, Bb4:466.16, B4:493.88,
-    C5:523.25, D5:587.33, Eb5:622.25, E5:659.25, F5:698.46, G5:783.99, Ab5:830.61, A5:880, Bb5:932.33, B5:987.77,
-    C6:1046.5, D6:1174.66, E6:1318.51, G6:1567.98
+export const loadJournalEntries = (profileId: string) => {
+  try {
+    const key = `dpcr_journal_${profileId}`;
+    return JSON.parse(localStorage.getItem(key) || '[]');
+  } catch (error) {
+    console.error('Error al cargar registros:', error);
+    return [];
+  }
 };
 
-/* ESTILOS MUSICALES CON ARMONÍA EXTENDIDA (24 ACORDES) Y ESTRUCTURA PROGRESIVA */
-const styles = {
-    ambient:{
-        bpm:48, wave:'sine',
-        chords:[
-            [N.C3, N.G3, N.B3, N.D4, N.E4, N.G4], // Cmaj9(13)
-            [N.A2, N.E3, N.G3, N.C4, N.E4, N.G4], // Am11
-            [N.F2, N.C3, N.E3, N.G3, N.A3, N.D4], // Fmaj7(#11)
-            [N.D3, N.A3, N.C4, N.E4, N.F4, N.A4], // Dm11
-            [N.Ab2, N.Eb3, N.G3, N.Bb3, N.C4, N.Eb4], // Abmaj9
-            [N.F2, N.C3, N.G3, N.A3, N.C4, N.E4], // Fmaj9
-            [N.G2, N.D3, N.F3, N.A3, N.B3, N.E4], // G13
-            [N.C2, N.G2, N.D3, N.E3, N.G3, N.B3], // Cadd9
-            [N.E3, N.B3, N.D4, N.G4, N.A4, N.D5], // Em11
-            [N.A2, N.E3, N.G3, N.B3, N.C4, N.E4], // Am9
-            [N.F2, N.C3, N.E3, N.G3, N.B3, N.E4], // Fmaj7(add9)
-            [N.Fm2, N.C3, N.Ab3, N.C4, N.Eb4, N.G4], // Fm(maj7)
-            [N.C3, N.G3, N.C4, N.E4, N.G4, N.B4], // Cmaj7
-            [N.Eb3, N.Bb3, N.D4, N.F4, N.G4, N.Bb4], // Ebmaj9
-            [N.Ab2, N.Eb3, N.G3, N.C4, N.Eb4, N.G4], // Abmaj7
-            [N.G2, N.D3, N.F3, N.A3, N.C4, N.F4], // G11
-            [N.A2, N.E3, N.A3, N.C4, N.E4, N.G4], // Am7
-            [N.D3, N.A3, N.C4, N.F4, N.A4, N.C5], // Dm7
-            [N.G2, N.D3, N.B3, N.E4, N.G4, N.B4], // G6/9
-            [N.C3, N.G3, N.B3, N.E4, N.G4, N.D5], // Cmaj9
-            [N.Bb2, N.F3, N.A3, N.C4, N.D4, N.F4], // Bbmaj9
-            [N.F2, N.C3, N.A3, N.C4, N.E4, N.G4], // Fmaj9
-            [N.Ab2, N.Eb3, N.C4, N.Eb4, N.G4, N.Bb4], // Abmaj9
-            [N.G2, N.D3, N.G3, N.B3, N.D4, N.E4]  // G6
-        ],
-        melody:[
-            N.E5, null, N.G5, N.D5, N.B4, null, N.C5, N.D5, 
-            N.E5, N.G5, N.C6, N.B5, N.G5, N.E5, N.D5, null,
-            N.C5, N.E5, N.G5, N.A5, N.G5, N.E5, N.D5, N.C5,
-            N.B4, N.D5, N.G5, N.E5, N.D5, N.C5, N.B4, null,
-            N.G5, N.E5, N.D5, N.C5, N.B4, N.A4, N.G4, N.B4,
-            N.C5, N.E5, N.G5, N.B5, N.A5, N.G5, N.E5, null
-        ],
-        bass:[
-            N.C2, null, N.G2, null, N.A2, null, N.E2, null, 
-            N.F2, null, N.C3, null, N.D2, null, N.A2, null,
-            N.Ab2, null, N.Eb2, null, N.F2, null, N.C2, null,
-            N.G2, null, N.D2, null, N.C2, null, N.G2, null,
-            N.E2, null, N.B2, null, N.A2, null, N.E2, null,
-            N.F2, null, N.C3, null, N.G2, null, N.D2, null
-        ],
-        drums:false, pad:true, spatial:true
-    },
-    piano:{
-        bpm:58, wave:'triangle',
-        chords:[
-            [N.C3, N.G3, N.B3, N.D4, N.E4], [N.F3, N.C4, N.E4, N.G4, N.A4],
-            [N.A2, N.E3, N.G3, N.C4, N.E4], [N.E3, N.B3, N.D4, N.G4],
-            [N.D3, N.A3, N.C4, N.E4, N.F4], [N.G2, N.D3, N.F3, N.A3, N.B3],
-            [N.C3, N.E3, N.G3, N.B3, N.D4], [N.A2, N.C3, N.E3, N.G3, N.B3],
-            [N.F2, N.C3, N.E3, N.G3, N.A3], [N.D3, N.A3, N.C4, N.E4, N.G4],
-            [N.E3, N.B3, N.D4, N.F4, N.A4], [N.A2, N.E3, N.G3, N.C4, N.E4],
-            [N.F2, N.C3, N.F3, N.A3, N.C4], [N.G2, N.D3, N.G3, N.B3, N.D4],
-            [N.Ab2, N.Eb3, N.G3, N.C4, N.Eb4], [N.Bb2, N.F3, N.A3, N.D4, N.F4],
-            [N.C3, N.G3, N.C4, N.E4, N.G4], [N.A2, N.E3, N.A3, N.C4, N.E4],
-            [N.D3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.B2, N.D3, N.F3, N.A3],
-            [N.E3, N.G3, N.B3, N.D4, N.G4], [N.F2, N.A2, N.C3, N.E3, N.G3],
-            [N.Dm3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.D3, N.F3, N.A3, N.B3]
-        ],
-        melody:[
-            N.G4, N.C5, N.E5, N.D5, N.C5, N.B4, N.A4, N.G4, 
-            N.E5, N.G5, N.D5, N.C5, N.B4, N.C5, N.D5, N.G4,
-            N.A4, N.C5, N.F5, N.E5, N.D5, N.C5, N.B4, N.A4,
-            N.G4, N.B4, N.D5, N.F5, N.E5, N.D5, N.C5, null,
-            N.E5, N.G5, N.C6, N.B5, N.A5, N.G5, N.E5, N.D5,
-            N.C5, N.E5, N.A5, N.G5, N.F5, N.E5, N.D5, null
-        ],
-        bass:[
-            N.C3, null, N.G2, N.C3, N.F2, null, N.C3, N.F3, 
-            N.A2, null, N.E2, N.A2, N.E2, null, N.B2, N.E3,
-            N.D3, null, N.A2, N.D3, N.G2, null, N.D2, N.G2,
-            N.C3, null, N.G2, N.C3, N.A2, null, N.E2, N.A2,
-            N.F2, null, N.C3, N.F2, N.D3, null, N.A2, N.D3,
-            N.E2, null, N.B2, N.E2, N.A2, null, N.E2, N.A2
-        ],
-        drums:false, piano:true
-    },
-    lofi:{
-        bpm:68, wave:'triangle',
-        chords:[
-            [N.C3, N.E3, N.G3, N.B3, N.D4], [N.A2, N.C3, N.E3, N.G3, N.B3],
-            [N.D3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.B2, N.D3, N.F3, N.A3],
-            [N.E3, N.G3, N.B3, N.D4, N.F4], [N.A2, N.E3, N.G3, N.C4, N.E4],
-            [N.F2, N.C3, N.E3, N.G3, N.A3], [N.G2, N.D3, N.F3, N.A3, N.C4],
-            [N.C3, N.G3, N.B3, N.D4, N.E4], [N.A2, N.E3, N.G3, N.B3, N.D4],
-            [N.F2, N.C3, N.E3, N.G3, N.B3], [N.Fm2, N.C3, N.Ab3, N.C4, N.Eb4],
-            [N.Em3, N.G3, N.B3, N.D4, N.F4], [N.A2, N.E3, N.G3, N.C4, N.E4],
-            [N.Dm3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.D3, N.F3, N.A3, N.B3],
-            [N.C3, N.E3, N.G3, N.A3, N.D4], [N.A2, N.C3, N.E3, N.G3, N.C4],
-            [N.F2, N.C3, N.E3, N.G3, N.A3], [N.G2, N.D3, N.F3, N.A3, N.D4],
-            [N.Ab2, N.Eb3, N.G3, N.Bb3, N.D4], [N.Bb2, N.F3, N.A3, N.C4, N.E4],
-            [N.C3, N.G3, N.B3, N.D4, N.E4], [N.G2, N.D3, N.F3, N.A3, N.B3]
-        ],
-        melody:[
-            N.G4, null, N.E5, N.D5, null, N.C5, null, N.B4, 
-            N.A4, N.C5, N.E5, null, N.D5, null, N.B4, null,
-            N.C5, N.E5, N.G5, N.F5, N.E5, N.D5, N.C5, N.A4,
-            N.B4, N.D5, N.F5, N.E5, N.D5, null, N.C5, null,
-            N.E5, N.G5, N.B5, N.A5, N.G5, N.E5, N.D5, N.C5,
-            N.A4, N.C5, N.E5, N.D5, N.C5, N.B4, N.G4, null
-        ],
-        bass:[
-            N.C3, N.C3, null, N.G2, N.A2, null, N.E2, null, 
-            N.D3, N.D3, null, N.A2, N.G2, null, N.D2, N.F2,
-            N.E2, N.E2, null, N.B2, N.A2, null, N.E2, null,
-            N.F2, N.F2, null, N.C3, N.G2, null, N.D2, N.G2,
-            N.C3, N.C3, null, N.G2, N.A2, null, N.E2, null,
-            N.F2, N.F2, null, N.C3, N.G2, null, N.D2, N.G2
-        ],
-        drums:true, loFi:true
-    },
-    bossa:{
-        bpm:74, wave:'triangle',
-        chords:[
-            [N.D3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.B2, N.D3, N.F3, N.A3],
-            [N.C3, N.E3, N.G3, N.B3, N.D4], [N.A2, N.C3, N.E3, N.G3, N.B3],
-            [N.D3, N.Gb3, N.A3, N.C4, N.E4], [N.G2, N.B2, N.D3, N.F3, N.Ab3],
-            [N.C3, N.E3, N.G3, N.A3, N.D4], [N.A2, N.C3, N.E3, N.G3, N.B3],
-            [N.F2, N.C3, N.E3, N.G3, N.A3], [N.Fm2, N.C3, N.Ab3, N.C4, N.Eb4],
-            [N.Em3, N.G3, N.B3, N.D4, N.G4], [N.A2, N.E3, N.G3, N.C4, N.E4],
-            [N.Dm3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.B2, N.D3, N.F3, N.A3],
-            [N.C3, N.E3, N.G3, N.B3, N.D4], [N.A2, N.E3, N.G3, N.B3, N.D4],
-            [N.D3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.B2, N.D3, N.F3, N.A3],
-            [N.E3, N.G3, N.B3, N.D4, N.F4], [N.A2, N.E3, N.G3, N.C4, N.E4],
-            [N.D3, N.A3, N.C4, N.E4, N.F4], [N.G2, N.D3, N.F3, N.A3, N.B3],
-            [N.C3, N.G3, N.B3, N.D4, N.E4], [N.A2, N.C3, N.E3, N.G3, N.B3]
-        ],
-        melody:[
-            N.A4, N.C5, N.B4, N.G4, N.E5, null, N.D5, N.C5, 
-            N.A4, N.F5, N.E5, N.C5, N.B4, N.G4, N.A4, null,
-            N.F5, N.E5, N.D5, N.C5, N.B4, N.C5, N.D5, N.E5,
-            N.Ab5, N.G5, N.F5, N.E5, N.D5, N.C5, N.A4, null,
-            N.C5, N.E5, N.G5, N.A5, N.G5, N.E5, N.D5, N.C5,
-            N.B4, N.D5, N.F5, N.E5, N.D5, N.C5, N.A4, null
-        ],
-        bass:[
-            N.D3, null, N.A2, N.D3, N.G2, null, N.D2, N.G2, 
-            N.C3, null, N.G2, N.C3, N.A2, null, N.E2, N.A2,
-            N.D3, null, N.A2, N.D3, N.G2, null, N.D2, N.G2,
-            N.C3, null, N.G2, N.C3, N.A2, null, N.E2, N.A2,
-            N.F2, null, N.C3, N.F2, N.E2, null, N.B2, N.E2,
-            N.D3, null, N.A2, N.D3, N.G2, null, N.D2, N.G2
-        ],
-        drums:true, bossa:true
-    },
-    jazz:{
-        bpm:56, wave:'sine',
-        chords:[
-            [N.F3, N.A3, N.C4, N.E4, N.G4], [N.D3, N.F3, N.A3, N.C4, N.E4],
-            [N.G2, N.B2, N.D3, N.F3, N.A3], [N.C3, N.E3, N.G3, N.B3, N.D4],
-            [N.A2, N.C3, N.E3, N.G3, N.B3], [N.D3, N.F3, N.Ab3, N.C4, N.E4],
-            [N.G2, N.B2, N.D3, N.F3, N.Ab3], [N.C3, N.E3, N.G3, N.B3, N.D4],
-            [N.E3, N.G3, N.B3, N.D4, N.F4], [N.A2, N.C3, N.E3, N.G3, N.B3],
-            [N.D3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.B2, N.D3, N.F3, N.A3],
-            [N.C3, N.E3, N.G3, N.B3, N.D4], [N.C3, N.E3, N.G3, N.A3, N.D4],
-            [N.F2, N.C3, N.E3, N.G3, N.A3], [N.Fm2, N.C3, N.Ab3, N.C4, N.Eb4],
-            [N.Em3, N.G3, N.B3, N.D4, N.G4], [N.A2, N.E3, N.G3, N.C4, N.E4],
-            [N.Dm3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.D3, N.F3, N.A3, N.B3],
-            [N.C3, N.G3, N.B3, N.D4, N.E4], [N.A2, N.E3, N.G3, N.B3, N.D4],
-            [N.Ab2, N.Eb3, N.G3, N.C4, N.Eb4], [N.G2, N.D3, N.F3, N.A3, N.D4]
-        ],
-        melody:[
-            N.E5, N.D5, N.C5, N.A4, N.G4, N.A4, N.C5, N.D5, 
-            N.E5, N.G5, N.A5, N.G5, N.E5, N.C5, N.D5, null,
-            N.C5, N.B4, N.A4, N.G4, N.F4, N.G4, N.A4, N.C5,
-            N.Eb5, N.D5, N.C5, N.B4, N.G4, N.A4, N.C5, null,
-            N.G5, N.E5, N.D5, N.C5, N.A4, N.C5, N.E5, N.G5,
-            N.F5, N.E5, N.D5, N.C5, N.B4, N.G4, N.A4, null
-        ],
-        bass:[
-            N.F2, N.A2, N.C3, N.E3, N.D3, N.F3, N.A3, N.C4, 
-            N.G2, N.B2, N.D3, N.F3, N.C3, N.E3, N.G3, N.B3,
-            N.A2, N.C3, N.E3, N.G3, N.D2, N.F2, N.Ab2, N.C3,
-            N.G2, N.B2, N.D3, N.F3, N.C3, N.G2, N.E2, N.C2,
-            N.E2, N.G2, N.B2, N.D3, N.A2, N.C3, N.E3, N.G3,
-            N.D2, N.F2, N.A2, N.C3, N.G2, N.B2, N.D3, N.F3
-        ],
-        drums:true, jazz:true
-    },
-    folk:{
-        bpm:64, wave:'triangle',
-        chords:[
-            [N.C3, N.G3, N.C4, N.E4, N.G4], [N.G2, N.D3, N.G3, N.B3, N.D4],
-            [N.A2, N.E3, N.A3, N.C4, N.E4], [N.F2, N.C3, N.F3, N.A3, N.C4],
-            [N.C3, N.G3, N.C4, N.E4, N.G4], [N.E3, N.B3, N.E4, N.G4, N.B4],
-            [N.F2, N.C3, N.F3, N.A3, N.C4], [N.G2, N.D3, N.G3, N.B3, N.D4],
-            [N.C3, N.G3, N.C4, N.E4, N.G4], [N.A2, N.E3, N.A3, N.C4, N.E4],
-            [N.D3, N.A3, N.D4, N.F4, N.A4], [N.G2, N.D3, N.G3, N.B3, N.D4],
-            [N.F2, N.C3, N.F3, N.A3, N.C4], [N.C3, N.G3, N.C4, N.E4, N.G4],
-            [N.F2, N.C3, N.F3, N.A3, N.C4], [N.G2, N.D3, N.G3, N.B3, N.D4],
-            [N.C3, N.G3, N.C4, N.E4, N.G4], [N.E3, N.B3, N.E4, N.G4, N.B4],
-            [N.A2, N.E3, N.A3, N.C4, N.E4], [N.F2, N.C3, N.F3, N.A3, N.C4],
-            [N.C3, N.G3, N.C4, N.E4, N.G4], [N.F2, N.C3, N.F3, N.A3, N.C4],
-            [N.G2, N.D3, N.G3, N.B3, N.D4], [N.C3, N.G3, N.C4, N.E4, N.G4]
-        ],
-        melody:[
-            N.E4, N.G4, N.C5, N.G4, N.E5, N.D5, N.C5, N.G4, 
-            N.A4, N.C5, N.E5, N.D5, N.C5, N.B4, N.C5, null,
-            N.G4, N.C5, N.E5, N.G5, N.E5, N.D5, N.C5, N.A4,
-            N.C5, N.D5, N.E5, N.D5, N.C5, N.B4, N.C5, null,
-            N.E5, N.G5, N.C6, N.B5, N.A5, N.G5, N.E5, N.D5,
-            N.C5, N.E5, N.G5, N.F5, N.E5, N.D5, N.C5, null
-        ],
-        bass:[
-            N.C3, null, N.G2, N.C3, N.G2, null, N.D2, N.G2, 
-            N.A2, null, N.E2, N.A2, N.F2, null, N.C2, N.F2,
-            N.C3, null, N.G2, N.C3, N.E2, null, N.B2, N.E2,
-            N.F2, null, N.C2, N.F2, N.G2, null, N.D2, N.G2,
-            N.C3, null, N.G2, N.C3, N.A2, null, N.E2, N.A2,
-            N.D3, null, N.A2, N.D3, N.G2, null, N.D2, N.G2
-        ],
-        drums:false, pluck:true
-    },
-    space:{
-        bpm:40, wave:'sine',
-        chords:[
-            [N.C3, N.G3, N.C4, N.G4, N.B4, N.D5], [N.F3, N.C4, N.F4, N.C5, N.E5, N.G5],
-            [N.A2, N.E3, N.A3, N.E4, N.G4, N.C5], [N.G2, N.D3, N.G3, N.D4, N.F4, N.A4],
-            [N.Eb3, N.Bb3, N.Eb4, N.G4, N.Bb4, N.D5], [N.F3, N.C4, N.F4, N.A4, N.C5, N.E5],
-            [N.Ab2, N.Eb3, N.Ab3, N.C4, N.Eb4, N.G4], [N.G2, N.D3, N.G3, N.B3, N.D4, N.F4],
-            [N.C3, N.G3, N.D4, N.E4, N.G4, N.B4], [N.A2, N.E3, N.C4, N.E4, N.G4, N.B4],
-            [N.F3, N.C4, N.E4, N.G4, N.A4, N.C5], [N.Ab2, N.Eb3, N.G3, N.Bb3, N.C4, N.Eb4],
-            [N.C3, N.G3, N.C4, N.E4, N.G4, N.D5], [N.Eb3, N.Bb3, N.F4, N.G4, N.Bb4, N.D5],
-            [N.F3, N.C4, N.G4, N.A4, N.C5, N.E5], [N.G2, N.D3, N.A3, N.B3, N.D4, N.F4],
-            [N.A2, N.E3, N.G3, N.C4, N.E4, N.G4], [N.D3, N.A3, N.C4, N.E4, N.F4, N.A4],
-            [N.F2, N.C3, N.E3, N.G3, N.B3, N.D4], [N.Fm2, N.C3, N.Ab3, N.C4, N.Eb4, N.G4],
-            [N.C3, N.G3, N.B3, N.E4, N.G4, N.C5], [N.Ab2, N.Eb3, N.G3, N.C4, N.Eb4, N.Bb4],
-            [N.Bb2, N.F3, N.A3, N.D4, N.F4, N.A4], [N.G2, N.D3, N.G3, N.B3, N.D4, N.E4]
-        ],
-        melody:[
-            N.G5, null, N.E5, null, N.C5, null, N.B4, null, 
-            N.D5, null, N.G5, null, N.E5, null, N.C5, null,
-            N.Bb5, null, N.G5, null, N.Eb5, null, N.D5, null,
-            N.C5, null, N.Eb5, null, N.G5, null, N.F5, null,
-            N.E5, null, N.G5, null, N.C6, null, N.B5, null,
-            N.A5, null, N.G5, null, N.E5, null, N.D5, null
-        ],
-        bass:[
-            N.C2, null, null, null, N.F2, null, null, null, 
-            N.A2, null, null, null, N.G2, null, null, null,
-            N.Eb2, null, null, null, N.F2, null, null, null,
-            N.Ab2, null, null, null, N.G2, null, null, null,
-            N.C2, null, null, null, N.A2, null, null, null,
-            N.F2, null, null, null, N.G2, null, null, null
-        ],
-        drums:false, pad:true, space:true
-    },
-    reggae:{
-        bpm:68, wave:'sine',
-        chords:[
-            [N.C3, N.E3, N.G3, N.B3, N.D4], [N.F2, N.A2, N.C3, N.E3, N.G3],
-            [N.G2, N.B2, N.D3, N.F3, N.A3], [N.C3, N.E3, N.G3, N.B3, N.D4],
-            [N.A2, N.C3, N.E3, N.G3, N.B3], [N.D3, N.F3, N.A3, N.C4, N.E4],
-            [N.G2, N.B2, N.D3, N.F3, N.A3], [N.C3, N.E3, N.G3, N.B3, N.D4],
-            [N.F2, N.A2, N.C3, N.E3, N.G3], [N.Fm2, N.Ab2, N.C3, N.Eb3, N.G3],
-            [N.Em3, N.G3, N.B3, N.D4, N.G4], [N.A2, N.C3, N.E3, N.G3, N.B3],
-            [N.Dm3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.B2, N.D3, N.F3, N.A3],
-            [N.C3, N.E3, N.G3, N.A3, N.D4], [N.A2, N.C3, N.E3, N.G3, N.B3],
-            [N.C3, N.G3, N.B3, N.D4, N.E4], [N.A2, N.E3, N.G3, N.B3, N.D4],
-            [N.F2, N.C3, N.E3, N.G3, N.A3], [N.G2, N.D3, N.F3, N.A3, N.B3],
-            [N.Em3, N.G3, N.B3, N.D4, N.F4], [N.A2, N.E3, N.G3, N.C4, N.E4],
-            [N.Dm3, N.F3, N.A3, N.C4, N.E4], [N.G2, N.D3, N.F3, N.A3, N.D4]
-        ],
-        melody:[
-            null, N.G4, null, N.E5, null, N.D5, N.C5, null, 
-            null, N.A4, null, N.C5, null, N.B4, N.G4, null,
-            null, N.E5, null, N.G5, null, N.E5, N.D5, null,
-            null, N.C5, null, N.D5, null, N.B4, N.C5, null,
-            null, N.G5, null, N.E5, null, N.C5, N.B4, null,
-            null, N.A4, null, N.C5, null, N.D5, N.C5, null
-        ],
-        bass:[
-            N.C3, N.C3, N.G2, N.C3, N.F2, N.F2, N.C3, N.F2, 
-            N.G2, N.G2, N.D2, N.G2, N.C3, N.C3, N.G2, N.C3,
-            N.A2, N.A2, N.E2, N.A2, N.D3, N.D3, N.A2, N.D3,
-            N.G2, N.G2, N.D2, N.G2, N.C3, N.C3, N.G2, N.C3,
-            N.F2, N.F2, N.C2, N.F2, N.E2, N.E2, N.B1, N.E2,
-            N.A2, N.A2, N.E2, N.A2, N.D3, N.D3, N.G2, N.G2
-        ],
-        drums:true, reggae:true
-    },
-    synthwave:{
-        bpm:82, wave:'sawtooth',
-        chords:[
-            [N.C3, N.G3, N.B3, N.D4, N.E4], [N.A2, N.E3, N.G3, N.C4, N.E4],
-            [N.F2, N.C3, N.E3, N.G3, N.A3], [N.G2, N.D3, N.F3, N.A3, N.B3],
-            [N.E3, N.B3, N.D4, N.G4],       [N.A2, N.E3, N.G3, N.C4],
-            [N.F2, N.C3, N.E3, N.A3],       [N.G2, N.D3, N.G3, N.B3],
-            [N.C3, N.G3, N.C4, N.E4, N.G4], [N.A2, N.E3, N.A3, N.C4, N.E4],
-            [N.D3, N.A3, N.D4, N.F4, N.A4], [N.G2, N.D3, N.G3, N.B3, N.D4],
-            [N.F2, N.C3, N.F3, N.A3, N.C4], [N.G2, N.D3, N.G3, N.B3, N.D4],
-            [N.A2, N.E3, N.A3, N.C4, N.E4], [N.A2, N.E3, N.G3, N.B3, N.D4],
-            [N.F2, N.C3, N.E3, N.G3, N.A3], [N.G2, N.D3, N.F3, N.A3, N.B3],
-            [N.E3, N.B3, N.D4, N.G4, N.B4], [N.A2, N.E3, N.G3, N.C4, N.E4],
-            [N.F2, N.C3, N.A3, N.C4, N.E4], [N.Fm2, N.C3, N.Ab3, N.C4, N.Eb4],
-            [N.C3, N.G3, N.B3, N.D4, N.E4], [N.G2, N.D3, N.F3, N.A3, N.D4]
-        ],
-        melody:[
-            N.C5, N.E5, N.G5, N.E5, N.D5, N.B4, N.C5, N.G4, 
-            N.A4, N.C5, N.E5, N.G5, N.F5, N.E5, N.D5, N.B4,
-            N.E5, N.G5, N.B5, N.G5, N.A5, N.E5, N.G5, N.D5,
-            N.C5, N.E5, N.G5, N.F5, N.E5, N.D5, N.C5, null,
-            N.G5, N.E5, N.C5, N.B4, N.A4, N.C5, N.E5, N.G5,
-            N.F5, N.E5, N.D5, N.C5, N.B4, N.G4, N.C5, null
-        ],
-        bass:[
-            N.C2, N.C2, N.G2, N.C2, N.A2, N.A2, N.E2, N.A2, 
-            N.F2, N.F2, N.C2, N.F2, N.G2, N.G2, N.D2, N.G2,
-            N.E2, N.E2, N.B1, N.E2, N.A2, N.A2, N.E2, N.A2,
-            N.F2, N.F2, N.C2, N.F2, N.G2, N.G2, N.D2, N.G2,
-            N.C2, N.C2, N.G2, N.C2, N.A2, N.A2, N.E2, N.A2,
-            N.D2, N.D2, N.A1, N.D2, N.G2, N.G2, N.D2, N.G2
-        ],
-        drums:true, synth:true
-    },
-    zen:{
-        bpm:38, wave:'sine',
-        chords:[
-            [N.C3, N.G3, N.D4, N.E4, N.G4], [N.Fsus2, N.C4, N.G4, N.A4, N.C5],
-            [N.A2, N.E3, N.B3, N.C4, N.E4], [N.G2, N.D3, N.A3, N.B3, N.D4],
-            [N.D3, N.A3, N.E4, N.F4, N.A4], [N.F3, N.C4, N.G4, N.A4, N.D5],
-            [N.Ab2, N.Eb3, N.Bb3, N.C4, N.Eb4], [N.G2, N.D3, N.A3, N.C4, N.D4],
-            [N.C3, N.G3, N.B3, N.D4, N.E4], [N.A2, N.E3, N.G3, N.B3, N.D4],
-            [N.F2, N.C3, N.G3, N.A3, N.C4], [N.Fm2, N.C3, N.Ab3, N.C4, N.Eb4],
-            [N.Em3, N.G3, N.B3, N.D4, N.G4], [N.A2, N.E3, N.C4, N.E4, N.G4],
-            [N.Dm3, N.A3, N.D4, N.F4, N.A4], [N.G2, N.D3, N.G3, N.B3, N.D4],
-            [N.C3, N.G3, N.D4, N.E4, N.G4], [N.Ab2, N.Eb3, N.G3, N.Bb3, N.Eb4],
-            [N.Bb2, N.F3, N.A3, N.C4, N.F4], [N.G2, N.D3, N.A3, N.B3, N.D4],
-            [N.A2, N.E3, N.B3, N.C4, N.E4], [N.F2, N.C3, N.G3, N.A3, N.D4],
-            [N.Ab2, N.Eb3, N.C4, N.Eb4, N.G4], [N.G2, N.D3, N.G3, N.B3, N.D4]
-        ],
-        melody:[
-            N.E4, null, null, N.G4, null, N.B4, null, N.A4, 
-            N.G4, null, null, N.E4, null, N.D4, null, null,
-            N.A4, null, null, N.C5, null, N.E5, null, N.D5,
-            N.C5, null, null, N.G4, null, N.E4, null, null,
-            N.G5, null, null, N.E5, null, N.C5, null, N.B4,
-            N.A4, null, null, N.G4, null, N.E4, null, null
-        ],
-        bass:[
-            N.C2, null, null, null, N.F2, null, null, null, 
-            N.A2, null, null, null, N.G2, null, null, null,
-            N.D2, null, null, null, N.F2, null, null, null,
-                        N.C2, null, null, null, N.A2, null, null, null,
-            N.F2, null, null, null, N.G2, null, null, null
-        ],
-        drums:false, zen:true
-    }
-};
+// ==========================================
+// 2. GENERADOR DE SONIDOS DE LA NATURALEZA
+// ==========================================
 
-/* =========================================================
-   SISTEMA DE AUDIO, EFECTOS Y AMBIENTE (WEB AUDIO API)
-   ========================================================= */
-function initAudioEngine() {
-    if (audioCtx) return;
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioCtx = new AudioContext();
+export const createNatureSound = (ctx: AudioContext, type: string) => {
+  const masterGain = ctx.createGain();
 
-    masterBus = audioCtx.createGain();
-    masterBus.gain.value = parseFloat(document.getElementById('masterVolume').value);
-    masterBus.connect(audioCtx.destination);
-
-    warmthFilter = audioCtx.createBiquadFilter();
-    warmthFilter.type = 'lowshelf';
-    warmthFilter.frequency.value = 250;
-    warmthFilter.gain.value = 3;
-
-    musicBus = audioCtx.createGain();
-    musicBus.gain.value = 0.8;
-    musicBus.connect(warmthFilter);
-    warmthFilter.connect(masterBus);
-
-    // Reverb Convolver sintético
-    reverbBus = audioCtx.createGain();
-    const rate = audioCtx.sampleRate;
-    const length = rate * 2.5;
-    const impulse = audioCtx.createBuffer(2, length, rate);
-    for (let c = 0; c < 2; c++) {
-        const channel = impulse.getChannelData(c);
-        for (let i = 0; i < length; i++) {
-            channel[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
-        }
-    }
-    const convolver = audioCtx.createConvolver();
-    convolver.buffer = impulse;
-    reverbBus.connect(convolver);
-    convolver.connect(masterBus);
-    reverbBus.gain.value = 0.35;
-
-    // Delay Estéreo
-    delayBus = audioCtx.createGain();
-    const delayNode = audioCtx.createDelay();
-    delayNode.delayTime.value = 0.375;
-    const feedback = audioCtx.createGain();
-    feedback.gain.value = 0.25;
-
-    delayBus.connect(delayNode);
-    delayNode.connect(feedback);
-    feedback.connect(delayNode);
-    delayNode.connect(masterBus);
-    delayBus.gain.value = 0.2;
-
-    document.getElementById('masterVolume').addEventListener('input', (e) => {
-        if (masterBus) masterBus.gain.value = parseFloat(e.target.value);
-    });
-}
-
-function playSynthNote(freq, dur, type = 'sine', vol = 0.2, sendReverb = true) {
-    if (!audioCtx || !freq) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-    gain.gain.setValueAtTime(0, audioCtx.currentTime);
-    gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.05);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
-
-    osc.connect(gain);
-    gain.connect(musicBus);
-
-    if (sendReverb && reverbBus) gain.connect(reverbBus);
-    if (sendReverb && delayBus) gain.connect(delayBus);
-
-    osc.start();
-    osc.stop(audioCtx.currentTime + dur);
-}
-
-function playPercussion(type) {
-    if (!audioCtx) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    if (type === 'kick') {
-        osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-        osc.connect(gain);
-        gain.connect(musicBus);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.15);
-    } else if (type === 'hihat') {
-        const bufferSize = audioCtx.sampleRate * 0.05;
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-
-        const noise = audioCtx.createBufferSource();
-        noise.buffer = buffer;
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'highpass';
-        filter.frequency.value = 7000;
-
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-
-        noise.connect(filter);
-        filter.connect(gain);
-        gain.connect(musicBus);
-        noise.start();
-    }
-}
-
-function stepScheduler() {
-    const st = styles[currentStyle];
-    const chordIndex = Math.floor(step / 8) % st.chords.length;
-    const currentChord = st.chords[chordIndex];
-
-    // Acordes suaves al inicio del compás
-    if (step % 8 === 0) {
-        currentChord.forEach((note, i) => {
-            setTimeout(() => {
-                playSynthNote(note, 3.5, st.wave, 0.08 / (i + 1), true);
-            }, i * 40);
-        });
-    }
-
-    // Melodía principal
-    const melNote = st.melody[step % st.melody.length];
-    if (melNote) {
-        playSynthNote(melNote, 0.8, 'sine', 0.15, true);
-    }
-
-    // Línea de Bajo
-    const bassNote = st.bass[step % st.bass.length];
-    if (bassNote) {
-        playSynthNote(bassNote, 0.6, 'triangle', 0.25, false);
-    }
-
-    // Batería suave opcional
-    if (st.drums) {
-        if (step % 4 === 0) playPercussion('kick');
-        if (step % 2 !== 0) playPercussion('hihat');
-    }
-
-    step++;
-}
-
-function toggleAudio() {
-    initAudioEngine();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    const btn = document.getElementById('playAudioBtn');
-    const status = document.getElementById('musicStatus');
-
-    if (!isPlaying) {
-        isPlaying = true;
-        step = 0;
-        const interval = (60 / styles[currentStyle].bpm / 2) * 1000;
-        musicTimer = setInterval(stepScheduler, interval);
-        btn.classList.add('active');
-        btn.textContent = '⏸️ Pausar';
-        status.textContent = '🎵 Reproduciendo: ' + document.getElementById('styleSelect').selectedOptions[0].text;
-    } else {
-        isPlaying = false;
-        clearInterval(musicTimer);
-        btn.classList.remove('active');
-        btn.textContent = '▶️ Reproducir';
-        status.textContent = '🎵 Música detenida';
-    }
-}
-
-function changeStyle() {
-    currentStyle = document.getElementById('styleSelect').value;
-    if (isPlaying) {
-        clearInterval(musicTimer);
-        step = 0;
-        const interval = (60 / styles[currentStyle].bpm / 2) * 1000;
-        musicTimer = setInterval(stepScheduler, interval);
-        document.getElementById('musicStatus').textContent = '🎵 Reproduciendo: ' + document.getElementById('styleSelect').selectedOptions[0].text;
-    }
-}
-
-function nextTrack() {
-    const select = document.getElementById('styleSelect');
-    let nextIndex = (select.selectedIndex + 1) % select.options.length;
-    select.selectedIndex = nextIndex;
-    changeStyle();
-}
-
-function newVariation() {
-    variation++;
-    step = 0;
-    if (isPlaying) {
-        document.getElementById('musicStatus').textContent = '🎵 Variación ' + (variation + 1) + ' aplicada';
-    }
-}
-
-/* =========================================================
-   GENERADOR DE SONIDOS DE AMBIENTE (RUIDO BLANCO/ROSA/OLAS)
-   ========================================================= */
-function createNoiseBuffer(type = 'pink') {
-    if (!audioCtx) return null;
-    const bufferSize = audioCtx.sampleRate * 2;
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const output = buffer.getChannelData(0);
-
+  if (type === 'wind') {
+    // Ruido rosa filtrado dinámicamente para simular viento
+    const bufferSize = ctx.sampleRate * 2;
+    const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
     let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-
     for (let i = 0; i < bufferSize; i++) {
-        const white = Math.random() * 2 - 1;
-        if (type === 'pink') {
-            b0 = 0.99886 * b0 + white * 0.0555179;
-            b1 = 0.99332 * b1 + white * 0.0750759;
-            b2 = 0.96900 * b2 + white * 0.1538520;
-            b3 = 0.86650 * b3 + white * 0.3104856;
-            b4 = 0.55000 * b4 + white * 0.5329522;
-            b5 = -0.7616 * b5 - white * 0.0168980;
-            output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-            output[i] *= 0.11;
-            b6 = white * 0.115926;
-        } else {
-            output[i] = white;
-        }
-    }
-    return buffer;
-}
-
-function toggleAmbientNoise(type, enabled) {
-    initAudioEngine();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    if (enabled) {
-        const noiseSource = audioCtx.createBufferSource();
-        noiseSource.buffer = createNoiseBuffer('pink');
-        noiseSource.loop = true;
-
-        const gainNode = audioCtx.createGain();
-        const filter = audioCtx.createBiquadFilter();
-
-        if (type === 'rain') {
-            filter.type = 'lowpass';
-            filter.frequency.value = 1200;
-        } else if (type === 'ocean') {
-            filter.type = 'bandpass';
-            filter.frequency.value = 400;
-            // Modulación de olas
-            const lfo = audioCtx.createOscillator();
-            lfo.frequency.value = 0.1;
-            const lfoGain = audioCtx.createGain();
-            lfoGain.gain.value = 300;
-            lfo.connect(lfoGain);
-            lfoGain.connect(filter.frequency);
-            lfo.start();
-        } else if (type === 'fire') {
-            filter.type = 'bandpass';
-            filter.frequency.value = 800;
-        } else {
-            filter.type = 'lowpass';
-            filter.frequency.value = 800;
-        }
-
-        const sliderVal = document.getElementById(type + 'Vol').value;
-        gainNode.gain.value = parseFloat(sliderVal) * 0.3;
-
-        noiseSource.connect(filter);
-        filter.connect(gainNode);
-        gainNode.connect(masterBus);
-
-        noiseSource.start();
-        ambientNodes[type] = { source: noiseSource, gain: gainNode };
-    } else {
-        if (ambientNodes[type]) {
-            ambientNodes[type].source.stop();
-            ambientNodes[type].source.disconnect();
-            ambientNodes[type] = null;
-        }
-    }
-}
-
-function updateAmbientVolume(type, value) {
-    if (ambientNodes[type]) {
-        ambientNodes[type].gain.gain.value = parseFloat(value) * 0.3;
-    }
-}
-
-/* =========================================================
-   EJERCICIO DE RESPIRACIÓN GUIADA 4-7-8
-   ========================================================= */
-let breathingInterval = null;
-
-function speak(text) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'es-ES';
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
-    }
-}
-
-function openBreathingExercise() {
-    const box = document.getElementById('breathingBox');
-    const btn = document.getElementById('breathingBtn');
-
-    if (box.style.display === 'block') {
-        box.style.display = 'none';
-        btn.textContent = 'Comenzar Respiración 4-7-8 🫁';
-        btn.classList.remove('breathing-stop');
-        btn.classList.add('breathing-start');
-        clearInterval(breathingInterval);
-        window.speechSynthesis.cancel();
-    } else {
-        box.style.display = 'block';
-        btn.textContent = 'Detener Respiración 🛑';
-        btn.classList.remove('breathing-start');
-        btn.classList.add('breathing-stop');
-        runBreathingCycle();
-    }
-}
-
-function runBreathingCycle() {
-    const circle = document.getElementById('breathingCircle');
-    const text = document.getElementById('breathingText');
-    const counter = document.getElementById('breathingCounter');
-
-    let phase = 0;
-    let sec = 4;
-
-    const startPhase = () => {
-        if (phase === 0) {
-            // Inhalar 4s
-            circle.className = 'breathing-circle inhale';
-            text.textContent = '🫁 Inhalá suavemente...';
-            speak('Inhalá');
-            sec = 4;
-        } else if (phase === 1) {
-            // Mantener 7s
-            circle.className = 'breathing-circle hold';
-            text.textContent = '🧘 Mantené el aire...';
-            speak('Mantené');
-            sec = 7;
-        } else if (phase === 2) {
-            // Exhalar 8s
-            circle.className = 'breathing-circle exhale';
-            text.textContent = '💨 Exhalá despacio...';
-            speak('Exhalá');
-            sec = 8;
-        }
-    };
-
-    startPhase();
-
-    breathingInterval = setInterval(() => {
-        sec--;
-        counter.textContent = sec + 's';
-        if (sec <= 0) {
-            phase = (phase + 1) % 3;
-            startPhase();
-        }
-    }, 1000);
-}
-
-/* =========================================================
-   GESTIÓN DE REGISTROS, LOCALSTORAGE Y EMOCIONES
-   ========================================================= */
-let selectedEmotion = '';
-let audioBlob = null;
-let mediaRecorder = null;
-let audioChunks = [];
-
-// Selección de Emoción
-document.querySelectorAll('.emotion-card .btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.emotion-card .btn').forEach(b => b.classList.remove('selected'));
-        this.classList.add('selected');
-        selectedEmotion = this.getAttribute('data-emotion');
-        const msg = this.getAttribute('data-message');
-        
-        // Registrar en el control semanal
-        saveWeeklyEmotion(selectedEmotion);
-        
-        alert(`Emoción seleccionada: ${selectedEmotion}\n\n${msg}`);
-    });
-});
-
-// Guardar Registro Completo
-document.getElementById('saveEntryBtn').addEventListener('click', () => {
-    const child = document.getElementById('childSelect').value;
-    const note = document.getElementById('noteInput').value;
-
-    if (!selectedEmotion && !note) {
-        alert('Por favor, selecciona una emoción o escribe una nota antes de guardar.');
-        return;
+      const white = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + white * 0.0555179;
+      b1 = 0.99332 * b1 + white * 0.0750759;
+      b2 = 0.96900 * b2 + white * 0.1538520;
+      b3 = 0.86650 * b3 + white * 0.3104856;
+      b4 = 0.55000 * b4 + white * 0.5329522;
+      b5 = -0.7616 * b5 - white * 0.0168980;
+      output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+      output[i] *= 0.11;
+      b6 = white * 0.115926;
     }
 
-    const entry = {
-        id: Date.now(),
-        child: child,
-        emotion: selectedEmotion || 'Sin especificar',
-        note: note,
-        date: new Date().toLocaleString('es-AR')
-    };
+    const whiteNoise = ctx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
 
-    saveToStorage('diario_entries', entry);
-    document.getElementById('noteInput').value = '';
-    loadEntries();
-    alert('¡Registro guardado con éxito!');
-});
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(400, ctx.currentTime);
 
-// Foto Preview y Guardado
-document.getElementById('photoInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            const img = document.getElementById('photoPreviewImg');
-            img.src = evt.target.result;
-            img.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    }
-});
+    whiteNoise.connect(filter);
+    filter.connect(masterGain);
+    whiteNoise.start();
+  }
 
-document.getElementById('savePhotoBtn').addEventListener('click', () => {
-    const img = document.getElementById('photoPreviewImg');
-    const emotion = document.getElementById('photoEmotionSelect').value;
-    const child = document.getElementById('childSelect').value;
-
-    if (img.style.display === 'none') {
-        alert('Por favor selecciona una foto primero.');
-        return;
-    }
-
-    const entry = {
-        id: Date.now(),
-        child: child,
-        emotion: emotion,
-        image: img.src,
-        date: new Date().toLocaleString('es-AR')
-    };
-
-    saveToStorage('diario_entries', entry);
-    alert('¡Foto guardada exitosamente!');
-    loadEntries();
-});
-
-// Grabación de Audio
-const recordBtn = document.getElementById('recordBtn');
-recordBtn.addEventListener('click', async () => {
-    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
-
-            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-            mediaRecorder.onstop = () => {
-                audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const player = document.getElementById('audioPlayback');
-                player.src = audioUrl;
-                player.style.display = 'block';
-            };
-
-            mediaRecorder.start();
-            recordBtn.textContent = '⏹️ Detener Grabación';
-            recordBtn.style.background = '#ff6b6b';
-        } catch (err) {
-            alert('No se pudo acceder al micrófono.');
-        }
-    } else {
-        mediaRecorder.stop();
-        recordBtn.textContent = 'Grabar Audio';
-        recordBtn.style.background = '#54a0ff';
-    }
-});
-
-// Secciones Únicas (Gratitud, Estrategias, Microexpresiones)
-document.getElementById('saveGratitudeBtn').addEventListener('click', () => {
-    const input = document.getElementById('gratitudeInput');
-    if (!input.value.trim()) return;
-    saveGenericSection('diario_gratitude', input.value, 'gratitudeList');
-    input.value = '';
-});
-
-document.getElementById('saveStrategyBtn').addEventListener('click', () => {
-    const input = document.getElementById('strategyInput');
-    if (!input.value.trim()) return;
-    saveGenericSection('diario_strategies', input.value, 'strategyList');
-    input.value = '';
-});
-
-document.getElementById('saveMicroBtn').addEventListener('click', () => {
-    const input = document.getElementById('microexpressionInput');
-    if (!input.value.trim()) return;
-    saveGenericSection('diario_micro', input.value, 'microexpressionList');
-    input.value = '';
-});
-
-function saveGenericSection(key, text, listId) {
-    const child = document.getElementById('childSelect').value;
-    const item = { id: Date.now(), child, text, date: new Date().toLocaleString('es-AR') };
-    saveToStorage(key, item);
-    loadGenericSection(key, listId);
-}
-
-// LocalStorage Utils
-function saveToStorage(key, item) {
-    const items = JSON.parse(localStorage.getItem(key) || '[]');
-    items.unshift(item);
-    localStorage.setItem(key, JSON.stringify(items));
-}
-
-function removeFromStorage(key, id) {
-    let items = JSON.parse(localStorage.getItem(key) || '[]');
-    items = items.filter(i => i.id !== id);
-    localStorage.setItem(key, JSON.stringify(items));
-}
-
-function loadEntries() {
-    const filter = document.getElementById('filterChildSelect').value;
-    const items = JSON.parse(localStorage.getItem('diario_entries') || '[]');
-    const list = document.getElementById('entriesList');
-    list.innerHTML = '';
-
-    items.filter(i => filter === 'Todos' || i.child === filter).forEach(i => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <span class="badge-child">${i.child}</span>
-            <button class="btn-delete" onclick="deleteEntry('diario_entries', ${i.id})">Eliminar</button>
-            <br><strong>Fecha:</strong> ${i.date}
-            <br><strong>Emoción:</strong> ${i.emotion}
-            ${i.note ? `<br><strong>Nota:</strong> ${i.note}` : ''}
-            ${i.image ? `<br><img src="${i.image}" class="entry-img">` : ''}
-        `;
-        list.appendChild(li);
-    });
-}
-
-function loadGenericSection(key, listId) {
-    const items = JSON.parse(localStorage.getItem(key) || '[]');
-    const list = document.getElementById(listId);
-    list.innerHTML = '';
-
-    items.forEach(i => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <span class="badge-child">${i.child}</span>
-            <button class="btn-delete" onclick="deleteGeneric('${key}', ${i.id}, '${listId}')">Eliminar</button>
-            <br><small>${i.date}</small>
-            <p style="margin:6px 0 0">${i.text}</p>
-        `;
-        list.appendChild(li);
-    });
-}
-
-function deleteEntry(key, id) {
-    removeFromStorage(key, id);
-    loadEntries();
-}
-
-function deleteGeneric(key, id, listId) {
-    removeFromStorage(key, id);
-    loadGenericSection(key, listId);
-}
-
-/* =========================================================
-   CONTROL SEMANAL DE EMOCIONES
-   ========================================================= */
-function saveWeeklyEmotion(emotion) {
-    const child = document.getElementById('childSelect').value;
-    const records = JSON.parse(localStorage.getItem('diario_weekly_emotions') || '[]');
-    records.push({
-        child: child,
-        emotion: emotion,
-        timestamp: Date.now()
-    });
-    localStorage.setItem('diario_weekly_emotions', JSON.stringify(records));
-    loadWeeklyEmotions();
-}
-
-function loadWeeklyEmotions() {
-    const filter = document.getElementById('weeklyChildFilter').value;
-    const records = JSON.parse(localStorage.getItem('diario_weekly_emotions') || '[]');
-    const container = document.getElementById('weeklyEmotionList');
-    container.innerHTML = '';
-
-    if (records.length === 0) {
-        container.innerHTML = '<div class="weekly-empty">No hay emociones registradas esta semana.</div>';
-        return;
-    }
-
-    // Filtrar por los últimos 7 días
-    const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
-    const recentRecords = records.filter(r => r.timestamp >= oneWeekAgo && (filter === 'Todos' || r.child === filter));
-
-    const counts = {};
-    recentRecords.forEach(r => {
-        counts[r.emotion] = (counts[r.emotion] || 0) + 1;
-    });
-
-    const card = document.createElement('div');
-    card.className = 'weekly-card';
-    card.innerHTML = `
-        <div class="weekly-title">Resumen de los últimos 7 días</div>
-        <div class="weekly-period">Filtro actual: ${filter}</div>
-    `;
-
-    let total = 0;
-    Object.keys(counts).forEach(emo => {
-        total += counts[emo];
-        const row = document.createElement('div');
-        row.className = 'weekly-emotion';
-        row.innerHTML = `<span>${emo}</span><span class="weekly-count">${counts[emo]}</span>`;
-        card.appendChild(row);
-    });
-
-    card.innerHTML += `<div class="weekly-total">Total de registros: ${total}</div>`;
-    container.appendChild(card);
-}
-
-// Inicialización general al cargar
-window.addEventListener('DOMContentLoaded', () => {
-    loadEntries();
-    loadGenericSection('diario_gratitude', 'gratitudeList');
-    loadGenericSection('diario_strategies', 'strategyList');
-    loadGenericSection('diario_micro', 'microexpressionList');
-    loadWeeklyEmotions();
-});
-</script>
-</body>
-</html>
+  if (type === 'birds' || type === 'night') {
+    // Osciladores sintéticos para sonidos nocturnos y aves
+    const osc = ctx.createOscillator();
+    const oscGain = ctx.createGain();
+    osc.type = type === 'birds' ? 'sine' : 'triangle';
+    osc.frequency.setValueAtTime(type === 'birds' ? 2400 : 4500, ctx.currentTime);
     
-    
+    oscGain.gain.setValueAtTime(0.01, ctx.currentTime);
+    osc.connect(oscGain);
+    oscGain.connect(masterGain);
+    osc.start();
+  }
+
+  return masterGain;
+};
+
+// ==========================================
+// 3. ESTRUCTURA Y NAVEGACIÓN PRINCIPAL
+// ==========================================
+
+type TabId = 'home' | 'audio' | 'journal' | 'analytics';
+
+interface Tab {
+  id: TabId;
+  label: string;
+  icon: LucideIcon;
+}
+
+const TABS: Tab[] = [
+  { id: 'home', label: 'Inicio', icon: Home },
+  { id: 'audio', label: 'Audio', icon: Music2 },
+  { id: 'journal', label: 'Diario', icon: BookOpen },
+  { id: 'analytics', label: 'Panel', icon: BarChart3 },
+];
+
+function AppContent() {
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [activeTab, setActiveTab] = useState<TabId>('home');
+  const [selectedProfile, setSelectedProfile] = useState<ProfileId>(() => {
+    return (localStorage.getItem('dpcr_active_profile') as ProfileId) || 'ian';
+  });
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    const t = loadTheme();
+    setTheme(t);
+    document.documentElement.classList.toggle('light', t === 'light');
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    saveTheme(next);
+    document.documentElement.classList.toggle('light', next === 'light');
+  };
+
+  const handleProfileSelect = (profile: ProfileId) => {
+    setSelectedProfile(profile);
+    localStorage.setItem('dpcr_active_profile', profile);
+  };
+
+  const triggerRefresh = useCallback(() => {
+    setRefreshKey((k) => k + 1);
+  }, []);
+
+  useEffect(() => {
+    const handler = () => triggerRefresh();
+    window.addEventListener('dpcr-update', handler);
+    return () => window.removeEventListener('dpcr-update', handler);
+  }, [triggerRefresh]);
+
+  return (
+    <div className={`min-h-screen ${theme === 'dark' ? 'app-bg-dark' : 'app-bg-light'} transition-all duration-500`}>
+      {/* Header */}
+      <header className="sticky top-0 z-50 px-4 pt-4 pb-2">
+        <div className="glass-panel max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-center justify-center w-9 h-9 rounded-2xl bg-gradient-to-br from-neon-blue/20 to-neon-green/20 border border-neon-blue/30">
+              <Wind size={18} className="text-neon-blue" />
+            </div>
+            <div>
+              <h1 className="text-sm font-bold gradient-text leading-tight">Diario Consciente</h1>
+              <p className="text-[10px] opacity-50 leading-tight">Padres & Relax</p>
+            </div>
+          </div>
+          <button
+            onClick={toggleTheme}
+            className="flex items-center justify-center w-9 h-9 rounded-2xl glass-card hover:neon-glow-blue transition-all duration-300"
+          >
+            {theme === 'dark' ? <Sun size={16} className="text-neon-yellow" /> : <Moon size={16} className="text-neon-blue" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Profile selector */}
+      <div className="px-4 py-3">
+        <div className="glass-panel max-w-2xl mx-auto p-3">
+          <ProfileSelector selectedProfile={selectedProfile} onSelect={handleProfileSelect} />
+        </div>
+      </div>
+
+      {/* Main content */}
+      <main className="px-4 pb-28 max-w-2xl mx-auto space-y-4">
+        {activeTab === 'home' && (
+          <>
+            <BreathingExercise />
+            <EmotionalCheckIn selectedProfile={selectedProfile} onEmotionLogged={triggerRefresh} />
+          </>
+        )}
+
+        {activeTab === 'audio' && (
+          <>
+            <GenerativeMusicPlayer />
+            <NatureSoundsMixer />
+          </>
+        )}
+
+        {activeTab === 'journal' && (
+          <>
+            <PhotoCapture selectedProfile={selectedProfile} onSaved={triggerRefresh} />
+            <VoiceNote selectedProfile={selectedProfile} onSaved={triggerRefresh} />
+            <JournalTextModule
+              selectedProfile={selectedProfile}
+              onSaved={triggerRefresh}
+              icon={BookHeart}
+              title="Reflexión Personal"
+              subtitle="Escribe tu entrada diaria"
+              entryType="reflection"
+              placeholder="Hoy me siento... Lo que más me marcó fue... Agradezco..."
+              glow="blue"
+              rows={5}
+            />
+            <JournalTextModule
+              selectedProfile={selectedProfile}
+              onSaved={triggerRefresh}
+              icon={HeartPulse}
+              title="Diario de Gratitud"
+              subtitle="¿Qué agradeces hoy?"
+              entryType="gratitude"
+              placeholder="Hoy agradezco..."
+              glow="green"
+              rows={3}
+            />
+            <JournalTextModule
+              selectedProfile={selectedProfile}
+              onSaved={triggerRefresh}
+              icon={Lightbulb}
+              title="Estrategias de Crianza"
+              subtitle="Herramientas e ideas parentales"
+              entryType="strategy"
+              placeholder="Estrategia, idea o herramienta de crianza..."
+              glow="blue"
+              rows={3}
+            />
+            <JournalTextModule
+              selectedProfile={selectedProfile}
+              onSaved={triggerRefresh}
+              icon={Eye}
+              title="Microexpresiones / Lenguaje Corporal"
+              subtitle="Anota gestos y lecturas observadas"
+              entryType="microexpression"
+              placeholder="Gesto, expresión o postura observada..."
+              glow="pink"
+              showEmotionTag
+              rows={3}
+            />
+          </>
+        )}
+
+        {activeTab === 'analytics' && (
+          <>
+            <EmotionDashboard selectedProfile={selectedProfile} refreshKey={refreshKey} />
+            <HistoryPanel refreshKey={refreshKey} selectedProfile={selectedProfile} />
+          </>
+        )}
+      </main>
+
+      {/* Bottom navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 pt-2">
+        <div className="glass-panel max-w-2xl mx-auto px-2 py-2 flex items-center justify-around">
+          {TABS.map((tab) => {
+            const isActive = activeTab === tab.id;
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex flex-col items-center gap-1 px-4 py-2 rounded-2xl transition-all duration-300 ${
+                  isActive ? 'scale-105' : 'opacity-50 hover:opacity-80'
+                }`}
+                style={
+                  isActive
+                    ? { background: 'rgba(84,160,255,0.1)', boxShadow: '0 0 12px rgba(84,160,255,0.2)' }
+                    : undefined
+                }
+              >
+                <Icon size={20} className={isActive ? 'text-neon-blue' : ''} />
+                <span className={`text-[10px] font-medium ${isActive ? 'text-neon-blue' : ''}`}>
+                  {tab.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AudioProvider>
+      <AppContent />
+    </AudioProvider>
+  );
+}
